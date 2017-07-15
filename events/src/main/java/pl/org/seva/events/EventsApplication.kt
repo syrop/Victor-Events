@@ -15,23 +15,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.model.room
+package pl.org.seva.events
 
-import android.arch.persistence.room.Room
-import android.content.Context
+import android.app.Application
+import pl.org.seva.events.model.room.EventsDatabase
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class EventsDatabase @Inject constructor() {
+class EventsApplication : Application() {
 
-    lateinit var db: EventsDatabaseAbstract
+    @Inject
+    lateinit var db: EventsDatabase
 
-    fun initWithContext(context: Context) {
-        db = Room.databaseBuilder(context, EventsDatabaseAbstract::class.java, DATABASE_NAME).build()
+    lateinit var component: EventsComponent
+
+    override fun onCreate() {
+        super.onCreate()
+        component = createComponent()
+        component.inject(this)
+        db.initWithContext(this)
     }
 
-    companion object {
-        val DATABASE_NAME = "events_database"
+    private fun createComponent(): EventsComponent {
+        return DaggerEventsComponent.create()
     }
 }
