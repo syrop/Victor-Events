@@ -15,12 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.model.data
+package pl.org.seva.events.model
 
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.PrimaryKey
 import android.os.Parcel
 import android.os.Parcelable
 
-class Event(val name: String, val lat: Double, val lon: Double, val time: Long, val desc: String? = null):
+@Entity
+class Event(val name: String, val lat: Double, val lon: Double, @PrimaryKey val time: Long, val desc: String? = null):
         Parcelable {
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
