@@ -44,5 +44,4 @@ open class FirebaseBase protected constructor() {
         /** E-mails per group. */
         val ADMINS = "admins"
     }
-
 }
