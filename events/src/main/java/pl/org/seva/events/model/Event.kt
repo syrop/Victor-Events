@@ -23,7 +23,7 @@ import android.os.Parcel
 import android.os.Parcelable
 
 @Entity
-class Event(val name: String, val lat: Double, val lon: Double, @PrimaryKey val time: Long, val desc: String? = null):
+data class Event(val name: String, val lat: Double, val lon: Double, @PrimaryKey val time: Long, val desc: String? = null):
         Parcelable {
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
