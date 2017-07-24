@@ -23,26 +23,45 @@ import android.os.Parcel
 import android.os.Parcelable
 
 @Entity
-data class Event(val name: String, val lat: Double, val lon: Double, @PrimaryKey val time: Long, val desc: String? = null):
+data class Event(val name: String, val lat: Double?, val lon: Double?, @PrimaryKey val time: Long,
+                 val desc: String? = null):
         Parcelable {
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)
-        parcel.writeDouble(lat)
-        parcel.writeDouble(lon)
+        if (lat != null && lon != null) {
+            parcel.writeInt(1)
+            parcel.writeDouble(lat)
+            parcel.writeDouble(lon)
+        }
+        else {
+            parcel.writeInt(0)
+        }
         parcel.writeLong(time)
-        parcel.writeString(desc)
+        if (desc != null) {
+            parcel.writeInt(1)
+            parcel.writeString(desc)
+        }
+        else {
+            parcel.writeInt(0)
+        }
     }
-
-    constructor(parcel: Parcel): this(parcel.readString(), parcel.readDouble(), parcel.readDouble(),
-            parcel.readLong(), parcel.readString())
 
     override fun describeContents() = 0
 
     companion object {
         @Suppress("unused")
         @JvmField val CREATOR = object : Parcelable.Creator<Event> {
-            override fun createFromParcel(parcel: Parcel) = Event(parcel)
+            override fun createFromParcel(parcel: Parcel): Event {
+                val name = parcel.readString()
+                val containsLatLng = parcel.readInt() != 0
+                val lat =  if (containsLatLng) parcel.readDouble() else null
+                val lon =  if (containsLatLng) parcel.readDouble() else null
+                val time = parcel.readLong()
+                val containsDescription = parcel.readInt() != 0
+                val desc = if (containsDescription) parcel.readString() else null
+                return Event(name, lat, lon, time, desc)
+            }
             override fun newArray(size: Int): Array<Event?> = arrayOfNulls(size)
         }
     }

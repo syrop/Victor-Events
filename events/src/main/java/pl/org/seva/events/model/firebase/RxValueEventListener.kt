@@ -17,10 +17,22 @@
 
 package pl.org.seva.events.model.firebase
 
-import javax.inject.Inject
-import javax.inject.Singleton
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
-@Singleton
-class FirebaseReader @Inject constructor() : FirebaseBase() {
+import io.reactivex.subjects.PublishSubject
 
+internal class RxValueEventListener(private val valueEventSubject: PublishSubject<DataSnapshot>) :
+        ValueEventListener {
+
+    override fun onDataChange(dataSnapshot: DataSnapshot?) {
+        if (dataSnapshot != null) {
+            valueEventSubject.onNext(dataSnapshot)
+        }
+    }
+
+    override fun onCancelled(databaseError: DatabaseError) {
+        valueEventSubject.onError(Exception(databaseError.message))
+    }
 }

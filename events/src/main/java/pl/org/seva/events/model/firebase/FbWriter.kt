@@ -21,6 +21,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class FirebaseWriter @Inject constructor(): FirebaseBase() {
+class FbWriter @Inject constructor(): FbBase() {
+
+
 
 }

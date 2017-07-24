@@ -26,7 +26,7 @@ class Login @Inject constructor() {
     var isLoggedIn: Boolean = false
     var email: String? = null
     var displayName: String? = null
-    var communityName: String? = null
+    var community: String? = null
 
     fun setCurrentUser(user: FirebaseUser?) {
         if (user != null) {

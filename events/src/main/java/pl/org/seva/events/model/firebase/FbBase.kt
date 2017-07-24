@@ -21,12 +21,12 @@ import com.google.firebase.database.FirebaseDatabase
 import pl.org.seva.events.model.Login
 import javax.inject.Inject
 
-open class FirebaseBase protected constructor() {
+open class FbBase protected constructor() {
 
     @Inject
     lateinit var login: Login
 
-    protected val database = FirebaseDatabase.getInstance()!!
+    protected val db = FirebaseDatabase.getInstance()!!
 
     companion object {
         /** Per community. */
