@@ -21,7 +21,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class FbWriter @Inject constructor(): FbBase() {
+class FbWriter @Inject constructor(): Fb() {
 
 
 

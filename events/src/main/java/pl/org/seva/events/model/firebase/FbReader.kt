@@ -26,20 +26,20 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class FbReader @Inject constructor() : FbBase() {
+class FbReader @Inject constructor() : Fb() {
 
-    private fun childListener(reference: DatabaseReference): Observable<DataSnapshot> {
+    private fun DatabaseReference.childListener(): Observable<DataSnapshot> {
         val result = ReplaySubject.create<DataSnapshot>()
-        reference.addChildEventListener(RxChildEventListener(result))
+        addChildEventListener(RxChildEventListener(result))
         return result.hide()
     }
 
-    private fun snapshot2Event(snapshot: DataSnapshot): Event {
-        val name = snapshot.child(EVENT_NAME).value as String
-        val lat = snapshot.child(EVENT_LAT).value as Double?
-        val lon = snapshot.child(EVENT_LON).value as Double?
-        val time = snapshot.child(EVENT_TIME).value as Long
-        val desc = snapshot.child(EVENT_DESC).value as String?
+    private fun DataSnapshot.toEvent(): Event {
+        val name = child(EVENT_NAME).value as String
+        val lat = child(EVENT_LAT).value as Double?
+        val lon = child(EVENT_LON).value as Double?
+        val time = child(EVENT_TIME).value as Long
+        val desc = child(EVENT_DESC).value as String?
         return Event(name, lat, lon, time, desc)
     }
 }

@@ -21,7 +21,7 @@ import com.google.firebase.database.FirebaseDatabase
 import pl.org.seva.events.model.Login
 import javax.inject.Inject
 
-open class FbBase protected constructor() {
+open class Fb protected constructor() {
 
     @Inject
     lateinit var login: Login
