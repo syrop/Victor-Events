@@ -29,7 +29,7 @@ open class FirebaseBase protected constructor() {
     protected val database = FirebaseDatabase.getInstance()!!
 
     companion object {
-        /** Per group. */
+        /** Per community. */
         val EVENTS = "events"
         /** May not be null. */
         val EVENT_NAME = "name"
@@ -41,7 +41,7 @@ open class FirebaseBase protected constructor() {
         val EVENT_TIME = "time"
         /** Nullable. */
         val EVENT_DESC = "description"
-        /** E-mails per group. */
+        /** Admin e-mails per community. */
         val ADMINS = "admins"
     }
 }
