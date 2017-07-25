@@ -30,11 +30,19 @@ import javax.inject.Singleton
 class FbReader @Inject constructor() : Fb() {
 
     fun readEvents(): Observable<Event> {
-        val reference = currentCommunityReference()
+        val reference = currentCommunityReference().child(EVENTS)
         return reference.read()
                 .concatMapIterable { it.children }
                 .filter { it.exists() }
                 .map { it.toEvent() }
+    }
+
+    fun readAdmins(): Observable<String> {
+        val reference = currentCommunityReference().child(ADMINS)
+        return reference.read()
+                .concatMapIterable { it.children }
+                .filter { it.exists() }
+                .map { it.value as String }
     }
 
     private fun DatabaseReference.read(): Observable<DataSnapshot> {
