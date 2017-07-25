@@ -18,10 +18,14 @@
 package pl.org.seva.events
 
 import dagger.Component
+import pl.org.seva.events.view.EventsActivity
+import pl.org.seva.events.view.LoginActivity
 import javax.inject.Singleton
 
 @Singleton
 @Component(modules = arrayOf(pl.org.seva.events.EventsModule::class))
 interface EventsComponent {
     fun inject(eventsApplication: EventsApplication)
+    fun inject(eventsActivity: EventsActivity)
+    fun inject(loginActivity: LoginActivity)
 }

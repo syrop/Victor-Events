@@ -17,12 +17,15 @@
 
 package pl.org.seva.events.model.firebase
 
+import com.google.firebase.auth.FirebaseUser
 import pl.org.seva.events.model.Event
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class FbWriter @Inject constructor(): Fb() {
+
+    fun login(user: FirebaseUser) {}
 
     fun grantAdminPriviledge(email: String) {
         currentCommunityReference().child(ADMINS).child(email.to64()).setValue(DEFAULT_VALUE)

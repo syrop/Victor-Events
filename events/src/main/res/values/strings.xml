@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Victor Events</string>
     <string name="action_settings">Settings</string>
+
+    <!-- Login activity. -->
+    <string name="login_authentication_failed">Authentication failed.</string>
+    <string name="login_loading">Loading…</string>
+    <string name="login_please_log_in">Please log in.</string>
+    <string name="contacts_please_log_in">Please log in.</string>
 </resources>

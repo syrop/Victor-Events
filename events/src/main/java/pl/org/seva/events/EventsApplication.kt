@@ -18,6 +18,8 @@
 package pl.org.seva.events
 
 import android.app.Application
+import com.google.firebase.auth.FirebaseUser
+import pl.org.seva.events.model.Login
 import pl.org.seva.events.model.room.EventsDatabase
 import javax.inject.Inject
 
@@ -25,6 +27,8 @@ class EventsApplication : Application() {
 
     @Inject
     lateinit var db: EventsDatabase
+    @Inject
+    lateinit var login: Login
 
     lateinit var component: EventsComponent
 
@@ -37,5 +41,12 @@ class EventsApplication : Application() {
 
     private fun createComponent(): EventsComponent {
         return DaggerEventsComponent.create()
+    }
+
+    fun login(user: FirebaseUser) {
+        login.setCurrentUser(user)
+    }
+
+    fun logout() {
     }
 }

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1052062614577",
+    "firebase_url": "https://victor-events.firebaseio.com",
+    "project_id": "victor-events",
+    "storage_bucket": "victor-events.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1052062614577:android:207e4d8a1d72420a",
+        "android_client_info": {
+          "package_name": "pl.org.seva.events"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1052062614577-a5m2k1oq7kfra3gusarej3rk8svm4k09.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pl.org.seva.events",
+            "certificate_hash": "4605ed1189b6d0893c99e841fe5c8867ef3b4a50"
+          }
+        },
+        {
+          "client_id": "1052062614577-5hr7d9u1avkhcp615irenn79i13diskm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRtrC48UddOyVlNyH4cj4Pgc-bTs9FN4I"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1052062614577-5hr7d9u1avkhcp615irenn79i13diskm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
