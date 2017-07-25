@@ -17,6 +17,7 @@
 
 package pl.org.seva.events.model.firebase
 
+import android.util.Base64
 import com.google.firebase.database.FirebaseDatabase
 import pl.org.seva.events.model.Login
 import javax.inject.Inject
@@ -31,6 +32,10 @@ open class Fb protected constructor() {
     protected fun currentCommunityReference() = login.community!!.toReference()
 
     protected fun String.toReference() = db.getReference(this)!!
+
+    fun String.to64() = Base64.encodeToString(toByteArray(), Base64.NO_WRAP)!!
+
+    fun String.from64() = String(Base64.decode(toByteArray(), Base64.NO_WRAP))
 
     companion object {
         /** Per community. */

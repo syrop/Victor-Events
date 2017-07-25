@@ -23,6 +23,11 @@ import javax.inject.Singleton
 @Singleton
 class FbWriter @Inject constructor(): Fb() {
 
+    fun grantAdminPriviledge(email: String) {
+        currentCommunityReference().child(ADMINS).child(email.to64()).setValue(DEFAULT_VALUE)
+    }
 
-
+    companion object {
+        val DEFAULT_VALUE = 0
+    }
 }

@@ -37,13 +37,8 @@ class FbReader @Inject constructor() : Fb() {
                 .map { it.toEvent() }
     }
 
-    fun readAdmins(): Observable<String> {
-        val reference = currentCommunityReference().child(ADMINS)
-        return reference.read()
-                .concatMapIterable { it.children }
-                .filter { it.exists() }
-                .map { it.value as String }
-    }
+    fun isAdmin(email: String): Observable<Boolean> =
+        currentCommunityReference().child(ADMINS).child(email.to64()).read().map { it.exists() }
 
     private fun DatabaseReference.read(): Observable<DataSnapshot> {
         val resultSubject = PublishSubject.create<DataSnapshot>()
