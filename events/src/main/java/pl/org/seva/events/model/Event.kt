@@ -54,8 +54,8 @@ data class Event(val name: String, val lat: Double?, val lon: Double?, @PrimaryK
             override fun createFromParcel(parcel: Parcel): Event {
                 val name = parcel.readString()
                 val containsLatLng = parcel.readInt() != 0
-                val lat =  if (containsLatLng) parcel.readDouble() else null
-                val lon =  if (containsLatLng) parcel.readDouble() else null
+                val lat = if (containsLatLng) parcel.readDouble() else null
+                val lon = if (containsLatLng) parcel.readDouble() else null
                 val time = parcel.readLong()
                 val containsDescription = parcel.readInt() != 0
                 val desc = if (containsDescription) parcel.readString() else null
