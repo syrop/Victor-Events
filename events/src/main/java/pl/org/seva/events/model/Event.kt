@@ -24,8 +24,7 @@ import android.os.Parcelable
 
 @Entity
 data class Event(val name: String, val lat: Double?, val lon: Double?, @PrimaryKey val time: Long,
-                 val desc: String? = null):
-        Parcelable {
+                 val desc: String? = null): Parcelable {
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)

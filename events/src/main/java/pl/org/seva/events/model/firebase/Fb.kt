@@ -24,9 +24,13 @@ import javax.inject.Inject
 open class Fb protected constructor() {
 
     @Inject
-    lateinit var login: Login
+    protected lateinit var login: Login
 
     protected val db = FirebaseDatabase.getInstance()!!
+
+    protected fun currentCommunityReference() = login.community!!.toReference()
+
+    protected fun String.toReference() = db.getReference(this)!!
 
     companion object {
         /** Per community. */

@@ -20,6 +20,7 @@ package pl.org.seva.events.model.firebase
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.ReplaySubject
 import pl.org.seva.events.model.Event
 import javax.inject.Inject
@@ -28,10 +29,19 @@ import javax.inject.Singleton
 @Singleton
 class FbReader @Inject constructor() : Fb() {
 
-    private fun DatabaseReference.childListener(): Observable<DataSnapshot> {
-        val result = ReplaySubject.create<DataSnapshot>()
-        addChildEventListener(RxChildEventListener(result))
-        return result.hide()
+    fun readEvents(): Observable<Event> {
+        val reference = currentCommunityReference()
+        return reference.read()
+                .concatMapIterable { it.children }
+                .filter { it.exists() }
+                .map { it.toEvent() }
+    }
+
+    private fun DatabaseReference.read(): Observable<DataSnapshot> {
+        val resultSubject = PublishSubject.create<DataSnapshot>()
+        return resultSubject
+                .doOnSubscribe { addListenerForSingleValueEvent(RxValueEventListener(resultSubject)) }
+                .take(READ_ONCE)
     }
 
     private fun DataSnapshot.toEvent(): Event {
@@ -41,5 +51,9 @@ class FbReader @Inject constructor() : Fb() {
         val time = child(EVENT_TIME).value as Long
         val desc = child(EVENT_DESC).value as String?
         return Event(name, lat, lon, time, desc)
+    }
+
+    companion object {
+        val READ_ONCE = 1L
     }
 }
