@@ -18,6 +18,7 @@
 package pl.org.seva.events.model.firebase
 
 import android.util.Base64
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import pl.org.seva.events.model.Login
 import javax.inject.Inject
@@ -29,15 +30,25 @@ open class Fb protected constructor() {
 
     protected val db = FirebaseDatabase.getInstance()!!
 
-    protected fun currentCommunityReference() = login.community!!.toReference()
+    protected val String.admins get() = db reference PRIVATE child this child ADMINS
 
-    protected fun String.toReference() = db.getReference(this)!!
+    protected val String.events get() = db reference COMMUNITIES child this
 
-    fun String.to64() = Base64.encodeToString(toByteArray(), Base64.NO_WRAP)!!
+    protected infix fun DatabaseReference.child(ch: String): DatabaseReference = this.child(ch)
 
-    fun String.from64() = String(Base64.decode(toByteArray(), Base64.NO_WRAP))
+    protected infix fun DatabaseReference.value(v: Any) = this.setValue(v)!!
+
+    protected infix fun FirebaseDatabase.reference(ref: String) : DatabaseReference = this.getReference(ref)
+
+    protected fun String.to64() = Base64.encodeToString(toByteArray(), Base64.NO_WRAP)!!
+
+    protected fun String.from64() = String(Base64.decode(toByteArray(), Base64.NO_WRAP))
 
     companion object {
+        /** Root of community-related data that can be read by anyone. */
+        val COMMUNITIES = "communities"
+        /** Root of user-related data that can be read only by logged in users. */
+        val PRIVATE = "private"
         /** Per community. */
         val EVENTS = "events"
         /** May not be null. */

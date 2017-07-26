@@ -28,16 +28,15 @@ import javax.inject.Singleton
 @Singleton
 class FbReader @Inject constructor() : Fb() {
 
-    fun readEvents(): Observable<Event> {
-        val reference = currentCommunityReference().child(EVENTS)
-        return reference.read()
+    fun readEvents(community: String): Observable<Event> {
+        return community.events.read()
                 .concatMapIterable { it.children }
                 .filter { it.exists() }
                 .map { it.toEvent() }
     }
 
-    fun isAdmin(email: String): Observable<Boolean> =
-        currentCommunityReference().child(ADMINS).child(email.to64()).read().map { it.exists() }
+    fun isAdmin(community: String, email: String): Observable<Boolean> =
+        community.admins.child(email.to64()).read().map { it.exists() }
 
     private fun DatabaseReference.read(): Observable<DataSnapshot> {
         val resultSubject = PublishSubject.create<DataSnapshot>()

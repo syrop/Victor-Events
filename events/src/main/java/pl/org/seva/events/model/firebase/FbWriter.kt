@@ -27,12 +27,12 @@ class FbWriter @Inject constructor(): Fb() {
 
     fun login(user: FirebaseUser) {}
 
-    fun grantAdminPriviledge(email: String) {
-        currentCommunityReference().child(ADMINS).child(email.to64()).setValue(DEFAULT_VALUE)
+    fun grantAdminPriviledge(community: String, email: String) {
+        community.admins child(email.to64()) value DEFAULT_VALUE
     }
 
-    fun writeEvent(event: Event) {
-        val ref = currentCommunityReference().child(EVENTS).child(event.time.toString())
+    fun writeEvent(community: String, event: Event) {
+        val ref =  community.events child(event.time.toString())
         ref.child(EVENT_NAME).setValue(event.name)
         event.lat?.let { ref.child(EVENT_LAT).setValue(it) }
         event.lon?.let { ref.child(EVENT_LON).setValue(it) }
