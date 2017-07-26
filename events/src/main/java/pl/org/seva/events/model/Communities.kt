@@ -15,19 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events
+package pl.org.seva.events.model
 
-import dagger.Component
-import pl.org.seva.events.view.EventsActivity
-import pl.org.seva.events.view.LoginActivity
-import pl.org.seva.events.view.SearchActivity
+import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = arrayOf(EventsModule::class))
-interface EventsComponent {
-    fun inject(eventsApplication: EventsApplication)
-    fun inject(eventsActivity: EventsActivity)
-    fun inject(loginActivity: LoginActivity)
-    fun inject(searchActivity: SearchActivity)
+class Communities @Inject constructor() {
+    val communities = mutableListOf<Community>()
+    val size get() = communities.size
+    val empty get() = size == 0
 }

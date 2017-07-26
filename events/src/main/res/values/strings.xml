@@ -2,9 +2,16 @@
     <string name="app_name">Victor Events</string>
     <string name="action_settings">Settings</string>
 
+    <!-- Events activity. -->
+
     <!-- Login activity. -->
     <string name="login_authentication_failed">Authentication failed.</string>
     <string name="login_loading">Loading…</string>
     <string name="login_please_log_in">Please log in.</string>
-    <string name="contacts_please_log_in">Please log in.</string>
+
+    <!-- Search activity. -->
+    <string name="search_please_search_empty">You are not currently following any communities. Please search for them.</string>
+    <string name="search_please_search">Please search for communities to follow</string>
+
+
 </resources>

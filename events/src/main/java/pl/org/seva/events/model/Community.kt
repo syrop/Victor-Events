@@ -15,19 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events
+package pl.org.seva.events.model
 
-import dagger.Component
-import pl.org.seva.events.view.EventsActivity
-import pl.org.seva.events.view.LoginActivity
-import pl.org.seva.events.view.SearchActivity
-import javax.inject.Singleton
-
-@Singleton
-@Component(modules = arrayOf(EventsModule::class))
-interface EventsComponent {
-    fun inject(eventsApplication: EventsApplication)
-    fun inject(eventsActivity: EventsActivity)
-    fun inject(loginActivity: LoginActivity)
-    fun inject(searchActivity: SearchActivity)
-}
+data class Community(val name: String, var admin: Boolean = false)

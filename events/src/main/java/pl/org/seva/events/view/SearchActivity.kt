@@ -19,50 +19,23 @@ package pl.org.seva.events.view
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
-
-import kotlinx.android.synthetic.main.activity_events.*
+import kotlinx.android.synthetic.main.activity_search.*
 import pl.org.seva.events.EventsApplication
 import pl.org.seva.events.R
 import pl.org.seva.events.model.Communities
-import pl.org.seva.events.model.Login
 import javax.inject.Inject
 
-class EventsActivity : AppCompatActivity() {
+class SearchActivity: AppCompatActivity() {
 
-    @Inject
-    lateinit var login: Login
     @Inject
     lateinit var communities: Communities
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (application as EventsApplication).component.inject(this)
+        setContentView(R.layout.activity_search)
         if (communities.empty) {
-            search()
-        }
-        setContentView(R.layout.activity_events)
-
-        fab.setOnClickListener { onFabClicked() }
-    }
-
-    private fun search() {
-
-    }
-
-    private fun onFabClicked() {
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_events, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+            prompt.setText(R.string.search_please_search_empty)
         }
     }
 }
