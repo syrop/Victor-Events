@@ -32,7 +32,7 @@ open class Fb protected constructor() {
 
     protected val String.admins get() = db reference PRIVATE child this child ADMINS
 
-    protected val String.events get() = db reference COMMUNITIES child this
+    protected val String.events get() = db reference COMMUNITIES child EVENTS child this
 
     protected infix fun DatabaseReference.child(ch: String): DatabaseReference = this.child(ch)
 
