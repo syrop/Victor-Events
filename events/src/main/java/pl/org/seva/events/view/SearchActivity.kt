@@ -122,6 +122,6 @@ class SearchActivity: AppCompatActivity() {
     }
 
     companion object {
-        val NAME_PLACEHOLDER = "name"
+        val NAME_PLACEHOLDER = "[name]"
     }
 }
