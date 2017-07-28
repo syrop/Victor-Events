@@ -92,7 +92,7 @@ class SearchActivity: AppCompatActivity() {
         Snackbar.make(
                 layout,
                 R.string.search_can_create,
-                Snackbar.LENGTH_INDEFINITE)
+                Snackbar.LENGTH_LONG)
                 .setAction(R.string.search_create) { createCommunity() }
                 .show()
     }
