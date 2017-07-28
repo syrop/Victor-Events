@@ -20,7 +20,9 @@ package pl.org.seva.events.model.firebase
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import io.reactivex.Observable
+import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.PublishSubject
+import pl.org.seva.events.model.Community
 import pl.org.seva.events.model.Event
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -35,8 +37,20 @@ class FbReader @Inject constructor() : Fb() {
                 .map { it.toEvent() }
     }
 
-    fun isAdmin(community: String, email: String): Observable<Boolean> =
-        community.admins.child(email.to64()).read().map { it.exists() }
+    fun String.isAdmin(email: String): Observable<Boolean> = admins.child(email.to64()).doesExist()
+
+    fun findCommunity(community: String): Observable<Community> {
+        val doesExist: Observable<Boolean> = communities.child(community).doesExist()
+        val isAdmin: Observable<Boolean> = if (login.isLoggedIn) community.isAdmin(login.email!!)
+            else Observable.just(false)
+
+        return doesExist.zipWith(isAdmin,
+                BiFunction { _: Boolean, admin: Boolean -> Community("", admin) })
+    }
+
+    private fun String.doesExist(): Observable<Boolean> = reference.doesExist()
+
+    private fun DatabaseReference.doesExist() = read().map { it.exists() }
 
     private fun DatabaseReference.read(): Observable<DataSnapshot> {
         val resultSubject = PublishSubject.create<DataSnapshot>()

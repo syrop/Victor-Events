@@ -25,6 +25,8 @@ import javax.inject.Inject
 
 open class Fb protected constructor() {
 
+    protected val communities get() = db reference COMMUNITIES
+
     @Inject
     protected lateinit var login: Login
 
@@ -32,7 +34,9 @@ open class Fb protected constructor() {
 
     protected val String.admins get() = db reference PRIVATE child this child ADMINS
 
-    protected val String.events get() = db reference COMMUNITIES child EVENTS child this
+    protected val String.events get() = db reference COMMUNITIES child this child EVENTS
+
+    protected val String.reference get() = db reference COMMUNITIES child this
 
     protected infix fun DatabaseReference.child(ch: String): DatabaseReference = this.child(ch)
 
