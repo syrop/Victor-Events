@@ -27,6 +27,7 @@ import android.support.v7.app.AppCompatActivity
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.StyleSpan
+import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_search.*
 import pl.org.seva.events.EventsApplication
 import pl.org.seva.events.R
@@ -98,6 +99,16 @@ class SearchActivity: AppCompatActivity() {
 
     private fun createCommunity() {
 
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 
     private fun String.notFound() : CharSequence {
