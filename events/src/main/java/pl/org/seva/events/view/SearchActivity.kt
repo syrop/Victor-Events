@@ -20,22 +20,31 @@ package pl.org.seva.events.view
 import android.app.ProgressDialog
 import android.app.SearchManager
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.StyleSpan
 import kotlinx.android.synthetic.main.activity_search.*
 import pl.org.seva.events.EventsApplication
 import pl.org.seva.events.R
 import pl.org.seva.events.model.Communities
 import pl.org.seva.events.model.Community
+import pl.org.seva.events.model.Login
 import pl.org.seva.events.model.firebase.FbReader
 import javax.inject.Inject
 
+@Suppress("DEPRECATION")
 class SearchActivity: AppCompatActivity() {
 
     @Inject
     lateinit var communities: Communities
     @Inject
     lateinit var fbReader: FbReader
+    @Inject
+    lateinit var login: Login
 
     private var progress: ProgressDialog? = null
 
@@ -54,14 +63,54 @@ class SearchActivity: AppCompatActivity() {
         supportActionBar!!.setDisplayShowHomeEnabled(true)
     }
 
-    private fun search(query: String) {
+    private fun search(name: String) {
         progress = ProgressDialog.show(this, null, getString(R.string.search_searching))
         fbReader
-                .findCommunity(query.toLowerCase())
-                .subscribe { onCommunityReceived(it) }
+                .findCommunity(name.toLowerCase())
+                .subscribe {
+                    if (it.empty) {
+                        onCommunityNotFound(name)
+                    } else {
+                        onCommunityReceived(it)
+                    }
+                }
     }
 
     private fun onCommunityReceived(community: Community) {
 
+    }
+
+    private fun onCommunityNotFound(name: String) {
+        prompt.text = name.notFound()
+        if (login.isLoggedIn) {
+            showCreateCommunitySnackbar()
+        }
+    }
+
+    private fun showCreateCommunitySnackbar() {
+        Snackbar.make(
+                layout,
+                R.string.search_can_create,
+                Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.search_create) { createCommunity() }
+                .show()
+    }
+
+    private fun createCommunity() {
+
+    }
+
+    private fun String.notFound() : CharSequence {
+        val str = getString(R.string.search_not_found)
+        val idName = str.indexOf(NAME_PLACEHOLDER)
+        val idEndName = idName + length
+        val ssBuilder = SpannableStringBuilder(str.replace(NAME_PLACEHOLDER, this))
+        val boldSpan = StyleSpan(Typeface.BOLD)
+        ssBuilder.setSpan(boldSpan, idName, idEndName, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+        return ssBuilder
+    }
+
+    companion object {
+        val NAME_PLACEHOLDER = "name"
     }
 }

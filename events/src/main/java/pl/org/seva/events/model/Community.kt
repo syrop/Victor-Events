@@ -17,4 +17,11 @@
 
 package pl.org.seva.events.model
 
-data class Community(val name: String, var admin: Boolean = false)
+data class Community(val name: String, var admin: Boolean = false) {
+
+    val empty get() = name.isNotEmpty()
+
+    companion object {
+        val empty get() = Community("", false)
+    }
+}

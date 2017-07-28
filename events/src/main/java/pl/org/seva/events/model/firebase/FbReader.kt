@@ -45,10 +45,9 @@ class FbReader @Inject constructor() : Fb() {
             else Observable.just(false)
 
         return doesExist.zipWith(isAdmin,
-                BiFunction { _: Boolean, admin: Boolean -> Community("", admin) })
+                BiFunction { exists: Boolean, admin: Boolean ->
+                    if (exists) Community("", admin) else Community.empty })
     }
-
-    private fun String.doesExist(): Observable<Boolean> = reference.doesExist()
 
     private fun DatabaseReference.doesExist() = read().map { it.exists() }
 
