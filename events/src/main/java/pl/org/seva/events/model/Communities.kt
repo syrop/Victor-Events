@@ -17,12 +17,32 @@
 
 package pl.org.seva.events.model
 
+import pl.org.seva.events.model.firebase.FbWriter
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class Communities @Inject constructor() {
-    val communities = mutableListOf<Community>()
+
+    @Inject
+    lateinit var writer: FbWriter
+    @Inject
+    lateinit var login: Login
+
+    private val communities = mutableListOf<Community>()
     val size get() = communities.size
     val empty get() = size == 0
+
+    operator fun get(index: Int) = communities[index]
+
+    fun join(community: Community) {
+        communities.add(community)
+    }
+
+    fun joinNewCommunity(name: String) {
+        val community = Community(name, true)
+        writer.create(community)
+        writer.grantAdmin(community, login.email)
+        join(community)
+    }
 }

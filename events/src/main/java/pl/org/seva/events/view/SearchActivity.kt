@@ -84,21 +84,21 @@ class SearchActivity: AppCompatActivity() {
     private fun onCommunityNotFound(name: String) {
         prompt.text = name.notFound()
         if (login.isLoggedIn) {
-            showCreateCommunitySnackbar()
+            showCreateCommunitySnackbar(name)
         }
     }
 
-    private fun showCreateCommunitySnackbar() {
+    private fun showCreateCommunitySnackbar(name: String) {
         Snackbar.make(
                 layout,
                 R.string.search_can_create,
                 Snackbar.LENGTH_LONG)
-                .setAction(R.string.search_create) { createCommunity() }
+                .setAction(R.string.search_create) { createCommunity(name) }
                 .show()
     }
 
-    private fun createCommunity() {
-
+    private fun createCommunity(name: String) {
+        communities.joinNewCommunity(name)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

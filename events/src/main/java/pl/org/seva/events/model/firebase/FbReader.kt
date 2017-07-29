@@ -41,12 +41,12 @@ class FbReader @Inject constructor() : Fb() {
 
     fun findCommunity(community: String): Observable<Community> {
         val doesExist: Observable<Boolean> = communities.child(community).doesExist()
-        val isAdmin: Observable<Boolean> = if (login.isLoggedIn) community.isAdmin(login.email!!)
+        val isAdmin: Observable<Boolean> = if (login.isLoggedIn) community.isAdmin(login.email)
             else Observable.just(false)
 
         return doesExist.zipWith(isAdmin,
                 BiFunction { exists: Boolean, admin: Boolean ->
-                    if (exists) Community("", admin) else Community.empty })
+                    if (exists) Community("", admin) else Community.EMPTY })
     }
 
     private fun DatabaseReference.doesExist() = read().map { it.exists() }
@@ -64,7 +64,7 @@ class FbReader @Inject constructor() : Fb() {
         val lon = child(EVENT_LON).value as Double?
         val time = child(EVENT_TIME).value as Long
         val desc = child(EVENT_DESC).value as String?
-        return Event(name, lat, lon, time, desc)
+        return Event(name, time = time, lat = lat, lon = lon, desc = desc)
     }
 
     companion object {

@@ -23,8 +23,12 @@ import android.os.Parcel
 import android.os.Parcelable
 
 @Entity
-data class Event(val name: String, val lat: Double?, val lon: Double?, @PrimaryKey val time: Long,
-                 val desc: String? = null): Parcelable {
+data class Event(
+        val name: String,
+        @PrimaryKey val time: Long = System.currentTimeMillis(),
+        val lat: Double? = null,
+        val lon: Double? = null,
+        val desc: String? = null): Parcelable {
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)
@@ -49,6 +53,10 @@ data class Event(val name: String, val lat: Double?, val lon: Double?, @PrimaryK
     override fun describeContents() = 0
 
     companion object {
+        val CREATION = ""
+
+        val creation get() = Event(CREATION, System.currentTimeMillis())
+
         @Suppress("unused")
         @JvmField val CREATOR = object : Parcelable.Creator<Event> {
             override fun createFromParcel(parcel: Parcel): Event {
@@ -59,7 +67,7 @@ data class Event(val name: String, val lat: Double?, val lon: Double?, @PrimaryK
                 val time = parcel.readLong()
                 val containsDescription = parcel.readInt() != 0
                 val desc = if (containsDescription) parcel.readString() else null
-                return Event(name, lat, lon, time, desc)
+                return Event(name, time = time, lat = lat , lon = lon, desc = desc)
             }
             override fun newArray(size: Int): Array<Event?> = arrayOfNulls(size)
         }

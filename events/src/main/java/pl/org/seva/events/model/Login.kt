@@ -24,18 +24,18 @@ import javax.inject.Singleton
 @Singleton
 class Login @Inject constructor() {
     var isLoggedIn: Boolean = false
-    var email: String? = null
-    var displayName: String? = null
+    var email: String = ""
+    var displayName: String = ""
 
     fun setCurrentUser(user: FirebaseUser?) {
         if (user != null) {
             isLoggedIn = true
-            email = user.email
-            displayName = user.displayName
+            email = user.email!!
+            displayName = user.displayName!!
         } else {
             isLoggedIn = false
-            email = null
-            displayName = null
+            email = ""
+            displayName = ""
         }
     }
 }

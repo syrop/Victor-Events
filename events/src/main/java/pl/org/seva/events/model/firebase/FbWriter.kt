@@ -18,6 +18,7 @@
 package pl.org.seva.events.model.firebase
 
 import com.google.firebase.auth.FirebaseUser
+import pl.org.seva.events.model.Community
 import pl.org.seva.events.model.Event
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -27,12 +28,20 @@ class FbWriter @Inject constructor(): Fb() {
 
     fun login(user: FirebaseUser) {}
 
-    fun grantAdminPriviledge(community: String, email: String) {
+    fun create(community: Community) {
+        writeEvent(community, Event.creation)
+    }
+
+    fun grantAdmin(community: Community, email: String) {
+        grantAdmin(community.name, email)
+    }
+
+    fun grantAdmin(community: String, email: String) {
         community.admins child(email.to64()) value DEFAULT_VALUE
     }
 
-    fun writeEvent(community: String, event: Event) {
-        val ref =  community.events child(event.time.toString())
+    fun writeEvent(community: Community, event: Event) {
+        val ref =  community.name.events child event.time.toString()
         ref.child(EVENT_NAME).setValue(event.name)
         event.lat?.let { ref.child(EVENT_LAT).setValue(it) }
         event.lon?.let { ref.child(EVENT_LON).setValue(it) }
