@@ -18,35 +18,40 @@
 package pl.org.seva.events
 
 import android.app.Application
+import com.github.salomonbrys.kodein.Kodein
+import com.github.salomonbrys.kodein.bind
+import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
+import com.github.salomonbrys.kodein.conf.global
+import com.github.salomonbrys.kodein.instance
+import com.github.salomonbrys.kodein.singleton
 import com.google.firebase.auth.FirebaseUser
+import pl.org.seva.events.model.Communities
 import pl.org.seva.events.model.Login
+import pl.org.seva.events.model.firebase.FbReader
+import pl.org.seva.events.model.firebase.FbWriter
 import pl.org.seva.events.model.room.EventsDatabase
-import javax.inject.Inject
 
-class EventsApplication : Application() {
+class EventsApplication: Application(), KodeinGlobalAware {
 
-    @Inject
-    lateinit var db: EventsDatabase
-    @Inject
-    lateinit var login: Login
+    private val bootstrap: Bootstrap get() = instance()
 
-    lateinit var component: EventsComponent
+    private val eventsModule = Kodein.Module {
+        bind<Bootstrap>() with singleton { Bootstrap() }
+        bind<FbReader>() with singleton { FbReader() }
+        bind<Communities>() with singleton { Communities() }
+        bind<Login>() with singleton { Login() }
+        bind<FbWriter>() with singleton { FbWriter() }
+        bind<EventsDatabase>() with singleton { EventsDatabase() }
+    }
+
+    init {
+        Kodein.global.addImport(eventsModule)
+    }
 
     override fun onCreate() {
         super.onCreate()
-        component = createComponent()
-        component.inject(this)
-        db.initWithContext(this)
     }
 
-    private fun createComponent(): EventsComponent {
-        return DaggerEventsComponent.create()
-    }
-
-    fun login(user: FirebaseUser) {
-        login.setCurrentUser(user)
-    }
-
-    fun logout() {
-    }
+    fun login(user: FirebaseUser) = bootstrap.login(user)
+    fun logout() = bootstrap.logout()
 }

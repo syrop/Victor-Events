@@ -17,17 +17,21 @@
 
 package pl.org.seva.events
 
-import dagger.Component
-import pl.org.seva.events.view.EventsActivity
-import pl.org.seva.events.view.LoginActivity
-import pl.org.seva.events.view.SearchActivity
-import javax.inject.Singleton
+import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
+import com.github.salomonbrys.kodein.instance
+import com.google.firebase.auth.FirebaseUser
+import pl.org.seva.events.model.Login
+import pl.org.seva.events.model.room.EventsDatabase
 
-@Singleton
-@Component(modules = arrayOf(EventsModule::class))
-interface EventsComponent {
-    fun inject(eventsApplication: EventsApplication)
-    fun inject(eventsActivity: EventsActivity)
-    fun inject(loginActivity: LoginActivity)
-    fun inject(searchActivity: SearchActivity)
+class Bootstrap: KodeinGlobalAware {
+    private val db: EventsDatabase = instance()
+    private val login: Login = instance()
+
+    fun login(user: FirebaseUser) {
+        login.setCurrentUser(user)
+    }
+
+    fun logout() {
+    }
 }
+

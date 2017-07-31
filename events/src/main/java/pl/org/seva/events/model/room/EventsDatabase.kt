@@ -19,11 +19,8 @@ package pl.org.seva.events.model.room
 
 import android.arch.persistence.room.Room
 import android.content.Context
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class EventsDatabase @Inject constructor() {
+class EventsDatabase{
 
     lateinit var db: EventsDatabaseAbstract
 

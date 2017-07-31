@@ -21,24 +21,21 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
+import com.github.salomonbrys.kodein.instance
 
 import kotlinx.android.synthetic.main.activity_events.*
-import pl.org.seva.events.EventsApplication
 import pl.org.seva.events.R
 import pl.org.seva.events.model.Communities
 import pl.org.seva.events.model.Login
-import javax.inject.Inject
 
-class EventsActivity : AppCompatActivity() {
+class EventsActivity: AppCompatActivity(), KodeinGlobalAware {
 
-    @Inject
-    lateinit var login: Login
-    @Inject
-    lateinit var communities: Communities
+    private val login: Login = instance()
+    private val communities: Communities = instance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (application as EventsApplication).component.inject(this)
         if (communities.empty) {
             search()
         }

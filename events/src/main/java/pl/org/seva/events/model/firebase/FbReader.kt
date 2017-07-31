@@ -24,11 +24,8 @@ import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.PublishSubject
 import pl.org.seva.events.model.Community
 import pl.org.seva.events.model.Event
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class FbReader @Inject constructor() : Fb() {
+class FbReader: Fb() {
 
     fun readEvents(community: String): Observable<Event> {
         return community.events.read()

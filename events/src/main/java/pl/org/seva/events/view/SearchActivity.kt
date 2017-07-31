@@ -28,30 +28,26 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.StyleSpan
 import android.view.MenuItem
+import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
+import com.github.salomonbrys.kodein.instance
 import kotlinx.android.synthetic.main.activity_search.*
-import pl.org.seva.events.EventsApplication
 import pl.org.seva.events.R
 import pl.org.seva.events.model.Communities
 import pl.org.seva.events.model.Community
 import pl.org.seva.events.model.Login
 import pl.org.seva.events.model.firebase.FbReader
-import javax.inject.Inject
 
 @Suppress("DEPRECATION")
-class SearchActivity: AppCompatActivity() {
+class SearchActivity: AppCompatActivity(), KodeinGlobalAware {
 
-    @Inject
-    lateinit var communities: Communities
-    @Inject
-    lateinit var fbReader: FbReader
-    @Inject
-    lateinit var login: Login
+    private val communities: Communities = instance()
+    private val fbReader: FbReader = instance()
+    private val login: Login = instance()
 
     private var progress: ProgressDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (application as EventsApplication).component.inject(this)
         setContentView(R.layout.activity_search)
         if (communities.empty) {
             prompt.setText(R.string.search_please_search_empty)

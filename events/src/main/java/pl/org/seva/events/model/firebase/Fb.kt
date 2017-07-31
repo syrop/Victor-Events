@@ -18,17 +18,17 @@
 package pl.org.seva.events.model.firebase
 
 import android.util.Base64
+import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
+import com.github.salomonbrys.kodein.instance
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import pl.org.seva.events.model.Login
-import javax.inject.Inject
 
-open class Fb protected constructor() {
+open class Fb: KodeinGlobalAware {
 
     protected val communities get() = db reference COMMUNITIES
 
-    @Inject
-    protected lateinit var login: Login
+    protected val login: Login = instance()
 
     protected val db = FirebaseDatabase.getInstance()!!
 

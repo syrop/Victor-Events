@@ -17,17 +17,11 @@
 
 package pl.org.seva.events.model
 
+import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
+import com.github.salomonbrys.kodein.instance
 import pl.org.seva.events.model.firebase.FbWriter
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class Communities @Inject constructor() {
-
-    @Inject
-    lateinit var writer: FbWriter
-    @Inject
-    lateinit var login: Login
+class Communities: KodeinGlobalAware {
 
     private val communities = mutableListOf<Community>()
     val size get() = communities.size
@@ -41,8 +35,9 @@ class Communities @Inject constructor() {
 
     fun joinNewCommunity(name: String) {
         val community = Community(name, true)
+        val writer = instance<FbWriter>()
         writer.create(community)
-        writer.grantAdmin(community, login.email)
+        writer.grantAdmin(community, instance<Login>().email)
         join(community)
     }
 }

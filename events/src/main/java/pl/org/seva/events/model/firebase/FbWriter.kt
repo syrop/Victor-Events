@@ -20,11 +20,8 @@ package pl.org.seva.events.model.firebase
 import com.google.firebase.auth.FirebaseUser
 import pl.org.seva.events.model.Community
 import pl.org.seva.events.model.Event
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class FbWriter @Inject constructor(): Fb() {
+class FbWriter: Fb() {
 
     fun login(user: FirebaseUser) {}
 
