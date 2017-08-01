@@ -30,5 +30,6 @@ class EventsDatabase {
 
     companion object {
         val DATABASE_NAME = "events_database"
+        const val EVENTS_TABLE_NAME = "events"
     }
 }

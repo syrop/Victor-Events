@@ -27,7 +27,7 @@ import android.arch.persistence.room.Insert
 @Dao
 interface EventDao {
 
-    @Query("select * from events")
+    @Query("select * from ${EventsDatabase.EVENTS_TABLE_NAME}")
     fun getAll(): List<Event>
 
     @Insert
