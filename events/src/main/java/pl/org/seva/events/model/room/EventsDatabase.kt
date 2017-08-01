@@ -20,7 +20,7 @@ package pl.org.seva.events.model.room
 import android.arch.persistence.room.Room
 import android.content.Context
 
-class EventsDatabase{
+class EventsDatabase {
 
     lateinit var db: EventsDatabaseAbstract
 
