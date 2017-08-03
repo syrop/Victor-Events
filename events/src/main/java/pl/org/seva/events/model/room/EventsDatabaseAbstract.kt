@@ -24,6 +24,6 @@ import android.arch.persistence.room.Database
 import pl.org.seva.events.model.Event
 
 @Database(entities = arrayOf(Event::class), version = 0)
-abstract class EventsDatabaseAbstract : RoomDatabase() {
+abstract class EventsDatabaseAbstract: RoomDatabase() {
     abstract fun eventDao(): EventDao
 }

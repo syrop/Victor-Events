@@ -21,8 +21,9 @@ import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import android.os.Parcel
 import android.os.Parcelable
+import pl.org.seva.events.model.room.EventsDatabase
 
-@Entity
+@Entity(tableName = EventsDatabase.EVENTS_TABLE_NAME)
 data class Event(
         val name: String,
         @PrimaryKey val time: Long = System.currentTimeMillis(),

@@ -28,6 +28,8 @@ class EventsDatabase {
         db = Room.databaseBuilder(context, EventsDatabaseAbstract::class.java, DATABASE_NAME).build()
     }
 
+    val eventDao get() = db.eventDao()
+
     companion object {
         val DATABASE_NAME = "events_database"
         const val EVENTS_TABLE_NAME = "events"
