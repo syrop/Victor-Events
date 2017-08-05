@@ -25,18 +25,18 @@ import pl.org.seva.events.model.room.EventsDatabase
 
 @Entity(tableName = EventsDatabase.EVENTS_TABLE_NAME)
 data class Event(
-        val name: String,
-        @PrimaryKey val time: Long = System.currentTimeMillis(),
-        val lat: Double? = null,
-        val lon: Double? = null,
-        val desc: String? = null): Parcelable {
+        var name: String = "",
+        @PrimaryKey var time: Long = System.currentTimeMillis(),
+        var lat: Double? = null,
+        var lon: Double? = null,
+        var desc: String? = null): Parcelable {
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)
         if (lat != null && lon != null) {
             parcel.writeInt(1)
-            parcel.writeDouble(lat)
-            parcel.writeDouble(lon)
+            parcel.writeDouble(lat!!)
+            parcel.writeDouble(lon!!)
         }
         else {
             parcel.writeInt(0)
@@ -54,9 +54,9 @@ data class Event(
     override fun describeContents() = 0
 
     companion object {
-        val CREATION = ""
+        private val CREATION_NAME = ""
 
-        val creation get() = Event(CREATION, System.currentTimeMillis())
+        val creation get() = Event(CREATION_NAME, System.currentTimeMillis())
 
         @Suppress("unused")
         @JvmField val CREATOR = object : Parcelable.Creator<Event> {

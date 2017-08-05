@@ -27,6 +27,8 @@ class Bootstrap: KodeinGlobalAware {
     private val db: EventsDatabase = instance()
     private val login: Login = instance()
 
+    fun boot() {}
+
     fun login(user: FirebaseUser) {
         login.setCurrentUser(user)
     }

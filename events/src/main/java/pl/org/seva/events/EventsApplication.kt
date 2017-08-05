@@ -50,6 +50,8 @@ class EventsApplication: Application(), KodeinGlobalAware {
 
     override fun onCreate() {
         super.onCreate()
+        instance<EventsDatabase>().initWithContext(this)
+        bootstrap.boot()
     }
 
     fun login(user: FirebaseUser) = bootstrap.login(user)
