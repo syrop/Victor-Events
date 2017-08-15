@@ -17,7 +17,6 @@
 
 package pl.org.seva.events.view
 
-import android.app.ProgressDialog
 import android.app.SearchManager
 import android.content.Intent
 import android.graphics.Typeface
@@ -28,6 +27,7 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.StyleSpan
 import android.view.MenuItem
+import android.view.View
 import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
 import com.github.salomonbrys.kodein.instance
 import kotlinx.android.synthetic.main.activity_search.*
@@ -37,14 +37,11 @@ import pl.org.seva.events.model.Community
 import pl.org.seva.events.model.Login
 import pl.org.seva.events.model.firebase.FbReader
 
-@Suppress("DEPRECATION")
 class SearchActivity: AppCompatActivity(), KodeinGlobalAware {
 
     private val communities: Communities = instance()
     private val fbReader: FbReader = instance()
     private val login: Login = instance()
-
-    private var progress: ProgressDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,9 +58,9 @@ class SearchActivity: AppCompatActivity(), KodeinGlobalAware {
     }
 
     private fun search(name: String) {
-        progress = ProgressDialog.show(this, null, getString(R.string.search_searching))
-        fbReader
-                .findCommunity(name.toLowerCase())
+        prompt.visibility = View.GONE
+        progress.visibility = View.VISIBLE
+        fbReader.findCommunity(name.toLowerCase())
                 .subscribe {
                     if (it.empty) {
                         onCommunityNotFound(name)
@@ -74,10 +71,13 @@ class SearchActivity: AppCompatActivity(), KodeinGlobalAware {
     }
 
     private fun onCommunityReceived(community: Community) {
-
+        progress.visibility = View.GONE
+        contacts.visibility = View.VISIBLE
     }
 
     private fun onCommunityNotFound(name: String) {
+        progress.visibility = View.GONE
+        prompt.visibility = View.VISIBLE
         prompt.text = name.notFound()
         if (login.isLoggedIn) {
             showCreateCommunitySnackbar(name)
