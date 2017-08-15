@@ -34,7 +34,7 @@ class Communities: KodeinGlobalAware {
     }
 
     fun joinNewCommunity(name: String) {
-        val community = Community(name, true)
+        val community = Community(name = name, admin = true)
         val writer = instance<FbWriter>()
         writer.create(community)
         writer.grantAdmin(community, instance<Login>().email)

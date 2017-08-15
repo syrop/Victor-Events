@@ -25,7 +25,7 @@ import pl.org.seva.events.model.room.EventsDatabase
 
 @Entity(tableName = EventsDatabase.EVENTS_TABLE_NAME)
 data class Event(
-        var name: String = "",
+        var name: String = CREATION_NAME,
         @PrimaryKey var time: Long = System.currentTimeMillis(),
         var lat: Double? = null,
         var lon: Double? = null,
@@ -34,39 +34,42 @@ data class Event(
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)
         if (lat != null && lon != null) {
-            parcel.writeInt(1)
+            parcel.writeInt(PRESENT)
             parcel.writeDouble(lat!!)
             parcel.writeDouble(lon!!)
         }
         else {
-            parcel.writeInt(0)
+            parcel.writeInt(NOT_PRESENT)
         }
         parcel.writeLong(time)
         if (desc != null) {
-            parcel.writeInt(1)
+            parcel.writeInt(PRESENT)
             parcel.writeString(desc)
         }
         else {
-            parcel.writeInt(0)
+            parcel.writeInt(NOT_PRESENT)
         }
     }
 
     override fun describeContents() = 0
 
     companion object {
+        private val NOT_PRESENT = 0
+        private val PRESENT = 1
+
         private val CREATION_NAME = ""
 
         val creation get() = Event(CREATION_NAME, System.currentTimeMillis())
 
         @Suppress("unused")
-        @JvmField val CREATOR = object : Parcelable.Creator<Event> {
+        @JvmField val CREATOR = object: Parcelable.Creator<Event> {
             override fun createFromParcel(parcel: Parcel): Event {
                 val name = parcel.readString()
-                val containsLatLng = parcel.readInt() != 0
-                val lat = if (containsLatLng) parcel.readDouble() else null
-                val lon = if (containsLatLng) parcel.readDouble() else null
+                val containsLocation = parcel.readInt() != NOT_PRESENT
+                val lat = if (containsLocation) parcel.readDouble() else null
+                val lon = if (containsLocation) parcel.readDouble() else null
                 val time = parcel.readLong()
-                val containsDescription = parcel.readInt() != 0
+                val containsDescription = parcel.readInt() != NOT_PRESENT
                 val desc = if (containsDescription) parcel.readString() else null
                 return Event(name, time = time, lat = lat , lon = lon, desc = desc)
             }

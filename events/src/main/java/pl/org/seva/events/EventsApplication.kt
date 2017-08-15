@@ -50,7 +50,7 @@ class EventsApplication: Application(), KodeinGlobalAware {
 
     override fun onCreate() {
         super.onCreate()
-        instance<EventsDatabase>().initWithContext(this)
+        instance<EventsDatabase>().initWithContext(context = this)
         bootstrap.boot()
     }
 

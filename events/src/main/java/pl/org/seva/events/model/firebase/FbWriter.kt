@@ -40,9 +40,9 @@ class FbWriter: Fb() {
     fun writeEvent(community: Community, event: Event) {
         val ref =  community.name.events child event.time.toString()
         ref.child(EVENT_NAME).setValue(event.name)
-        event.lat?.let { ref.child(EVENT_LAT).setValue(it) }
-        event.lon?.let { ref.child(EVENT_LON).setValue(it) }
-        event.desc?.let { ref.child(EVENT_DESC).setValue(it) }
+        event.lat?.apply { ref.child(EVENT_LAT).setValue(this) }
+        event.lon?.apply { ref.child(EVENT_LON).setValue(this) }
+        event.desc?.apply { ref.child(EVENT_DESC).setValue(this) }
     }
 
     companion object {
