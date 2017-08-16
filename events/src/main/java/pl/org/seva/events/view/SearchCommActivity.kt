@@ -37,7 +37,7 @@ import pl.org.seva.events.model.Community
 import pl.org.seva.events.model.Login
 import pl.org.seva.events.model.firebase.FbReader
 
-class SearchActivity: AppCompatActivity(), KodeinGlobalAware {
+class SearchCommActivity : AppCompatActivity(), KodeinGlobalAware {
 
     private val communities: Communities = instance()
     private val fbReader: FbReader = instance()

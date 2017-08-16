@@ -17,6 +17,7 @@
 
 package pl.org.seva.events.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
@@ -37,27 +38,27 @@ class EventsActivity: AppCompatActivity(), KodeinGlobalAware {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (communities.empty) {
-            search()
+            startSearchActivity()
         }
         setContentView(R.layout.activity_events)
 
-        fab.setOnClickListener { onFabClicked() }
+        add_fab.setOnClickListener { startSearchActivity() }
     }
 
-    private fun search() {
+    private fun startSearchActivity() =
+            startActivity(Intent(this, SearchCommActivity::class.java))
 
-    }
-
-    private fun onFabClicked() {
-    }
+    private fun onLoginClicked() =
+            startActivity(Intent(this, LoginQuestionActivity::class.java))
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_events, menu)
+        menuInflater.inflate(R.menu.events, menu)
+        menu.findItem(R.id.action_login).isVisible = !login.isLoggedIn
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
-        R.id.action_settings -> { true }
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.action_login -> { onLoginClicked(); true }
         else -> super.onOptionsItemSelected(item)
     }
 }
