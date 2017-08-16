@@ -37,8 +37,8 @@ class FbReader: Fb() {
     fun String.isAdmin(email: String): Observable<Boolean> = admins.child(email.to64()).doesExist()
 
     fun findCommunity(community: String): Observable<Community> {
-        val doesExist: Observable<Boolean> = communities.child(community).doesExist()
-        val isAdmin: Observable<Boolean> = if (login.isLoggedIn) community.isAdmin(login.email)
+        val doesExist = communities.child(community).doesExist()
+        val isAdmin = if (login.isLoggedIn) community.isAdmin(login.email)
             else Observable.just(false)
 
         return doesExist.zipWith(isAdmin,
