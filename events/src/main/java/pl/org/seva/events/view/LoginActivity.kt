@@ -40,7 +40,7 @@ import pl.org.seva.events.EventsApplication
 import pl.org.seva.events.R
 import pl.org.seva.events.model.firebase.FbWriter
 
-class LoginActivity:
+class LoginActivity :
         AppCompatActivity(),
         GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks, KodeinGlobalAware {

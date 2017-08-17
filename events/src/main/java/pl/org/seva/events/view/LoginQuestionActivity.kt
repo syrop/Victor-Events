@@ -20,7 +20,7 @@ package pl.org.seva.events.view
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 
-class LoginQuestionActivity: AppCompatActivity() {
+class LoginQuestionActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -31,7 +31,7 @@ import pl.org.seva.events.R
 import pl.org.seva.events.model.Communities
 import pl.org.seva.events.model.Login
 
-class EventsActivity: AppCompatActivity(), KodeinGlobalAware {
+class EventsActivity : AppCompatActivity(), KodeinGlobalAware {
 
     private val login: Login = instance()
     private val communities: Communities = instance()

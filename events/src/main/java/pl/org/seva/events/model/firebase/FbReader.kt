@@ -25,7 +25,7 @@ import io.reactivex.subjects.PublishSubject
 import pl.org.seva.events.model.Community
 import pl.org.seva.events.model.Event
 
-class FbReader: Fb() {
+class FbReader : Fb() {
 
     fun readEvents(community: String): Observable<Event> {
         return community.events.read()

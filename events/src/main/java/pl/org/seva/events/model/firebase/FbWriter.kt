@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseUser
 import pl.org.seva.events.model.Community
 import pl.org.seva.events.model.Event
 
-class FbWriter: Fb() {
+class FbWriter : Fb() {
 
     fun login(user: FirebaseUser) {}
 

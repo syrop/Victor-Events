@@ -23,7 +23,7 @@ import com.google.firebase.auth.FirebaseUser
 import pl.org.seva.events.model.Login
 import pl.org.seva.events.model.room.EventsDatabase
 
-class Bootstrap: KodeinGlobalAware {
+class Bootstrap : KodeinGlobalAware {
     private val db: EventsDatabase = instance()
     private val login: Login = instance()
 

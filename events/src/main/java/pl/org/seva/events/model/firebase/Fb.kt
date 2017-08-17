@@ -24,7 +24,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import pl.org.seva.events.model.Login
 
-open class Fb: KodeinGlobalAware {
+open class Fb : KodeinGlobalAware {
 
     protected val communities get() = db reference COMMUNITIES
 

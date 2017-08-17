@@ -21,7 +21,7 @@ import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
 import com.github.salomonbrys.kodein.instance
 import pl.org.seva.events.model.firebase.FbWriter
 
-class Communities: KodeinGlobalAware {
+class Communities : KodeinGlobalAware {
 
     private val communities = mutableListOf<Community>()
     val empty get() = communities.size == 0

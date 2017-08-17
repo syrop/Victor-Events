@@ -34,7 +34,7 @@ data class Event(
         @PrimaryKey var time: Long = System.currentTimeMillis(),
         var lat: Double? = null,
         var lon: Double? = null,
-        var desc: String? = null): Parcelable {
+        var desc: String? = null) : Parcelable {
 
     companion object: Parceler<Event> {
         private val NOT_PRESENT = 0

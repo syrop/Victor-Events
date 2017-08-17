@@ -31,7 +31,7 @@ import pl.org.seva.events.model.firebase.FbReader
 import pl.org.seva.events.model.firebase.FbWriter
 import pl.org.seva.events.model.room.EventsDatabase
 
-class EventsApplication: Application(), KodeinGlobalAware {
+class EventsApplication : Application(), KodeinGlobalAware {
 
     private val bootstrap: Bootstrap get() = instance()
 
