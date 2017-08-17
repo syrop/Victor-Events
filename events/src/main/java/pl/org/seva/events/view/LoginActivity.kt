@@ -40,10 +40,10 @@ import pl.org.seva.events.EventsApplication
 import pl.org.seva.events.R
 import pl.org.seva.events.model.firebase.FbWriter
 
-class LoginActivity :
-        AppCompatActivity(),
+class LoginActivity : AppCompatActivity(),
         GoogleApiClient.OnConnectionFailedListener,
-        GoogleApiClient.ConnectionCallbacks, KodeinGlobalAware {
+        GoogleApiClient.ConnectionCallbacks,
+        KodeinGlobalAware {
 
     private val fbWriter: FbWriter = instance()
 
