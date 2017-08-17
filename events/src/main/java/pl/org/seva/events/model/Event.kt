@@ -30,11 +30,12 @@ import pl.org.seva.events.model.room.EventsDatabase
 @Parcelize
 @Entity(tableName = EventsDatabase.EVENTS_TABLE_NAME)
 data class Event(
-        var name: String = CREATION_NAME,
-        @PrimaryKey var time: Long = System.currentTimeMillis(),
-        var lat: Double? = null,
-        var lon: Double? = null,
-        var desc: String? = null) : Parcelable {
+    var name: String = CREATION_NAME,
+    @PrimaryKey var time: Long = System.currentTimeMillis(),
+    var lat: Double? = null,
+    var lon: Double? = null,
+    var desc: String? = null
+) : Parcelable {
 
     companion object: Parceler<Event> {
         private val NOT_PRESENT = 0
