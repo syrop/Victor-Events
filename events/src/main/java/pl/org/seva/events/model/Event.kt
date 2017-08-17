@@ -17,12 +17,17 @@
 
 package pl.org.seva.events.model
 
+import android.annotation.SuppressLint
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import android.os.Parcel
 import android.os.Parcelable
+import kotlinx.android.parcel.Parceler
+import kotlinx.android.parcel.Parcelize
 import pl.org.seva.events.model.room.EventsDatabase
 
+@SuppressLint("ParcelCreator")
+@Parcelize
 @Entity(tableName = EventsDatabase.EVENTS_TABLE_NAME)
 data class Event(
         var name: String = CREATION_NAME,
@@ -31,29 +36,7 @@ data class Event(
         var lon: Double? = null,
         var desc: String? = null): Parcelable {
 
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(name)
-        if (lat != null && lon != null) {
-            parcel.writeInt(PRESENT)
-            parcel.writeDouble(lat!!)
-            parcel.writeDouble(lon!!)
-        }
-        else {
-            parcel.writeInt(NOT_PRESENT)
-        }
-        parcel.writeLong(time)
-        if (desc != null) {
-            parcel.writeInt(PRESENT)
-            parcel.writeString(desc)
-        }
-        else {
-            parcel.writeInt(NOT_PRESENT)
-        }
-    }
-
-    override fun describeContents() = 0
-
-    companion object {
+    companion object: Parceler<Event> {
         private val NOT_PRESENT = 0
         private val PRESENT = 1
 
@@ -61,19 +44,35 @@ data class Event(
 
         val creation get() = Event(CREATION_NAME, System.currentTimeMillis())
 
-        @Suppress("unused")
-        @JvmField val CREATOR = object: Parcelable.Creator<Event> {
-            override fun createFromParcel(parcel: Parcel): Event {
-                val name = parcel.readString()
-                val containsLocation = parcel.readInt() != NOT_PRESENT
-                val lat = if (containsLocation) parcel.readDouble() else null
-                val lon = if (containsLocation) parcel.readDouble() else null
-                val time = parcel.readLong()
-                val containsDescription = parcel.readInt() != NOT_PRESENT
-                val desc = if (containsDescription) parcel.readString() else null
-                return Event(name, time = time, lat = lat , lon = lon, desc = desc)
+        override fun Event.write(parcel: Parcel, flags: Int) {
+            parcel.writeString(name)
+            if (lat != null && lon != null) {
+                parcel.writeInt(PRESENT)
+                parcel.writeDouble(lat!!)
+                parcel.writeDouble(lon!!)
             }
-            override fun newArray(size: Int): Array<Event?> = arrayOfNulls(size)
+            else {
+                parcel.writeInt(NOT_PRESENT)
+            }
+            parcel.writeLong(time)
+            if (desc != null) {
+                parcel.writeInt(PRESENT)
+                parcel.writeString(desc)
+            }
+            else {
+                parcel.writeInt(NOT_PRESENT)
+            }
+        }
+
+        override fun create(parcel: Parcel): Event {
+            val name = parcel.readString()
+            val containsLocation = parcel.readInt() != NOT_PRESENT
+            val lat = if (containsLocation) parcel.readDouble() else null
+            val lon = if (containsLocation) parcel.readDouble() else null
+            val time = parcel.readLong()
+            val containsDescription = parcel.readInt() != NOT_PRESENT
+            val desc = if (containsDescription) parcel.readString() else null
+            return Event(name, time = time, lat = lat , lon = lon, desc = desc)
         }
     }
 }

@@ -38,13 +38,13 @@ class EventsActivity: AppCompatActivity(), KodeinGlobalAware {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_events)
         if (communities.empty) {
             addCommunityActivity()
         }
         if (!communities.isAdmin) {
             add_fab.visibility = View.VISIBLE
         }
-        setContentView(R.layout.activity_events)
 
         add_fab.setOnClickListener { createEventActivity() }
     }
