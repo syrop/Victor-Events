@@ -24,14 +24,17 @@ import pl.org.seva.events.model.firebase.FbWriter
 class Communities: KodeinGlobalAware {
 
     private val communities = mutableListOf<Community>()
-    val size get() = communities.size
-    val empty get() = size == 0
+    val empty get() = communities.size == 0
 
     operator fun get(index: Int) = communities[index]
 
     fun join(community: Community) {
         communities.add(community)
     }
+
+    val admin get() = communities.filter { it.admin }
+
+    val isAdmin get() = communities.any { it.admin }
 
     fun joinNewCommunity(name: String) {
         val community = Community(name = name, admin = true)

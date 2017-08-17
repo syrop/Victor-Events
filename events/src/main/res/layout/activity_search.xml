@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:textSize="20sp"
-        tools:text="@string/search_please_search"
+        tools:text="@string/add_comm_please_search"
         android:textAppearance="@style/TextAppearance.AppCompat" />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/contacts"

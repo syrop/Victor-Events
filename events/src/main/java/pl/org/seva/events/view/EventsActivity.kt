@@ -22,6 +22,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
 import com.github.salomonbrys.kodein.instance
 
@@ -38,17 +39,23 @@ class EventsActivity: AppCompatActivity(), KodeinGlobalAware {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (communities.empty) {
-            startSearchActivity()
+            addCommunityActivity()
+        }
+        if (!communities.isAdmin) {
+            add_fab.visibility = View.VISIBLE
         }
         setContentView(R.layout.activity_events)
 
-        add_fab.setOnClickListener { startSearchActivity() }
+        add_fab.setOnClickListener { createEventActivity() }
     }
 
-    private fun startSearchActivity() =
-            startActivity(Intent(this, SearchCommActivity::class.java))
+    private fun addCommunityActivity() =
+            startActivity(Intent(this, AddCommActivity::class.java))
 
-    private fun onLoginClicked() =
+    private fun createEventActivity() =
+            startActivity(Intent(this, CreateEventActivity::class.java))
+
+    private fun loginActivity() =
             startActivity(Intent(this, LoginQuestionActivity::class.java))
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -58,7 +65,8 @@ class EventsActivity: AppCompatActivity(), KodeinGlobalAware {
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.action_login -> { onLoginClicked(); true }
+        R.id.action_login -> { loginActivity(); true }
+        R.id.action_seek_community -> { addCommunityActivity(); true }
         else -> super.onOptionsItemSelected(item)
     }
 }

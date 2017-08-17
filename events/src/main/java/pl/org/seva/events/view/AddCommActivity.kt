@@ -37,7 +37,7 @@ import pl.org.seva.events.model.Community
 import pl.org.seva.events.model.Login
 import pl.org.seva.events.model.firebase.FbReader
 
-class SearchCommActivity : AppCompatActivity(), KodeinGlobalAware {
+class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
 
     private val communities: Communities = instance()
     private val fbReader: FbReader = instance()
@@ -47,7 +47,7 @@ class SearchCommActivity : AppCompatActivity(), KodeinGlobalAware {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         if (communities.empty) {
-            prompt.setText(R.string.search_please_search_empty)
+            prompt.setText(R.string.add_comm_please_search_empty)
         }
         if (Intent.ACTION_SEARCH == intent.action) {
             search(intent.getStringExtra(SearchManager.QUERY))
@@ -87,9 +87,9 @@ class SearchCommActivity : AppCompatActivity(), KodeinGlobalAware {
     private fun showCreateCommunitySnackbar(name: String) {
         Snackbar.make(
                 layout,
-                R.string.search_can_create,
+                R.string.add_comm_can_create,
                 Snackbar.LENGTH_LONG)
-                .setAction(R.string.search_create) { createCommunity(name) }
+                .setAction(R.string.add_comm_create) { createCommunity(name) }
                 .show()
     }
 
@@ -108,7 +108,7 @@ class SearchCommActivity : AppCompatActivity(), KodeinGlobalAware {
     }
 
     private fun String.notFound() : CharSequence {
-        val str = getString(R.string.search_not_found)
+        val str = getString(R.string.add_comm_not_found)
         val idName = str.indexOf(NAME_PLACEHOLDER)
         val idEndName = idName + length
         val ssBuilder = SpannableStringBuilder(str.replace(NAME_PLACEHOLDER, this))

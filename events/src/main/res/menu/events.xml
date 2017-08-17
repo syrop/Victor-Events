@@ -7,4 +7,8 @@
         android:id="@+id/action_login"
         android:title="@string/events_action_login"
         app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_seek_community"
+        android:title="@string/events_action_seek_community"
+        app:showAsAction="never"/>
 </menu>
