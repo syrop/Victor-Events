@@ -17,7 +17,7 @@
 
 @file:Suppress("DEPRECATION")
 
-package pl.org.seva.events.view
+package pl.org.seva.events.view.activity
 
 import android.app.ProgressDialog
 import android.content.Intent

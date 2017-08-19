@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.view
+package pl.org.seva.events.view.activity
 
 import android.app.SearchManager
 import android.content.Intent
@@ -30,12 +30,13 @@ import android.view.MenuItem
 import android.view.View
 import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
 import com.github.salomonbrys.kodein.instance
-import kotlinx.android.synthetic.main.activity_search.*
+import kotlinx.android.synthetic.main.activity_add_comm.*
 import pl.org.seva.events.R
 import pl.org.seva.events.model.Communities
 import pl.org.seva.events.model.Community
 import pl.org.seva.events.model.Login
 import pl.org.seva.events.model.firebase.FbReader
+import pl.org.seva.events.view.snackbar.longSnackbar
 
 class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
 
@@ -45,7 +46,7 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+        setContentView(R.layout.activity_add_comm)
         if (communities.empty) {
             prompt.setText(R.string.add_comm_please_search_empty)
         }
@@ -60,41 +61,37 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
     private fun search(name: String) {
         prompt.visibility = View.GONE
         progress.visibility = View.VISIBLE
-        fbReader.findCommunity(name.toLowerCase())
-                .subscribe {
-                    if (it.empty) {
-                        onCommunityNotFound(name)
-                    } else {
-                        onCommunityReceived(it)
-                    }
-                }
+        fbReader.findCommunity(name.toLowerCase()) {
+            if (empty) notFound() else found()
+        }
     }
 
-    private fun onCommunityReceived(community: Community) {
+    private fun Community.found() {
         progress.visibility = View.GONE
         contacts.visibility = View.VISIBLE
     }
 
-    private fun onCommunityNotFound(name: String) {
+    private fun Community.notFound() {
         progress.visibility = View.GONE
         prompt.visibility = View.VISIBLE
         prompt.text = name.notFound()
         if (login.isLoggedIn) {
-            showCreateCommunitySnackbar(name)
+            name.showCreateSnackbar()
         }
     }
 
-    private fun showCreateCommunitySnackbar(name: String) {
-        Snackbar.make(
-                layout,
-                R.string.add_comm_can_create,
-                Snackbar.LENGTH_LONG)
-                .setAction(R.string.add_comm_create) { createCommunity(name) }
-                .show()
+    private fun String.showCreateSnackbar() {
+        longSnackbar {
+            view = layout
+            messageId = R.string.add_comm_can_create
+            actionId = R.string.add_comm_create
+        } show {
+            createCommunity()
+        }
     }
 
-    private fun createCommunity(name: String) {
-        communities.joinNewCommunity(name)
+    private fun String.createCommunity() {
+        communities.joinNewCommunity(this)
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {

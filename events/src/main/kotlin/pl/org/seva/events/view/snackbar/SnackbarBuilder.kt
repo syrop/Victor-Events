@@ -15,11 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.model
+package pl.org.seva.events.view.snackbar
 
-data class Community(val name: String = "", var admin: Boolean = false, val empty: Boolean = false) {
+import android.support.design.widget.Snackbar
+import android.view.View
 
-    companion object {
-        fun empty(name: String = ""): Community = Community(name, empty = true)
+fun longSnackbar(f: SnackbarBuilder.() -> Unit): SnackbarBuilder = SnackbarBuilder().apply(f)
+
+class SnackbarBuilder(private var length: Int = Snackbar.LENGTH_LONG) {
+    lateinit var view: View
+    var messageId = 0
+    var actionId = 0
+
+    infix fun show(f: () -> Unit) {
+        Snackbar.make(view, messageId, length).setAction(actionId, { f() }).show()
     }
 }

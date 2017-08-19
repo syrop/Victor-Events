@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".view.EventsActivity"
+            android:name=".view.activity.EventsActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -20,17 +20,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.CreateEventActivity"
+            android:name=".view.activity.CreateEventActivity"
             android:label="@string/app_name" />
 
         <activity
-            android:name=".view.LoginQuestionActivity"
+            android:name=".view.activity.LoginQuestionActivity"
             android:label="@string/activity_create_community" />
         <activity
-            android:name=".view.LoginActivity"
+            android:name=".view.activity.LoginActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".view.AddCommActivity"
+            android:name=".view.activity.AddCommActivity"
             android:label="@string/app_name" />
 
     </application>

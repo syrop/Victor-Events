@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.view
+package pl.org.seva.events.view.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity

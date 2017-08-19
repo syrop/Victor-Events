@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.view
+package pl.org.seva.events.view.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -55,7 +55,7 @@ class EventsActivity : AppCompatActivity(), KodeinGlobalAware {
     private fun createEventActivity() =
             startActivity(Intent(this, CreateEventActivity::class.java))
 
-    private fun loginActivity() =
+    private fun loginQuestionActivity() =
             startActivity(Intent(this, LoginQuestionActivity::class.java))
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -65,7 +65,7 @@ class EventsActivity : AppCompatActivity(), KodeinGlobalAware {
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.action_login -> { loginActivity(); true }
+        R.id.action_login -> { loginQuestionActivity(); true }
         R.id.action_seek_community -> { addCommunityActivity(); true }
         else -> super.onOptionsItemSelected(item)
     }
