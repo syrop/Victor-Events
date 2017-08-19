@@ -97,17 +97,15 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
         communities.joinNewCommunity(name)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                finish()
-                return true
-            }
-            else -> return super.onOptionsItemSelected(item)
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        android.R.id.home -> {
+            finish()
+            true
         }
+        else -> super.onOptionsItemSelected(item)
     }
 
-    private fun String.notFound() : CharSequence {
+    private fun String.notFound(): CharSequence {
         val str = getString(R.string.add_comm_not_found)
         val idName = str.indexOf(NAME_PLACEHOLDER)
         val idEndName = idName + length
