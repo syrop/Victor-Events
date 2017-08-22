@@ -18,13 +18,16 @@
 package pl.org.seva.events.view.activity
 
 import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.SearchView
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.StyleSpan
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
@@ -56,6 +59,39 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
     }
+
+    override fun onNewIntent(intent: Intent) {
+        setIntent(intent)
+
+        if (Intent.ACTION_SEARCH == intent.action) {
+            val query = intent.getStringExtra(SearchManager.QUERY).trim { it <= ' ' }
+            search(query)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.add_community, menu)
+
+        val searchMenuItem = menu.findItem(R.id.action_search)
+        searchMenuItem.collapseActionView()
+        searchMenuItem.prepareSearchView()
+        return true
+    }
+
+    private fun MenuItem.prepareSearchView() {
+        collapseActionView()
+        val searchView = actionView as SearchView
+        searchView.setOnSearchClickListener { onSearchClicked() }
+
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+
+        searchView.setOnCloseListener { onSearchViewClosed() }
+    }
+
+    private fun onSearchClicked() = Unit
+
+    private fun onSearchViewClosed() = false
 
     private fun search(name: String) {
         prompt.visibility = View.GONE

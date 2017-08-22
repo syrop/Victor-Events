@@ -1,17 +1,23 @@
 <resources>
     <string name="app_name">Victor Events</string>
     <string name="activity_create_community">New community</string>
+    <string name="action_search">Search</string>
 
     <!-- Events activity. -->
     <string name="events_action_login">Login</string>
     <string name="events_action_seek_community">Seek community</string>
 
     <!-- Login activity. -->
+    <string name="login_label">Login</string>
     <string name="login_authentication_failed">Authentication failed.</string>
     <string name="login_loading">Loading…</string>
     <string name="login_please_log_in">Please log in.</string>
 
+    <!-- Login question activity. -->
+    <string name="login_question_label">Login</string>
+
     <!-- Add community activity. -->
+    <string name="add_comm_label">Add a community</string>
     <string name="add_comm_please_search_empty">You are not currently following any communities. Please seek them.</string>
     <string name="add_comm_please_search">Please seek communities to follow</string>
     <string name="add_comm_searching">Searching…</string>
@@ -19,6 +25,6 @@
     <string name="add_comm_can_create">You can create one</string>
     <string name="add_comm_create">Create</string>
     <string name="searchable_add_community">Add a community</string>
-    <string name="searchable_add_community_hint">Name</string>
+    <string name="searchable_add_community_hint">Community name</string>
 
 </resources>

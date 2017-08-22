@@ -36,7 +36,7 @@ class FbReader : Fb() {
 
     fun String.isAdmin(email: String): Observable<Boolean> = admins.child(email.to64()).doesExist()
 
-    fun findCommunity(name: String, onFound: Community.() -> Unit) {
+    fun findCommunity(name: String, onResult: Community.() -> Unit) {
         val doesExist = communities.child(name).doesExist()
         val isAdmin = if (login.isLoggedIn) name.isAdmin(login.email)
             else Observable.just(false)
@@ -45,7 +45,7 @@ class FbReader : Fb() {
                 isAdmin,
                 BiFunction { exists: Boolean, admin: Boolean ->
                     if (exists) Community("", admin) else Community.empty(name) })
-                .subscribe(onFound)
+                .subscribe(onResult)
     }
 
     private fun DatabaseReference.doesExist() = read().map { it.exists() }
