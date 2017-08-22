@@ -18,5 +18,7 @@
     <string name="add_comm_not_found">Community called [name] is not found.</string>
     <string name="add_comm_can_create">You can create one</string>
     <string name="add_comm_create">Create</string>
+    <string name="searchable_add_community">Add a community</string>
+    <string name="searchable_add_community_hint">Name</string>
 
 </resources>
