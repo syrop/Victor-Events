@@ -46,6 +46,8 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
     private val fbReader: FbReader = instance()
     private val login: Login = instance()
 
+    private val searchManager get() = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_comm)
@@ -78,15 +80,10 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
         return true
     }
 
-    private fun MenuItem.prepareSearchView() {
-        collapseActionView()
-        val searchView = actionView as SearchView
-        searchView.setOnSearchClickListener { onSearchClicked() }
-
-        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
-
-        searchView.setOnCloseListener { onSearchViewClosed() }
+    private fun MenuItem.prepareSearchView() = with (actionView as SearchView) {
+        setOnSearchClickListener { onSearchClicked() }
+        setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        setOnCloseListener { onSearchViewClosed() }
     }
 
     private fun onSearchClicked() = Unit
