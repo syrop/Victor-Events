@@ -134,14 +134,13 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
         else -> super.onOptionsItemSelected(item)
     }
 
-    private fun String.notFound(): CharSequence {
-        val str = getString(R.string.add_comm_not_found)
-        val idName = str.indexOf(NAME_PLACEHOLDER)
+    private fun String.notFound(): CharSequence = getString(R.string.add_comm_not_found).run {
+        val idName = indexOf(NAME_PLACEHOLDER)
         val idEndName = idName + length
-        val ssBuilder = SpannableStringBuilder(str.replace(NAME_PLACEHOLDER, this))
         val boldSpan = StyleSpan(Typeface.BOLD)
-        ssBuilder.setSpan(boldSpan, idName, idEndName, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-        return ssBuilder
+        SpannableStringBuilder(replace(NAME_PLACEHOLDER, this@notFound)).apply {
+            setSpan(boldSpan, idName, idEndName, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+        }
     }
 
     companion object {
