@@ -38,11 +38,11 @@ class FbReader : Fb() {
 
     fun findCommunity(name: String, onResult: Community.() -> Unit) {
         val doesExist = communities.child(name).doesExist()
-        val isAdmin = if (login.isLoggedIn) name.isAdmin(login.email)
+        val isAdminObservable = if (login.isLoggedIn) name.isAdmin(login.email)
             else Observable.just(false)
 
         doesExist.zipWith(
-                isAdmin,
+                isAdminObservable,
                 BiFunction { exists: Boolean, isAdmin: Boolean ->
                     if (exists) Community("", admin = isAdmin) else Community.empty(name) })
                 .subscribe(onResult)
