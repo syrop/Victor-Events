@@ -21,10 +21,12 @@ import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
 import com.github.salomonbrys.kodein.instance
 import pl.org.seva.events.data.firebase.FbWriter
 import pl.org.seva.events.data.model.Community
+import pl.org.seva.events.upkeep.ColorFactory
 
 class Communities : KodeinGlobalAware {
 
     private val communities = mutableListOf<Community>()
+    private val cf: ColorFactory = instance()
 
     val size get() = communities.size
     val empty get() = size == 0
@@ -40,7 +42,7 @@ class Communities : KodeinGlobalAware {
     val isAdmin get() = communities.any { it.admin }
 
     fun joinNewCommunity(name: String) {
-        val community = Community(name = name, admin = true)
+        val community = Community(name = name, color = cf.nextColor(), admin = true)
         val writer = instance<FbWriter>()
         writer.create(community)
         writer.grantAdmin(community, instance<Login>().email)
