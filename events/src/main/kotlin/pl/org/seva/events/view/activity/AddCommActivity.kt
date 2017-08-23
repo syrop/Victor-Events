@@ -47,6 +47,7 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
     private val login: Login = instance()
 
     private val searchManager get() = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+    private val isCommunitiesEmpty get() = communities.empty
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,12 +60,16 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
 
     override fun onResume() {
         super.onResume()
-        if (communities.empty) {
-            prompt.setText(R.string.add_comm_please_search_empty)
+        if (isCommunitiesEmpty) {
+            emptyCommunitiesPrompt()
         } else {
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
             supportActionBar!!.setDisplayShowHomeEnabled(true)
         }
+    }
+
+    private fun emptyCommunitiesPrompt() {
+        prompt.setText(R.string.add_comm_please_search_empty)
     }
 
     override fun onBackPressed() = if (!communities.empty) super.onBackPressed() else Unit
@@ -93,9 +98,17 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
         setOnCloseListener { onSearchViewClosed() }
     }
 
-    private fun onSearchClicked() = Unit
+    private fun onSearchClicked() {
+        prompt.visibility = View.GONE
+    }
 
-    private fun onSearchViewClosed() = false
+    private fun onSearchViewClosed(): Boolean {
+        if (isCommunitiesEmpty) {
+            prompt.visibility = View.VISIBLE
+            emptyCommunitiesPrompt()
+        }
+        return false
+    }
 
     private fun search(name: String) {
         prompt.visibility = View.GONE
