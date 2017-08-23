@@ -15,27 +15,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.model.firebase
+package pl.org.seva.events.data.firebase
 
-import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
-import io.reactivex.subjects.ReplaySubject
+import io.reactivex.subjects.PublishSubject
 
-internal class RxChildEventListener(private val childEventSubject: ReplaySubject<DataSnapshot>) :
-        ChildEventListener {
+internal class RxValueEventListener(private val valueEventSubject: PublishSubject<DataSnapshot>) :
+        ValueEventListener {
 
-    override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
-        childEventSubject.onNext(dataSnapshot)
+    override fun onDataChange(dataSnapshot: DataSnapshot?) {
+        if (dataSnapshot != null) {
+            valueEventSubject.onNext(dataSnapshot)
+        }
     }
 
-    override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {}
-
-    override fun onChildRemoved(dataSnapshot: DataSnapshot) {}
-
-    override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {}
-
     override fun onCancelled(databaseError: DatabaseError) {
+        valueEventSubject.onError(Exception(databaseError.message))
     }
 }

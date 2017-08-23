@@ -15,14 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.model.firebase
+package pl.org.seva.events.data.firebase
 
 import android.util.Base64
 import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
 import com.github.salomonbrys.kodein.instance
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import pl.org.seva.events.model.Login
+import pl.org.seva.events.data.Login
 
 open class Fb : KodeinGlobalAware {
 

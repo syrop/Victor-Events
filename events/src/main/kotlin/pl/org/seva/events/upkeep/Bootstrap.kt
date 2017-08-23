@@ -15,32 +15,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.model
+package pl.org.seva.events.upkeep
 
 import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
 import com.github.salomonbrys.kodein.instance
-import pl.org.seva.events.model.firebase.FbWriter
+import com.google.firebase.auth.FirebaseUser
+import pl.org.seva.events.data.Login
+import pl.org.seva.events.data.room.EventsDatabase
 
-class Communities : KodeinGlobalAware {
+class Bootstrap : KodeinGlobalAware {
+    private val db: EventsDatabase = instance()
+    private val login: Login = instance()
 
-    private val communities = mutableListOf<Community>()
-    val empty get() = communities.size == 0
+    fun boot() {}
 
-    operator fun get(index: Int) = communities[index]
-
-    fun join(community: Community) {
-        communities.add(community)
+    fun login(user: FirebaseUser) {
+        login.setCurrentUser(user)
     }
 
-    val admin get() = communities.filter { it.admin }
-
-    val isAdmin get() = communities.any { it.admin }
-
-    fun joinNewCommunity(name: String) {
-        val community = Community(name = name, admin = true)
-        val writer = instance<FbWriter>()
-        writer.create(community)
-        writer.grantAdmin(community, instance<Login>().email)
-        join(community)
+    fun logout() {
     }
 }
+

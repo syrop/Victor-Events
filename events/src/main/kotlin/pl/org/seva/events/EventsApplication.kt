@@ -19,33 +19,20 @@ package pl.org.seva.events
 
 import android.app.Application
 import com.github.salomonbrys.kodein.Kodein
-import com.github.salomonbrys.kodein.bind
 import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
 import com.github.salomonbrys.kodein.conf.global
 import com.github.salomonbrys.kodein.instance
-import com.github.salomonbrys.kodein.singleton
 import com.google.firebase.auth.FirebaseUser
-import pl.org.seva.events.model.Communities
-import pl.org.seva.events.model.Login
-import pl.org.seva.events.model.firebase.FbReader
-import pl.org.seva.events.model.firebase.FbWriter
-import pl.org.seva.events.model.room.EventsDatabase
+import pl.org.seva.events.data.room.EventsDatabase
+import pl.org.seva.events.upkeep.Bootstrap
+import pl.org.seva.events.upkeep.module
 
 class EventsApplication : Application(), KodeinGlobalAware {
 
     private val bootstrap: Bootstrap get() = instance()
 
-    private val eventsModule = Kodein.Module {
-        bind<Bootstrap>() with singleton { Bootstrap() }
-        bind<FbReader>() with singleton { FbReader() }
-        bind<Communities>() with singleton { Communities() }
-        bind<Login>() with singleton { Login() }
-        bind<FbWriter>() with singleton { FbWriter() }
-        bind<EventsDatabase>() with singleton { EventsDatabase() }
-    }
-
     init {
-        Kodein.global.addImport(eventsModule)
+        Kodein.global.addImport(module { application = this@EventsApplication })
     }
 
     override fun onCreate() {

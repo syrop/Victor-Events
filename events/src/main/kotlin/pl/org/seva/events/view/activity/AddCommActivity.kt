@@ -34,10 +34,10 @@ import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
 import com.github.salomonbrys.kodein.instance
 import kotlinx.android.synthetic.main.activity_add_comm.*
 import pl.org.seva.events.R
-import pl.org.seva.events.model.Communities
-import pl.org.seva.events.model.Community
-import pl.org.seva.events.model.Login
-import pl.org.seva.events.model.firebase.FbReader
+import pl.org.seva.events.data.Communities
+import pl.org.seva.events.data.model.Community
+import pl.org.seva.events.data.Login
+import pl.org.seva.events.data.firebase.FbReader
 import pl.org.seva.events.view.snackbar.longSnackbar
 
 class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {

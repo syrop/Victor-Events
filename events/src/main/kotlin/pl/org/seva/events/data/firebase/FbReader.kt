@@ -15,15 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.model.firebase
+package pl.org.seva.events.data.firebase
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.PublishSubject
-import pl.org.seva.events.model.Community
-import pl.org.seva.events.model.Event
+import pl.org.seva.events.data.model.Community
+import pl.org.seva.events.data.model.Event
 
 class FbReader : Fb() {
 

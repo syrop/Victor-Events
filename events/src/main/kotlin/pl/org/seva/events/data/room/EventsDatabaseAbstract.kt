@@ -15,24 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.model.firebase
+@file:Suppress("unused")
 
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
+package pl.org.seva.events.data.room
 
-import io.reactivex.subjects.PublishSubject
+import android.arch.persistence.room.RoomDatabase
+import android.arch.persistence.room.Database
+import pl.org.seva.events.data.model.Event
 
-internal class RxValueEventListener(private val valueEventSubject: PublishSubject<DataSnapshot>) :
-        ValueEventListener {
-
-    override fun onDataChange(dataSnapshot: DataSnapshot?) {
-        if (dataSnapshot != null) {
-            valueEventSubject.onNext(dataSnapshot)
-        }
-    }
-
-    override fun onCancelled(databaseError: DatabaseError) {
-        valueEventSubject.onError(Exception(databaseError.message))
-    }
+@Database(entities = [Event::class], version = EventsDatabase.DATABASE_VERSION)
+abstract class EventsDatabaseAbstract : RoomDatabase() {
+    abstract fun eventDao(): EventDao
 }

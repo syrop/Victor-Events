@@ -28,8 +28,8 @@ import com.github.salomonbrys.kodein.instance
 
 import kotlinx.android.synthetic.main.activity_events.*
 import pl.org.seva.events.R
-import pl.org.seva.events.model.Communities
-import pl.org.seva.events.model.Login
+import pl.org.seva.events.data.Communities
+import pl.org.seva.events.data.Login
 
 class EventsActivity : AppCompatActivity(), KodeinGlobalAware {
 

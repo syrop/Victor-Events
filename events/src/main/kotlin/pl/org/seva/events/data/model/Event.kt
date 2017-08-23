@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.model
+package pl.org.seva.events.data.model
 
 import android.annotation.SuppressLint
 import android.arch.persistence.room.Entity
@@ -24,7 +24,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import kotlinx.android.parcel.Parceler
 import kotlinx.android.parcel.Parcelize
-import pl.org.seva.events.model.room.EventsDatabase
+import pl.org.seva.events.data.room.EventsDatabase
 
 @SuppressLint("ParcelCreator")
 @Parcelize
@@ -73,7 +73,7 @@ data class Event(
             val time = parcel.readLong()
             val containsDescription = parcel.readInt() != NOT_PRESENT
             val desc = if (containsDescription) parcel.readString() else null
-            return Event(name, time = time, lat = lat , lon = lon, desc = desc)
+            return Event(name, time = time, lat = lat, lon = lon, desc = desc)
         }
     }
 }

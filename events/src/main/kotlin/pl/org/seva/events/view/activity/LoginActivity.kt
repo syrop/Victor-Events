@@ -38,7 +38,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import pl.org.seva.events.EventsApplication
 import pl.org.seva.events.R
-import pl.org.seva.events.model.firebase.FbWriter
+import pl.org.seva.events.data.firebase.FbWriter
 
 class LoginActivity : AppCompatActivity(),
         GoogleApiClient.OnConnectionFailedListener,

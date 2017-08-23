@@ -15,24 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.model.room
+package pl.org.seva.events.data.model
 
-import android.arch.persistence.room.Room
-import android.content.Context
-
-class EventsDatabase {
-
-    lateinit var db: EventsDatabaseAbstract
-
-    fun initWithContext(context: Context) {
-        db = Room.databaseBuilder(context, EventsDatabaseAbstract::class.java, DATABASE_NAME).build()
-    }
-
-    val eventDao get() = db.eventDao()
+data class Community(val name: String = "", var admin: Boolean = false, val empty: Boolean = false) {
 
     companion object {
-        val DATABASE_NAME = "events_database"
-        const val DATABASE_VERSION = 1
-        const val EVENTS_TABLE_NAME = "events"
+        fun empty(name: String = ""): Community = Community(name, empty = true)
     }
 }
