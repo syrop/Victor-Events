@@ -21,6 +21,7 @@ import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
 import com.github.salomonbrys.kodein.instance
 import pl.org.seva.events.data.firebase.FbWriter
 import pl.org.seva.events.data.model.Community
+import pl.org.seva.events.data.room.EventsDatabase
 import pl.org.seva.events.upkeep.ColorFactory
 
 class Communities : KodeinGlobalAware {
@@ -29,6 +30,7 @@ class Communities : KodeinGlobalAware {
     private val cf: ColorFactory = instance()
     private val fbWriter: FbWriter = instance()
     private val login: Login = instance()
+    private val commDao = instance<EventsDatabase>().commDao
 
     val size get() = communities.size
     val empty get() = size == 0
@@ -37,6 +39,7 @@ class Communities : KodeinGlobalAware {
 
     fun join(community: Community) {
         communities.add(community)
+        commDao.insert(community)
     }
 
     val commIsAdminOf get() = communities.filter { it.admin }

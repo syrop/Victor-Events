@@ -32,6 +32,9 @@ interface CommDao {
     @Insert
     fun insertAll(vararg comm: Community)
 
+    @Insert
+    fun insert(comm: Community)
+
     @Delete
     fun delete(comm: Community)
 }
