@@ -17,6 +17,7 @@
 
 package pl.org.seva.events.view.activity
 
+import android.app.Activity
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
@@ -147,8 +148,13 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
     }
 
     private fun String.createCommunityAndFinish() {
-        communities.joinNewCommunity(this)
+        val capturingLambda = communities joinNewCommunity this
+        setResult(capturingLambda())
         finish()
+    }
+
+    infix private fun setResult(comm: Community) {
+        setResult(Activity.RESULT_OK, Intent().putExtra(EventsActivity.COMMUNITY_TAG, comm))
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
