@@ -25,7 +25,9 @@ import pl.org.seva.events.data.model.Community
 class Communities : KodeinGlobalAware {
 
     private val communities = mutableListOf<Community>()
-    val empty get() = communities.size == 0
+
+    val size get() = communities.size
+    val empty get() = size == 0
 
     operator fun get(index: Int) = communities[index]
 

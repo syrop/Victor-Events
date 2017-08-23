@@ -42,5 +42,6 @@ class EventsApplication : Application(), KodeinGlobalAware {
     }
 
     fun login(user: FirebaseUser) = bootstrap.login(user)
+
     fun logout() = bootstrap.logout()
 }

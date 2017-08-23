@@ -61,14 +61,14 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
     override fun onResume() {
         super.onResume()
         if (isCommunitiesEmpty) {
-            emptyCommunitiesPrompt()
+            communitiesNotFoundPrompt()
         } else {
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
             supportActionBar!!.setDisplayShowHomeEnabled(true)
         }
     }
 
-    private fun emptyCommunitiesPrompt() {
+    private fun communitiesNotFoundPrompt() {
         prompt.setText(R.string.add_comm_please_search_empty)
     }
 
@@ -105,7 +105,7 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
     private fun onSearchViewClosed(): Boolean {
         if (isCommunitiesEmpty) {
             prompt.visibility = View.VISIBLE
-            emptyCommunitiesPrompt()
+            communitiesNotFoundPrompt()
         }
         return false
     }
@@ -126,24 +126,25 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
     private fun Community.notFound() {
         progress.visibility = View.GONE
         prompt.visibility = View.VISIBLE
-        prompt.text = name.notFound()
+        prompt.text = name.commNotFound()
         if (login.isLoggedIn) {
-            name.showCreateSnackbar()
+            name.showCreateCommunitySnackbar()
         }
     }
 
-    private fun String.showCreateSnackbar() {
+    private fun String.showCreateCommunitySnackbar() {
         longSnackbar {
             view = layout
             messageId = R.string.add_comm_can_create
             actionId = R.string.add_comm_create
         } show {
-            createCommunity()
+            createCommunityAndFinish()
         }
     }
 
-    private fun String.createCommunity() {
+    private fun String.createCommunityAndFinish() {
         communities.joinNewCommunity(this)
+        finish()
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
@@ -154,11 +155,11 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
         else -> super.onOptionsItemSelected(item)
     }
 
-    private fun String.notFound(): CharSequence = getString(R.string.add_comm_not_found).run {
+    private fun String.commNotFound(): CharSequence = getString(R.string.add_comm_not_found).run {
         val idName = indexOf(NAME_PLACEHOLDER)
         val idEndName = idName + length
         val boldSpan = StyleSpan(Typeface.BOLD)
-        SpannableStringBuilder(replace(NAME_PLACEHOLDER, this@notFound)).apply {
+        SpannableStringBuilder(replace(NAME_PLACEHOLDER, this@commNotFound)).apply {
             setSpan(boldSpan, idName, idEndName, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
         }
     }

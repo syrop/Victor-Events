@@ -15,24 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.data.model
+package pl.org.seva.events.view.adapter.viewholder
 
-import android.annotation.SuppressLint
-import android.graphics.Color
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import android.support.v7.widget.RecyclerView
+import android.view.View
+import kotlinx.android.synthetic.main.row_community.view.*
 
-@SuppressLint("ParcelCreator")
-@Parcelize
-data class Community(
-        var name: String = "",
-        var color: Int = Color.GRAY,
-        var admin: Boolean = false) : Parcelable {
-
-    @Transient
-    var empty = false
-
-    companion object {
-        fun empty(name: String = "") = Community(name).apply { empty = true }
-    }
+class CommViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    val communityName = view.community
+    val iconProfile = view.icon_profile
+    val iconText = view.icon_text
 }
