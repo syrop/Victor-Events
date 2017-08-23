@@ -17,6 +17,7 @@
 
 package pl.org.seva.events.view.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -30,6 +31,7 @@ import kotlinx.android.synthetic.main.activity_events.*
 import pl.org.seva.events.R
 import pl.org.seva.events.data.Communities
 import pl.org.seva.events.data.Login
+import pl.org.seva.events.data.model.Community
 
 class EventsActivity : AppCompatActivity(), KodeinGlobalAware {
 
@@ -39,7 +41,7 @@ class EventsActivity : AppCompatActivity(), KodeinGlobalAware {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_events)
-        if (!communities.isAdmin) {
+        if (!communities.isAdminOfAny) {
             add_fab.visibility = View.VISIBLE
         }
 
@@ -51,10 +53,13 @@ class EventsActivity : AppCompatActivity(), KodeinGlobalAware {
         addCommunityIfEmpty()
     }
 
-    private fun addCommunityIfEmpty() = if (communities.empty) startAddCommunityActivity() else Unit
+    private fun addCommunityIfEmpty() {
+        if (communities.empty) startAddCommActivity() else Unit
+    }
 
-    private fun startAddCommunityActivity() =
-            startActivity(Intent(this, AddCommActivity::class.java))
+    private fun startAddCommActivity() = Intent(this, AddCommActivity::class.java).let {
+        startActivityForResult(it, ADD_COMMUNITY_REQUEST_CODE)
+    }
 
     private fun startCreateEventActivity() =
             startActivity(Intent(this, CreateEventActivity::class.java))
@@ -68,9 +73,22 @@ class EventsActivity : AppCompatActivity(), KodeinGlobalAware {
         return true
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode != ADD_COMMUNITY_REQUEST_CODE || resultCode != Activity.RESULT_OK) {
+            return
+        }
+        val addedCommunity : Community = data.getParcelableExtra(COMMUNITY_TAG)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_login -> { startLoginQuestionActivity(); true }
-        R.id.action_seek_community -> { startAddCommunityActivity(); true }
+        R.id.action_seek_community -> { startAddCommActivity(); true }
         else -> super.onOptionsItemSelected(item)
+    }
+
+    companion object {
+        val ADD_COMMUNITY_REQUEST_CODE = 0
+        val COMMUNITY_TAG = "community"
     }
 }
