@@ -39,7 +39,7 @@ class KodeinModuleBuilder {
         bind<Communities>() with singleton { Communities() }
         bind<Login>() with singleton { Login() }
         bind<FbWriter>() with singleton { FbWriter() }
-        bind<EventsDatabase>() with singleton { EventsDatabase() }
+        bind<EventsDatabase>() with singleton { EventsDatabase(application) }
         bind<ColorFactory>() with singleton { ColorFactory(application) }
     }
 }

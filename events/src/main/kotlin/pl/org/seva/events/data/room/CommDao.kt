@@ -15,17 +15,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-@file:Suppress("unused")
-
 package pl.org.seva.events.data.room
 
-import android.arch.persistence.room.RoomDatabase
-import android.arch.persistence.room.Database
+import android.arch.persistence.room.Dao
+import android.arch.persistence.room.Delete
+import android.arch.persistence.room.Insert
+import android.arch.persistence.room.Query
 import pl.org.seva.events.data.model.Community
-import pl.org.seva.events.data.model.Event
 
-@Database(entities = [Event::class, Community::class], version = EventsDatabase.DATABASE_VERSION)
-abstract class EventsDatabaseAbstract : RoomDatabase() {
-    abstract fun eventDao(): EventDao
-    abstract fun commDao(): CommDao
+@Dao
+interface CommDao {
+
+    @Query("select * from ${EventsDatabase.COMMUNITIES_TABLE_NAME}")
+    fun getAll(): List<Community>
+
+    @Insert
+    fun insertAll(vararg comm: Community)
+
+    @Delete
+    fun delete(comm: Community)
 }

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "40fad64bdafeaa18634259c10be423f3",
+    "identityHash": "7ee93f4c2efc541fe26c10acdfa5f4b2",
     "entities": [
       {
         "tableName": "events",
@@ -47,11 +47,49 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "communities",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`empty` INTEGER NOT NULL, `name` TEXT NOT NULL, `color` INTEGER NOT NULL, `admin` INTEGER NOT NULL, PRIMARY KEY(`name`))",
+        "fields": [
+          {
+            "fieldPath": "empty",
+            "columnName": "empty",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "color",
+            "columnName": "color",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "admin",
+            "columnName": "admin",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "name"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"40fad64bdafeaa18634259c10be423f3\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"7ee93f4c2efc541fe26c10acdfa5f4b2\")"
     ]
   }
 }

@@ -20,19 +20,23 @@ package pl.org.seva.events.data.room
 import android.arch.persistence.room.Room
 import android.content.Context
 
-class EventsDatabase {
+class EventsDatabase(context: Context) {
 
-    lateinit var db: EventsDatabaseAbstract
+    private val db: EventsDatabaseAbstract
 
-    fun initWithContext(context: Context) {
+    init {
         db = Room.databaseBuilder(context, EventsDatabaseAbstract::class.java, DATABASE_NAME).build()
     }
 
     val eventDao get() = db.eventDao()
 
+    val commDao get() = db.commDao()
+
     companion object {
         val DATABASE_NAME = "events_database"
         const val DATABASE_VERSION = 1
+
         const val EVENTS_TABLE_NAME = "events"
+        const val COMMUNITIES_TABLE_NAME = "communities"
     }
 }

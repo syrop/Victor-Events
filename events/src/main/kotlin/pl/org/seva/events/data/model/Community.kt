@@ -18,13 +18,18 @@
 package pl.org.seva.events.data.model
 
 import android.annotation.SuppressLint
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.PrimaryKey
 import android.graphics.Color
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
+import pl.org.seva.events.data.room.EventsDatabase
 
 @SuppressLint("ParcelCreator")
 @Parcelize
+@Entity(tableName = EventsDatabase.COMMUNITIES_TABLE_NAME)
 data class Community(
+        @PrimaryKey
         var name: String = "",
         var color: Int = Color.GRAY,
         var admin: Boolean = false) : Parcelable {
