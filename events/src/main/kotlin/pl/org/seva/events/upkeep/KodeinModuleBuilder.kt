@@ -18,7 +18,6 @@
 package pl.org.seva.events.upkeep
 
 import android.app.Application
-import android.graphics.Color
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.bind
 import com.github.salomonbrys.kodein.singleton
@@ -41,19 +40,6 @@ class KodeinModuleBuilder {
         bind<Login>() with singleton { Login() }
         bind<FbWriter>() with singleton { FbWriter() }
         bind<EventsDatabase>() with singleton { EventsDatabase() }
-
-    }
-
-    private fun getRandomMaterialColor(typeColor: String) = with(application) {
-        var returnColor = Color.GRAY
-        val arrayId = resources.getIdentifier("mdcolor_" + typeColor, "array", packageName)
-
-        if (arrayId != 0) {
-            val colors = resources.obtainTypedArray(arrayId)
-            val index = (Math.random() * colors.length()).toInt()
-            returnColor = colors.getColor(index, Color.GRAY)
-            colors.recycle()
-        }
-        returnColor
+        bind<ColorFactory>() with singleton { ColorFactory(application) }
     }
 }
