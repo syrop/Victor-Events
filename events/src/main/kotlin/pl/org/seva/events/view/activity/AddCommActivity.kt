@@ -63,13 +63,17 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
         if (isCommunitiesEmpty) {
             communitiesNotFoundPrompt()
         } else {
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-            supportActionBar!!.setDisplayShowHomeEnabled(true)
+            showBackArrow()
         }
     }
 
     private fun communitiesNotFoundPrompt() {
         prompt.setText(R.string.add_comm_please_search_empty)
+    }
+
+    private fun showBackArrow() {
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setDisplayShowHomeEnabled(true)
     }
 
     override fun onBackPressed() = if (!communities.empty) super.onBackPressed() else Unit
