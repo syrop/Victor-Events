@@ -39,23 +39,27 @@ class EventsActivity : AppCompatActivity(), KodeinGlobalAware {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_events)
-        if (communities.empty) {
-            addCommunityActivity()
-        }
         if (!communities.isAdmin) {
             add_fab.visibility = View.VISIBLE
         }
 
-        add_fab.setOnClickListener { createEventActivity() }
+        add_fab.setOnClickListener { startCreateEventActivity() }
     }
 
-    private fun addCommunityActivity() =
+    override fun onResume() {
+        super.onResume()
+        addCommunityIfEmpty()
+    }
+
+    private fun addCommunityIfEmpty() = if (communities.empty) startAddCommunityActivity() else Unit
+
+    private fun startAddCommunityActivity() =
             startActivity(Intent(this, AddCommActivity::class.java))
 
-    private fun createEventActivity() =
+    private fun startCreateEventActivity() =
             startActivity(Intent(this, CreateEventActivity::class.java))
 
-    private fun loginQuestionActivity() =
+    private fun startLoginQuestionActivity() =
             startActivity(Intent(this, LoginQuestionActivity::class.java))
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -65,8 +69,8 @@ class EventsActivity : AppCompatActivity(), KodeinGlobalAware {
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.action_login -> { loginQuestionActivity(); true }
-        R.id.action_seek_community -> { addCommunityActivity(); true }
+        R.id.action_login -> { startLoginQuestionActivity(); true }
+        R.id.action_seek_community -> { startAddCommunityActivity(); true }
         else -> super.onOptionsItemSelected(item)
     }
 }

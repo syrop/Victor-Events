@@ -51,16 +51,23 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_comm)
-        if (communities.empty) {
-            prompt.setText(R.string.add_comm_please_search_empty)
-        }
+
         if (Intent.ACTION_SEARCH == intent.action) {
             search(intent.getStringExtra(SearchManager.QUERY))
         }
-
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        supportActionBar!!.setDisplayShowHomeEnabled(true)
     }
+
+    override fun onResume() {
+        super.onResume()
+        if (communities.empty) {
+            prompt.setText(R.string.add_comm_please_search_empty)
+        } else {
+            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+            supportActionBar!!.setDisplayShowHomeEnabled(true)
+        }
+    }
+
+    override fun onBackPressed() = if (!communities.empty) super.onBackPressed() else Unit
 
     override fun onNewIntent(intent: Intent) {
         setIntent(intent)
