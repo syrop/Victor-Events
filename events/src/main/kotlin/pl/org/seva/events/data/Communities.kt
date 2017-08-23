@@ -27,6 +27,8 @@ class Communities : KodeinGlobalAware {
 
     private val communities = mutableListOf<Community>()
     private val cf: ColorFactory = instance()
+    private val fbWriter: FbWriter = instance()
+    private val login: Login = instance()
 
     val size get() = communities.size
     val empty get() = size == 0
@@ -37,15 +39,15 @@ class Communities : KodeinGlobalAware {
         communities.add(community)
     }
 
-    val admin get() = communities.filter { it.admin }
+    val commIsAdminOf get() = communities.filter { it.admin }
 
-    val isAdmin get() = communities.any { it.admin }
+    val isAdminOfAny get() = communities.any { it.admin }
 
-    fun joinNewCommunity(name: String) {
-        val community = Community(name = name, color = cf.nextColor(), admin = true)
-        val writer = instance<FbWriter>()
-        writer.create(community)
-        writer.grantAdmin(community, instance<Login>().email)
-        join(community)
+    fun joinNewCommunity(name: String) = Community(name = name, color = cf.nextColor(), admin = true).also {
+        with (fbWriter) {
+            create(it)
+            grantAdmin(it, login.email)
+        }
+        join(it)
     }
 }
