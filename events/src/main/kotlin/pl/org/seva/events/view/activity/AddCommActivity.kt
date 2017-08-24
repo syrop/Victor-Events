@@ -39,6 +39,7 @@ import pl.org.seva.events.data.Communities
 import pl.org.seva.events.data.model.Community
 import pl.org.seva.events.data.Login
 import pl.org.seva.events.data.firebase.FbReader
+import pl.org.seva.events.view.adapter.CommAdapter
 import pl.org.seva.events.view.snackbar.longSnackbar
 
 class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
@@ -49,6 +50,8 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
 
     private val searchManager get() = getSystemService(Context.SEARCH_SERVICE) as SearchManager
     private val isCommunitiesEmpty get() = communities.empty
+
+    private lateinit var adapter: CommAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,7 +84,6 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
 
     override fun onNewIntent(intent: Intent) {
         setIntent(intent)
-
         if (Intent.ACTION_SEARCH == intent.action) {
             val query = intent.getStringExtra(SearchManager.QUERY).trim { it <= ' ' }
             search(query)
@@ -90,7 +92,6 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.add_community, menu)
-
         val searchMenuItem = menu.findItem(R.id.action_search)
         searchMenuItem.collapseActionView()
         searchMenuItem.prepareSearchView()
@@ -98,8 +99,8 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
     }
 
     private fun MenuItem.prepareSearchView() = with (actionView as SearchView) {
-        setOnSearchClickListener { onSearchClicked() }
         setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        setOnSearchClickListener { onSearchClicked() }
         setOnCloseListener { onSearchViewClosed() }
     }
 
@@ -125,7 +126,9 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
 
     private fun Community.found() {
         progress.visibility = View.GONE
-        contacts.visibility = View.VISIBLE
+        recycler.visibility = View.VISIBLE
+        adapter = CommAdapter(this)
+        recycler.adapter = adapter
     }
 
     private fun Community.notFound() {

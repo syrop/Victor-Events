@@ -20,28 +20,22 @@ package pl.org.seva.events.view.adapter
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
-import com.github.salomonbrys.kodein.instance
 import pl.org.seva.events.R
-import pl.org.seva.events.data.Communities
+import pl.org.seva.events.data.model.Community
 import pl.org.seva.events.view.adapter.viewholder.CommViewHolder
 
-class CommAdapter : RecyclerView.Adapter<CommViewHolder>(), KodeinGlobalAware {
-
-    private val communities: Communities = instance()
+class CommAdapter(private val comm: Community) : RecyclerView.Adapter<CommViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         LayoutInflater.from(parent.context).inflate(R.layout.row_community, parent, false).let {
-        CommViewHolder(it)
-    }
+            CommViewHolder(it)
+        }
 
-    override fun getItemCount() = communities.size
+    override fun getItemCount() = 1
 
     override fun onBindViewHolder(holder: CommViewHolder, position: Int) = with (holder) {
-        communities[position].let {
-            communityName.text = it.name
-            iconText.text = it.name.substring(0, 1)
-            iconProfile.setColorFilter(it.color)
-        }
+        communityName.text = comm.name
+        iconText.text = comm.name.substring(0, 1)
+        iconProfile.setColorFilter(comm.color)
     }
 }
