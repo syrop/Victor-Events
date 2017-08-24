@@ -143,22 +143,42 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
         prompt.text = name.commNotFound()
         if (login.isLoggedIn) {
             name.showCreateCommunitySnackbar()
+        } else {
+            name.showLoginSnackbar()
         }
     }
 
     private fun String.showCreateCommunitySnackbar() {
         longSnackbar {
             view = layout
-            messageId = R.string.add_comm_can_create
-            actionId = R.string.add_comm_create
+            message = R.string.add_comm_can_create
+            action = R.string.add_comm_create
         } show {
             createCommunityAndFinish()
+        }
+    }
+
+    private fun String.showLoginSnackbar() {
+        longSnackbar {
+            view = layout
+            message = R.string.add_comm_login_to_create
+            action = R.string.add_comm_login
+        } show {
+            login()
         }
     }
 
     private fun String.createCommunityAndFinish() {
         joinNewCommunity().setResult()
         finish()
+    }
+
+    private fun String.login() {
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun String.joinNewCommunity() = communities.joinNewCommunity(this)
@@ -186,5 +206,6 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
 
     companion object {
         val NAME_PLACEHOLDER = "[name]"
+        val LOGIN_CREATE_COMM_REQUEST = 0
     }
 }

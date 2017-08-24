@@ -84,7 +84,6 @@ class LoginActivity : AppCompatActivity(),
             }
         }
 
-
         when (intent.getStringExtra(ACTION)) {
             LOGOUT -> {
                 logout()
