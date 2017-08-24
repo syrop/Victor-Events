@@ -19,6 +19,7 @@
 
 package pl.org.seva.events.view.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -56,6 +57,8 @@ class LoginActivity : AppCompatActivity(),
     private var performedAction: Boolean = false
     private var logoutWhenReady: Boolean = false
 
+    private var createCommunityName: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -63,6 +66,8 @@ class LoginActivity : AppCompatActivity(),
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build()
+
+        createCommunityName = intent.getStringExtra(COMMUNITY_NAME)
 
         googleApiClient = GoogleApiClient.Builder(this)
                 .enableAutoManage(this, this)
@@ -113,8 +118,13 @@ class LoginActivity : AppCompatActivity(),
         fbWriter.login(user)
         (application as EventsApplication).login(user)
         if (performedAction) {
+            createCommunityName?.setResult()
             finish()
         }
+    }
+
+    private fun String.setResult() {
+        setResult(Activity.RESULT_OK, Intent().putExtra(COMMUNITY_NAME, this))
     }
 
     private fun onUserLoggedOut() {
@@ -211,6 +221,8 @@ class LoginActivity : AppCompatActivity(),
         val ACTION = "action"
         val LOGIN = "login"
         val LOGOUT = "logout"
+
+        val COMMUNITY_NAME = "community_name"
 
         private val TAG = LoginActivity::class.java.simpleName
 

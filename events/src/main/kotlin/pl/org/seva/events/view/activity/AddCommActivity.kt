@@ -174,11 +174,17 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
     }
 
     private fun String.login() {
-
+        Intent(this@AddCommActivity, LoginActivity::class.java)
+                .putExtra(LoginActivity.COMMUNITY_NAME, this).let {
+            startActivityForResult(it, LOGIN_CREATE_COMM_REQUEST)
+        }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == LOGIN_CREATE_COMM_REQUEST && resultCode == Activity.RESULT_OK) {
+            data.getStringExtra(LoginActivity.COMMUNITY_NAME)?.createCommunityAndFinish()
+        }
     }
 
     private fun String.joinNewCommunity() = communities.joinNewCommunity(this)
