@@ -40,6 +40,7 @@ import pl.org.seva.events.data.model.Community
 import pl.org.seva.events.data.Login
 import pl.org.seva.events.data.firebase.FbReader
 import pl.org.seva.events.view.adapter.CommAdapter
+import pl.org.seva.events.view.decoration.DividerItemDecoration
 import pl.org.seva.events.view.snackbar.longSnackbar
 
 class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
@@ -127,8 +128,13 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
     private fun Community.found() {
         progress.visibility = View.GONE
         recycler.visibility = View.VISIBLE
-        adapter = CommAdapter(this)
+        adapter = CommAdapter(this) { onClicked() }
+        recycler.addItemDecoration(DividerItemDecoration(this@AddCommActivity))
         recycler.adapter = adapter
+    }
+
+    private fun Community.onClicked() {
+        setResult()
     }
 
     private fun Community.notFound() {
@@ -151,13 +157,14 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
     }
 
     private fun String.createCommunityAndFinish() {
-        val capturingLambda = communities joinNewCommunity this
-        setResult(capturingLambda())
+        joinNewCommunity().setResult()
         finish()
     }
 
-    infix private fun setResult(comm: Community) {
-        setResult(Activity.RESULT_OK, Intent().putExtra(EventsActivity.COMMUNITY_TAG, comm))
+    private fun String.joinNewCommunity() = communities.joinNewCommunity(this)
+
+    private fun Community.setResult() {
+        setResult(Activity.RESULT_OK, Intent().putExtra(EventsActivity.COMMUNITY_TAG, this))
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {

@@ -46,7 +46,7 @@ class Communities : KodeinGlobalAware {
 
     val isAdminOfAny get() = communities.any { it.admin }
 
-    infix fun joinNewCommunity(name: String) = {
+    infix fun joinNewCommunity(name: String) =
         Community(name = name, color = cf.nextColor(), admin = true).also {
             with (fbWriter) {
                 create(it)
@@ -54,5 +54,4 @@ class Communities : KodeinGlobalAware {
             }
             join(it)
         }
-    }
 }

@@ -19,10 +19,17 @@ package pl.org.seva.events.view.adapter.viewholder
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import kotlinx.android.synthetic.main.row_community.view.*
 
-class CommViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    val communityName = view.community
-    val iconProfile = view.icon_profile
-    val iconText = view.icon_text
+class CommViewHolder(val view: View, f: (() -> Unit)? = null) : RecyclerView.ViewHolder(view) {
+
+    init {
+        view.setOnClickListener { f?.invoke() }
+    }
+
+    val communityName: TextView = view.community
+    val iconProfile: ImageView = view.icon_profile
+    val iconText: TextView = view.icon_text
 }

@@ -24,14 +24,18 @@ import pl.org.seva.events.R
 import pl.org.seva.events.data.model.Community
 import pl.org.seva.events.view.adapter.viewholder.CommViewHolder
 
-class CommAdapter(private val comm: Community) : RecyclerView.Adapter<CommViewHolder>() {
+class CommAdapter(
+        private val comm: Community,
+        private var listener: (Community.() -> Unit)? = null) : RecyclerView.Adapter<CommViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         LayoutInflater.from(parent.context).inflate(R.layout.row_community, parent, false).let {
-            CommViewHolder(it)
+            CommViewHolder(it) { onClick() }
         }
 
     override fun getItemCount() = 1
+
+    private fun onClick() = listener?.invoke(comm)
 
     override fun onBindViewHolder(holder: CommViewHolder, position: Int) = with (holder) {
         communityName.text = comm.name
