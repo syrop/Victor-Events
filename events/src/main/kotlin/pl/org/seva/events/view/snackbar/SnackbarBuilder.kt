@@ -22,12 +22,15 @@ import android.view.View
 
 fun longSnackbar(f: SnackbarBuilder.() -> Unit): SnackbarBuilder = SnackbarBuilder().apply(f)
 
+fun permanentSnackbar(f: SnackbarBuilder.() -> Unit): SnackbarBuilder =
+        SnackbarBuilder(Snackbar.LENGTH_INDEFINITE).apply(f)
+
 class SnackbarBuilder(private var length: Int = Snackbar.LENGTH_LONG) {
     lateinit var view: View
-    var messageId = 0
-    var actionId = 0
+    var message = 0
+    var action = 0
 
     infix fun show(f: () -> Unit) {
-        Snackbar.make(view, messageId, length).setAction(actionId, { f() }).show()
+        Snackbar.make(view, message, length).setAction(action, { f() }).show()
     }
 }

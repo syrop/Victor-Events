@@ -65,7 +65,7 @@ class EventsActivity : AppCompatActivity(), KodeinGlobalAware {
             startActivity(Intent(this, CreateEventActivity::class.java))
 
     private fun startLoginQuestionActivity() =
-            startActivity(Intent(this, LoginQuestionActivity::class.java))
+            startActivity(Intent(this, LoginConfirmationActivity::class.java))
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.events, menu)
