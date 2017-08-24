@@ -57,20 +57,30 @@ class EventsActivity : AppCompatActivity(), KodeinGlobalAware {
         if (communities.empty) startAddCommActivity() else Unit
     }
 
-    private fun startAddCommActivity() = Intent(this, AddCommActivity::class.java).let {
-        startActivityForResult(it, ADD_COMMUNITY_REQUEST_CODE)
-    }
+    private fun startAddCommActivity() =
+            Intent(this, AddCommActivity::class.java)
+                .startActivityForResult(ADD_COMMUNITY_REQUEST_CODE)
 
     private fun startCreateEventActivity() =
-            startActivity(Intent(this, CreateEventActivity::class.java))
+            Intent(this, CreateEventActivity::class.java).startActivity()
 
     private fun startLoginQuestionActivity() =
-            startActivity(Intent(this, LoginConfirmationActivity::class.java))
+            Intent(this, LoginConfirmationActivity::class.java).startActivity()
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.events, menu)
         menu.findItem(R.id.action_login).isVisible = !login.isLoggedIn
         return true
+    }
+
+    @JvmName("intentStartActivity")
+    private fun Intent.startActivity() {
+        startActivity(this)
+    }
+
+    @JvmName("intentStartActivityForResult")
+    private fun Intent.startActivityForResult(requestCode: Int) {
+        startActivityForResult(this, requestCode)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
