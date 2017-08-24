@@ -19,11 +19,11 @@
 
 package pl.org.seva.events.view.activity
 
-import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
 import com.github.salomonbrys.kodein.instance
@@ -36,6 +36,7 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import kotlinx.android.synthetic.main.activity_login.*
 import pl.org.seva.events.EventsApplication
 import pl.org.seva.events.R
 import pl.org.seva.events.data.firebase.FbWriter
@@ -52,8 +53,6 @@ class LoginActivity : AppCompatActivity(),
 
     private lateinit var googleApiClient: GoogleApiClient
 
-    @Suppress("DEPRECATION")
-    private var progressDialog: ProgressDialog? = null
     private var performedAction: Boolean = false
     private var logoutWhenReady: Boolean = false
 
@@ -187,18 +186,11 @@ class LoginActivity : AppCompatActivity(),
     }
 
     private fun showProgressDialog() {
-        @Suppress("DEPRECATION")
-        progressDialog = ProgressDialog(this)
-        progressDialog!!.setMessage(getString(R.string.login_loading))
-        progressDialog!!.isIndeterminate = true
-
-        progressDialog!!.show()
+        progress.visibility = View.VISIBLE
     }
 
     private fun hideProgressDialog() {
-        if (progressDialog != null && progressDialog!!.isShowing) {
-            progressDialog!!.dismiss()
-        }
+        progress.visibility = View.GONE
     }
 
     override fun onConnectionFailed(connectionResult: ConnectionResult) {
