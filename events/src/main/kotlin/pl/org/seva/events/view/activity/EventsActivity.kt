@@ -17,7 +17,6 @@
 
 package pl.org.seva.events.view.activity
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -31,7 +30,6 @@ import kotlinx.android.synthetic.main.activity_events.*
 import pl.org.seva.events.R
 import pl.org.seva.events.data.Communities
 import pl.org.seva.events.data.Login
-import pl.org.seva.events.data.model.Community
 
 class EventsActivity : AppCompatActivity(), KodeinGlobalAware {
 
@@ -54,18 +52,17 @@ class EventsActivity : AppCompatActivity(), KodeinGlobalAware {
     }
 
     private fun addCommunityIfEmpty() {
-        if (communities.empty) startAddCommActivity() else Unit
+        if (communities.empty) startAddCommActivity()
     }
 
     private fun startAddCommActivity() =
-            Intent(this, AddCommActivity::class.java)
-                .startActivityForResult(ADD_COMMUNITY_REQUEST_CODE)
+            startActivity(Intent(this, AddCommActivity::class.java))
 
     private fun startCreateEventActivity() =
-            Intent(this, CreateEventActivity::class.java).startActivity()
+            startActivity(Intent(this, CreateEventActivity::class.java))
 
     private fun startLoginQuestionActivity() =
-            Intent(this, LoginConfirmationActivity::class.java).startActivity()
+            startActivity(Intent(this, LoginConfirmationActivity::class.java))
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.events, menu)
@@ -73,32 +70,9 @@ class EventsActivity : AppCompatActivity(), KodeinGlobalAware {
         return true
     }
 
-    @JvmName("intentStartActivity")
-    private fun Intent.startActivity() {
-        startActivity(this)
-    }
-
-    @JvmName("intentStartActivityForResult")
-    private fun Intent.startActivityForResult(requestCode: Int) {
-        startActivityForResult(this, requestCode)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode != ADD_COMMUNITY_REQUEST_CODE || resultCode != Activity.RESULT_OK) {
-            return
-        }
-        val commToAdd: Community = data.getParcelableExtra(COMMUNITY_TAG)
-    }
-
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_login -> { startLoginQuestionActivity(); true }
         R.id.action_seek_community -> { startAddCommActivity(); true }
         else -> super.onOptionsItemSelected(item)
-    }
-
-    companion object {
-        val ADD_COMMUNITY_REQUEST_CODE = 0
-        val COMMUNITY_TAG = "community"
     }
 }

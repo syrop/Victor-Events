@@ -128,13 +128,9 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
     private fun Community.found() {
         progress.visibility = View.GONE
         recycler.visibility = View.VISIBLE
-        adapter = CommAdapter(this) { onClicked() }
+        adapter = CommAdapter(this) { joinAndFinish() }
         recycler.addItemDecoration(DividerItemDecoration(this@AddCommActivity))
         recycler.adapter = adapter
-    }
-
-    private fun Community.onClicked() {
-        setResult()
     }
 
     private fun Community.notFound() {
@@ -154,7 +150,7 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
             message = R.string.add_comm_can_create
             action = R.string.add_comm_create
         } show {
-            createCommunityAndFinish()
+            createAndFinish()
         }
     }
 
@@ -168,8 +164,13 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
         }
     }
 
-    private fun String.createCommunityAndFinish() {
-        joinNewCommunity().setResult()
+    private fun Community.joinAndFinish() {
+        join()
+        finish()
+    }
+
+    private fun String.createAndFinish() {
+        joinNewCommunity()
         finish()
     }
 
@@ -183,15 +184,13 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == LOGIN_CREATE_COMM_REQUEST && resultCode == Activity.RESULT_OK) {
-            data.getStringExtra(LoginActivity.COMMUNITY_NAME)?.createCommunityAndFinish()
+            data.getStringExtra(LoginActivity.COMMUNITY_NAME)?.createAndFinish()
         }
     }
 
     private fun String.joinNewCommunity() = communities.joinNewCommunity(this)
 
-    private fun Community.setResult() {
-        setResult(Activity.RESULT_OK, Intent().putExtra(EventsActivity.COMMUNITY_TAG, this))
-    }
+    private fun Community.join() = communities.join(this)
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         android.R.id.home -> {
