@@ -88,7 +88,7 @@ class EventsActivity : AppCompatActivity(), KodeinGlobalAware {
         if (requestCode != ADD_COMMUNITY_REQUEST_CODE || resultCode != Activity.RESULT_OK) {
             return
         }
-        val addedCommunity : Community = data.getParcelableExtra(COMMUNITY_TAG)
+        val commToAdd: Community = data.getParcelableExtra(COMMUNITY_TAG)
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
