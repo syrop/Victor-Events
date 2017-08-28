@@ -29,9 +29,12 @@ class CommAdapter(
         private var listener: (Community.() -> Unit)? = null) : RecyclerView.Adapter<CommViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        LayoutInflater.from(parent.context).inflate(R.layout.row_community, parent, false).let {
-            CommViewHolder(it) { onClick() }
-        }
+            CommViewHolder(parent.inflate()) {
+                onClick()
+            }
+
+    private fun ViewGroup.inflate() =
+            LayoutInflater.from(context).inflate(LAYOUT, this, false)
 
     override fun getItemCount() = 1
 
@@ -41,5 +44,9 @@ class CommAdapter(
         communityName.text = comm.name
         iconText.text = comm.name.substring(0, 1)
         iconProfile.setColorFilter(comm.color)
+    }
+
+    companion object {
+        val LAYOUT = R.layout.row_community
     }
 }
