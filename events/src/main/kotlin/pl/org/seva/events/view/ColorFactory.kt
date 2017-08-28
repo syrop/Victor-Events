@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.upkeep
+package pl.org.seva.events.view
 
 import android.app.Application
 import android.graphics.Color

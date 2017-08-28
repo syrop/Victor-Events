@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.upkeep
+package pl.org.seva.events.application
 
 import android.app.Application
 import com.github.salomonbrys.kodein.Kodein
@@ -26,6 +26,7 @@ import pl.org.seva.events.data.Login
 import pl.org.seva.events.data.firebase.FbReader
 import pl.org.seva.events.data.firebase.FbWriter
 import pl.org.seva.events.data.room.EventsDatabase
+import pl.org.seva.events.view.ColorFactory
 
 fun module(f: KodeinModuleBuilder.() -> Unit) = KodeinModuleBuilder().apply { f() }.build()
 
