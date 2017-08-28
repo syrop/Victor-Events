@@ -43,10 +43,11 @@ class CommAdapter(
     override fun onBindViewHolder(holder: CommViewHolder, position: Int) = with (holder) {
         communityName.text = comm.name
         iconText.text = comm.name.substring(0, 1)
+        iconProfile.setImageResource(R.drawable.bg_circle)
         iconProfile.setColorFilter(comm.color)
     }
 
     companion object {
-        val LAYOUT = R.layout.row_community
+        private val LAYOUT = R.layout.row_community
     }
 }

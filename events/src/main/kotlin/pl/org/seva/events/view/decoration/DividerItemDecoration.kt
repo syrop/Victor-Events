@@ -26,7 +26,6 @@ import android.view.View
 
 class DividerItemDecoration(context: Context) : RecyclerView.ItemDecoration() {
 
-
     private var divider: Drawable
 
     init {

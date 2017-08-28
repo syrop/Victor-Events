@@ -38,7 +38,8 @@
         <ImageView
             android:id="@+id/icon_profile"
             android:layout_width="40dp"
-            android:layout_height="40dp" />
+            android:layout_height="40dp"
+            tools:ignore="ContentDescription"/>
 
         <TextView
             android:id="@+id/icon_text"

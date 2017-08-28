@@ -36,7 +36,7 @@ class ColorFactory(private val application: Application ) {
     }
 
     companion object {
-        val COLOR_ARRAY_NAME = "mdColor_"
+        val COLOR_ARRAY_NAME = "mdcolor_"
         val COLOR_TYPE = "400"
     }
 }
