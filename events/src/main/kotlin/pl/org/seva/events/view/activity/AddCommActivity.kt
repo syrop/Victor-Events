@@ -47,7 +47,6 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
     private val login: Login = instance()
 
     private val searchManager get() = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-    private val isCommunitiesEmpty get() = communities.empty
 
     private lateinit var adapter: CommAdapter
 
@@ -62,7 +61,7 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
 
     override fun onResume() {
         super.onResume()
-        if (isCommunitiesEmpty) {
+        if (communities.empty) {
             communitiesNotFoundPrompt()
         } else {
             showBackArrow()
@@ -107,7 +106,7 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
     }
 
     private fun onSearchViewClosed(): Boolean {
-        if (isCommunitiesEmpty) {
+        if (communities.empty) {
             prompt.visibility = View.VISIBLE
             communitiesNotFoundPrompt()
         }
