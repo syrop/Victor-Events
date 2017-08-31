@@ -137,7 +137,7 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
         if (login.isLoggedIn) {
             name.showCreateCommunitySnackbar()
         } else {
-            name.showLoginSnackbar()
+            name.showLoginToCreateSnackbar()
         }
     }
 
@@ -151,13 +151,13 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
         }
     }
 
-    private fun String.showLoginSnackbar() {
+    private fun String.showLoginToCreateSnackbar() {
         longSnackbar {
             view = layout
             message = R.string.add_comm_login_to_create
             action = R.string.add_comm_login
         } show {
-            login()
+            loginToCreateComm()
         }
     }
 
@@ -171,7 +171,7 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
         finish()
     }
 
-    private fun String.login() {
+    private fun String.loginToCreateComm() {
         Intent(this@AddCommActivity, LoginActivity::class.java)
                 .putExtra(LoginActivity.COMMUNITY_NAME, this).let {
             startActivityForResult(it, LOGIN_CREATE_COMM_REQUEST)
