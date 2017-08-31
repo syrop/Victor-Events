@@ -32,7 +32,7 @@ class Communities : KodeinGlobalAware {
     private val login: Login = instance()
     private val commDao = instance<EventsDatabase>().commDao
 
-    val size get() = communities.size
+    private val size get() = communities.size
     val empty get() = size == 0
 
     operator fun get(index: Int) = communities[index]
@@ -42,16 +42,14 @@ class Communities : KodeinGlobalAware {
         commDao.insert(community)
     }
 
-    val commIsAdminOf get() = communities.filter { it.admin }
+    val isAdminOfWhich get() = communities.filter { it.admin }
 
     val isAdminOfAny get() = communities.any { it.admin }
 
     infix fun joinNewCommunity(name: String) =
-        Community(name = name, color = cf.nextColor(), admin = true).also {
-            with (fbWriter) {
-                create(it)
-                grantAdmin(it, login.email)
-            }
-            join(it)
+        Community(name = name, color = cf.nextColor(), admin = true).apply {
+            fbWriter.create(this)
+            fbWriter.grantAdmin(this, login.email)
+            join(this)
         }
 }
