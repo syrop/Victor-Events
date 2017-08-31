@@ -147,7 +147,7 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
             message = R.string.add_comm_can_create
             action = R.string.add_comm_create
         } show {
-            createAndFinish()
+            createJoinAndFinish()
         }
     }
 
@@ -166,7 +166,7 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
         finish()
     }
 
-    private fun String.createAndFinish() {
+    private fun String.createJoinAndFinish() {
         joinNewCommunity()
         finish()
     }
@@ -181,7 +181,7 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == LOGIN_CREATE_COMM_REQUEST && resultCode == Activity.RESULT_OK) {
-            data.getStringExtra(LoginActivity.COMMUNITY_NAME)?.createAndFinish()
+            data.getStringExtra(LoginActivity.COMMUNITY_NAME)?.createJoinAndFinish()
         }
     }
 
