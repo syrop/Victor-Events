@@ -37,7 +37,7 @@ class Communities : KodeinGlobalAware {
 
     operator fun get(index: Int) = communities[index]
 
-    fun join(community: Community) {
+    infix fun join(community: Community) {
         communities.add(community)
         commDao.insert(community)
     }

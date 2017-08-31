@@ -185,9 +185,9 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
         }
     }
 
-    private fun String.joinNewCommunity() = communities.joinNewCommunity(this)
+    private fun String.joinNewCommunity() = communities joinNewCommunity this
 
-    private fun Community.join() = communities.join(this)
+    private fun Community.join() = communities join this
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         android.R.id.home -> { finish(); true }
