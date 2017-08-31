@@ -40,6 +40,7 @@ import pl.org.seva.events.data.model.Community
 import pl.org.seva.events.data.Login
 import pl.org.seva.events.data.firebase.FbReader
 import pl.org.seva.events.view.adapter.CommAdapter
+import pl.org.seva.events.view.bold
 import pl.org.seva.events.view.decoration.DividerItemDecoration
 import pl.org.seva.events.view.snackbar.longSnackbar
 
@@ -193,21 +194,12 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
     private fun Community.join() = communities.join(this)
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        android.R.id.home -> {
-            finish()
-            true
-        }
+        android.R.id.home -> { finish(); true }
         else -> super.onOptionsItemSelected(item)
     }
 
-    private fun String.commNotFound(): CharSequence = getString(R.string.add_comm_not_found).run {
-        val idName = indexOf(NAME_PLACEHOLDER)
-        val idEndName = idName + length
-        val boldSpan = StyleSpan(Typeface.BOLD)
-        SpannableStringBuilder(replace(NAME_PLACEHOLDER, this@commNotFound)).apply {
-            setSpan(boldSpan, idName, idEndName, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-        }
-    }
+    private fun String.commNotFound(): CharSequence =
+            getString(R.string.add_comm_not_found).bold(NAME_PLACEHOLDER, this)
 
     companion object {
         val NAME_PLACEHOLDER = "[name]"
