@@ -19,6 +19,8 @@ package pl.org.seva.events.data
 
 import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
 import com.github.salomonbrys.kodein.instance
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.launch
 import pl.org.seva.events.data.firebase.FbWriter
 import pl.org.seva.events.data.model.Community
 import pl.org.seva.events.data.room.EventsDatabase
@@ -39,7 +41,9 @@ class Communities : KodeinGlobalAware {
 
     infix fun join(community: Community) {
         communities.add(community)
-        commDao.insert(community)
+        launch(CommonPool) {
+            commDao.insert(community)
+        }
     }
 
     val isAdminOf get() = communities.filter { it.admin }
