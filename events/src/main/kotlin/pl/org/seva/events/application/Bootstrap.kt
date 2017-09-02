@@ -33,7 +33,7 @@ class Bootstrap : KodeinGlobalAware {
 
     fun boot() {
         login.setCurrentUser(FirebaseAuth.getInstance().currentUser)
-        db.commDao getAllAsync { communities.addAll(it); println("wiktor got so many: " + it.size) }
+        db.commDao getAllAsync { communities.addAll(it) }
     }
 
     fun login(user: FirebaseUser) {
