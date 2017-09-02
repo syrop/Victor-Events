@@ -34,6 +34,8 @@ data class Community(
         var color: Int = Color.GRAY,
         var admin: Boolean = false) : Parcelable {
 
+    val lcName: String get() = name.toLowerCase()
+
     @Transient
     var empty = false
 

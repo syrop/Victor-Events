@@ -26,23 +26,28 @@ class FbWriter : Fb() {
     fun login(user: FirebaseUser) {}
 
     fun create(community: Community) {
-        writeEvent(community, Event.creation)
+        community writeEvent Event.creation
+        community.writeName()
     }
 
     fun grantAdmin(community: Community, email: String) {
-        grantAdmin(community.name, email)
+        grantAdmin(community.lcName, email)
     }
 
-    fun grantAdmin(community: String, email: String) {
+    private fun grantAdmin(community: String, email: String) {
         community.admins child(email.to64()) value DEFAULT_VALUE
     }
 
-    fun writeEvent(community: Community, event: Event) {
-        val ref =  community.name.events child event.time.toString()
+    private infix fun Community.writeEvent(event: Event) {
+        val ref =  lcName.events child event.time.toString()
         ref.child(EVENT_NAME).setValue(event.name)
         event.lat?.apply { ref.child(EVENT_LAT).setValue(this) }
         event.lon?.apply { ref.child(EVENT_LON).setValue(this) }
         event.desc?.apply { ref.child(EVENT_DESC).setValue(this) }
+    }
+
+    private fun Community.writeName() {
+        lcName.name.setValue(name)
     }
 
     companion object {

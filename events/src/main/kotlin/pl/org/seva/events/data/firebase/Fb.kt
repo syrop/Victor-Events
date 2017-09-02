@@ -30,19 +30,19 @@ open class Fb : KodeinGlobalAware {
 
     protected val login: Login = instance()
 
-    protected val db = FirebaseDatabase.getInstance()!!
+    private val db = FirebaseDatabase.getInstance()!!
 
     protected val String.admins get() = db reference PRIVATE child this child COMM_ADMINS
 
     protected val String.events get() = db reference COMMUNITIES child this child EVENTS
 
-    protected val String.reference get() = db reference COMMUNITIES child this
+    protected val String.name get() = db reference COMMUNITIES child this child NAME
 
     protected infix fun DatabaseReference.child(ch: String): DatabaseReference = this.child(ch)
 
     protected infix fun DatabaseReference.value(v: Any) = this.setValue(v)!!
 
-    protected infix fun FirebaseDatabase.reference(ref: String) : DatabaseReference = this.getReference(ref)
+    private infix fun FirebaseDatabase.reference(ref: String) : DatabaseReference = this.getReference(ref)
 
     protected fun String.to64() = Base64.encodeToString(toByteArray(), Base64.NO_WRAP)!!
 
@@ -55,6 +55,8 @@ open class Fb : KodeinGlobalAware {
         val PRIVATE = "private"
         /** Per community. */
         val EVENTS = "events"
+        /** Community name. */
+        val NAME = "name"
         /** May not be null. */
         val EVENT_NAME = "name"
         /** Double. */
