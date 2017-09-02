@@ -46,6 +46,10 @@ class Communities : KodeinGlobalAware {
         }
     }
 
+    fun addAll(communities: Collection<Community>) {
+        this.communities.addAll(communities)
+    }
+
     val isAdminOf get() = communities.filter { it.admin }
 
     val isAdminOfAny get() = communities.any { it.admin }

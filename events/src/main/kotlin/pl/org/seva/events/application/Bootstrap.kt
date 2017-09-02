@@ -21,15 +21,19 @@ import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
 import com.github.salomonbrys.kodein.instance
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import pl.org.seva.events.data.Communities
 import pl.org.seva.events.data.Login
 import pl.org.seva.events.data.room.EventsDatabase
+import pl.org.seva.events.data.room.getAllAsync
 
 class Bootstrap : KodeinGlobalAware {
     private val db: EventsDatabase = instance()
     private val login: Login = instance()
+    private val communities: Communities = instance()
 
     fun boot() {
         login.setCurrentUser(FirebaseAuth.getInstance().currentUser)
+        db.commDao getAllAsync { communities.addAll(it); println("wiktor got so many: " + it.size) }
     }
 
     fun login(user: FirebaseUser) {
