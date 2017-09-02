@@ -37,14 +37,16 @@ class FbReader : Fb() {
     private fun String.isAdmin(email: String): Observable<Boolean> = admins.child(email.to64()).doesExist()
 
     fun findCommunity(name: String, onResult: Community.() -> Unit) {
-        val doesExist = communities.child(name).doesExist()
-        val isAdminObservable = if (login.isLoggedIn) name.isAdmin(login.email)
+        val lcName = name.toLowerCase()
+        val found = communities.child(lcName).read().map { it.toCommunity(name) }
+
+        val isAdminObservable = if (login.isLoggedIn) lcName.isAdmin(login.email)
             else Observable.just(false)
 
-        doesExist.zipWith(
+        found.zipWith(
                 isAdminObservable,
-                BiFunction { exists: Boolean, isAdmin: Boolean ->
-                    if (exists) Community("", admin = isAdmin) else Community.empty(name) })
+                BiFunction { comm: Community, isAdmin: Boolean ->
+                    if (comm.empty) comm else comm.copy(admin = isAdmin) })
                 .subscribe(onResult)
     }
 
@@ -65,6 +67,9 @@ class FbReader : Fb() {
         val desc = child(EVENT_DESC).value as String?
         return Event(name, time = time, lat = lat, lon = lon, desc = desc)
     }
+
+    private fun DataSnapshot.toCommunity(name: String) =
+            if (exists()) Community(child(COMM_NAME).value as String) else Community.empty(name)
 
     companion object {
         val READ_ONCE = 1L

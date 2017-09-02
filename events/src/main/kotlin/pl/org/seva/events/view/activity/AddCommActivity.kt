@@ -116,7 +116,7 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
     private fun search(name: String) {
         prompt.visibility = View.GONE
         progress.visibility = View.VISIBLE
-        fbReader.findCommunity(name.toLowerCase()) {
+        fbReader.findCommunity(name) {
             if (empty) notFound() else found()
         }
     }

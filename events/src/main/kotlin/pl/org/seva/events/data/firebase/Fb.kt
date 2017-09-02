@@ -32,7 +32,7 @@ open class Fb : KodeinGlobalAware {
 
     protected val db = FirebaseDatabase.getInstance()!!
 
-    protected val String.admins get() = db reference PRIVATE child this child ADMINS
+    protected val String.admins get() = db reference PRIVATE child this child COMM_ADMINS
 
     protected val String.events get() = db reference COMMUNITIES child this child EVENTS
 
@@ -65,7 +65,10 @@ open class Fb : KodeinGlobalAware {
         val EVENT_TIME = "time"
         /** Nullable. */
         val EVENT_DESC = "description"
+        /** May not be null. */
+        val COMM_NAME = "name"
+
         /** Admin e-mails per community. */
-        val ADMINS = "admins"
+        val COMM_ADMINS = "admins"
     }
 }
