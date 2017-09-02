@@ -29,4 +29,5 @@
     <string name="searchable_add_community_hint">Community name</string>
     <string name="add_comm_login_to_create">You can log in to create one</string>
     <string name="add_comm_login">Login</string>
+    <string name="add_comm_created">Created community [name]</string>
 </resources>

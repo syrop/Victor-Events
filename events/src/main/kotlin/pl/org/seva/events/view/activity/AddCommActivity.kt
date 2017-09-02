@@ -27,6 +27,7 @@ import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
 import com.github.salomonbrys.kodein.instance
 import kotlinx.android.synthetic.main.activity_add_comm.*
@@ -164,6 +165,7 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
 
     private fun String.createJoinAndFinish() {
         joinNewCommunity()
+        joined()
         finish()
     }
 
@@ -184,6 +186,9 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
 
     private fun String.joinNewCommunity() = communities joinNewCommunity this
 
+    private fun String.joined() =
+            Toast.makeText(this@AddCommActivity, created(), Toast.LENGTH_LONG).show()
+
     private fun Community.join() = communities join this
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
@@ -191,8 +196,11 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
         else -> super.onOptionsItemSelected(item)
     }
 
-    private fun String.commNotFound(): CharSequence =
+    private fun String.commNotFound() =
             getString(R.string.add_comm_not_found).bold(NAME_PLACEHOLDER, this)
+
+    private fun String.created() =
+            getString(R.string.add_comm_created).bold(NAME_PLACEHOLDER, this)
 
     companion object {
         val NAME_PLACEHOLDER = "[name]"
