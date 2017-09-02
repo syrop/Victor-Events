@@ -39,6 +39,7 @@ import pl.org.seva.events.view.adapter.CommAdapter
 import pl.org.seva.events.view.bold
 import pl.org.seva.events.view.decoration.DividerItemDecoration
 import pl.org.seva.events.view.snackbar.longSnackbar
+import pl.org.seva.events.view.snackbar.permanentSnackbar
 
 class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
 
@@ -151,7 +152,7 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
     }
 
     private fun String.showLoginToCreateSnackbar() {
-        longSnackbar {
+        permanentSnackbar {
             view = layout
             message = R.string.add_comm_login_to_create
             action = R.string.add_comm_login
