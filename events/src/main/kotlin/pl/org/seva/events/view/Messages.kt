@@ -24,7 +24,7 @@ import android.text.style.StyleSpan
 
 fun String.bold(placeholder: String, replacement: String): CharSequence {
     val idName = indexOf(placeholder)
-    val idEndName = idName + length
+    val idEndName = idName + replacement.length
     val boldSpan = StyleSpan(Typeface.BOLD)
     return SpannableStringBuilder(replace(placeholder, replacement)).apply {
         setSpan(boldSpan, idName, idEndName, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
