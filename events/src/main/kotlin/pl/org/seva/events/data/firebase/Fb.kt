@@ -38,11 +38,11 @@ open class Fb : KodeinGlobalAware {
 
     protected val String.name get() = db reference COMMUNITIES child this child NAME
 
-    protected infix fun DatabaseReference.child(ch: String): DatabaseReference = this.child(ch)
+    protected infix fun DatabaseReference.child(ch: String) = this.child(ch)!!
 
     protected infix fun DatabaseReference.value(v: Any) = this.setValue(v)!!
 
-    private infix fun FirebaseDatabase.reference(ref: String) : DatabaseReference = this.getReference(ref)
+    private infix fun FirebaseDatabase.reference(ref: String) = this.getReference(ref)!!
 
     protected fun String.to64() = Base64.encodeToString(toByteArray(), Base64.NO_WRAP)!!
 
