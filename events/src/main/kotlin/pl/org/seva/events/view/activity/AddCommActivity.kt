@@ -169,7 +169,8 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
 
     private fun String.loginToCreateComm() {
         Intent(this@AddCommActivity, LoginActivity::class.java)
-                .putExtra(LoginActivity.COMMUNITY_NAME, this).let {
+                .putExtra(LoginActivity.COMMUNITY_NAME, this)
+                .putExtra(LoginActivity.ACTION, LoginActivity.LOGIN).let {
             startActivityForResult(it, LOGIN_CREATE_COMM_REQUEST)
         }
     }
