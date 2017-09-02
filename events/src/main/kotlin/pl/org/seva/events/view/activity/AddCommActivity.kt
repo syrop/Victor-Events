@@ -58,10 +58,6 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
         if (Intent.ACTION_SEARCH == intent.action) {
             search(intent.getStringExtra(SearchManager.QUERY))
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
         if (communities.empty) {
             communitiesNotFoundPrompt()
         } else {

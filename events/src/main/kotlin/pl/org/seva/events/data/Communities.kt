@@ -42,7 +42,7 @@ class Communities : KodeinGlobalAware {
         commDao.insert(community)
     }
 
-    val isAdminOfWhich get() = communities.filter { it.admin }
+    val isAdminOf get() = communities.filter { it.admin }
 
     val isAdminOfAny get() = communities.any { it.admin }
 
