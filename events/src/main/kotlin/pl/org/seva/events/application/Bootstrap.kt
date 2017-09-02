@@ -19,6 +19,7 @@ package pl.org.seva.events.application
 
 import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
 import com.github.salomonbrys.kodein.instance
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import pl.org.seva.events.data.Login
 import pl.org.seva.events.data.room.EventsDatabase
@@ -27,7 +28,9 @@ class Bootstrap : KodeinGlobalAware {
     private val db: EventsDatabase = instance()
     private val login: Login = instance()
 
-    fun boot() {}
+    fun boot() {
+        login.setCurrentUser(FirebaseAuth.getInstance().currentUser)
+    }
 
     fun login(user: FirebaseUser) {
         login.setCurrentUser(user)
@@ -36,4 +39,3 @@ class Bootstrap : KodeinGlobalAware {
     fun logout() {
     }
 }
-

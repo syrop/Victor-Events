@@ -24,15 +24,13 @@ class Login {
     var email: String = ""
     var displayName: String = ""
 
-    fun setCurrentUser(user: FirebaseUser?) {
-        if (user != null) {
-            isLoggedIn = true
-            email = user.email!!
-            displayName = user.displayName!!
-        } else {
-            isLoggedIn = false
-            email = ""
-            displayName = ""
-        }
+    fun setCurrentUser(user: FirebaseUser?) = if (user != null) {
+        isLoggedIn = true
+        email = user.email!!
+        displayName = user.displayName!!
+    } else {
+        isLoggedIn = false
+        email = ""
+        displayName = ""
     }
 }
