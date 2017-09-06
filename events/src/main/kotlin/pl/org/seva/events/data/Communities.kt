@@ -24,6 +24,7 @@ import kotlinx.coroutines.experimental.launch
 import pl.org.seva.events.data.firebase.FbWriter
 import pl.org.seva.events.data.model.Community
 import pl.org.seva.events.data.room.EventsDatabase
+import pl.org.seva.events.data.room.entity.CommEntity
 import pl.org.seva.events.view.ColorFactory
 
 class Communities : KodeinGlobalAware {
@@ -42,7 +43,7 @@ class Communities : KodeinGlobalAware {
     infix fun join(community: Community) {
         communities.add(community)
         launch(CommonPool) {
-            commDao.insert(community)
+            commDao.insert(CommEntity(community))
         }
     }
 

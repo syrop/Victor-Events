@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "7ee93f4c2efc541fe26c10acdfa5f4b2",
+    "identityHash": "abe1a9d1f4a0eeeea79b5615ef30af37",
     "entities": [
       {
         "tableName": "events",
@@ -50,14 +50,8 @@
       },
       {
         "tableName": "communities",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`empty` INTEGER NOT NULL, `name` TEXT NOT NULL, `color` INTEGER NOT NULL, `admin` INTEGER NOT NULL, PRIMARY KEY(`name`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `color` INTEGER NOT NULL, `admin` INTEGER NOT NULL, PRIMARY KEY(`name`))",
         "fields": [
-          {
-            "fieldPath": "empty",
-            "columnName": "empty",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
           {
             "fieldPath": "name",
             "columnName": "name",
@@ -89,7 +83,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"7ee93f4c2efc541fe26c10acdfa5f4b2\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"abe1a9d1f4a0eeeea79b5615ef30af37\")"
     ]
   }
 }

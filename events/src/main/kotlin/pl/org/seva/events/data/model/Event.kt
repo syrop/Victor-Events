@@ -28,7 +28,6 @@ import pl.org.seva.events.data.room.EventsDatabase
 
 @SuppressLint("ParcelCreator")
 @Parcelize
-@Entity(tableName = EventsDatabase.EVENTS_TABLE_NAME)
 data class Event(
         var name: String = CREATION_NAME,
         @PrimaryKey var time: Long = System.currentTimeMillis(),

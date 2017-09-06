@@ -23,7 +23,7 @@ import kotlinx.coroutines.experimental.launch
 import pl.org.seva.events.data.model.Community
 
 inline infix fun CommDao.getAllAsync(crossinline callback: (Collection<Community>) -> Unit) {
-    val collectionJob = async(CommonPool) { getAll() }
+    val collectionJob = async(CommonPool) { getAll().map { it.comValue() } }
     val collection = ArrayList<Community>(0)
     launch(CommonPool) {
         collection.addAll(collectionJob.await())

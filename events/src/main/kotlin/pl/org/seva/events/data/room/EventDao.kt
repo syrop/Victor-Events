@@ -19,20 +19,20 @@ package pl.org.seva.events.data.room
 
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Query
-import pl.org.seva.events.data.model.Event
 import android.arch.persistence.room.Delete
 import android.arch.persistence.room.Insert
+import pl.org.seva.events.data.room.entity.EventEntity
 
 
 @Dao
 interface EventDao {
 
     @Query("select * from ${EventsDatabase.EVENTS_TABLE_NAME}")
-    fun getAll(): List<Event>
+    fun getAll(): List<EventEntity>
 
     @Insert
-    fun insertAll(vararg events: Event)
+    fun insertAll(vararg events: EventEntity)
 
     @Delete
-    fun delete(event: Event)
+    fun delete(event: EventEntity)
 }

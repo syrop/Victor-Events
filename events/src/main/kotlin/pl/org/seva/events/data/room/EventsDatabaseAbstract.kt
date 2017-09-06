@@ -21,10 +21,10 @@ package pl.org.seva.events.data.room
 
 import android.arch.persistence.room.RoomDatabase
 import android.arch.persistence.room.Database
-import pl.org.seva.events.data.model.Community
-import pl.org.seva.events.data.model.Event
+import pl.org.seva.events.data.room.entity.CommEntity
+import pl.org.seva.events.data.room.entity.EventEntity
 
-@Database(entities = [Event::class, Community::class], version = EventsDatabase.DATABASE_VERSION)
+@Database(entities = [EventEntity::class, CommEntity::class], version = EventsDatabase.DATABASE_VERSION)
 abstract class EventsDatabaseAbstract : RoomDatabase() {
     abstract fun eventDao(): EventDao
     abstract fun commDao(): CommDao

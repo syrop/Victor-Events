@@ -15,26 +15,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.data.room
+package pl.org.seva.events.data.room.entity
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Delete
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.Query
-import pl.org.seva.events.data.room.entity.CommEntity
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.PrimaryKey
+import android.graphics.Color
+import pl.org.seva.events.data.model.Community
+import pl.org.seva.events.data.room.EventsDatabase
 
-@Dao
-interface CommDao {
+@Entity(tableName = EventsDatabase.COMMUNITIES_TABLE_NAME)
+class CommEntity() {
+    @PrimaryKey
+    lateinit var name: String
+    var color: Int = Color.GRAY
+    var admin: Boolean = false
 
-    @Query("select * from ${EventsDatabase.COMMUNITIES_TABLE_NAME}")
-    fun getAll(): List<CommEntity>
+    constructor(community: Community): this() {
+        name = community.name
+        color = community.color
+        admin = community.admin
+    }
 
-    @Insert
-    fun insertAll(vararg comm: CommEntity)
-
-    @Insert
-    fun insert(comm: CommEntity)
-
-    @Delete
-    fun delete(comm: CommEntity)
+    fun comValue() = Community(name = name, color = color, admin = admin)
 }

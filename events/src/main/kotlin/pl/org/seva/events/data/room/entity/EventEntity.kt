@@ -15,29 +15,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.data.model
+package pl.org.seva.events.data.room.entity
 
-import android.annotation.SuppressLint
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
-import android.graphics.Color
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import pl.org.seva.events.data.model.Event
 import pl.org.seva.events.data.room.EventsDatabase
 
-@SuppressLint("ParcelCreator")
-@Parcelize
-data class Community(
-        val name: String,
-        val color: Int = Color.GRAY,
-        val admin: Boolean = false) : Parcelable {
+@Entity(tableName = EventsDatabase.EVENTS_TABLE_NAME)
+class EventEntity() {
+        lateinit var name: String
+        @PrimaryKey
+        var time: Long = 0
+        var lat: Double? = null
+        var lon: Double? = null
+        var desc: String? = null
 
-    val lcName: String get() = name.toLowerCase()
+    fun eventValue() = Event(name = name, time = time, lat = lat, desc = desc)
 
-    @Transient
-    var empty = false
-
-    companion object {
-        fun empty(name: String = "") = Community(name).apply { empty = true }
+    constructor(event: Event): this() {
+        name = event.name
+        time = event.time
+        lat = event.lat
+        lon = event.lon
+        desc = event.desc
     }
 }
