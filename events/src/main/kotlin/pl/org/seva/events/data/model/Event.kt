@@ -29,11 +29,11 @@ import pl.org.seva.events.data.room.EventsDatabase
 @SuppressLint("ParcelCreator")
 @Parcelize
 data class Event(
-        var name: String = CREATION_NAME,
-        @PrimaryKey var time: Long = System.currentTimeMillis(),
-        var lat: Double? = null,
-        var lon: Double? = null,
-        var desc: String? = null
+        val name: String = CREATION_NAME,
+        val time: Long = System.currentTimeMillis(),
+        val lat: Double? = null,
+        val lon: Double? = null,
+        val desc: String? = null
 ) : Parcelable {
 
     companion object: Parceler<Event> {
@@ -48,8 +48,8 @@ data class Event(
             parcel.writeString(name)
             if (lat != null && lon != null) {
                 parcel.writeInt(PRESENT)
-                parcel.writeDouble(lat!!)
-                parcel.writeDouble(lon!!)
+                parcel.writeDouble(lat)
+                parcel.writeDouble(lon)
             }
             else {
                 parcel.writeInt(NOT_PRESENT)
