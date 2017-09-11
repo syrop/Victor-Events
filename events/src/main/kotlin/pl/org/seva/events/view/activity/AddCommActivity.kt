@@ -53,6 +53,11 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
     private lateinit var adapter: CommAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        fun showBackArrow() {
+            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+            supportActionBar!!.setDisplayShowHomeEnabled(true)
+        }
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_comm)
 
@@ -68,11 +73,6 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
 
     private fun communitiesNotFoundPrompt() {
         prompt.setText(R.string.add_comm_please_search_empty)
-    }
-
-    private fun showBackArrow() {
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        supportActionBar!!.setDisplayShowHomeEnabled(true)
     }
 
     override fun onBackPressed() = if (!communities.empty) super.onBackPressed() else Unit
@@ -114,7 +114,7 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
     private fun search(name: String) {
         fun Community.found() {
             fun Community.joinAndFinish() {
-                join()
+                communities join this
                 finish()
             }
 
@@ -124,6 +124,9 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
             recycler.addItemDecoration(DividerItemDecoration(this@AddCommActivity))
             recycler.adapter = adapter
         }
+
+        fun String.commNotFound() =
+                getString(R.string.add_comm_not_found).bold(NAME_PLACEHOLDER, this)
 
         fun notFound() {
             fun String.showCreateCommunitySnackbar() {
@@ -172,8 +175,11 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
     }
 
     private fun String.createJoinAndFinish() {
-        joinNewCommunity()
-        joined()
+        fun String.created() =
+                getString(R.string.add_comm_created).bold(NAME_PLACEHOLDER, this)
+
+        communities joinNewCommunity this
+        Toast.makeText(this@AddCommActivity, created(), Toast.LENGTH_LONG).show()
         finish()
     }
 
@@ -184,23 +190,10 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
         }
     }
 
-    private fun String.joinNewCommunity() = communities joinNewCommunity this
-
-    private fun String.joined() =
-            Toast.makeText(this@AddCommActivity, created(), Toast.LENGTH_LONG).show()
-
-    private fun Community.join() = communities join this
-
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         android.R.id.home -> { finish(); true }
         else -> super.onOptionsItemSelected(item)
     }
-
-    private fun String.commNotFound() =
-            getString(R.string.add_comm_not_found).bold(NAME_PLACEHOLDER, this)
-
-    private fun String.created() =
-            getString(R.string.add_comm_created).bold(NAME_PLACEHOLDER, this)
 
     companion object {
         val NAME_PLACEHOLDER = "[name]"
