@@ -112,6 +112,58 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
     }
 
     private fun search(name: String) {
+        fun Community.found() {
+            fun Community.joinAndFinish() {
+                join()
+                finish()
+            }
+
+            progress.visibility = View.GONE
+            recycler.visibility = View.VISIBLE
+            adapter = CommAdapter(this) { joinAndFinish() }
+            recycler.addItemDecoration(DividerItemDecoration(this@AddCommActivity))
+            recycler.adapter = adapter
+        }
+
+        fun notFound() {
+            fun String.showCreateCommunitySnackbar() {
+                longSnackbar {
+                    view = layout
+                    message = R.string.add_comm_can_create
+                    action = R.string.add_comm_create
+                } show {
+                    createJoinAndFinish()
+                }
+            }
+
+            fun String.showLoginToCreateSnackbar() {
+                fun String.loginToCreateComm() {
+                    Intent(this@AddCommActivity, LoginActivity::class.java)
+                            .putExtra(LoginActivity.COMMUNITY_NAME, this)
+                            .putExtra(LoginActivity.ACTION, LoginActivity.LOGIN).let {
+                        startActivityForResult(it, LOGIN_CREATE_COMM_REQUEST)
+                    }
+                }
+
+                permanentSnackbar {
+                    view = layout
+                    message = R.string.add_comm_login_to_create
+                    action = R.string.add_comm_login
+                } show {
+                    loginToCreateComm()
+                }
+            }
+
+            progress.visibility = View.GONE
+            prompt.visibility = View.VISIBLE
+            prompt.text = name.commNotFound()
+            if (login.isLoggedIn) {
+                name.showCreateCommunitySnackbar()
+            } else {
+                name.showLoginToCreateSnackbar()
+            }
+        }
+
         prompt.visibility = View.GONE
         progress.visibility = View.VISIBLE
         fbReader.findCommunity(name) {
@@ -119,62 +171,10 @@ class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
         }
     }
 
-    private fun Community.found() {
-        progress.visibility = View.GONE
-        recycler.visibility = View.VISIBLE
-        adapter = CommAdapter(this) { joinAndFinish() }
-        recycler.addItemDecoration(DividerItemDecoration(this@AddCommActivity))
-        recycler.adapter = adapter
-    }
-
-    private fun Community.notFound() {
-        progress.visibility = View.GONE
-        prompt.visibility = View.VISIBLE
-        prompt.text = name.commNotFound()
-        if (login.isLoggedIn) {
-            name.showCreateCommunitySnackbar()
-        } else {
-            name.showLoginToCreateSnackbar()
-        }
-    }
-
-    private fun String.showCreateCommunitySnackbar() {
-        longSnackbar {
-            view = layout
-            message = R.string.add_comm_can_create
-            action = R.string.add_comm_create
-        } show {
-            createJoinAndFinish()
-        }
-    }
-
-    private fun String.showLoginToCreateSnackbar() {
-        permanentSnackbar {
-            view = layout
-            message = R.string.add_comm_login_to_create
-            action = R.string.add_comm_login
-        } show {
-            loginToCreateComm()
-        }
-    }
-
-    private fun Community.joinAndFinish() {
-        join()
-        finish()
-    }
-
     private fun String.createJoinAndFinish() {
         joinNewCommunity()
         joined()
         finish()
-    }
-
-    private fun String.loginToCreateComm() {
-        Intent(this@AddCommActivity, LoginActivity::class.java)
-                .putExtra(LoginActivity.COMMUNITY_NAME, this)
-                .putExtra(LoginActivity.ACTION, LoginActivity.LOGIN).let {
-            startActivityForResult(it, LOGIN_CREATE_COMM_REQUEST)
-        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
