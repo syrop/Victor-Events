@@ -15,14 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.view.adapter
+package pl.org.seva.events.community
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import pl.org.seva.events.R
 import pl.org.seva.events.data.model.Community
-import pl.org.seva.events.view.adapter.viewholder.CommViewHolder
 
 class CommAdapter(
         private val comm: Community,

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.view.activity
+package pl.org.seva.events.event
 
 import android.content.Intent
 import android.os.Bundle
@@ -28,8 +28,10 @@ import com.github.salomonbrys.kodein.instance
 
 import kotlinx.android.synthetic.main.activity_events.*
 import pl.org.seva.events.R
+import pl.org.seva.events.community.AddCommActivity
 import pl.org.seva.events.data.Communities
 import pl.org.seva.events.data.Login
+import pl.org.seva.events.login.LoginConfirmationActivity
 
 class EventsActivity : AppCompatActivity(), KodeinGlobalAware {
 

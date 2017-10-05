@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.view.decoration
+package pl.org.seva.events.ui
 
 import android.content.Context
 import android.graphics.Canvas
@@ -29,12 +29,12 @@ class DividerItemDecoration(context: Context) : RecyclerView.ItemDecoration() {
     private var divider: Drawable
 
     init {
-        val a = context.obtainStyledAttributes(ATTRS)
-        divider = a.getDrawable(0)
-        a.recycle()
+        val attr = context.obtainStyledAttributes(ATTRS)
+        divider = attr.getDrawable(0)
+        attr.recycle()
     }
 
-    override fun onDrawOver(c: Canvas?, parent: RecyclerView, state: RecyclerView.State?) {
+    override fun onDrawOver(canvas: Canvas, parent: RecyclerView, state: RecyclerView.State?) {
 
         val left = parent.paddingLeft
         val right = parent.width - parent.paddingRight
@@ -42,16 +42,19 @@ class DividerItemDecoration(context: Context) : RecyclerView.ItemDecoration() {
         val childCount = parent.childCount
         for (i in 0 until childCount) {
             val child = parent.getChildAt(i)
-            val params = child
-                    .layoutParams as RecyclerView.LayoutParams
+            val params = child.layoutParams as RecyclerView.LayoutParams
             val top = child.bottom + params.bottomMargin
             val bottom = top + divider.intrinsicHeight
             divider.setBounds(left, top, right, bottom)
-            divider.draw(c)
+            divider.draw(canvas)
         }
     }
 
-    override fun getItemOffsets(outRect: Rect, view: View?, parent: RecyclerView?, state: RecyclerView.State?) {
+    override fun getItemOffsets(
+            outRect: Rect,
+            view: View?,
+            parent: RecyclerView?,
+            state: RecyclerView.State?) {
         outRect.set(0, 0, 0, divider.intrinsicHeight)
     }
 

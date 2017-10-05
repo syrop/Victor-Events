@@ -25,7 +25,7 @@ import pl.org.seva.events.data.firebase.FbWriter
 import pl.org.seva.events.data.model.Community
 import pl.org.seva.events.data.room.EventsDatabase
 import pl.org.seva.events.data.room.entity.CommEntity
-import pl.org.seva.events.view.ColorFactory
+import pl.org.seva.events.main.ColorFactory
 
 class Communities : KodeinGlobalAware {
 

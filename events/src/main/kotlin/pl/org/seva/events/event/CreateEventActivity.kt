@@ -15,22 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.view.snackbar
+package pl.org.seva.events.event
 
-import android.support.design.widget.Snackbar
-import android.view.View
+import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
 
-fun longSnackbar(f: SnackbarBuilder.() -> Unit): SnackbarBuilder = SnackbarBuilder().apply(f)
-
-fun permanentSnackbar(f: SnackbarBuilder.() -> Unit): SnackbarBuilder =
-        SnackbarBuilder(Snackbar.LENGTH_INDEFINITE).apply(f)
-
-class SnackbarBuilder(private var length: Int = Snackbar.LENGTH_LONG) {
-    lateinit var view: View
-    var message = 0
-    var action = 0
-
-    infix fun show(f: () -> Unit) {
-        Snackbar.make(view, message, length).setAction(action, { f() }).show()
+class CreateEventActivity : AppCompatActivity(), KodeinGlobalAware {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
     }
 }

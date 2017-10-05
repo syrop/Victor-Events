@@ -15,16 +15,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.view.activity
+package pl.org.seva.events.main
 
-import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import pl.org.seva.events.R
+import android.app.Application
+import android.graphics.Color
 
-class LoginConfirmationActivity : AppCompatActivity() {
+class ColorFactory(private val application: Application ) {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login_confirmation)
+    private val colors by lazy {
+        application.run {
+            resources.getIdentifier(COLOR_ARRAY_NAME + COLOR_TYPE,"array", packageName).let {
+                resources.obtainTypedArray(it)
+            }
+        }
+    }
+
+    fun nextColor() = with(colors) {
+        val index = (Math.random() * length()).toInt()
+        getColor(index, Color.GRAY)
+    }
+
+    companion object {
+        val COLOR_ARRAY_NAME = "mdcolor_"
+        val COLOR_TYPE = "400"
     }
 }

@@ -15,21 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.view.adapter.viewholder
+package pl.org.seva.events.ui
 
-import android.support.v7.widget.RecyclerView
-import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import kotlinx.android.synthetic.main.row_community.view.*
+import android.graphics.Typeface
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.StyleSpan
 
-class CommViewHolder(val view: View, f: (() -> Unit)? = null) : RecyclerView.ViewHolder(view) {
-
-    init {
-        view.setOnClickListener { f?.invoke() }
+fun String.bold(placeholder: String, replacement: String): CharSequence {
+    val idName = indexOf(placeholder)
+    val idEndName = idName + replacement.length
+    val boldSpan = StyleSpan(Typeface.BOLD)
+    return SpannableStringBuilder(replace(placeholder, replacement)).apply {
+        setSpan(boldSpan, idName, idEndName, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
     }
-
-    val communityName: TextView = view.community
-    val iconProfile: ImageView = view.icon_profile
-    val iconText: TextView = view.icon_text
 }

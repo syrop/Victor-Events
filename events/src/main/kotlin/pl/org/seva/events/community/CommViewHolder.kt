@@ -15,28 +15,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.view
+package pl.org.seva.events.community
 
-import android.app.Application
-import android.graphics.Color
+import android.support.v7.widget.RecyclerView
+import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
+import kotlinx.android.synthetic.main.row_community.view.*
 
-class ColorFactory(private val application: Application ) {
+class CommViewHolder(val view: View, f: (() -> Unit)? = null) : RecyclerView.ViewHolder(view) {
 
-    private val colors by lazy {
-        application.run {
-            resources.getIdentifier(COLOR_ARRAY_NAME + COLOR_TYPE,"array", packageName).let {
-                resources.obtainTypedArray(it)
-            }
-        }
+    init {
+        view.setOnClickListener { f?.invoke() }
     }
 
-    fun nextColor() = with(colors) {
-        val index = (Math.random() * length()).toInt()
-        getColor(index, Color.GRAY)
-    }
-
-    companion object {
-        val COLOR_ARRAY_NAME = "mdcolor_"
-        val COLOR_TYPE = "400"
-    }
+    val communityName: TextView = view.community
+    val iconProfile: ImageView = view.icon_profile
+    val iconText: TextView = view.icon_text
 }

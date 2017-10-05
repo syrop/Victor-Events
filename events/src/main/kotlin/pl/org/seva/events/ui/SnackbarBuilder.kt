@@ -15,18 +15,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.view
+package pl.org.seva.events.ui
 
-import android.graphics.Typeface
-import android.text.SpannableStringBuilder
-import android.text.Spanned
-import android.text.style.StyleSpan
+import android.support.design.widget.Snackbar
+import android.view.View
 
-fun String.bold(placeholder: String, replacement: String): CharSequence {
-    val idName = indexOf(placeholder)
-    val idEndName = idName + replacement.length
-    val boldSpan = StyleSpan(Typeface.BOLD)
-    return SpannableStringBuilder(replace(placeholder, replacement)).apply {
-        setSpan(boldSpan, idName, idEndName, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+fun longSnackbar(f: SnackbarBuilder.() -> Unit): SnackbarBuilder = SnackbarBuilder().apply(f)
+
+fun permanentSnackbar(f: SnackbarBuilder.() -> Unit): SnackbarBuilder =
+        SnackbarBuilder(Snackbar.LENGTH_INDEFINITE).apply(f)
+
+class SnackbarBuilder(private var length: Int = Snackbar.LENGTH_LONG) {
+    lateinit var view: View
+    var message = 0
+    var action = 0
+
+    infix fun show(f: () -> Unit) {
+        Snackbar.make(view, message, length).setAction(action, { f() }).show()
     }
 }

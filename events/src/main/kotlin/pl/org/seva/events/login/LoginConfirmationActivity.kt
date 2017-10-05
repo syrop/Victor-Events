@@ -15,14 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.view.activity
+package pl.org.seva.events.login
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
+import pl.org.seva.events.R
 
-class CreateEventActivity : AppCompatActivity(), KodeinGlobalAware {
+class LoginConfirmationActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_login_confirmation)
     }
 }

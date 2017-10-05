@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.view.activity
+package pl.org.seva.events.community
 
 import android.app.Activity
 import android.app.SearchManager
@@ -36,11 +36,11 @@ import pl.org.seva.events.data.Communities
 import pl.org.seva.events.data.model.Community
 import pl.org.seva.events.data.Login
 import pl.org.seva.events.data.firebase.FbReader
-import pl.org.seva.events.view.adapter.CommAdapter
-import pl.org.seva.events.view.bold
-import pl.org.seva.events.view.decoration.DividerItemDecoration
-import pl.org.seva.events.view.snackbar.longSnackbar
-import pl.org.seva.events.view.snackbar.permanentSnackbar
+import pl.org.seva.events.login.LoginActivity
+import pl.org.seva.events.ui.bold
+import pl.org.seva.events.ui.DividerItemDecoration
+import pl.org.seva.events.ui.longSnackbar
+import pl.org.seva.events.ui.permanentSnackbar
 
 class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
 

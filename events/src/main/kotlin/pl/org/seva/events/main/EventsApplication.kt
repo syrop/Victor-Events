@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.application
+package pl.org.seva.events.main
 
 import android.app.Application
 import com.github.salomonbrys.kodein.Kodein
@@ -23,8 +23,6 @@ import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
 import com.github.salomonbrys.kodein.conf.global
 import com.github.salomonbrys.kodein.instance
 import com.google.firebase.auth.FirebaseUser
-import pl.org.seva.events.application.Bootstrap
-import pl.org.seva.events.application.module
 
 class EventsApplication : Application(), KodeinGlobalAware {
 
