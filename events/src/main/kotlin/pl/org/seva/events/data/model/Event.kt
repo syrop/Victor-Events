@@ -18,13 +18,10 @@
 package pl.org.seva.events.data.model
 
 import android.annotation.SuppressLint
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
 import android.os.Parcel
 import android.os.Parcelable
 import kotlinx.android.parcel.Parceler
 import kotlinx.android.parcel.Parcelize
-import pl.org.seva.events.data.room.EventsDatabase
 
 @SuppressLint("ParcelCreator")
 @Parcelize
