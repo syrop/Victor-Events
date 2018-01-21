@@ -34,10 +34,10 @@ data class Event(
 ) : Parcelable {
 
     companion object: Parceler<Event> {
-        private val NOT_PRESENT = 0
-        private val PRESENT = 1
+        private const val NOT_PRESENT = 0
+        private const val PRESENT = 1
 
-        private val CREATION_NAME = ""
+        private const val CREATION_NAME = ""
 
         val creation get() = Event(CREATION_NAME, System.currentTimeMillis())
 
