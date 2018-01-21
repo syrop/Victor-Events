@@ -26,7 +26,6 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
 import com.github.salomonbrys.kodein.instance
 
 import com.google.android.gms.auth.api.Auth
@@ -41,11 +40,11 @@ import kotlinx.android.synthetic.main.activity_login.*
 import pl.org.seva.events.main.EventsApplication
 import pl.org.seva.events.R
 import pl.org.seva.events.data.firebase.FbWriter
+import pl.org.seva.events.main.instance
 
 class LoginActivity : AppCompatActivity(),
         GoogleApiClient.OnConnectionFailedListener,
-        GoogleApiClient.ConnectionCallbacks,
-        KodeinGlobalAware {
+        GoogleApiClient.ConnectionCallbacks {
 
     private val fbWriter: FbWriter = instance()
 

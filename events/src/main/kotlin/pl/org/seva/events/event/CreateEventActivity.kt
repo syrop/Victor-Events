@@ -19,9 +19,8 @@ package pl.org.seva.events.event
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
 
-class CreateEventActivity : AppCompatActivity(), KodeinGlobalAware {
+class CreateEventActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }

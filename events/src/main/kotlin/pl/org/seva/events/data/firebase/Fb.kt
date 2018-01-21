@@ -18,13 +18,12 @@
 package pl.org.seva.events.data.firebase
 
 import android.util.Base64
-import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
-import com.github.salomonbrys.kodein.instance
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import pl.org.seva.events.data.Login
+import pl.org.seva.events.main.instance
 
-open class Fb : KodeinGlobalAware {
+open class Fb {
 
     protected val communities get() = db reference COMMUNITIES
 
@@ -50,27 +49,27 @@ open class Fb : KodeinGlobalAware {
 
     companion object {
         /** Root of community-related data that can be read by anyone. */
-        val COMMUNITIES = "communities"
+        const val COMMUNITIES = "communities"
         /** Root of user-related data that can be read only by logged in users. */
-        val PRIVATE = "private"
+        const val PRIVATE = "private"
         /** Per community. */
-        val EVENTS = "events"
+        const val EVENTS = "events"
         /** Community name. */
-        val NAME = "name"
+        const val NAME = "name"
         /** May not be null. */
-        val EVENT_NAME = "name"
+        const val EVENT_NAME = "name"
         /** Double. */
-        val EVENT_LAT = "lat"
+        const val EVENT_LAT = "lat"
         /** Double. */
-        val EVENT_LON = "lon"
+        const val EVENT_LON = "lon"
         /** Start time in milliseconds (there is no duration nor end time). */
-        val EVENT_TIME = "time"
+        const val EVENT_TIME = "time"
         /** Nullable. */
-        val EVENT_DESC = "description"
+        const val EVENT_DESC = "description"
         /** May not be null. */
-        val COMM_NAME = "name"
+        const val COMM_NAME = "name"
 
         /** Admin e-mails per community. */
-        val COMM_ADMINS = "admins"
+        const val COMM_ADMINS = "admins"
     }
 }

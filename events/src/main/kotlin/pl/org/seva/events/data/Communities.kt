@@ -17,17 +17,16 @@
 
 package pl.org.seva.events.data
 
-import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
-import com.github.salomonbrys.kodein.instance
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
 import pl.org.seva.events.data.firebase.FbWriter
 import pl.org.seva.events.data.model.Community
 import pl.org.seva.events.data.room.EventsDatabase
 import pl.org.seva.events.data.room.entity.CommEntity
+import pl.org.seva.events.main.instance
 import pl.org.seva.events.main.ui.ColorFactory
 
-class Communities : KodeinGlobalAware {
+class Communities {
 
     private val communities = mutableListOf<Community>()
     private val cf: ColorFactory = instance()

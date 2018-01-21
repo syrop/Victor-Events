@@ -20,6 +20,8 @@ package pl.org.seva.events.main
 import android.app.Application
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.bind
+import com.github.salomonbrys.kodein.conf.global
+import com.github.salomonbrys.kodein.instance
 import com.github.salomonbrys.kodein.singleton
 import pl.org.seva.events.data.Communities
 import pl.org.seva.events.data.Login
@@ -29,6 +31,8 @@ import pl.org.seva.events.data.room.EventsDatabase
 import pl.org.seva.events.main.ui.ColorFactory
 
 fun module(f: KodeinModuleBuilder.() -> Unit) = KodeinModuleBuilder().apply { f() }.build()
+
+inline fun <reified T : Any> instance() = Kodein.global.instance<T>()
 
 class KodeinModuleBuilder {
 

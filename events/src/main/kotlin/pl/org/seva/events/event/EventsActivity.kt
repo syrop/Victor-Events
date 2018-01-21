@@ -23,8 +23,6 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
-import com.github.salomonbrys.kodein.instance
 
 import kotlinx.android.synthetic.main.activity_events.*
 import pl.org.seva.events.R
@@ -32,8 +30,9 @@ import pl.org.seva.events.community.AddCommActivity
 import pl.org.seva.events.data.Communities
 import pl.org.seva.events.data.Login
 import pl.org.seva.events.login.LoginConfirmationActivity
+import pl.org.seva.events.main.instance
 
-class EventsActivity : AppCompatActivity(), KodeinGlobalAware {
+class EventsActivity : AppCompatActivity() {
 
     private val login: Login = instance()
     private val communities: Communities = instance()

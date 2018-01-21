@@ -28,8 +28,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import com.github.salomonbrys.kodein.conf.KodeinGlobalAware
-import com.github.salomonbrys.kodein.instance
 import kotlinx.android.synthetic.main.activity_add_comm.*
 import pl.org.seva.events.R
 import pl.org.seva.events.data.Communities
@@ -37,12 +35,13 @@ import pl.org.seva.events.data.model.Community
 import pl.org.seva.events.data.Login
 import pl.org.seva.events.data.firebase.FbReader
 import pl.org.seva.events.login.LoginActivity
+import pl.org.seva.events.main.instance
 import pl.org.seva.events.main.ui.bold
 import pl.org.seva.events.main.ui.DividerItemDecoration
 import pl.org.seva.events.main.ui.longSnackbar
 import pl.org.seva.events.main.ui.permanentSnackbar
 
-class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
+class AddCommActivity : AppCompatActivity() {
 
     private val communities: Communities = instance()
     private val fbReader: FbReader = instance()
