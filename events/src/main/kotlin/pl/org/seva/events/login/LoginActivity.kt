@@ -218,15 +218,14 @@ class LoginActivity : AppCompatActivity(),
     override fun onConnectionSuspended(i: Int) {}
 
     companion object {
+        const val ACTION = "action"
+        const val LOGIN = "login"
+        const val LOGOUT = "logout"
 
-        val ACTION = "action"
-        val LOGIN = "login"
-        val LOGOUT = "logout"
-
-        val COMMUNITY_NAME = "community_name"
+        const val COMMUNITY_NAME = "community_name"
 
         private val TAG = LoginActivity::class.java.simpleName
 
-        private val SIGN_IN_REQUEST_ID = 9001
+        private const val SIGN_IN_REQUEST_ID = 9001
     }
 }

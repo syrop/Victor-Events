@@ -37,10 +37,10 @@ import pl.org.seva.events.data.model.Community
 import pl.org.seva.events.data.Login
 import pl.org.seva.events.data.firebase.FbReader
 import pl.org.seva.events.login.LoginActivity
-import pl.org.seva.events.ui.bold
-import pl.org.seva.events.ui.DividerItemDecoration
-import pl.org.seva.events.ui.longSnackbar
-import pl.org.seva.events.ui.permanentSnackbar
+import pl.org.seva.events.main.ui.bold
+import pl.org.seva.events.main.ui.DividerItemDecoration
+import pl.org.seva.events.main.ui.longSnackbar
+import pl.org.seva.events.main.ui.permanentSnackbar
 
 class AddCommActivity : AppCompatActivity(), KodeinGlobalAware {
 

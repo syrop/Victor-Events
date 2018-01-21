@@ -26,6 +26,7 @@ import pl.org.seva.events.data.Login
 import pl.org.seva.events.data.firebase.FbReader
 import pl.org.seva.events.data.firebase.FbWriter
 import pl.org.seva.events.data.room.EventsDatabase
+import pl.org.seva.events.main.ui.ColorFactory
 
 fun module(f: KodeinModuleBuilder.() -> Unit) = KodeinModuleBuilder().apply { f() }.build()
 

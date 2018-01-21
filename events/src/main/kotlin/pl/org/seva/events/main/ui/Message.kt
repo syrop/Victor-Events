@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.ui
+package pl.org.seva.events.main.ui
 
 import android.graphics.Typeface
 import android.text.SpannableStringBuilder

@@ -15,22 +15,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.ui
+package pl.org.seva.events.main.ui
 
-import android.support.design.widget.Snackbar
-import android.view.View
+import android.app.Application
+import android.graphics.Color
 
-fun longSnackbar(f: SnackbarBuilder.() -> Unit): SnackbarBuilder = SnackbarBuilder().apply(f)
+class ColorFactory(private val application: Application ) {
 
-fun permanentSnackbar(f: SnackbarBuilder.() -> Unit): SnackbarBuilder =
-        SnackbarBuilder(Snackbar.LENGTH_INDEFINITE).apply(f)
+    private val colors by lazy {
+        application.run {
+            resources.getIdentifier(COLOR_ARRAY_NAME + COLOR_TYPE,"array", packageName).let {
+                resources.obtainTypedArray(it)
+            }
+        }
+    }
 
-class SnackbarBuilder(private var length: Int = Snackbar.LENGTH_LONG) {
-    lateinit var view: View
-    var message = 0
-    var action = 0
+    fun nextColor() = with(colors) {
+        val index = (Math.random() * length()).toInt()
+        getColor(index, Color.GRAY)
+    }
 
-    infix fun show(f: () -> Unit) {
-        Snackbar.make(view, message, length).setAction(action, { f() }).show()
+    companion object {
+        const val COLOR_ARRAY_NAME = "mdcolor_"
+        const val COLOR_TYPE = "400"
     }
 }
