@@ -18,12 +18,10 @@
 package pl.org.seva.events.data.model
 
 import android.annotation.SuppressLint
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
 import android.graphics.Color
 import android.os.Parcelable
+import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
-import pl.org.seva.events.data.room.EventsDatabase
 
 @SuppressLint("ParcelCreator")
 @Parcelize
@@ -34,6 +32,7 @@ data class Community(
 
     val lcName: String get() = name.toLowerCase()
 
+    @IgnoredOnParcel
     @Transient
     var empty = false
 

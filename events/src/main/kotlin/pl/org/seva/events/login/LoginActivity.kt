@@ -26,7 +26,6 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import com.github.salomonbrys.kodein.instance
 
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -39,14 +38,11 @@ import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.activity_login.*
 import pl.org.seva.events.main.EventsApplication
 import pl.org.seva.events.R
-import pl.org.seva.events.data.firebase.FbWriter
-import pl.org.seva.events.main.instance
+import pl.org.seva.events.data.firebase.fbWriter
 
 class LoginActivity : AppCompatActivity(),
         GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks {
-
-    private val fbWriter: FbWriter = instance()
 
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var authStateListener: (firebaseAuth : FirebaseAuth) -> Unit
@@ -115,7 +111,7 @@ class LoginActivity : AppCompatActivity(),
     }
 
     private fun onUserLoggedIn(user: FirebaseUser) {
-        fbWriter.login(user)
+        fbWriter().login(user)
         (application as EventsApplication).login(user)
         if (performedAction) {
             createCommunityName?.setResult()

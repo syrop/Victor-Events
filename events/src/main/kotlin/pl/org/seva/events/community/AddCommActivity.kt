@@ -30,22 +30,19 @@ import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_add_comm.*
 import pl.org.seva.events.R
-import pl.org.seva.events.data.Communities
 import pl.org.seva.events.data.model.Community
-import pl.org.seva.events.data.Login
-import pl.org.seva.events.data.firebase.FbReader
+import pl.org.seva.events.data.firebase.fbReader
+import pl.org.seva.events.data.login
 import pl.org.seva.events.login.LoginActivity
-import pl.org.seva.events.main.instance
 import pl.org.seva.events.main.ui.bold
 import pl.org.seva.events.main.ui.DividerItemDecoration
 import pl.org.seva.events.main.ui.longSnackbar
 import pl.org.seva.events.main.ui.permanentSnackbar
+import pl.org.seva.events.data.communities
 
 class AddCommActivity : AppCompatActivity() {
 
-    private val communities: Communities = instance()
-    private val fbReader: FbReader = instance()
-    private val login: Login = instance()
+    private val communities = communities()
 
     private val searchManager get() = getSystemService(Context.SEARCH_SERVICE) as SearchManager
 
@@ -159,7 +156,7 @@ class AddCommActivity : AppCompatActivity() {
             progress.visibility = View.GONE
             prompt.visibility = View.VISIBLE
             prompt.text = name.commNotFound()
-            if (login.isLoggedIn) {
+            if (login().isLoggedIn) {
                 name.showCreateCommunitySnackbar()
             } else {
                 name.showLoginToCreateSnackbar()
@@ -168,7 +165,7 @@ class AddCommActivity : AppCompatActivity() {
 
         prompt.visibility = View.GONE
         progress.visibility = View.VISIBLE
-        fbReader.findCommunity(name) {
+        fbReader().findCommunity(name) {
             if (empty) notFound() else found()
         }
     }
@@ -195,7 +192,7 @@ class AddCommActivity : AppCompatActivity() {
     }
 
     companion object {
-        val NAME_PLACEHOLDER = "[name]"
-        val LOGIN_CREATE_COMM_REQUEST = 0
+        const val NAME_PLACEHOLDER = "[name]"
+        const val LOGIN_CREATE_COMM_REQUEST = 0
     }
 }

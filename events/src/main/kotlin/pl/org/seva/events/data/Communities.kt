@@ -26,6 +26,8 @@ import pl.org.seva.events.data.room.entity.CommEntity
 import pl.org.seva.events.main.instance
 import pl.org.seva.events.main.ui.ColorFactory
 
+fun communities() = instance<Communities>()
+
 class Communities {
 
     private val communities = mutableListOf<Community>()

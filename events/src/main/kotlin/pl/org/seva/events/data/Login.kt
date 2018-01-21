@@ -18,6 +18,9 @@
 package pl.org.seva.events.data
 
 import com.google.firebase.auth.FirebaseUser
+import pl.org.seva.events.main.instance
+
+fun login() = instance<Login>()
 
 class Login {
     var isLoggedIn: Boolean = false

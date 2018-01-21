@@ -27,15 +27,13 @@ import android.view.View
 import kotlinx.android.synthetic.main.activity_events.*
 import pl.org.seva.events.R
 import pl.org.seva.events.community.AddCommActivity
-import pl.org.seva.events.data.Communities
-import pl.org.seva.events.data.Login
+import pl.org.seva.events.data.communities
+import pl.org.seva.events.data.login
 import pl.org.seva.events.login.LoginConfirmationActivity
-import pl.org.seva.events.main.instance
 
 class EventsActivity : AppCompatActivity() {
 
-    private val login: Login = instance()
-    private val communities: Communities = instance()
+    private val communities = communities()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +65,7 @@ class EventsActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.events, menu)
-        menu.findItem(R.id.action_login).isVisible = !login.isLoggedIn
+        menu.findItem(R.id.action_login).isVisible = !login().isLoggedIn
         return true
     }
 
