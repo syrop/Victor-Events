@@ -19,7 +19,7 @@
 
     <!-- Add community activity. -->
     <string name="add_comm_label">Add a community</string>
-    <string name="add_comm_please_search_empty">You are not currently following any communities. Please seek them.</string>
+    <string name="add_comm_please_search_empty">You are currently not following any communities. Please seek them.</string>
     <string name="add_comm_please_search">Please seek communities to follow</string>
     <string name="add_comm_searching">Searching…</string>
     <string name="add_comm_not_found">Community called [name] is not found.</string>
