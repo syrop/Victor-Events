@@ -34,7 +34,7 @@ import pl.org.seva.events.data.model.Community
 import pl.org.seva.events.data.firebase.fbReader
 import pl.org.seva.events.data.login
 import pl.org.seva.events.login.LoginActivity
-import pl.org.seva.events.main.ui.bold
+import pl.org.seva.events.main.ui.boldSection
 import pl.org.seva.events.main.ui.DividerItemDecoration
 import pl.org.seva.events.main.ui.longSnackbar
 import pl.org.seva.events.main.ui.permanentSnackbar
@@ -49,11 +49,6 @@ class AddCommActivity : AppCompatActivity() {
     private lateinit var adapter: CommAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        fun showBackArrow() {
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-            supportActionBar!!.setDisplayShowHomeEnabled(true)
-        }
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_comm)
 
@@ -61,14 +56,15 @@ class AddCommActivity : AppCompatActivity() {
             search(intent.getStringExtra(SearchManager.QUERY))
         }
         if (communities.empty) {
-            communitiesNotFoundPrompt()
+            prompt.setText(R.string.add_comm_please_search_empty)
         } else {
-            showBackArrow()
+            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+            supportActionBar!!.setDisplayShowHomeEnabled(true)
         }
     }
 
     private fun communitiesNotFoundPrompt() {
-        prompt.setText(R.string.add_comm_please_search_empty)
+
     }
 
     override fun onBackPressed() = if (!communities.empty) super.onBackPressed() else Unit
@@ -121,24 +117,21 @@ class AddCommActivity : AppCompatActivity() {
             recycler.adapter = adapter
         }
 
-        fun String.commNotFound() =
-                getString(R.string.add_comm_not_found).bold(NAME_PLACEHOLDER, this)
-
         fun notFound() {
-            fun String.showCreateCommunitySnackbar() {
+            fun showCreateCommunitySnackbar(name: String) {
                 longSnackbar {
                     view = layout
                     message = R.string.add_comm_can_create
                     action = R.string.add_comm_create
                 } show {
-                    createJoinAndFinish()
+                    name.createJoinAndFinish()
                 }
             }
 
-            fun String.showLoginToCreateSnackbar() {
-                fun String.loginToCreateComm() {
-                    Intent(this@AddCommActivity, LoginActivity::class.java)
-                            .putExtra(LoginActivity.COMMUNITY_NAME, this)
+            fun showLoginToCreateSnackbar(name: String) {
+                fun loginToCreateComm(name: String) {
+                    Intent(this, LoginActivity::class.java)
+                            .putExtra(LoginActivity.COMMUNITY_NAME, name)
                             .putExtra(LoginActivity.ACTION, LoginActivity.LOGIN).let {
                         startActivityForResult(it, LOGIN_CREATE_COMM_REQUEST)
                     }
@@ -149,17 +142,17 @@ class AddCommActivity : AppCompatActivity() {
                     message = R.string.add_comm_login_to_create
                     action = R.string.add_comm_login
                 } show {
-                    loginToCreateComm()
+                    loginToCreateComm(name)
                 }
             }
 
             progress.visibility = View.GONE
             prompt.visibility = View.VISIBLE
-            prompt.text = name.commNotFound()
+            prompt.text = getString(R.string.add_comm_not_found).boldSection(NAME_PLACEHOLDER, name)
             if (login().isLoggedIn) {
-                name.showCreateCommunitySnackbar()
+                showCreateCommunitySnackbar(name)
             } else {
-                name.showLoginToCreateSnackbar()
+                showLoginToCreateSnackbar(name)
             }
         }
 
@@ -172,7 +165,7 @@ class AddCommActivity : AppCompatActivity() {
 
     private fun String.createJoinAndFinish() {
         fun String.created() =
-                getString(R.string.add_comm_created).bold(NAME_PLACEHOLDER, this)
+                getString(R.string.add_comm_created).boldSection(NAME_PLACEHOLDER, this)
 
         communities joinNewCommunity this
         Toast.makeText(this@AddCommActivity, created(), Toast.LENGTH_LONG).show()

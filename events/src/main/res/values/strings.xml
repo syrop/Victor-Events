@@ -7,6 +7,10 @@
     <string name="events_action_login">Login</string>
     <string name="events_action_seek_community">Seek community</string>
 
+    <!-- Create event activity. -->
+    <string name="event_name">Name</string>
+    <string name="event_date">Date</string>
+
     <!-- Login activity. -->
     <string name="login_label">Login</string>
     <string name="login_authentication_failed">Authentication failed.</string>
