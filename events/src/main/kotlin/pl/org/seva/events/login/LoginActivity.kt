@@ -15,8 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-@file:Suppress("DEPRECATION")
-
 package pl.org.seva.events.login
 
 import android.app.Activity

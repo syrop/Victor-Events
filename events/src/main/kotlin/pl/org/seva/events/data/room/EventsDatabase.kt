@@ -19,6 +19,9 @@ package pl.org.seva.events.data.room
 
 import android.arch.persistence.room.Room
 import android.content.Context
+import pl.org.seva.events.main.instance
+
+fun db() = instance<EventsDatabase>()
 
 class EventsDatabase(context: Context) {
 

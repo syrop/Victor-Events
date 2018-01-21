@@ -17,7 +17,7 @@
 
 package pl.org.seva.events.main
 
-import android.app.Application
+import android.content.Context
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.bind
 import com.github.salomonbrys.kodein.conf.global
@@ -30,13 +30,12 @@ import pl.org.seva.events.data.firebase.FbWriter
 import pl.org.seva.events.data.room.EventsDatabase
 import pl.org.seva.events.main.ui.ColorFactory
 
-fun module(f: KodeinModuleBuilder.() -> Unit) = KodeinModuleBuilder().apply { f() }.build()
+
+fun Context.module() = KodeinModuleBuilder(this).build()
 
 inline fun <reified T : Any> instance() = Kodein.global.instance<T>()
 
-class KodeinModuleBuilder {
-
-    lateinit var application: Application
+class KodeinModuleBuilder(private val ctx: Context) {
 
     fun build() = Kodein.Module {
         bind<Bootstrap>() with singleton { Bootstrap() }
@@ -44,7 +43,7 @@ class KodeinModuleBuilder {
         bind<Communities>() with singleton { Communities() }
         bind<Login>() with singleton { Login() }
         bind<FbWriter>() with singleton { FbWriter() }
-        bind<EventsDatabase>() with singleton { EventsDatabase(application) }
-        bind<ColorFactory>() with singleton { ColorFactory(application) }
+        bind<EventsDatabase>() with singleton { EventsDatabase(ctx) }
+        bind<ColorFactory>() with singleton { ColorFactory(ctx) }
     }
 }

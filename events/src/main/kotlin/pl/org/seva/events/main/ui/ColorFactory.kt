@@ -17,10 +17,13 @@
 
 package pl.org.seva.events.main.ui
 
-import android.app.Application
+import android.content.Context
 import android.graphics.Color
+import pl.org.seva.events.main.instance
 
-class ColorFactory(private val application: Application ) {
+fun colorFactory() = instance<ColorFactory>()
+
+class ColorFactory(private val application: Context ) {
 
     private val colors by lazy {
         application.run {

@@ -20,14 +20,12 @@ package pl.org.seva.events.data.firebase
 import android.util.Base64
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import pl.org.seva.events.data.Login
-import pl.org.seva.events.main.instance
 
 open class Fb {
 
     protected val communities get() = db reference COMMUNITIES
 
-    protected val login: Login = instance()
+    protected val login = pl.org.seva.events.data.login()
 
     private val db = FirebaseDatabase.getInstance()!!
 

@@ -19,22 +19,22 @@ package pl.org.seva.events.data
 
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
-import pl.org.seva.events.data.firebase.FbWriter
+import pl.org.seva.events.data.firebase.fbWriter
 import pl.org.seva.events.data.model.Community
-import pl.org.seva.events.data.room.EventsDatabase
+import pl.org.seva.events.data.room.db
 import pl.org.seva.events.data.room.entity.CommEntity
 import pl.org.seva.events.main.instance
-import pl.org.seva.events.main.ui.ColorFactory
+import pl.org.seva.events.main.ui.colorFactory
 
 fun communities() = instance<Communities>()
 
 class Communities {
 
     private val communities = mutableListOf<Community>()
-    private val cf: ColorFactory = instance()
-    private val fbWriter: FbWriter = instance()
-    private val login: Login = instance()
-    private val commDao = instance<EventsDatabase>().commDao
+    private val cf = colorFactory()
+    private val fbWriter = fbWriter()
+    private val login = login()
+    private val commDao = db().commDao
 
     private val size get() = communities.size
     val empty get() = size == 0

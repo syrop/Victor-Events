@@ -19,23 +19,21 @@ package pl.org.seva.events.main
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import pl.org.seva.events.data.Communities
-import pl.org.seva.events.data.Login
-import pl.org.seva.events.data.room.EventsDatabase
+import pl.org.seva.events.data.communities
+import pl.org.seva.events.data.login
+import pl.org.seva.events.data.room.db
 import pl.org.seva.events.data.room.getAllAsync
 
-class Bootstrap {
-    private val db: EventsDatabase = instance()
-    private val login: Login = instance()
-    private val communities: Communities = instance()
+fun bootstrap() = instance<Bootstrap>()
 
+class Bootstrap {
     fun boot() {
-        login.setCurrentUser(FirebaseAuth.getInstance().currentUser)
-        db.commDao getAllAsync { communities.addAll(it) }
+        login().setCurrentUser(FirebaseAuth.getInstance().currentUser)
+        db().commDao getAllAsync { communities().addAll(it) }
     }
 
     fun login(user: FirebaseUser) {
-        login.setCurrentUser(user)
+        login().setCurrentUser(user)
     }
 
     fun logout() {

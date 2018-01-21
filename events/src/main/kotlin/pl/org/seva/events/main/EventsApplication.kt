@@ -24,11 +24,11 @@ import com.google.firebase.auth.FirebaseUser
 
 class EventsApplication : Application() {
 
-    private val bootstrap: Bootstrap get() = instance()
-
     init {
-        Kodein.global.addImport(module { application = this@EventsApplication })
+        Kodein.global.addImport(module())
     }
+
+    private val bootstrap = bootstrap()
 
     override fun onCreate() {
         super.onCreate()
