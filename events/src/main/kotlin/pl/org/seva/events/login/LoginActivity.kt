@@ -21,7 +21,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 
@@ -37,6 +36,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 import pl.org.seva.events.main.EventsApplication
 import pl.org.seva.events.R
 import pl.org.seva.events.data.firebase.fbWriter
+import pl.org.seva.events.main.log
 
 class LoginActivity : AppCompatActivity(),
         GoogleApiClient.OnConnectionFailedListener,
@@ -74,10 +74,10 @@ class LoginActivity : AppCompatActivity(),
         authStateListener = {
             val user = it.currentUser
             if (user != null) {
-                Log.d(TAG, "onAuthStateChanged:signed_in:" + user.uid)
+                log().info("onAuthStateChanged:signed_in:" + user.uid)
                 onUserLoggedIn(user)
             } else {
-                Log.d(TAG, "onAuthStateChanged:signed_out")
+                log().info("onAuthStateChanged:signed_out")
                 onUserLoggedOut()
             }
         }
@@ -166,13 +166,13 @@ class LoginActivity : AppCompatActivity(),
     }
 
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.id!!)
+        log().info("firebaseAuthWithGoogle:" + acct.id!!)
         showProgressDialog()
 
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this) {
-                    Log.d(TAG, "signInWithCredential:onComplete:" + it.isSuccessful)
+                    log().info("signInWithCredential:onComplete:" + it.isSuccessful)
                     hideProgressDialog()
 
                     // If sign in fails, display a message to the user. If sign in succeeds
@@ -198,7 +198,7 @@ class LoginActivity : AppCompatActivity(),
     }
 
     override fun onConnectionFailed(connectionResult: ConnectionResult) {
-        Log.d(TAG, "onConnectionFailed:" + connectionResult)
+        log().warning("onConnectionFailed:" + connectionResult)
         Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show()
     }
 
@@ -216,8 +216,6 @@ class LoginActivity : AppCompatActivity(),
         const val LOGOUT = "logout"
 
         const val COMMUNITY_NAME = "community_name"
-
-        private val TAG = LoginActivity::class.java.simpleName
 
         private const val SIGN_IN_REQUEST_ID = 9001
     }

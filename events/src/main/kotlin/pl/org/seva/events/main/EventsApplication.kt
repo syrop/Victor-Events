@@ -21,6 +21,9 @@ import android.app.Application
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.conf.global
 import com.google.firebase.auth.FirebaseUser
+import java.util.logging.Logger
+
+fun Any.log() = Logger.getLogger(this::class.java.name)!!
 
 class EventsApplication : Application() {
 
