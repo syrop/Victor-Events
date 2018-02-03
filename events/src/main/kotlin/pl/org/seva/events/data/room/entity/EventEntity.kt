@@ -19,7 +19,7 @@ package pl.org.seva.events.data.room.entity
 
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
-import pl.org.seva.events.data.model.Event
+import pl.org.seva.events.event.Event
 import pl.org.seva.events.data.room.EventsDatabase
 
 @Entity(tableName = EventsDatabase.EVENTS_TABLE_NAME)

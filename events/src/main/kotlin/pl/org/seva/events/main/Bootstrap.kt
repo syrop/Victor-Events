@@ -19,8 +19,8 @@ package pl.org.seva.events.main
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import pl.org.seva.events.data.communities
-import pl.org.seva.events.data.login
+import pl.org.seva.events.community.communities
+import pl.org.seva.events.login.login
 import pl.org.seva.events.data.room.db
 import pl.org.seva.events.data.room.getAllAsync
 

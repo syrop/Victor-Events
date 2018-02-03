@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.data
+package pl.org.seva.events.login
 
 import com.google.firebase.auth.FirebaseUser
 import pl.org.seva.events.main.instance

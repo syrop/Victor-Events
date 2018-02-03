@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.org.seva.events.data.model
+package pl.org.seva.events.community
 
 import android.annotation.SuppressLint
 import android.graphics.Color

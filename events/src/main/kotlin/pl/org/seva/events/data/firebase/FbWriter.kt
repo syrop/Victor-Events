@@ -18,8 +18,8 @@
 package pl.org.seva.events.data.firebase
 
 import com.google.firebase.auth.FirebaseUser
-import pl.org.seva.events.data.model.Community
-import pl.org.seva.events.data.model.Event
+import pl.org.seva.events.community.Community
+import pl.org.seva.events.event.Event
 import pl.org.seva.events.main.instance
 
 fun fbWriter() = instance<FbWriter>()

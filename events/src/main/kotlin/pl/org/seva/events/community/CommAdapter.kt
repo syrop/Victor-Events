@@ -21,7 +21,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import pl.org.seva.events.R
-import pl.org.seva.events.data.model.Community
 
 class CommAdapter(
         private val comm: Community,

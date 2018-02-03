@@ -30,15 +30,13 @@ import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_add_comm.*
 import pl.org.seva.events.R
-import pl.org.seva.events.data.model.Community
 import pl.org.seva.events.data.firebase.fbReader
-import pl.org.seva.events.data.login
+import pl.org.seva.events.login.login
 import pl.org.seva.events.login.LoginActivity
 import pl.org.seva.events.main.ui.boldSection
 import pl.org.seva.events.main.ui.DividerItemDecoration
 import pl.org.seva.events.main.ui.longSnackbar
 import pl.org.seva.events.main.ui.permanentSnackbar
-import pl.org.seva.events.data.communities
 
 class AddCommActivity : AppCompatActivity() {
 

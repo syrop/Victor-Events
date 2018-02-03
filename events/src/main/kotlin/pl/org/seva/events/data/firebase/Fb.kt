@@ -25,7 +25,7 @@ open class Fb {
 
     protected val communities get() = db reference COMMUNITIES
 
-    protected val login = pl.org.seva.events.data.login()
+    protected val login = pl.org.seva.events.login.login()
 
     private val db = FirebaseDatabase.getInstance()!!
 

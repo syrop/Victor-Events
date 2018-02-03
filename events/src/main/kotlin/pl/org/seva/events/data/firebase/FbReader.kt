@@ -22,8 +22,8 @@ import com.google.firebase.database.DatabaseReference
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.PublishSubject
-import pl.org.seva.events.data.model.Community
-import pl.org.seva.events.data.model.Event
+import pl.org.seva.events.community.Community
+import pl.org.seva.events.event.Event
 import pl.org.seva.events.main.instance
 
 fun fbReader() = instance<FbReader>()

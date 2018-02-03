@@ -23,8 +23,8 @@ import com.github.salomonbrys.kodein.bind
 import com.github.salomonbrys.kodein.conf.global
 import com.github.salomonbrys.kodein.instance
 import com.github.salomonbrys.kodein.singleton
-import pl.org.seva.events.data.Communities
-import pl.org.seva.events.data.Login
+import pl.org.seva.events.community.Communities
+import pl.org.seva.events.login.Login
 import pl.org.seva.events.data.firebase.FbReader
 import pl.org.seva.events.data.firebase.FbWriter
 import pl.org.seva.events.data.room.EventsDatabase
