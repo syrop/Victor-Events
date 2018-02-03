@@ -24,39 +24,39 @@ import pl.org.seva.events.data.room.db
 import pl.org.seva.events.data.room.entity.CommEntity
 import pl.org.seva.events.main.instance
 import pl.org.seva.events.main.ui.colorFactory
+import pl.org.seva.events.login.login
 
 fun communities() = instance<Communities>()
 
 class Communities {
 
-    private val communities = mutableListOf<Community>()
-    private val cf = colorFactory()
+    private val cache = mutableListOf<Community>()
     private val fbWriter = fbWriter()
-    private val login = pl.org.seva.events.login.login()
+    private val login = login()
     private val commDao = db().commDao
 
-    private val size get() = communities.size
-    val empty get() = size == 0
+    private val size get() = cache.size
+    val isEmpty get() = size == 0
 
-    operator fun get(index: Int) = communities[index]
+    operator fun get(index: Int) = cache[index]
 
     infix fun join(community: Community) {
-        communities.add(community)
+        cache.add(community)
         launch(CommonPool) {
             commDao.insert(CommEntity(community))
         }
     }
 
     fun addAll(communities: Collection<Community>) {
-        this.communities.addAll(communities)
+        this.cache.addAll(communities)
     }
 
-    val isAdminOf get() = communities.filter { it.admin }
+    val isAdminOf get() = cache.filter { it.admin }
 
-    val isAdminOfAny get() = communities.any { it.admin }
+    val isAdminOfAny get() = cache.any { it.admin }
 
     infix fun joinNewCommunity(name: String) =
-        Community(name = name, color = cf.nextColor(), admin = true).apply {
+        Community(name, colorFactory().nextColor(), true).apply {
             fbWriter.create(this)
             fbWriter.grantAdmin(this, login.email)
             join(this)

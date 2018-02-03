@@ -42,26 +42,17 @@ class EventsActivity : AppCompatActivity() {
             add_fab.visibility = View.VISIBLE
         }
 
-        add_fab.setOnClickListener { startCreateEventActivity() }
+        add_fab.setOnClickListener {
+            startActivity(Intent(this, CreateEventActivity::class.java))
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        addCommunityIfEmpty()
-    }
-
-    private fun addCommunityIfEmpty() {
-        if (communities.empty) startAddCommActivity()
-    }
-
-    private fun startAddCommActivity() =
+        if (communities.isEmpty) {
             startActivity(Intent(this, AddCommActivity::class.java))
-
-    private fun startCreateEventActivity() =
-            startActivity(Intent(this, CreateEventActivity::class.java))
-
-    private fun startLoginQuestionActivity() =
-            startActivity(Intent(this, LoginConfirmationActivity::class.java))
+        }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.events, menu)
@@ -70,8 +61,14 @@ class EventsActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.action_login -> { startLoginQuestionActivity(); true }
-        R.id.action_seek_community -> { startAddCommActivity(); true }
+        R.id.action_login -> {
+            startActivity(Intent(this, LoginConfirmationActivity::class.java))
+            true
+        }
+        R.id.action_seek_community -> {
+            startActivity(Intent(this, AddCommActivity::class.java))
+            true
+        }
         else -> super.onOptionsItemSelected(item)
     }
 }

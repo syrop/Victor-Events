@@ -53,7 +53,7 @@ class AddCommActivity : AppCompatActivity() {
         if (Intent.ACTION_SEARCH == intent.action) {
             search(intent.getStringExtra(SearchManager.QUERY))
         }
-        if (communities.empty) {
+        if (communities.isEmpty) {
             prompt.setText(R.string.add_comm_please_search_empty)
         } else {
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -65,7 +65,7 @@ class AddCommActivity : AppCompatActivity() {
 
     }
 
-    override fun onBackPressed() = if (!communities.empty) super.onBackPressed() else Unit
+    override fun onBackPressed() = if (!communities.isEmpty) super.onBackPressed() else Unit
 
     override fun onNewIntent(intent: Intent) {
         setIntent(intent)
@@ -94,7 +94,7 @@ class AddCommActivity : AppCompatActivity() {
     }
 
     private fun onSearchViewClosed(): Boolean {
-        if (communities.empty) {
+        if (communities.isEmpty) {
             prompt.visibility = View.VISIBLE
             communitiesNotFoundPrompt()
         }
