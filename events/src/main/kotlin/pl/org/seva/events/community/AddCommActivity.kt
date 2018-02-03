@@ -38,6 +38,11 @@ import pl.org.seva.events.main.ui.DividerItemDecoration
 import pl.org.seva.events.main.ui.longSnackbar
 import pl.org.seva.events.main.ui.permanentSnackbar
 
+fun Context.startAddCommActivity(): Boolean {
+    startActivity(Intent(this, AddCommActivity::class.java))
+    return true
+}
+
 class AddCommActivity : AppCompatActivity() {
 
     private val communities = communities()

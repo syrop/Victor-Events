@@ -17,10 +17,16 @@
 
 package pl.org.seva.events.event
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_create_event.*
 import pl.org.seva.events.R
+
+fun Context.startCreateEventActivity() {
+    startActivity(Intent(this, CreateEventActivity::class.java))
+}
 
 class CreateEventActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

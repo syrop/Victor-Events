@@ -17,7 +17,6 @@
 
 package pl.org.seva.events.event
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
@@ -26,10 +25,10 @@ import android.view.View
 
 import kotlinx.android.synthetic.main.activity_events.*
 import pl.org.seva.events.R
-import pl.org.seva.events.community.AddCommActivity
 import pl.org.seva.events.community.communities
+import pl.org.seva.events.community.startAddCommActivity
 import pl.org.seva.events.login.login
-import pl.org.seva.events.login.LoginConfirmationActivity
+import pl.org.seva.events.login.startLoginConfirmationActivity
 
 class EventsActivity : AppCompatActivity() {
 
@@ -42,16 +41,12 @@ class EventsActivity : AppCompatActivity() {
             add_fab.visibility = View.VISIBLE
         }
 
-        add_fab.setOnClickListener {
-            startActivity(Intent(this, CreateEventActivity::class.java))
-        }
+        add_fab.setOnClickListener { startCreateEventActivity() }
     }
 
     override fun onResume() {
         super.onResume()
-        if (communities.isEmpty) {
-            startActivity(Intent(this, AddCommActivity::class.java))
-        }
+        if (communities.isEmpty) { startAddCommActivity() }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -61,14 +56,8 @@ class EventsActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.action_login -> {
-            startActivity(Intent(this, LoginConfirmationActivity::class.java))
-            true
-        }
-        R.id.action_seek_community -> {
-            startActivity(Intent(this, AddCommActivity::class.java))
-            true
-        }
+        R.id.action_login -> startLoginConfirmationActivity()
+        R.id.action_seek_community -> startAddCommActivity()
         else -> super.onOptionsItemSelected(item)
     }
 }
