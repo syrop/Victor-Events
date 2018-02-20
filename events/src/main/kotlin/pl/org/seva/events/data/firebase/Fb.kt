@@ -17,7 +17,6 @@
 
 package pl.org.seva.events.data.firebase
 
-import android.util.Base64
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -41,10 +40,6 @@ open class Fb {
     protected infix fun DocumentReference.collection(ch: String) = this.collection(ch)
 
     private infix fun FirebaseFirestore.collection(ref: String) = this.collection(ref)
-
-    protected fun String.to64() = Base64.encodeToString(toByteArray(), Base64.NO_WRAP)!!
-
-    protected fun String.from64() = String(Base64.decode(toByteArray(), Base64.NO_WRAP))
 
     companion object {
         /** Root of community-related data that can be read by anyone. */

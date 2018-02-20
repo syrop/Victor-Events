@@ -38,7 +38,7 @@ class FbReader : Fb() {
                 .map { it.toEvent() }
     }
 
-    private fun String.isAdmin(email: String): Observable<Boolean> = admins.document(email.to64()).doesExist()
+    private fun String.isAdmin(email: String): Observable<Boolean> = admins.document(email).doesExist()
 
     fun findCommunity(name: String, onResult: Community.() -> Unit) {
         val lcName = name.toLowerCase()

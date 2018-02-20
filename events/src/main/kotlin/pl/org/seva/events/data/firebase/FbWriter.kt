@@ -38,7 +38,7 @@ class FbWriter : Fb() {
     }
 
     private fun grantAdmin(community: String, email: String) {
-        (community.admins document email.to64()).set(DEFAULT_VALUE)
+        (community.admins document email).set(DEFAULT_VALUE)
     }
 
     private infix fun Community.writeEvent(event: Event) {
