@@ -17,14 +17,16 @@
 
 package pl.org.seva.events.data.firebase
 
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseReference
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.DocumentSnapshot
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.PublishSubject
 import pl.org.seva.events.community.Community
 import pl.org.seva.events.event.Event
 import pl.org.seva.events.main.instance
+import pl.org.seva.events.main.neverDispose
 
 fun fbReader() = instance<FbReader>()
 
@@ -32,8 +34,7 @@ class FbReader : Fb() {
 
     fun readEvents(community: String): Observable<Event> {
         return community.events.read()
-                .concatMapIterable { it.children }
-                .filter { it.exists() }
+                .filter {it.exists() }
                 .map { it.toEvent() }
     }
 
@@ -50,31 +51,46 @@ class FbReader : Fb() {
                 isAdminObservable,
                 BiFunction { comm: Community, isAdmin: Boolean ->
                     if (comm.empty) comm else comm.copy(admin = isAdmin) })
-                .subscribe(onResult)
+                .subscribe(onResult).neverDispose()
+
     }
 
-    private fun DatabaseReference.doesExist() = read().map { it.exists() }
+    private fun DocumentReference.doesExist() = read().map { it.exists() }
 
-    private fun DatabaseReference.read(): Observable<DataSnapshot> {
-        val resultSubject = PublishSubject.create<DataSnapshot>()
+    private fun DocumentReference.read(): Observable<DocumentSnapshot> {
+        val resultSubject = PublishSubject.create<DocumentSnapshot>()
         return resultSubject
-                .doOnSubscribe { addListenerForSingleValueEvent(RxValueEventListener(resultSubject)) }
-                .take(READ_ONCE)
+                .doOnSubscribe { get().addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        resultSubject.onNext(it.result)
+                    } else {
+                        resultSubject.onError(it.exception!!)
+                    }
+                }
+                }
     }
 
-    private fun DataSnapshot.toEvent(): Event {
-        val name = child(EVENT_NAME).value as String
-        val lat = child(EVENT_LAT).value as Double?
-        val lon = child(EVENT_LON).value as Double?
-        val time = child(EVENT_TIME).value as Long
-        val desc = child(EVENT_DESC).value as String?
+    private fun CollectionReference.read(): Observable<DocumentSnapshot> {
+        val resultSubject = PublishSubject.create<DocumentSnapshot>()
+        return resultSubject.doOnSubscribe { get().addOnCompleteListener {
+            if (it.isSuccessful) {
+                it.result.forEach { resultSubject.onNext(it) }
+            } else {
+                resultSubject.onError(it.exception!!)
+            }
+        }
+        }
+    }
+
+    private fun DocumentSnapshot.toEvent(): Event {
+        val name: String = getString(EVENT_NAME)
+        val lat: Double? = getDouble(EVENT_LAT)
+        val lon: Double? = getDouble(EVENT_LON)
+        val time: Long = getLong(EVENT_TIME)
+        val desc: String? = getString(EVENT_DESC)
         return Event(name, time = time, lat = lat, lon = lon, desc = desc)
     }
 
-    private fun DataSnapshot.toCommunity(name: String) =
-            if (exists()) Community(child(COMM_NAME).value as String) else Community.empty(name)
-
-    companion object {
-        val READ_ONCE = 1L
-    }
+    private fun DocumentSnapshot.toCommunity(name: String) =
+            if (exists()) Community(getString(COMM_NAME)!!) else Community.empty(name)
 }

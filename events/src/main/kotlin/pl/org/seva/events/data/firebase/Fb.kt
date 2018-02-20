@@ -18,8 +18,9 @@
 package pl.org.seva.events.data.firebase
 
 import android.util.Base64
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
 
 open class Fb {
 
@@ -27,7 +28,7 @@ open class Fb {
 
     protected val login = pl.org.seva.events.login.login()
 
-    private val db = FirebaseDatabase.getInstance()!!
+    private val db = FirebaseFirestore.getInstance()
 
     protected val String.admins get() = db reference PRIVATE child this child COMM_ADMINS
 
@@ -35,11 +36,11 @@ open class Fb {
 
     protected val String.name get() = db reference COMMUNITIES child this child NAME
 
-    protected infix fun DatabaseReference.child(ch: String) = this.child(ch)!!
+    protected infix fun CollectionReference.child(ch: String) = this.document(ch)
 
-    protected infix fun DatabaseReference.value(v: Any) = this.setValue(v)!!
+    protected infix fun DocumentReference.child(ch: String) = this.collection(ch)
 
-    private infix fun FirebaseDatabase.reference(ref: String) = this.getReference(ref)!!
+    private infix fun FirebaseFirestore.reference(ref: String) = this.collection(ref)
 
     protected fun String.to64() = Base64.encodeToString(toByteArray(), Base64.NO_WRAP)!!
 

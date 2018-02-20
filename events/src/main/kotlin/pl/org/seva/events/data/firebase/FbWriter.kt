@@ -38,22 +38,19 @@ class FbWriter : Fb() {
     }
 
     private fun grantAdmin(community: String, email: String) {
-        community.admins child(email.to64()) value DEFAULT_VALUE
+        (community.admins child email.to64()).set(DEFAULT_VALUE)
     }
 
     private infix fun Community.writeEvent(event: Event) {
         val ref =  lcName.events child event.time.toString()
-        ref.child(EVENT_NAME).setValue(event.name)
-        event.lat?.apply { ref.child(EVENT_LAT).setValue(this) }
-        event.lon?.apply { ref.child(EVENT_LON).setValue(this) }
-        event.desc?.apply { ref.child(EVENT_DESC).setValue(this) }
+        ref.set(event)
     }
 
     private fun Community.writeName() {
-        lcName.name.setValue(name)
+        lcName.name.document().set(name)
     }
 
     companion object {
-        val DEFAULT_VALUE = 0
+        const val DEFAULT_VALUE = 0
     }
 }
