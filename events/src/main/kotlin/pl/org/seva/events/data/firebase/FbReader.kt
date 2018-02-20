@@ -38,11 +38,11 @@ class FbReader : Fb() {
                 .map { it.toEvent() }
     }
 
-    private fun String.isAdmin(email: String): Observable<Boolean> = admins.child(email.to64()).doesExist()
+    private fun String.isAdmin(email: String): Observable<Boolean> = admins.document(email.to64()).doesExist()
 
     fun findCommunity(name: String, onResult: Community.() -> Unit) {
         val lcName = name.toLowerCase()
-        val found = communities.child(lcName).read().map { it.toCommunity(name) }
+        val found = communities.document(lcName).read().map { it.toCommunity(name) }
 
         val isAdminObservable = if (login.isLoggedIn) lcName.isAdmin(login.email)
             else Observable.just(false)

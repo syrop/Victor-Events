@@ -38,11 +38,11 @@ class FbWriter : Fb() {
     }
 
     private fun grantAdmin(community: String, email: String) {
-        (community.admins child email.to64()).set(DEFAULT_VALUE)
+        (community.admins document email.to64()).set(DEFAULT_VALUE)
     }
 
     private infix fun Community.writeEvent(event: Event) {
-        val ref =  lcName.events child event.time.toString()
+        val ref =  lcName.events document event.time.toString()
         ref.set(event)
     }
 

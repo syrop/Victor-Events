@@ -24,23 +24,23 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 open class Fb {
 
-    protected val communities get() = db reference COMMUNITIES
+    protected val communities get() = db collection COMMUNITIES
 
     protected val login = pl.org.seva.events.login.login()
 
     private val db = FirebaseFirestore.getInstance()
 
-    protected val String.admins get() = db reference PRIVATE child this child COMM_ADMINS
+    protected val String.admins get() = db collection PRIVATE document this collection COMM_ADMINS
 
-    protected val String.events get() = db reference COMMUNITIES child this child EVENTS
+    protected val String.events get() = db collection COMMUNITIES document this collection EVENTS
 
-    protected val String.name get() = db reference COMMUNITIES child this child NAME
+    protected val String.name get() = db collection COMMUNITIES document this collection NAME
 
-    protected infix fun CollectionReference.child(ch: String) = this.document(ch)
+    protected infix fun CollectionReference.document(ch: String) = this.document(ch)
 
-    protected infix fun DocumentReference.child(ch: String) = this.collection(ch)
+    protected infix fun DocumentReference.collection(ch: String) = this.collection(ch)
 
-    private infix fun FirebaseFirestore.reference(ref: String) = this.collection(ref)
+    private infix fun FirebaseFirestore.collection(ref: String) = this.collection(ref)
 
     protected fun String.to64() = Base64.encodeToString(toByteArray(), Base64.NO_WRAP)!!
 
