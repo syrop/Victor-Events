@@ -34,6 +34,17 @@ data class Event(
         val desc: String? = null
 ) : Parcelable {
 
+    val firestore get() = Firestore(name, time.toString(), location, desc)
+
+    @Suppress("MemberVisibilityCanBePrivate")
+    data class Firestore(
+            val name: String,
+            val time: String,
+            val location: GeoPoint?,
+            val desc: String?) {
+        fun value() = Event(name, ZonedDateTime.parse(time), location, desc)
+    }
+
     companion object: Parceler<Event> {
         private const val NOT_PRESENT = 0
         private const val PRESENT = 1

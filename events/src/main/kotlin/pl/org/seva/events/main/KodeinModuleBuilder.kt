@@ -18,11 +18,8 @@
 package pl.org.seva.events.main
 
 import android.content.Context
-import com.github.salomonbrys.kodein.Kodein
-import com.github.salomonbrys.kodein.bind
+import com.github.salomonbrys.kodein.*
 import com.github.salomonbrys.kodein.conf.global
-import com.github.salomonbrys.kodein.instance
-import com.github.salomonbrys.kodein.singleton
 import pl.org.seva.events.community.Communities
 import pl.org.seva.events.login.Login
 import pl.org.seva.events.data.firebase.FbReader
@@ -35,6 +32,8 @@ fun Context.module() = KodeinModuleBuilder(this).build()
 
 inline fun <reified T : Any> instance() = Kodein.global.instance<T>()
 
+fun context() = instance<Context>()
+
 class KodeinModuleBuilder(private val ctx: Context) {
 
     fun build() = Kodein.Module {
@@ -45,5 +44,7 @@ class KodeinModuleBuilder(private val ctx: Context) {
         bind<FbWriter>() with singleton { FbWriter() }
         bind<EventsDatabase>() with singleton { EventsDatabase(ctx) }
         bind<ColorFactory>() with singleton { ColorFactory(ctx) }
+        bind<Context>() with provider { ctx }
+        bind<Toaster>() with singleton { Toaster(ctx) }
     }
 }

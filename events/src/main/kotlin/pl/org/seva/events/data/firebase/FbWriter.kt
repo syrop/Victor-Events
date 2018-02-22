@@ -38,19 +38,20 @@ class FbWriter : Fb() {
     }
 
     private fun grantAdmin(community: String, email: String) {
-        (community.admins document email).set(DEFAULT_VALUE)
+        community.admins.document(email).set(mapOf(Fb.ADMIN_GRANTED to true))
     }
 
     private infix fun Community.writeEvent(event: Event) {
-        val ref =  lcName.events document event.time.toString()
-        ref.set(event)
+        lcName.events.document(event.time.toEpochSecond().toString()).set(event.firestore)
+                .addOnSuccessListener{
+                    println("wiktor DocumentSnapshot successfully written!");
+                    }
+                .addOnFailureListener {
+                    println("wiktor Error writing document " + it)
+                }
     }
 
     private fun Community.writeName() {
-        lcName.name.document().set(name)
-    }
-
-    companion object {
-        const val DEFAULT_VALUE = 0
+        lcName.document.set(mapOf(Fb.NAME to name))
     }
 }

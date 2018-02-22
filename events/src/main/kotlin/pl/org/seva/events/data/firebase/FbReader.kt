@@ -93,5 +93,5 @@ class FbReader : Fb() {
     }
 
     private fun DocumentSnapshot.toCommunity(name: String) =
-            if (exists()) Community(getString(COMM_NAME)!!) else Community.empty(name)
+            if (exists()) Community(getString(NAME)!!) else Community.empty(name)
 }

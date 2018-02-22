@@ -33,11 +33,13 @@ open class Fb {
 
     protected val String.events get() = db collection COMMUNITIES document this collection EVENTS
 
+    protected val String.document get() = db collection COMMUNITIES document this
+
     protected val String.name get() = db collection COMMUNITIES document this collection NAME
 
-    protected infix fun CollectionReference.document(ch: String) = this.document(ch)
+    private infix fun CollectionReference.document(ch: String) = this.document(ch)
 
-    protected infix fun DocumentReference.collection(ch: String) = this.collection(ch)
+    private infix fun DocumentReference.collection(ch: String) = this.collection(ch)
 
     private infix fun FirebaseFirestore.collection(ref: String) = this.collection(ref)
 
@@ -58,10 +60,9 @@ open class Fb {
         const val EVENT_TIME = "time"
         /** Nullable. */
         const val EVENT_DESC = "description"
-        /** May not be null. */
-        const val COMM_NAME = "name"
 
         /** Admin e-mails per community. */
         const val COMM_ADMINS = "admins"
+        const val ADMIN_GRANTED = "admin_granted"
     }
 }
