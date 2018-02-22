@@ -29,7 +29,7 @@ class FbWriter : Fb() {
     fun login(user: FirebaseUser) {}
 
     fun create(community: Community) {
-        community writeEvent Event.creation
+        community writeEvent Event.CREATION_EVENT
         community.writeName()
     }
 

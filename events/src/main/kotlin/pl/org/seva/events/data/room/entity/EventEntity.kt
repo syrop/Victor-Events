@@ -19,25 +19,31 @@ package pl.org.seva.events.data.room.entity
 
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
+import com.google.firebase.firestore.GeoPoint
 import pl.org.seva.events.event.Event
 import pl.org.seva.events.data.room.EventsDatabase
+import java.time.ZonedDateTime
 
 @Entity(tableName = EventsDatabase.EVENTS_TABLE_NAME)
 class EventEntity() {
         lateinit var name: String
         @PrimaryKey
-        var time: Long = 0
+        var time: String = ""
         var lat: Double? = null
         var lon: Double? = null
         var desc: String? = null
 
-    fun eventValue() = Event(name = name, time = time, lat = lat, desc = desc)
+    fun value() = Event(
+            name = name,
+            time = ZonedDateTime.parse(time),
+            location = lat?.let { GeoPoint(it, lon!!) },
+            desc = desc)
 
     constructor(event: Event): this() {
         name = event.name
-        time = event.time
-        lat = event.lat
-        lon = event.lon
+        time = event.time.toString()
+        lat = event.location?.latitude
+        lon = event.location?.longitude
         desc = event.desc
     }
 }

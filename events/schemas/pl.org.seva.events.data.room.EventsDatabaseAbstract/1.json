@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "abe1a9d1f4a0eeeea79b5615ef30af37",
+    "identityHash": "8decaa453fc0484d515824623ce5e357",
     "entities": [
       {
         "tableName": "events",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `time` INTEGER NOT NULL, `lat` REAL, `lon` REAL, `desc` TEXT, PRIMARY KEY(`time`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `time` TEXT NOT NULL, `lat` REAL, `lon` REAL, `desc` TEXT, PRIMARY KEY(`time`))",
         "fields": [
           {
             "fieldPath": "name",
@@ -17,7 +17,7 @@
           {
             "fieldPath": "time",
             "columnName": "time",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -83,7 +83,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"abe1a9d1f4a0eeeea79b5615ef30af37\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"8decaa453fc0484d515824623ce5e357\")"
     ]
   }
 }

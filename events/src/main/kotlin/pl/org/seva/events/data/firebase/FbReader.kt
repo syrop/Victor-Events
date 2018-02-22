@@ -20,6 +20,7 @@ package pl.org.seva.events.data.firebase
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.GeoPoint
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.PublishSubject
@@ -27,6 +28,7 @@ import pl.org.seva.events.community.Community
 import pl.org.seva.events.event.Event
 import pl.org.seva.events.main.instance
 import pl.org.seva.events.main.neverDispose
+import java.time.ZonedDateTime
 
 fun fbReader() = instance<FbReader>()
 
@@ -84,11 +86,10 @@ class FbReader : Fb() {
 
     private fun DocumentSnapshot.toEvent(): Event {
         val name: String = getString(EVENT_NAME)
-        val lat: Double? = getDouble(EVENT_LAT)
-        val lon: Double? = getDouble(EVENT_LON)
-        val time: Long = getLong(EVENT_TIME)
+        val location: GeoPoint? = getGeoPoint(EVENT_LOCATION)
+        val time: ZonedDateTime = ZonedDateTime.parse(getString(EVENT_TIME))
         val desc: String? = getString(EVENT_DESC)
-        return Event(name, time = time, lat = lat, lon = lon, desc = desc)
+        return Event(name, time = time, location = location, desc = desc)
     }
 
     private fun DocumentSnapshot.toCommunity(name: String) =

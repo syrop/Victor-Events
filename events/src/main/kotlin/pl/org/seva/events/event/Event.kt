@@ -20,16 +20,17 @@ package pl.org.seva.events.event
 import android.annotation.SuppressLint
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.firebase.firestore.GeoPoint
 import kotlinx.android.parcel.Parceler
 import kotlinx.android.parcel.Parcelize
+import java.time.ZonedDateTime
 
 @SuppressLint("ParcelCreator")
 @Parcelize
 data class Event(
         val name: String = CREATION_NAME,
-        val time: Long = System.currentTimeMillis(),
-        val lat: Double? = null,
-        val lon: Double? = null,
+        val time: ZonedDateTime = ZonedDateTime.now(),
+        val location: GeoPoint? = null,
         val desc: String? = null
 ) : Parcelable {
 
@@ -39,19 +40,19 @@ data class Event(
 
         private const val CREATION_NAME = ""
 
-        val creation get() = Event(CREATION_NAME, System.currentTimeMillis())
+        val CREATION_EVENT = Event(CREATION_NAME)
 
         override fun Event.write(parcel: Parcel, flags: Int) {
             parcel.writeString(name)
-            if (lat != null && lon != null) {
+            if (location != null) {
                 parcel.writeInt(PRESENT)
-                parcel.writeDouble(lat)
-                parcel.writeDouble(lon)
+                parcel.writeDouble(location.latitude)
+                parcel.writeDouble(location.longitude)
             }
             else {
                 parcel.writeInt(NOT_PRESENT)
             }
-            parcel.writeLong(time)
+            parcel.writeString(time.toString())
             if (desc != null) {
                 parcel.writeInt(PRESENT)
                 parcel.writeString(desc)
@@ -63,13 +64,16 @@ data class Event(
 
         override fun create(parcel: Parcel): Event {
             val name = parcel.readString()
-            val containsLocation = parcel.readInt() != NOT_PRESENT
-            val lat = if (containsLocation) parcel.readDouble() else null
-            val lon = if (containsLocation) parcel.readDouble() else null
-            val time = parcel.readLong()
-            val containsDescription = parcel.readInt() != NOT_PRESENT
-            val desc = if (containsDescription) parcel.readString() else null
-            return Event(name, time = time, lat = lat, lon = lon, desc = desc)
+            val location =
+            if (parcel.readInt() == PRESENT) {
+                val lat = parcel.readDouble()
+                val lon = parcel.readDouble()
+                GeoPoint(lat, lon)
+            } else null
+            val time = ZonedDateTime.parse(parcel.readString())
+
+            val desc = if (parcel.readInt() == NOT_PRESENT) parcel.readString() else null
+            return Event(name, time = time, location = location, desc = desc)
         }
     }
 }

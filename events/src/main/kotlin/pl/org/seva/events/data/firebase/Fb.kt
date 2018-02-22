@@ -52,11 +52,9 @@ open class Fb {
         const val NAME = "name"
         /** May not be null. */
         const val EVENT_NAME = "name"
-        /** Double. */
-        const val EVENT_LAT = "lat"
-        /** Double. */
-        const val EVENT_LON = "lon"
-        /** Start time in milliseconds (there is no duration nor end time). */
+        /** GeoPoint. */
+        const val EVENT_LOCATION = "location"
+        /** String representation of ZonedDateTime */
         const val EVENT_TIME = "time"
         /** Nullable. */
         const val EVENT_DESC = "description"
