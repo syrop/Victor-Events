@@ -30,7 +30,7 @@ import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_add_comm.*
 import pl.org.seva.events.R
-import pl.org.seva.events.data.firebase.fbReader
+import pl.org.seva.events.data.firestore.fsReader
 import pl.org.seva.events.login.login
 import pl.org.seva.events.login.LoginActivity
 import pl.org.seva.events.main.ui.boldSection
@@ -161,7 +161,7 @@ class AddCommActivity : AppCompatActivity() {
 
         prompt.visibility = View.GONE
         progress.visibility = View.VISIBLE
-        fbReader().findCommunity(name) {
+        fsReader().findCommunity(name) {
             if (empty) notFound() else found()
         }
     }

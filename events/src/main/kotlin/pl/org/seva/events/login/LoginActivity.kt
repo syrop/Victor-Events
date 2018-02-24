@@ -35,7 +35,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.activity_login.*
 import pl.org.seva.events.main.EventsApplication
 import pl.org.seva.events.R
-import pl.org.seva.events.data.firebase.fbWriter
+import pl.org.seva.events.data.firestore.fsWriter
 import pl.org.seva.events.main.log
 
 class LoginActivity : AppCompatActivity(),
@@ -109,7 +109,7 @@ class LoginActivity : AppCompatActivity(),
     }
 
     private fun onUserLoggedIn(user: FirebaseUser) {
-        fbWriter().login(user)
+        fsWriter().login(user)
         (application as EventsApplication).login(user)
         if (performedAction) {
             createCommunityName?.setResult()

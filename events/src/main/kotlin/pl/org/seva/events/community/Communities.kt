@@ -19,7 +19,7 @@ package pl.org.seva.events.community
 
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
-import pl.org.seva.events.data.firebase.fbWriter
+import pl.org.seva.events.data.firestore.fsWriter
 import pl.org.seva.events.data.room.db
 import pl.org.seva.events.data.room.entity.CommEntity
 import pl.org.seva.events.main.instance
@@ -31,7 +31,7 @@ fun communities() = instance<Communities>()
 class Communities {
 
     private val cache = mutableListOf<Community>()
-    private val fbWriter = fbWriter()
+    private val fbWriter = fsWriter()
     private val login = login()
     private val commDao = db().commDao
 
