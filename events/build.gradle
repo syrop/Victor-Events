@@ -48,9 +48,9 @@ android {
 
     // Does not work with com.android.tools.build:gradle:3.2.0-alpha06
 
-//    androidExtensions {
-//        experimental = true
-//    }
+    androidExtensions {
+        experimental = true
+    }
 
     packagingOptions {
         exclude 'META-INF/rxjava.properties'
