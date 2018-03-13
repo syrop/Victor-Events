@@ -57,10 +57,18 @@ android {
     }
 
     kotlin { experimental { coroutines 'enable' } }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+}
+
+kapt {
+    // https://blog.jetbrains.com/kotlin/2018/01/kotlin-1-2-20-is-out/
+    useBuildCache = true
+    // https://blog.jetbrains.com/kotlin/2018/03/kotlin-1-2-30-is-out/
+    mapDiagnosticLocations = true
 }
 
 dependencies {
