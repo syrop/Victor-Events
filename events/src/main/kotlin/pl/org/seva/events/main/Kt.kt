@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Wiktor Nizio
+ * Copyright (C) 2018 Wiktor Nizio
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,28 +17,6 @@
 
 package pl.org.seva.events.main
 
-import android.app.Application
-import com.google.firebase.auth.FirebaseUser
-import org.kodein.di.Kodein
-import org.kodein.di.conf.global
-import java.util.logging.Logger
+import android.content.Context
 
-fun Any.log() = Logger.getLogger(this::class.java.name)!!
-
-class EventsApplication : Application() {
-
-    init {
-        Kodein.global.addImport(module())
-    }
-
-    private val bootstrap = bootstrap()
-
-    override fun onCreate() {
-        super.onCreate()
-        bootstrap.boot()
-    }
-
-    fun login(user: FirebaseUser) = bootstrap.login(user)
-
-    fun logout() = bootstrap.logout()
-}
+fun context() = instance<Context>()

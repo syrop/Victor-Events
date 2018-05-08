@@ -18,8 +18,12 @@
 package pl.org.seva.events.main
 
 import android.content.Context
-import com.github.salomonbrys.kodein.*
-import com.github.salomonbrys.kodein.conf.global
+import org.kodein.di.Kodein
+import org.kodein.di.conf.global
+import org.kodein.di.generic.bind
+import org.kodein.di.generic.instance
+import org.kodein.di.generic.provider
+import org.kodein.di.generic.singleton
 import pl.org.seva.events.community.Communities
 import pl.org.seva.events.login.Login
 import pl.org.seva.events.data.firestore.FsReader
@@ -27,12 +31,12 @@ import pl.org.seva.events.data.firestore.FsWriter
 import pl.org.seva.events.data.room.EventsDatabase
 import pl.org.seva.events.main.ui.ColorFactory
 
-
 fun Context.module() = KodeinModuleBuilder(this).build()
 
-inline fun <reified T : Any> instance() = Kodein.global.instance<T>()
-
-fun context() = instance<Context>()
+inline fun <reified R : Any> instance(): R {
+    val result by Kodein.global.instance<R>()
+    return result
+}
 
 class KodeinModuleBuilder(private val ctx: Context) {
 

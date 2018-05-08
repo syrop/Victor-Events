@@ -85,7 +85,7 @@ class FsReader : FsBase() {
     }
 
     private fun DocumentSnapshot.toEvent(): Event {
-        val name: String = getString(EVENT_NAME)
+        val name: String = getString(EVENT_NAME)!!
         val location: GeoPoint? = getGeoPoint(EVENT_LOCATION)
         val time: ZonedDateTime = ZonedDateTime.parse(getString(EVENT_TIME))
         val desc: String? = getString(EVENT_DESC)
