@@ -6,7 +6,7 @@ apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '28.0-rc1'
+    buildToolsVersion '28.0-rc2'
 
     defaultConfig {
         applicationId 'pl.org.seva.events'
@@ -92,7 +92,7 @@ dependencies {
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.17'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.20'
     implementation 'io.reactivex.rxjava2:rxkotlin:2.1.0'
     implementation 'org.kodein.di:kodein-di-generic-jvm:5.0.0'
     implementation 'org.kodein.di:kodein-di-framework-android:5.0.0'
@@ -100,16 +100,16 @@ dependencies {
 
     // Play, Firebase
     implementation 'com.google.android.gms:play-services-auth:15.0.1'
-    implementation 'com.google.firebase:firebase-core:15.0.2'
-    implementation 'com.google.firebase:firebase-auth:15.1.0'
-    implementation 'com.google.firebase:firebase-firestore:16.0.0'
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.2'
+    implementation 'com.google.firebase:firebase-core:16.0.0'
+    implementation 'com.google.firebase:firebase-auth:16.0.1'
+    implementation 'com.google.firebase:firebase-firestore:17.0.1'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.3'
 
     // Architecture
     implementation 'android.arch.lifecycle:extensions:1.1.1'
-    kapt 'android.arch.persistence.room:compiler:1.0.0'
-    testImplementation 'android.arch.persistence.room:testing:1.0.0'
-    implementation 'android.arch.persistence.room:rxjava2:1.0.0'
+    kapt 'android.arch.persistence.room:compiler:1.1.0'
+    testImplementation 'android.arch.persistence.room:testing:1.1.0'
+    implementation 'android.arch.persistence.room:rxjava2:1.1.0'
 
     implementation 'commons-io:commons-io:2.5'
     androidTestImplementation 'org.mockito:mockito-android:2.6.2'
