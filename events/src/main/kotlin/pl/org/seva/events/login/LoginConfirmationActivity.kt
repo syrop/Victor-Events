@@ -22,7 +22,7 @@ package pl.org.seva.events.login
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import pl.org.seva.events.R
 
 fun Context.startLoginConfirmationActivity(): Boolean {

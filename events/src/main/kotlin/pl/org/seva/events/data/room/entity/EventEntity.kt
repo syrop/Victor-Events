@@ -19,8 +19,8 @@
 
 package pl.org.seva.events.data.room.entity
 
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.firebase.firestore.GeoPoint
 import pl.org.seva.events.event.Event
 import pl.org.seva.events.data.room.EventsDatabase

@@ -22,7 +22,7 @@ package pl.org.seva.events.main.ui
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Rect
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.graphics.drawable.Drawable
 import android.view.View
 
@@ -32,11 +32,11 @@ class DividerItemDecoration(context: Context) : RecyclerView.ItemDecoration() {
 
     init {
         val attr = context.obtainStyledAttributes(ATTRS)
-        divider = attr.getDrawable(0)
+        divider = attr.getDrawable(0)!!
         attr.recycle()
     }
 
-    override fun onDrawOver(canvas: Canvas, parent: RecyclerView, state: RecyclerView.State?) {
+    override fun onDrawOver(canvas: Canvas, parent: RecyclerView, state: RecyclerView.State) {
 
         val left = parent.paddingLeft
         val right = parent.width - parent.paddingRight
@@ -54,9 +54,9 @@ class DividerItemDecoration(context: Context) : RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(
             outRect: Rect,
-            view: View?,
-            parent: RecyclerView?,
-            state: RecyclerView.State?) {
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State) {
         outRect.set(0, 0, 0, divider.intrinsicHeight)
     }
 

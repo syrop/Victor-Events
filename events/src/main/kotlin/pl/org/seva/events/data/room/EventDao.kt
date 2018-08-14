@@ -19,10 +19,10 @@
 
 package pl.org.seva.events.data.room
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Query
-import android.arch.persistence.room.Delete
-import android.arch.persistence.room.Insert
+import androidx.room.Dao
+import androidx.room.Query
+import androidx.room.Delete
+import androidx.room.Insert
 import pl.org.seva.events.data.room.entity.EventEntity
 
 

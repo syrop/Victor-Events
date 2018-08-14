@@ -21,8 +21,8 @@
 
 package pl.org.seva.events.data.room
 
-import android.arch.persistence.room.RoomDatabase
-import android.arch.persistence.room.Database
+import androidx.room.RoomDatabase
+import androidx.room.Database
 import pl.org.seva.events.data.room.entity.CommEntity
 import pl.org.seva.events.data.room.entity.EventEntity
 

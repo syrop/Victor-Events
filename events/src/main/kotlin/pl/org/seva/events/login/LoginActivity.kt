@@ -22,7 +22,7 @@ package pl.org.seva.events.login
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
 
@@ -66,7 +66,6 @@ class LoginActivity : AppCompatActivity(),
         createCommunityName = intent.getStringExtra(COMMUNITY_NAME)
 
         googleApiClient = GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .addConnectionCallbacks(this)
                 .build()
@@ -146,7 +145,7 @@ class LoginActivity : AppCompatActivity(),
         finish()
     }
 
-    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);

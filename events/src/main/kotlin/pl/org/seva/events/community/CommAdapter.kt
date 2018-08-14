@@ -19,7 +19,7 @@
 
 package pl.org.seva.events.community
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import pl.org.seva.events.R

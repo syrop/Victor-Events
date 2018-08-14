@@ -24,8 +24,8 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.SearchView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -135,11 +135,9 @@ class AddCommActivity : AppCompatActivity() {
 
             fun showLoginToCreateSnackbar(name: String) {
                 fun loginToCreateComm(name: String) {
-                    Intent(this, LoginActivity::class.java)
-                            .putExtra(LoginActivity.COMMUNITY_NAME, name)
-                            .putExtra(LoginActivity.ACTION, LoginActivity.LOGIN).let {
-                        startActivityForResult(it, LOGIN_CREATE_COMM_REQUEST)
-                    }
+                    startActivityForResult(Intent(this, LoginActivity::class.java)
+                        .putExtra(LoginActivity.COMMUNITY_NAME, name)
+                        .putExtra(LoginActivity.ACTION, LoginActivity.LOGIN), LOGIN_CREATE_COMM_REQUEST)
                 }
 
                 permanentSnackbar {
@@ -177,10 +175,10 @@ class AddCommActivity : AppCompatActivity() {
         finish()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == LOGIN_CREATE_COMM_REQUEST && resultCode == Activity.RESULT_OK) {
-            data.getStringExtra(LoginActivity.COMMUNITY_NAME)?.createJoinAndFinish()
+            data!!.getStringExtra(LoginActivity.COMMUNITY_NAME)?.createJoinAndFinish()
         }
     }
 
