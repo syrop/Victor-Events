@@ -19,8 +19,8 @@
 
 package pl.org.seva.events.community
 
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.CommonPool
+import kotlinx.coroutines.launch
 import pl.org.seva.events.data.firestore.fsWriter
 import pl.org.seva.events.data.room.db
 import pl.org.seva.events.data.room.entity.CommEntity

@@ -22,7 +22,7 @@ package pl.org.seva.events.main
 import android.content.Context
 import android.widget.Toast
 
-fun toaster() = instance<Toaster>()
+val toaster get() = instance<Toaster>()
 
 class Toaster(private val ctx: Context) {
 
