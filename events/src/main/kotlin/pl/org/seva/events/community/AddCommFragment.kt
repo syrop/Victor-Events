@@ -56,9 +56,6 @@ class AddCommFragment : Fragment() {
         }
         if (communities.isEmpty) {
             prompt.setText(R.string.add_comm_please_search_empty)
-        } else {
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-            supportActionBar!!.setDisplayShowHomeEnabled(true)
         }
     }
 
