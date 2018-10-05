@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
-      tools:context="pl.org.seva.events.event.EventsActivity">
+      tools:context="pl.org.seva.events.event.EventsFragment">
 
     <item
         android:id="@+id/action_login"

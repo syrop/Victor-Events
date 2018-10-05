@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/nav_graph"
+            app:startDestination="@+id/eventsFragment">
+    <fragment
+        android:id="@+id/eventsFragment"
+        android:name="pl.org.seva.events.event.EventsFragment"
+        android:label="NavigationFragment"
+        tools:layout="@layout/fragment_events">
+        <action
+            android:id="@+id/action_eventsFragment_to_createEventFragment"
+            app:destination="@id/createEventFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/createEventFragment"
+        android:name="pl.org.seva.events.event.CreateEventFragment"
+        android:label="CreateEventFragment"
+        tools:layout="@layout/fragment_create_event"/>
+
+</navigation>

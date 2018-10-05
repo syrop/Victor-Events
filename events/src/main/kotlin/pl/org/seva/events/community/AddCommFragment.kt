@@ -30,7 +30,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_add_comm.*
+import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.fragment_add_comm.*
 import pl.org.seva.events.R
 import pl.org.seva.events.data.firestore.fsReader
 import pl.org.seva.events.login.login
@@ -40,22 +41,15 @@ import pl.org.seva.events.main.ui.DividerItemDecoration
 import pl.org.seva.events.main.ui.longSnackbar
 import pl.org.seva.events.main.ui.permanentSnackbar
 
-fun Context.startAddCommActivity(): Boolean {
-    startActivity(Intent(this, AddCommActivity::class.java))
-    return true
-}
+class AddCommFragment : Fragment() {
 
-class AddCommActivity : AppCompatActivity() {
-
-    private val communities = communities()
-
-    private val searchManager get() = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+    private val searchManager get() = activity!!getSystemService(Context.SEARCH_SERVICE) as SearchManager
 
     private lateinit var adapter: CommAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_comm)
+        setContentView(R.layout.fragment_add_comm)
 
         if (Intent.ACTION_SEARCH == intent.action) {
             search(intent.getStringExtra(SearchManager.QUERY))
@@ -66,6 +60,10 @@ class AddCommActivity : AppCompatActivity() {
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
             supportActionBar!!.setDisplayShowHomeEnabled(true)
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
     }
 
     private fun communitiesNotFoundPrompt() {

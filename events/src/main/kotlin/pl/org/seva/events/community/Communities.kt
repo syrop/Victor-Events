@@ -28,7 +28,7 @@ import pl.org.seva.events.main.instance
 import pl.org.seva.events.main.ui.colorFactory
 import pl.org.seva.events.login.login
 
-fun communities() = instance<Communities>()
+val communities get() = instance<Communities>()
 
 class Communities {
 
