@@ -56,7 +56,6 @@ class FsReader : FsBase() {
                 BiFunction { comm: Community, isAdmin: Boolean ->
                     if (comm.empty) comm else comm.copy(admin = isAdmin) })
                 .subscribe(onResult).neverDispose()
-
     }
 
     private fun DocumentReference.doesExist() = read().map { it.exists() }
