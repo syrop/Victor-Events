@@ -31,7 +31,7 @@ fun bootstrap() = instance<Bootstrap>()
 class Bootstrap {
     fun boot() {
         login().setCurrentUser(FirebaseAuth.getInstance().currentUser)
-        db().commDao getAllAsync { communities().addAll(it) }
+        db().commDao getAllAsync { communities.addAll(it) }
     }
 
     fun login(user: FirebaseUser) {

@@ -65,8 +65,14 @@ class EventsFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.action_login -> startLoginConfirmationActivity()
-        R.id.action_seek_community -> startAddCommActivity()
+        R.id.action_login -> {
+            findNavController().navigate(R.id.action_eventsFragment_to_loginConfirmationFragment)
+            true
+        }
+        R.id.action_seek_community -> {
+            findNavController().navigate(R.id.action_eventsFragment_to_addCommFragment)
+            true
+        }
         else -> super.onOptionsItemSelected(item)
     }
 }

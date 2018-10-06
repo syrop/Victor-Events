@@ -19,21 +19,16 @@
 
 package pl.org.seva.events.login
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import pl.org.seva.events.R
 
-fun Context.startLoginConfirmationActivity(): Boolean {
-    startActivity(Intent(this, LoginConfirmationActivity::class.java))
-    return true
-}
+class LoginConfirmationFragment : Fragment() {
 
-class LoginConfirmationActivity : AppCompatActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login_confirmation)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_login_confirmation, container, false)
     }
 }

@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_eventsFragment_to_addCommFragment"
             app:destination="@id/addCommFragment"/>
+        <action
+            android:id="@+id/action_eventsFragment_to_loginConfirmationFragment"
+            app:destination="@id/loginConfirmationFragment"/>
     </fragment>
     <fragment
         android:id="@+id/createEventFragment"
@@ -26,5 +29,10 @@
         android:name="pl.org.seva.events.comm.AddCommFragment"
         android:label="@string/add_comm_label"
         tools:layout="@layout/fragment_add_comm"/>
+    <fragment
+        android:id="@+id/loginConfirmationFragment"
+        android:name="pl.org.seva.events.login.LoginConfirmationFragment"
+        android:label="@string/login_question_label"
+        tools:layout="@layout/fragment_login_confirmation"/>
 
 </navigation>

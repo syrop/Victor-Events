@@ -29,10 +29,6 @@
         </activity>
 
         <activity
-            android:name=".login.LoginConfirmationActivity"
-            android:label="@string/login_question_label" />
-
-        <activity
             android:name=".login.LoginActivity"
             android:label="@string/login_label" />
 

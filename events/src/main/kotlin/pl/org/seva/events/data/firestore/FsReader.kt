@@ -64,11 +64,11 @@ class FsReader : FsBase() {
     private fun DocumentReference.read(): Observable<DocumentSnapshot> {
         val resultSubject = PublishSubject.create<DocumentSnapshot>()
         return resultSubject
-                .doOnSubscribe { get().addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        resultSubject.onNext(it.result)
+                .doOnSubscribe { get().addOnCompleteListener { result ->
+                    if (result.isSuccessful) {
+                        resultSubject.onNext(result.result)
                     } else {
-                        resultSubject.onError(it.exception!!)
+                        resultSubject.onError(result.exception!!)
                     }
                 }
                 }
@@ -76,11 +76,11 @@ class FsReader : FsBase() {
 
     private fun CollectionReference.read(): Observable<DocumentSnapshot> {
         val resultSubject = PublishSubject.create<DocumentSnapshot>()
-        return resultSubject.doOnSubscribe { get().addOnCompleteListener {
-            if (it.isSuccessful) {
-                it.result.forEach { resultSubject.onNext(it) }
+        return resultSubject.doOnSubscribe { get().addOnCompleteListener { result ->
+            if (result.isSuccessful) {
+                result.result!!.forEach { element -> resultSubject.onNext(element) }
             } else {
-                resultSubject.onError(it.exception!!)
+                resultSubject.onError(result.exception!!)
             }
         }
         }
