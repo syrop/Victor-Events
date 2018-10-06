@@ -60,7 +60,10 @@ class AddCommFragment : Fragment() {
             prompt.setText(R.string.add_comm_please_search_empty)
         }
         eventsModel.query.observe(this) {
-            search(it)
+            if (!it.isEmpty()) {
+                eventsModel.query.value = ""
+                search(it)
+            }
         }
         eventsModel.commToCreate.observe(this) {
             if (!it.isNullOrEmpty()) {
