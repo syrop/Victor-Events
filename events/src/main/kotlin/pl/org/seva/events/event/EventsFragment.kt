@@ -27,7 +27,7 @@ import androidx.navigation.fragment.findNavController
 
 import kotlinx.android.synthetic.main.fragment_events.*
 import pl.org.seva.events.R
-import pl.org.seva.events.community.communities
+import pl.org.seva.events.comm.communities
 import pl.org.seva.events.login.login
 
 class EventsFragment : Fragment() {

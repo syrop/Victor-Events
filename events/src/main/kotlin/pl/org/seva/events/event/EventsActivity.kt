@@ -1,13 +1,22 @@
 package pl.org.seva.events.event
 
+import android.app.Activity
+import android.app.SearchManager
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import kotlinx.android.synthetic.main.activity_events.*
 import pl.org.seva.events.R
+import pl.org.seva.events.comm.AddCommFragment
+import pl.org.seva.events.login.LoginActivity
+import pl.org.seva.events.main.EventsViewModel
 
 class EventsActivity : AppCompatActivity() {
+
+    private lateinit var eventsModel: EventsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,6 +25,21 @@ class EventsActivity : AppCompatActivity() {
         NavigationUI.setupActionBarWithNavController(
                 this,
                 findNavController(R.id.nav_host_fragment))
+        eventsModel = ViewModelProviders.of(this).get(EventsViewModel::class.java)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        if (Intent.ACTION_SEARCH == intent.action) {
+            eventsModel.query.value = intent.getStringExtra(SearchManager.QUERY)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AddCommFragment.LOGIN_CREATE_COMM_REQUEST && resultCode == Activity.RESULT_OK) {
+            eventsModel.commToCreate.value = data!!.getStringExtra(LoginActivity.COMMUNITY_NAME)
+        }
     }
 
     override fun onSupportNavigateUp()

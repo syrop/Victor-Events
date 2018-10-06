@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Wiktor Nizio
+ * Copyright (C) 2018 Wiktor Nizio
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,28 +17,12 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.community
+package pl.org.seva.events.main
 
-import android.annotation.SuppressLint
-import android.graphics.Color
-import android.os.Parcelable
-import kotlinx.android.parcel.IgnoredOnParcel
-import kotlinx.android.parcel.Parcelize
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 
-@SuppressLint("ParcelCreator")
-@Parcelize
-data class Community(
-        val name: String,
-        val color: Int = Color.GRAY,
-        val admin: Boolean = false) : Parcelable {
-
-    val lcName: String get() = name.toLowerCase()
-
-    @IgnoredOnParcel
-    @Transient
-    var empty = false
-
-    companion object {
-        fun empty(name: String = "") = Community(name).apply { empty = true }
-    }
+class EventsViewModel : ViewModel() {
+    val query: MutableLiveData<String> = MutableLiveData()
+    val commToCreate: MutableLiveData<String?> = MutableLiveData()
 }

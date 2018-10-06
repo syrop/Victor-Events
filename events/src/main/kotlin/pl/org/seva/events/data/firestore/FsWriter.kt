@@ -20,7 +20,7 @@
 package pl.org.seva.events.data.firestore
 
 import com.google.firebase.auth.FirebaseUser
-import pl.org.seva.events.community.Community
+import pl.org.seva.events.comm.Community
 import pl.org.seva.events.event.Event
 import pl.org.seva.events.main.instance
 

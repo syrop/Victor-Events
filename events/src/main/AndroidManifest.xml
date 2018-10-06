@@ -15,17 +15,14 @@
 
         <activity
             android:name=".event.EventsActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".event.CreateEventActivity"
-            android:label="@string/app_name" />
 
         <activity
             android:name=".login.LoginConfirmationActivity"
@@ -36,7 +33,7 @@
             android:label="@string/login_label" />
 
         <activity
-            android:name=".community.AddCommActivity"
+            android:name=".comm.AddCommActivity"
             android:label="@string/add_comm_label"
             android:launchMode="singleTop" >
             <intent-filter>

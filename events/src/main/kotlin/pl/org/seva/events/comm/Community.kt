@@ -17,18 +17,28 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.data.room
+package pl.org.seva.events.comm
 
-import kotlinx.coroutines.CommonPool
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import pl.org.seva.events.comm.Community
+import android.annotation.SuppressLint
+import android.graphics.Color
+import android.os.Parcelable
+import kotlinx.android.parcel.IgnoredOnParcel
+import kotlinx.android.parcel.Parcelize
 
-inline infix fun CommDao.getAllAsync(crossinline callback: (Collection<Community>) -> Unit) {
-    val collectionJob = async(CommonPool) { getAll().map { it.comValue() } }
-    val collection = ArrayList<Community>(0)
-    launch(CommonPool) {
-        collection.addAll(collectionJob.await())
-        callback(collection)
+@SuppressLint("ParcelCreator")
+@Parcelize
+data class Community(
+        val name: String,
+        val color: Int = Color.GRAY,
+        val admin: Boolean = false) : Parcelable {
+
+    val lcName: String get() = name.toLowerCase()
+
+    @IgnoredOnParcel
+    @Transient
+    var empty = false
+
+    companion object {
+        fun empty(name: String = "") = Community(name).apply { empty = true }
     }
 }

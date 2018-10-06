@@ -22,7 +22,7 @@ package pl.org.seva.events.data.room.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import android.graphics.Color
-import pl.org.seva.events.community.Community
+import pl.org.seva.events.comm.Community
 import pl.org.seva.events.data.room.EventsDatabase
 
 @Entity(tableName = EventsDatabase.COMMUNITIES_TABLE_NAME)

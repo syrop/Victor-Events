@@ -17,76 +17,77 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.community
+package pl.org.seva.events.comm
 
 import android.app.Activity
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.*
 import androidx.appcompat.widget.SearchView
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_add_comm.*
 import pl.org.seva.events.R
 import pl.org.seva.events.data.firestore.fsReader
 import pl.org.seva.events.login.login
 import pl.org.seva.events.login.LoginActivity
+import pl.org.seva.events.main.EventsViewModel
 import pl.org.seva.events.main.ui.boldSection
+import pl.org.seva.events.main.observe
 import pl.org.seva.events.main.ui.DividerItemDecoration
 import pl.org.seva.events.main.ui.longSnackbar
 import pl.org.seva.events.main.ui.permanentSnackbar
 
 class AddCommFragment : Fragment() {
 
-    private val searchManager get() = activity!!getSystemService(Context.SEARCH_SERVICE) as SearchManager
+    private lateinit var eventsModel: EventsViewModel
+
+    private val searchManager get() = activity!!.getSystemService(Context.SEARCH_SERVICE) as SearchManager
 
     private lateinit var adapter: CommAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_add_comm)
-
-        if (Intent.ACTION_SEARCH == intent.action) {
-            search(intent.getStringExtra(SearchManager.QUERY))
-        }
-        if (communities.isEmpty) {
-            prompt.setText(R.string.add_comm_please_search_empty)
-        }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return layoutInflater.inflate(R.layout.fragment_add_comm, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        eventsModel = ViewModelProviders.of(this).get(EventsViewModel::class.java)
+        if (communities.isEmpty) {
+            prompt.setText(R.string.add_comm_please_search_empty)
+        }
+        eventsModel.query.observe(this) {
+            search(it)
+        }
+        eventsModel.commToCreate.observe(this) {
+            if (!it.isNullOrEmpty()) {
+                eventsModel.commToCreate.value = ""
+                it.createJoinAndFinish()
+            }
+        }
+    }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     private fun communitiesNotFoundPrompt() {
 
     }
 
-    override fun onBackPressed() = if (!communities.isEmpty) super.onBackPressed() else Unit
-
-    override fun onNewIntent(intent: Intent) {
-        setIntent(intent)
-        if (Intent.ACTION_SEARCH == intent.action) {
-            val query = intent.getStringExtra(SearchManager.QUERY).trim { it <= ' ' }
-            search(query)
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.add_community, menu)
         val searchMenuItem = menu.findItem(R.id.action_search)
         searchMenuItem.collapseActionView()
         searchMenuItem.prepareSearchView()
-        return true
     }
 
     private fun MenuItem.prepareSearchView() = with (actionView as SearchView) {
-        setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        setSearchableInfo(searchManager.getSearchableInfo(activity!!.componentName))
         setOnSearchClickListener { onSearchClicked() }
         setOnCloseListener { onSearchViewClosed() }
     }
@@ -107,13 +108,13 @@ class AddCommFragment : Fragment() {
         fun Community.found() {
             fun Community.joinAndFinish() {
                 communities join this
-                finish()
+                findNavController().popBackStack()
             }
 
             progress.visibility = View.GONE
             recycler.visibility = View.VISIBLE
             adapter = CommAdapter(this) { joinAndFinish() }
-            recycler.addItemDecoration(DividerItemDecoration(this@AddCommActivity))
+            recycler.addItemDecoration(DividerItemDecoration(activity!!))
             recycler.adapter = adapter
         }
 
@@ -130,7 +131,7 @@ class AddCommFragment : Fragment() {
 
             fun showLoginToCreateSnackbar(name: String) {
                 fun loginToCreateComm(name: String) {
-                    startActivityForResult(Intent(this, LoginActivity::class.java)
+                    startActivityForResult(Intent(activity, LoginActivity::class.java)
                         .putExtra(LoginActivity.COMMUNITY_NAME, name)
                         .putExtra(LoginActivity.ACTION, LoginActivity.LOGIN), LOGIN_CREATE_COMM_REQUEST)
                 }
@@ -166,8 +167,8 @@ class AddCommFragment : Fragment() {
                 getString(R.string.add_comm_created).boldSection(NAME_PLACEHOLDER, this)
 
         communities joinNewCommunity this
-        Toast.makeText(this@AddCommActivity, created(), Toast.LENGTH_LONG).show()
-        finish()
+        Toast.makeText(activity, created(), Toast.LENGTH_LONG).show()
+        findNavController().popBackStack()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -178,7 +179,10 @@ class AddCommFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        android.R.id.home -> { finish(); true }
+        android.R.id.home -> {
+            findNavController().popBackStack()
+            true
+        }
         else -> super.onOptionsItemSelected(item)
     }
 

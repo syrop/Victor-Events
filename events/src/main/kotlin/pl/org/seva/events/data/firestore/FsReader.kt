@@ -26,7 +26,7 @@ import com.google.firebase.firestore.GeoPoint
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.PublishSubject
-import pl.org.seva.events.community.Community
+import pl.org.seva.events.comm.Community
 import pl.org.seva.events.event.Event
 import pl.org.seva.events.main.instance
 import pl.org.seva.events.main.neverDispose
