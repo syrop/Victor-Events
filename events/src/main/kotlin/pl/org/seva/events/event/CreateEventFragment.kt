@@ -19,21 +19,21 @@
 
 package pl.org.seva.events.event
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_create_event.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.fragment_create_event.*
 import pl.org.seva.events.R
 
-fun Context.startCreateEventActivity() {
-    startActivity(Intent(this, CreateEventActivity::class.java))
-}
+class CreateEventFragment : Fragment() {
 
-class CreateEventActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_create_event)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_create_event, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         date.setOnClickListener {}
     }
 }

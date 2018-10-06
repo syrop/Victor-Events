@@ -17,23 +17,21 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.login
+package pl.org.seva.events.comm
 
-import android.content.Context
-import android.content.Intent
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import pl.org.seva.events.R
+import androidx.recyclerview.widget.RecyclerView
+import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
+import kotlinx.android.synthetic.main.row_community.view.*
 
-fun Context.startLoginConfirmationActivity(): Boolean {
-    startActivity(Intent(this, LoginConfirmationActivity::class.java))
-    return true
-}
+class CommViewHolder(val view: View, f: (() -> Unit)? = null) : RecyclerView.ViewHolder(view) {
 
-class LoginConfirmationActivity : AppCompatActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login_confirmation)
+    init {
+        view.setOnClickListener { f?.invoke() }
     }
+
+    val communityName: TextView = view.community
+    val iconProfile: ImageView = view.icon_profile
+    val iconText: TextView = view.icon_text
 }

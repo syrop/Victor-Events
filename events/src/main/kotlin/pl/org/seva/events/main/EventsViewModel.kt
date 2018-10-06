@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Wiktor Nizio
+ * Copyright (C) 2018 Wiktor Nizio
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,21 +17,12 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.community
+package pl.org.seva.events.main
 
-import androidx.recyclerview.widget.RecyclerView
-import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import kotlinx.android.synthetic.main.row_community.view.*
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 
-class CommViewHolder(val view: View, f: (() -> Unit)? = null) : RecyclerView.ViewHolder(view) {
-
-    init {
-        view.setOnClickListener { f?.invoke() }
-    }
-
-    val communityName: TextView = view.community
-    val iconProfile: ImageView = view.icon_profile
-    val iconText: TextView = view.icon_text
+class EventsViewModel : ViewModel() {
+    val query: MutableLiveData<String> = MutableLiveData()
+    val commToCreate: MutableLiveData<String?> = MutableLiveData()
 }

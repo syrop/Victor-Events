@@ -26,7 +26,7 @@ import com.google.firebase.firestore.GeoPoint
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.PublishSubject
-import pl.org.seva.events.community.Community
+import pl.org.seva.events.comm.Community
 import pl.org.seva.events.event.Event
 import pl.org.seva.events.main.instance
 import pl.org.seva.events.main.neverDispose
@@ -56,7 +56,6 @@ class FsReader : FsBase() {
                 BiFunction { comm: Community, isAdmin: Boolean ->
                     if (comm.empty) comm else comm.copy(admin = isAdmin) })
                 .subscribe(onResult).neverDispose()
-
     }
 
     private fun DocumentReference.doesExist() = read().map { it.exists() }
@@ -64,11 +63,11 @@ class FsReader : FsBase() {
     private fun DocumentReference.read(): Observable<DocumentSnapshot> {
         val resultSubject = PublishSubject.create<DocumentSnapshot>()
         return resultSubject
-                .doOnSubscribe { get().addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        resultSubject.onNext(it.result)
+                .doOnSubscribe { get().addOnCompleteListener { result ->
+                    if (result.isSuccessful) {
+                        resultSubject.onNext(result.result)
                     } else {
-                        resultSubject.onError(it.exception!!)
+                        resultSubject.onError(result.exception!!)
                     }
                 }
                 }
@@ -76,11 +75,11 @@ class FsReader : FsBase() {
 
     private fun CollectionReference.read(): Observable<DocumentSnapshot> {
         val resultSubject = PublishSubject.create<DocumentSnapshot>()
-        return resultSubject.doOnSubscribe { get().addOnCompleteListener {
-            if (it.isSuccessful) {
-                it.result.forEach { resultSubject.onNext(it) }
+        return resultSubject.doOnSubscribe { get().addOnCompleteListener { result ->
+            if (result.isSuccessful) {
+                result.result!!.forEach { element -> resultSubject.onNext(element) }
             } else {
-                resultSubject.onError(it.exception!!)
+                resultSubject.onError(result.exception!!)
             }
         }
         }

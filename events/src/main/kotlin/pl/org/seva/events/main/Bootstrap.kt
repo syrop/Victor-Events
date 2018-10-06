@@ -21,7 +21,7 @@ package pl.org.seva.events.main
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import pl.org.seva.events.community.communities
+import pl.org.seva.events.comm.communities
 import pl.org.seva.events.login.login
 import pl.org.seva.events.data.room.db
 import pl.org.seva.events.data.room.getAllAsync
@@ -31,7 +31,7 @@ fun bootstrap() = instance<Bootstrap>()
 class Bootstrap {
     fun boot() {
         login().setCurrentUser(FirebaseAuth.getInstance().currentUser)
-        db().commDao getAllAsync { communities().addAll(it) }
+        db().commDao getAllAsync { communities.addAll(it) }
     }
 
     fun login(user: FirebaseUser) {

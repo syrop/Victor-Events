@@ -26,7 +26,7 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
-import pl.org.seva.events.community.Communities
+import pl.org.seva.events.comm.Communities
 import pl.org.seva.events.login.Login
 import pl.org.seva.events.data.firestore.FsReader
 import pl.org.seva.events.data.firestore.FsWriter

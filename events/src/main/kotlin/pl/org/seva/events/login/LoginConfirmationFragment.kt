@@ -17,18 +17,18 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.data.room
+package pl.org.seva.events.login
 
-import kotlinx.coroutines.CommonPool
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import pl.org.seva.events.comm.Community
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import pl.org.seva.events.R
 
-inline infix fun CommDao.getAllAsync(crossinline callback: (Collection<Community>) -> Unit) {
-    val collectionJob = async(CommonPool) { getAll().map { it.comValue() } }
-    val collection = ArrayList<Community>(0)
-    launch(CommonPool) {
-        collection.addAll(collectionJob.await())
-        callback(collection)
+class LoginConfirmationFragment : Fragment() {
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_login_confirmation, container, false)
     }
 }
