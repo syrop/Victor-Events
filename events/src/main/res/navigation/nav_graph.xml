@@ -7,16 +7,24 @@
     <fragment
         android:id="@+id/eventsFragment"
         android:name="pl.org.seva.events.event.EventsFragment"
-        android:label="NavigationFragment"
+        android:label="@string/app_name"
         tools:layout="@layout/fragment_events">
         <action
             android:id="@+id/action_eventsFragment_to_createEventFragment"
             app:destination="@id/createEventFragment"/>
+        <action
+            android:id="@+id/action_eventsFragment_to_addCommFragment"
+            app:destination="@id/addCommFragment"/>
     </fragment>
     <fragment
         android:id="@+id/createEventFragment"
         android:name="pl.org.seva.events.event.CreateEventFragment"
-        android:label="CreateEventFragment"
+        android:label="@string/app_name"
         tools:layout="@layout/fragment_create_event"/>
+    <fragment
+        android:id="@+id/addCommFragment"
+        android:name="pl.org.seva.events.comm.AddCommFragment"
+        android:label="@string/add_comm_label"
+        tools:layout="@layout/fragment_add_comm"/>
 
 </navigation>

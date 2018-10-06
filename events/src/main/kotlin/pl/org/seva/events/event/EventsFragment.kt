@@ -54,7 +54,9 @@ class EventsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (communities.isEmpty) { startAddCommActivity() }
+        if (communities.isEmpty) {
+            findNavController().navigate(R.id.action_eventsFragment_to_addCommFragment)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
