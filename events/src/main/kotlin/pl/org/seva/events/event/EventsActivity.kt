@@ -25,9 +25,7 @@ class EventsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_events)
         setSupportActionBar(toolbar)
-        NavigationUI.setupActionBarWithNavController(
-                this,
-                findNavController(R.id.nav_host_fragment))
+        NavigationUI.setupActionBarWithNavController(this, nav)
         eventsModel = ViewModelProviders.of(this).get(EventsViewModel::class.java)
         if (communities.isEmpty) {
             nav.navigate(R.id.action_eventsFragment_to_addCommFragment)
@@ -35,6 +33,10 @@ class EventsActivity : AppCompatActivity() {
         nav.addOnNavigatedListener { _, destination ->
             if (destination.id == R.id.eventsFragment && communities.isEmpty) {
                 finish()
+            }
+            else if (destination.id == R.id.addCommFragment && communities.isEmpty) {
+                supportActionBar!!.setDisplayHomeAsUpEnabled(false)
+                supportActionBar!!.setDisplayShowHomeEnabled(false)
             }
         }
     }
