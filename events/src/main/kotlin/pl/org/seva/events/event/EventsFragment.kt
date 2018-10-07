@@ -52,13 +52,6 @@ class EventsFragment : Fragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (communities.isEmpty) {
-            findNavController().navigate(R.id.action_eventsFragment_to_addCommFragment)
-        }
-    }
-
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.events, menu)
         menu.findItem(R.id.action_login).isVisible = !login().isLoggedIn

@@ -11,10 +11,13 @@ import androidx.navigation.ui.NavigationUI
 import kotlinx.android.synthetic.main.activity_events.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.AddCommFragment
+import pl.org.seva.events.comm.communities
 import pl.org.seva.events.login.LoginActivity
 import pl.org.seva.events.main.EventsViewModel
 
 class EventsActivity : AppCompatActivity() {
+
+    private val nav get() = findNavController(R.id.nav_host_fragment)
 
     private lateinit var eventsModel: EventsViewModel
 
@@ -26,6 +29,14 @@ class EventsActivity : AppCompatActivity() {
                 this,
                 findNavController(R.id.nav_host_fragment))
         eventsModel = ViewModelProviders.of(this).get(EventsViewModel::class.java)
+        if (communities.isEmpty) {
+            nav.navigate(R.id.action_eventsFragment_to_addCommFragment)
+        }
+        nav.addOnNavigatedListener { _, destination ->
+            if (destination.id == R.id.eventsFragment && communities.isEmpty) {
+                finish()
+            }
+        }
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -42,6 +53,5 @@ class EventsActivity : AppCompatActivity() {
         }
     }
 
-    override fun onSupportNavigateUp()
-            = findNavController(R.id.nav_host_fragment).navigateUp()
+    override fun onSupportNavigateUp() = nav.navigateUp()
 }
