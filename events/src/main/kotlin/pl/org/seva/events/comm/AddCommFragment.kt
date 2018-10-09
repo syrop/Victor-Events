@@ -55,7 +55,7 @@ class AddCommFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        eventsModel = ViewModelProviders.of(this).get(EventsViewModel::class.java)
+        eventsModel = ViewModelProviders.of(activity!!).get(EventsViewModel::class.java)
         if (communities.isEmpty) {
             prompt.setText(R.string.add_comm_please_search_empty)
         }
