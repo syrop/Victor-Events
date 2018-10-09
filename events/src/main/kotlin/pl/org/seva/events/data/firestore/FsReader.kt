@@ -32,7 +32,7 @@ import pl.org.seva.events.main.instance
 import pl.org.seva.events.main.neverDispose
 import java.time.ZonedDateTime
 
-fun fsReader() = instance<FsReader>()
+val fsReader get() = instance<FsReader>()
 
 class FsReader : FsBase() {
 
@@ -63,13 +63,14 @@ class FsReader : FsBase() {
     private fun DocumentReference.read(): Observable<DocumentSnapshot> {
         val resultSubject = PublishSubject.create<DocumentSnapshot>()
         return resultSubject
-                .doOnSubscribe { get().addOnCompleteListener { result ->
-                    if (result.isSuccessful) {
-                        resultSubject.onNext(result.result)
-                    } else {
-                        resultSubject.onError(result.exception!!)
+                .doOnSubscribe {
+                    get().addOnCompleteListener { result ->
+                        if (result.isSuccessful) {
+                            resultSubject.onNext(result.result)
+                        } else {
+                            resultSubject.onError(result.exception!!)
+                        }
                     }
-                }
                 }
     }
 

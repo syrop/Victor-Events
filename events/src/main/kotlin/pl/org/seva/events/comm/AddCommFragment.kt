@@ -111,7 +111,7 @@ class AddCommFragment : Fragment() {
     private fun search(name: String) {
         fun Community.found() {
             fun Community.joinAndFinish() {
-                communities join this
+                join()
                 findNavController().popBackStack()
             }
             progress.visibility = View.GONE
@@ -161,7 +161,7 @@ class AddCommFragment : Fragment() {
 
         prompt.visibility = View.GONE
         progress.visibility = View.VISIBLE
-        fsReader().findCommunity(name) {
+        fsReader.findCommunity(name) {
             if (empty) notFound() else found()
         }
     }

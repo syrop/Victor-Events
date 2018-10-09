@@ -24,7 +24,7 @@ import pl.org.seva.events.comm.Community
 import pl.org.seva.events.event.Event
 import pl.org.seva.events.main.instance
 
-fun fsWriter() = instance<FsWriter>()
+val fsWriter get() = instance<FsWriter>()
 
 class FsWriter : FsBase() {
 

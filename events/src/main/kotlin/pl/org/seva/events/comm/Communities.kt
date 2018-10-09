@@ -30,10 +30,11 @@ import pl.org.seva.events.login.login
 
 val communities get() = instance<Communities>()
 
+fun Community.join() = communities join this
+
 class Communities {
 
     private val cache = mutableListOf<Community>()
-    private val fbWriter = fsWriter()
     private val login = login()
     private val commDao = db().commDao
 
@@ -59,8 +60,8 @@ class Communities {
 
     infix fun joinNewCommunity(name: String) =
         Community(name, colorFactory().nextColor(), true).apply {
-            fbWriter.create(this)
-            fbWriter.grantAdmin(this, login.email)
-            join(this)
+            fsWriter.create(this)
+            fsWriter.grantAdmin(this, login.email)
+            join()
         }
 }
