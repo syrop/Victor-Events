@@ -30,6 +30,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_add_comm.*
 import pl.org.seva.events.R
 import pl.org.seva.events.data.firestore.fsReader
@@ -113,12 +114,12 @@ class AddCommFragment : Fragment() {
                 communities join this
                 findNavController().popBackStack()
             }
-
             progress.visibility = View.GONE
             recycler.visibility = View.VISIBLE
             adapter = CommAdapter(this) { joinAndFinish() }
             recycler.addItemDecoration(DividerItemDecoration(activity!!))
             recycler.adapter = adapter
+            recycler.layoutManager = LinearLayoutManager(context)
         }
 
         fun notFound() {

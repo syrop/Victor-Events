@@ -34,7 +34,7 @@ class CommAdapter(
             }
 
     private fun ViewGroup.inflate() =
-            LayoutInflater.from(context).inflate(LAYOUT, this, false)
+            LayoutInflater.from(context).inflate(R.layout.row_community, this, false)
 
     override fun getItemCount() = 1
 
@@ -45,9 +45,5 @@ class CommAdapter(
         iconText.text = comm.name.substring(0, 1)
         iconProfile.setImageResource(R.drawable.bg_circle)
         iconProfile.setColorFilter(comm.color)
-    }
-
-    companion object {
-        private val LAYOUT = R.layout.row_community
     }
 }
