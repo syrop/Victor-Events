@@ -27,11 +27,8 @@ fun db() = instance<EventsDb>()
 
 class EventsDb(context: Context) {
 
-    private val db: EventsDbAbstract
-
-    init {
-        db = Room.databaseBuilder(context, EventsDbAbstract::class.java, DATABASE_NAME).build()
-    }
+    private val db=
+            Room.databaseBuilder(context, EventsDbAbstract::class.java, DATABASE_NAME).build()
 
     val eventDao get() = db.eventDao()
 
