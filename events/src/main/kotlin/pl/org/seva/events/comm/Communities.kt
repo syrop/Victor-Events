@@ -19,7 +19,9 @@
 
 package pl.org.seva.events.comm
 
-import kotlinx.coroutines.CommonPool
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import pl.org.seva.events.data.firestore.fsWriter
 import pl.org.seva.events.data.room.db
@@ -45,9 +47,9 @@ class Communities {
 
     infix fun join(community: Community) {
         cache.add(community)
-        launch(CommonPool) {
+        GlobalScope.launch(Dispatchers.Default, CoroutineStart.DEFAULT, null, {
             commDao.insert(CommEntity(community))
-        }
+        })
     }
 
     fun addAll(communities: Collection<Community>) {
