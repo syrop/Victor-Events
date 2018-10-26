@@ -42,7 +42,7 @@ inline fun <reified R : Any> instance(): R {
 
 class KodeinModuleBuilder(private val ctx: Context) {
 
-    fun build() = Kodein.Module {
+    fun build() = Kodein.Module("main") {
         bind<Bootstrap>() with singleton { Bootstrap() }
         bind<FsReader>() with singleton { FsReader() }
         bind<Communities>() with singleton { Communities() }
