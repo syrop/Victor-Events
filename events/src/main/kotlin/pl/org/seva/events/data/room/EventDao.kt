@@ -29,7 +29,7 @@ import pl.org.seva.events.data.room.entity.EventEntity
 @Dao
 interface EventDao {
 
-    @Query("select * from ${EventsDatabase.EVENTS_TABLE_NAME}")
+    @Query("select * from ${EventsDb.EVENTS_TABLE_NAME}")
     fun getAll(): List<EventEntity>
 
     @Insert

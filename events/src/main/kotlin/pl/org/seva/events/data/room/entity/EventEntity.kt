@@ -23,10 +23,10 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.firebase.firestore.GeoPoint
 import pl.org.seva.events.event.Event
-import pl.org.seva.events.data.room.EventsDatabase
+import pl.org.seva.events.data.room.EventsDb
 import java.time.ZonedDateTime
 
-@Entity(tableName = EventsDatabase.EVENTS_TABLE_NAME)
+@Entity(tableName = EventsDb.EVENTS_TABLE_NAME)
 class EventEntity() {
         lateinit var name: String
         @PrimaryKey

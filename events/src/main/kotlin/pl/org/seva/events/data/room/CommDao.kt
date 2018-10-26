@@ -28,7 +28,7 @@ import pl.org.seva.events.data.room.entity.CommEntity
 @Dao
 interface CommDao {
 
-    @Query("select * from ${EventsDatabase.COMMUNITIES_TABLE_NAME}")
+    @Query("select * from ${EventsDb.COMMUNITIES_TABLE_NAME}")
     fun getAll(): List<CommEntity>
 
     @Insert

@@ -30,7 +30,7 @@ import pl.org.seva.events.comm.Communities
 import pl.org.seva.events.login.Login
 import pl.org.seva.events.data.firestore.FsReader
 import pl.org.seva.events.data.firestore.FsWriter
-import pl.org.seva.events.data.room.EventsDatabase
+import pl.org.seva.events.data.room.EventsDb
 import pl.org.seva.events.main.ui.ColorFactory
 
 fun Context.module() = KodeinModuleBuilder(this).build()
@@ -48,7 +48,7 @@ class KodeinModuleBuilder(private val ctx: Context) {
         bind<Communities>() with singleton { Communities() }
         bind<Login>() with singleton { Login() }
         bind<FsWriter>() with singleton { FsWriter() }
-        bind<EventsDatabase>() with singleton { EventsDatabase(ctx) }
+        bind<EventsDb>() with singleton { EventsDb(ctx) }
         bind<ColorFactory>() with singleton { ColorFactory(ctx) }
         bind<Context>() with provider { ctx }
         bind<Toaster>() with singleton { Toaster(ctx) }

@@ -23,9 +23,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import android.graphics.Color
 import pl.org.seva.events.comm.Community
-import pl.org.seva.events.data.room.EventsDatabase
+import pl.org.seva.events.data.room.EventsDb
 
-@Entity(tableName = EventsDatabase.COMMUNITIES_TABLE_NAME)
+@Entity(tableName = EventsDb.COMMUNITIES_TABLE_NAME)
 class CommEntity() {
     @PrimaryKey
     lateinit var name: String

@@ -17,17 +17,31 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-@file:Suppress("unused")
-
 package pl.org.seva.events.data.room
 
-import androidx.room.RoomDatabase
-import androidx.room.Database
-import pl.org.seva.events.data.room.entity.CommEntity
-import pl.org.seva.events.data.room.entity.EventEntity
+import androidx.room.Room
+import android.content.Context
+import pl.org.seva.events.main.instance
 
-@Database(entities = [EventEntity::class, CommEntity::class], version = EventsDatabase.DATABASE_VERSION)
-abstract class EventsDatabaseAbstract : RoomDatabase() {
-    abstract fun eventDao(): EventDao
-    abstract fun commDao(): CommDao
+fun db() = instance<EventsDb>()
+
+class EventsDb(context: Context) {
+
+    private val db: EventsDbAbstract
+
+    init {
+        db = Room.databaseBuilder(context, EventsDbAbstract::class.java, DATABASE_NAME).build()
+    }
+
+    val eventDao get() = db.eventDao()
+
+    val commDao get() = db.commDao()
+
+    companion object {
+        const val DATABASE_NAME = "events_database"
+        const val DATABASE_VERSION = 1
+
+        const val EVENTS_TABLE_NAME = "events"
+        const val COMMUNITIES_TABLE_NAME = "communities"
+    }
 }
