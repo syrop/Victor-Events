@@ -23,11 +23,15 @@ import android.content.Context
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import io.reactivex.disposables.Disposable
 import java.util.logging.Logger
 
 fun context() = instance<Context>()
 
 fun <T> LiveData<T>.observe(owner: LifecycleOwner, f: (T) -> Unit) =
         observe(owner, Observer<T> { f(it) })
+
+@Suppress("unused")
+fun Disposable.neverDispose() = Unit
 
 val Any.log get() = Logger.getLogger(this::class.java.name)!!
