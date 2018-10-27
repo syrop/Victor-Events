@@ -24,7 +24,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import io.reactivex.disposables.Disposable
-import kotlinx.coroutines.*
 import java.util.logging.Logger
 
 fun context() = instance<Context>()
@@ -36,7 +35,3 @@ fun <T> LiveData<T>.observe(owner: LifecycleOwner, f: (T) -> Unit) =
 fun Disposable.neverDispose() = Unit
 
 val Any.log get() = Logger.getLogger(this::class.java.name)!!
-
-fun globalScopeLaunch(block: suspend CoroutineScope.() -> Unit): Job {
-    return GlobalScope.launch(Dispatchers.Default, CoroutineStart.DEFAULT, null, block)
-}

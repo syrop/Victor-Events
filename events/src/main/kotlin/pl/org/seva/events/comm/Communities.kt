@@ -19,13 +19,14 @@
 
 package pl.org.seva.events.comm
 
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import pl.org.seva.events.data.firestore.fsWriter
 import pl.org.seva.events.data.room.db
 import pl.org.seva.events.data.room.entity.CommEntity
 import pl.org.seva.events.main.instance
 import pl.org.seva.events.main.ui.colorFactory
 import pl.org.seva.events.login.login
-import pl.org.seva.events.main.globalScopeLaunch
 
 val communities get() = instance<Communities>()
 
@@ -44,7 +45,7 @@ class Communities {
 
     infix fun join(community: Community) {
         cache.add(community)
-        globalScopeLaunch {
+        GlobalScope.launch {
             commDao.insert(CommEntity(community))
         }
     }
