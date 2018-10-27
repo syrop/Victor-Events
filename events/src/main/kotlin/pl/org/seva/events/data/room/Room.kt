@@ -28,8 +28,8 @@ inline infix fun CommDao.getAllAsync(crossinline callback: (Collection<Community
             CoroutineStart.DEFAULT,
             null) { getAll().map { it.comValue() } }
     val collection = ArrayList<Community>(0)
-    GlobalScope.launch(Dispatchers.Default, CoroutineStart.DEFAULT, null, {
+    GlobalScope.launch(Dispatchers.Default, CoroutineStart.DEFAULT, null) {
         collection.addAll(collectionJob.await())
         callback(collection)
-    })
+    }
 }

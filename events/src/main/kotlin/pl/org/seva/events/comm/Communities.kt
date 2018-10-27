@@ -47,9 +47,9 @@ class Communities {
 
     infix fun join(community: Community) {
         cache.add(community)
-        GlobalScope.launch(Dispatchers.Default, CoroutineStart.DEFAULT, null, {
+        GlobalScope.launch(Dispatchers.Default, CoroutineStart.DEFAULT, null) {
             commDao.insert(CommEntity(community))
-        })
+        }
     }
 
     fun addAll(communities: Collection<Community>) {
