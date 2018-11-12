@@ -17,28 +17,27 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.comm
+package pl.org.seva.events.tools
 
-import android.annotation.SuppressLint
-import android.graphics.Color
-import android.os.Parcelable
-import kotlinx.android.parcel.IgnoredOnParcel
-import kotlinx.android.parcel.Parcelize
+import android.app.Application
+import com.google.firebase.auth.FirebaseUser
+import org.kodein.di.Kodein
+import org.kodein.di.conf.global
 
-@SuppressLint("ParcelCreator")
-@Parcelize
-data class Community(
-        val name: String,
-        val color: Int = Color.GRAY,
-        val admin: Boolean = false) : Parcelable {
+class EventsApplication : Application() {
 
-    val lcName: String get() = name.toLowerCase()
-
-    @IgnoredOnParcel
-    @Transient
-    var empty = false
-
-    companion object {
-        fun empty(name: String = "") = Community(name).apply { empty = true }
+    init {
+        Kodein.global.addImport(module())
     }
+
+    private val bootstrap = bootstrap()
+
+    override fun onCreate() {
+        super.onCreate()
+        bootstrap.boot()
+    }
+
+    fun login(user: FirebaseUser) = bootstrap.login(user)
+
+    fun logout() = bootstrap.logout()
 }

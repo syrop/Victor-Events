@@ -17,31 +17,28 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main.ui
+package pl.org.seva.events.comm
 
-import android.content.Context
+import android.annotation.SuppressLint
 import android.graphics.Color
-import pl.org.seva.events.main.instance
+import android.os.Parcelable
+import kotlinx.android.parcel.IgnoredOnParcel
+import kotlinx.android.parcel.Parcelize
 
-fun colorFactory() = instance<ColorFactory>()
+@SuppressLint("ParcelCreator")
+@Parcelize
+data class Comm(
+        val name: String,
+        val color: Int = Color.GRAY,
+        val admin: Boolean = false) : Parcelable {
 
-class ColorFactory(private val application: Context ) {
+    val lcName: String get() = name.toLowerCase()
 
-    private val colors by lazy {
-        application.run {
-            resources.getIdentifier(COLOR_ARRAY_NAME + COLOR_TYPE,"array", packageName).let {
-                resources.obtainTypedArray(it)
-            }
-        }
-    }
-
-    fun nextColor() = with(colors) {
-        val index = (Math.random() * length()).toInt()
-        getColor(index, Color.GRAY)
-    }
+    @IgnoredOnParcel
+    @Transient
+    var empty = false
 
     companion object {
-        const val COLOR_ARRAY_NAME = "mdcolor_"
-        const val COLOR_TYPE = "400"
+        fun empty(name: String = "") = Comm(name).apply { empty = true }
     }
 }

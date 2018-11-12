@@ -17,19 +17,31 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.data.room
+package pl.org.seva.events.tools.ui
 
-import kotlinx.coroutines.*
-import pl.org.seva.events.comm.Community
+import android.content.Context
+import android.graphics.Color
+import pl.org.seva.events.tools.instance
 
-inline infix fun CommDao.getAllAsync(crossinline callback: (Collection<Community>) -> Unit) {
-    val collectionJob = GlobalScope.async(
-            Dispatchers.Default,
-            CoroutineStart.DEFAULT,
-            null) { getAll().map { it.comValue() } }
-    val collection = ArrayList<Community>(0)
-    GlobalScope.launch {
-        collection.addAll(collectionJob.await())
-        callback(collection)
+fun colorFactory() = instance<ColorFactory>()
+
+class ColorFactory(private val application: Context ) {
+
+    private val colors by lazy {
+        application.run {
+            resources.getIdentifier(COLOR_ARRAY_NAME + COLOR_TYPE,"array", packageName).let {
+                resources.obtainTypedArray(it)
+            }
+        }
+    }
+
+    fun nextColor() = with(colors) {
+        val index = (Math.random() * length()).toInt()
+        getColor(index, Color.GRAY)
+    }
+
+    companion object {
+        const val COLOR_ARRAY_NAME = "mdcolor_"
+        const val COLOR_TYPE = "400"
     }
 }

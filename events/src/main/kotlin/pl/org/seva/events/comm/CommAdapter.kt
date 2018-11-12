@@ -25,8 +25,8 @@ import android.view.ViewGroup
 import pl.org.seva.events.R
 
 class CommAdapter(
-        private val comm: Community,
-        private var listener: (Community.() -> Unit)? = null) : RecyclerView.Adapter<CommViewHolder>() {
+        private val comm: Comm,
+        private var listener: (Comm.() -> Unit)? = null) : RecyclerView.Adapter<CommViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             CommViewHolder(parent.inflate()) {

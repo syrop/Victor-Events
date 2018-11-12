@@ -17,12 +17,12 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.data.firestore
+package pl.org.seva.events.tools.firestore
 
 import com.google.firebase.auth.FirebaseUser
-import pl.org.seva.events.comm.Community
+import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.event.Event
-import pl.org.seva.events.main.instance
+import pl.org.seva.events.tools.instance
 
 val fsWriter get() = instance<FsWriter>()
 
@@ -30,24 +30,24 @@ class FsWriter : FsBase() {
 
     fun login(user: FirebaseUser) {}
 
-    fun create(community: Community) {
-        community writeEvent Event.CREATION_EVENT
-        community.writeName()
+    fun create(comm: Comm) {
+        comm writeEvent Event.CREATION_EVENT
+        comm.writeName()
     }
 
-    fun grantAdmin(community: Community, email: String) {
-        grantAdmin(community.lcName, email)
+    fun grantAdmin(comm: Comm, email: String) {
+        grantAdmin(comm.lcName, email)
     }
 
     private fun grantAdmin(community: String, email: String) {
         community.admins.document(email).set(mapOf(FsBase.ADMIN_GRANTED to true))
     }
 
-    private infix fun Community.writeEvent(event: Event) {
+    private infix fun Comm.writeEvent(event: Event) {
         lcName.events.document(event.time.toEpochSecond().toString()).set(event.firestore)
     }
 
-    private fun Community.writeName() {
+    private fun Comm.writeName() {
         lcName.document.set(mapOf(FsBase.NAME to name))
     }
 }

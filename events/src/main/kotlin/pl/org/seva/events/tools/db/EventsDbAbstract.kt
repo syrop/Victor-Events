@@ -19,12 +19,14 @@
 
 @file:Suppress("unused")
 
-package pl.org.seva.events.data.room
+package pl.org.seva.events.tools.db
 
 import androidx.room.RoomDatabase
 import androidx.room.Database
-import pl.org.seva.events.data.room.entity.CommEntity
-import pl.org.seva.events.data.room.entity.EventEntity
+import pl.org.seva.events.comm.CommDao
+import pl.org.seva.events.comm.CommEntity
+import pl.org.seva.events.event.EventDao
+import pl.org.seva.events.event.EventEntity
 
 @Database(entities = [EventEntity::class, CommEntity::class], version = EventsDb.DATABASE_VERSION)
 abstract class EventsDbAbstract : RoomDatabase() {

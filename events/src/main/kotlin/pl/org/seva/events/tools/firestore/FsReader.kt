@@ -17,7 +17,7 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.data.firestore
+package pl.org.seva.events.tools.firestore
 
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
@@ -26,10 +26,10 @@ import com.google.firebase.firestore.GeoPoint
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.PublishSubject
-import pl.org.seva.events.comm.Community
+import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.event.Event
-import pl.org.seva.events.main.instance
-import pl.org.seva.events.main.neverDispose
+import pl.org.seva.events.tools.instance
+import pl.org.seva.events.tools.neverDispose
 import java.time.ZonedDateTime
 
 val fsReader get() = instance<FsReader>()
@@ -44,7 +44,7 @@ class FsReader : FsBase() {
 
     private fun String.isAdmin(email: String): Observable<Boolean> = admins.document(email).doesExist()
 
-    fun findCommunity(name: String, onResult: Community.() -> Unit) {
+    fun findCommunity(name: String, onResult: Comm.() -> Unit) {
         val lcName = name.toLowerCase()
         val found = communities.document(lcName).read().map { it.toCommunity(name) }
 
@@ -53,7 +53,7 @@ class FsReader : FsBase() {
 
         found.zipWith(
                 isAdminObservable,
-                BiFunction { comm: Community, isAdmin: Boolean ->
+                BiFunction { comm: Comm, isAdmin: Boolean ->
                     if (comm.empty) comm else comm.copy(admin = isAdmin) })
                 .subscribe(onResult).neverDispose()
     }
@@ -95,5 +95,5 @@ class FsReader : FsBase() {
     }
 
     private fun DocumentSnapshot.toCommunity(name: String) =
-            if (exists()) Community(getString(NAME)!!) else Community.empty(name)
+            if (exists()) Comm(getString(NAME)!!) else Comm.empty(name)
 }

@@ -17,35 +17,25 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.data.room.entity
+package pl.org.seva.events.comm
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.firebase.firestore.GeoPoint
-import pl.org.seva.events.event.Event
-import pl.org.seva.events.data.room.EventsDb
-import java.time.ZonedDateTime
+import android.graphics.Color
+import pl.org.seva.events.tools.db.EventsDb
 
-@Entity(tableName = EventsDb.EVENTS_TABLE_NAME)
-class EventEntity() {
-        lateinit var name: String
-        @PrimaryKey
-        var time: String = ""
-        var lat: Double? = null
-        var lon: Double? = null
-        var desc: String? = null
+@Entity(tableName = EventsDb.COMMUNITIES_TABLE_NAME)
+class CommEntity() {
+    @PrimaryKey
+    lateinit var name: String
+    var color: Int = Color.GRAY
+    var admin: Boolean = false
 
-    fun value() = Event(
-            name = name,
-            time = ZonedDateTime.parse(time),
-            location = lat?.let { GeoPoint(it, lon!!) },
-            desc = desc)
-
-    constructor(event: Event): this() {
-        name = event.name
-        time = event.time.toString()
-        lat = event.location?.latitude
-        lon = event.location?.longitude
-        desc = event.desc
+    constructor(comm: Comm): this() {
+        name = comm.name
+        color = comm.color
+        admin = comm.admin
     }
+
+    fun comValue() = Comm(name = name, color = color, admin = admin)
 }

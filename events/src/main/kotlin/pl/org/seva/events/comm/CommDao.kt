@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Wiktor Nizio
+ * Copyright (C) 2017 Wiktor Nizio
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,16 +17,26 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main
+package pl.org.seva.events.comm
 
-import android.content.Context
-import android.widget.Toast
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.Query
+import pl.org.seva.events.tools.db.EventsDb
 
-val toaster get() = instance<Toaster>()
+@Dao
+interface CommDao {
 
-class Toaster(private val ctx: Context) {
+    @Query("select * from ${EventsDb.COMMUNITIES_TABLE_NAME}")
+    fun getAll(): List<CommEntity>
 
-    fun toast(f: Context.() -> String) {
-        Toast.makeText(ctx, ctx.f(), Toast.LENGTH_SHORT).show()
-    }
+    @Insert
+    fun insertAll(vararg comm: CommEntity)
+
+    @Insert
+    fun insert(comm: CommEntity)
+
+    @Delete
+    fun delete(comm: CommEntity)
 }

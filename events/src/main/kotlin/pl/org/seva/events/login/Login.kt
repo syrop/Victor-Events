@@ -20,7 +20,7 @@
 package pl.org.seva.events.login
 
 import com.google.firebase.auth.FirebaseUser
-import pl.org.seva.events.main.instance
+import pl.org.seva.events.tools.instance
 
 fun login() = instance<Login>()
 

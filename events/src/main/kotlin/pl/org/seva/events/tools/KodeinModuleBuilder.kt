@@ -17,7 +17,7 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main
+package pl.org.seva.events.tools
 
 import android.content.Context
 import org.kodein.di.Kodein
@@ -26,12 +26,13 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
-import pl.org.seva.events.comm.Communities
+import pl.org.seva.events.comm.Comms
 import pl.org.seva.events.login.Login
-import pl.org.seva.events.data.firestore.FsReader
-import pl.org.seva.events.data.firestore.FsWriter
-import pl.org.seva.events.data.room.EventsDb
-import pl.org.seva.events.main.ui.ColorFactory
+import pl.org.seva.events.tools.firestore.FsReader
+import pl.org.seva.events.tools.firestore.FsWriter
+import pl.org.seva.events.tools.db.EventsDb
+import pl.org.seva.events.tools.ui.ColorFactory
+import pl.org.seva.events.tools.ui.Toaster
 
 fun Context.module() = KodeinModuleBuilder(this).build()
 
@@ -45,7 +46,7 @@ class KodeinModuleBuilder(private val ctx: Context) {
     fun build() = Kodein.Module("main") {
         bind<Bootstrap>() with singleton { Bootstrap() }
         bind<FsReader>() with singleton { FsReader() }
-        bind<Communities>() with singleton { Communities() }
+        bind<Comms>() with singleton { Comms() }
         bind<Login>() with singleton { Login() }
         bind<FsWriter>() with singleton { FsWriter() }
         bind<EventsDb>() with singleton { EventsDb(ctx) }

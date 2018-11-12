@@ -13,14 +13,14 @@
     android:paddingTop="16dp">
 
     <TextView
-        android:id="@+id/community"
+        android:id="@+id/comm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"
         tools:text="Community"
         android:lines="1"
         android:layout_toRightOf="@+id/icon_container"
-        android:textColor="@color/community"
+        android:textColor="@color/comm"
         android:textSize="16sp"
         android:textStyle="bold"
         android:paddingEnd="16dp"

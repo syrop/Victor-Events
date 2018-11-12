@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Wiktor Nizio
+ * Copyright (C) 2018 Wiktor Nizio
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,26 +17,21 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.data.room.entity
+package pl.org.seva.events.tools
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import android.graphics.Color
-import pl.org.seva.events.comm.Community
-import pl.org.seva.events.data.room.EventsDb
+import android.content.Context
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import io.reactivex.disposables.Disposable
+import java.util.logging.Logger
 
-@Entity(tableName = EventsDb.COMMUNITIES_TABLE_NAME)
-class CommEntity() {
-    @PrimaryKey
-    lateinit var name: String
-    var color: Int = Color.GRAY
-    var admin: Boolean = false
+fun context() = instance<Context>()
 
-    constructor(community: Community): this() {
-        name = community.name
-        color = community.color
-        admin = community.admin
-    }
+fun <T> LiveData<T>.observe(owner: LifecycleOwner, f: (T) -> Unit) =
+        observe(owner, Observer<T> { f(it) })
 
-    fun comValue() = Community(name = name, color = color, admin = admin)
-}
+@Suppress("unused")
+fun Disposable.neverDispose() = Unit
+
+val Any.log get() = Logger.getLogger(this::class.java.name)!!

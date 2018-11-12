@@ -17,27 +17,20 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main
+package pl.org.seva.events.tools.db
 
-import android.app.Application
-import com.google.firebase.auth.FirebaseUser
-import org.kodein.di.Kodein
-import org.kodein.di.conf.global
+import kotlinx.coroutines.*
+import pl.org.seva.events.comm.Comm
+import pl.org.seva.events.comm.CommDao
 
-class EventsApplication : Application() {
-
-    init {
-        Kodein.global.addImport(module())
+inline infix fun CommDao.getAllAsync(crossinline callback: (Collection<Comm>) -> Unit) {
+    val collectionJob = GlobalScope.async(
+            Dispatchers.Default,
+            CoroutineStart.DEFAULT,
+            null) { getAll().map { it.comValue() } }
+    val collection = ArrayList<Comm>(0)
+    GlobalScope.launch {
+        collection.addAll(collectionJob.await())
+        callback(collection)
     }
-
-    private val bootstrap = bootstrap()
-
-    override fun onCreate() {
-        super.onCreate()
-        bootstrap.boot()
-    }
-
-    fun login(user: FirebaseUser) = bootstrap.login(user)
-
-    fun logout() = bootstrap.logout()
 }

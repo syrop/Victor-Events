@@ -13,7 +13,7 @@ import pl.org.seva.events.R
 import pl.org.seva.events.comm.AddCommFragment
 import pl.org.seva.events.comm.communities
 import pl.org.seva.events.login.LoginActivity
-import pl.org.seva.events.main.EventsViewModel
+import pl.org.seva.events.tools.EventsViewModel
 
 class EventsActivity : AppCompatActivity() {
 

@@ -3,7 +3,7 @@
     <color name="colorPrimary">#607d8b</color>
     <color name="colorPrimaryDark">#455a64</color>
     <color name="colorAccent">#ffab40</color>
-    <color name="community">#000000</color>
+    <color name="comm">#000000</color>
     <color name="row_activated">#e0e0e0</color>
     <color name="bg_circle_default">#666666</color>
 

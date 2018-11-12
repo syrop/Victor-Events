@@ -17,7 +17,7 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.data.firestore
+package pl.org.seva.events.tools.firestore
 
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
@@ -52,7 +52,7 @@ abstract class FsBase {
         const val PRIVATE = "private"
         /** Per community. */
         const val EVENTS = "events"
-        /** Community name. */
+        /** Comm name. */
         const val NAME = "name"
         /** May not be null. */
         const val EVENT_NAME = "name"

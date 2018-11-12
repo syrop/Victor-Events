@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Wiktor Nizio
+ * Copyright (C) 2018 Wiktor Nizio
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,27 +17,12 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main
+package pl.org.seva.events.tools
 
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import pl.org.seva.events.comm.communities
-import pl.org.seva.events.login.login
-import pl.org.seva.events.data.room.db
-import pl.org.seva.events.data.room.getAllAsync
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 
-fun bootstrap() = instance<Bootstrap>()
-
-class Bootstrap {
-    fun boot() {
-        login().setCurrentUser(FirebaseAuth.getInstance().currentUser)
-        db().commDao getAllAsync { communities.addAll(it) }
-    }
-
-    fun login(user: FirebaseUser) {
-        login().setCurrentUser(user)
-    }
-
-    fun logout() {
-    }
+class EventsViewModel : ViewModel() {
+    val query: MutableLiveData<String> = MutableLiveData()
+    val commToCreate: MutableLiveData<String?> = MutableLiveData()
 }

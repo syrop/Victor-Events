@@ -21,20 +21,19 @@ package pl.org.seva.events.comm
 
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import pl.org.seva.events.data.firestore.fsWriter
-import pl.org.seva.events.data.room.db
-import pl.org.seva.events.data.room.entity.CommEntity
-import pl.org.seva.events.main.instance
-import pl.org.seva.events.main.ui.colorFactory
+import pl.org.seva.events.tools.firestore.fsWriter
+import pl.org.seva.events.tools.db.db
+import pl.org.seva.events.tools.instance
+import pl.org.seva.events.tools.ui.colorFactory
 import pl.org.seva.events.login.login
 
-val communities get() = instance<Communities>()
+val communities get() = instance<Comms>()
 
-fun Community.join() = communities join this
+fun Comm.join() = communities join this
 
-class Communities {
+class Comms {
 
-    private val cache = mutableListOf<Community>()
+    private val cache = mutableListOf<Comm>()
     private val login = login()
     private val commDao = db().commDao
 
@@ -43,15 +42,15 @@ class Communities {
 
     operator fun get(index: Int) = cache[index]
 
-    infix fun join(community: Community) {
-        cache.add(community)
+    infix fun join(comm: Comm) {
+        cache.add(comm)
         GlobalScope.launch {
-            commDao.insert(CommEntity(community))
+            commDao.insert(CommEntity(comm))
         }
     }
 
-    fun addAll(communities: Collection<Community>) {
-        this.cache.addAll(communities)
+    fun addAll(comms: Collection<Comm>) {
+        this.cache.addAll(comms)
     }
 
     val isAdminOf get() = cache.filter { it.admin }
@@ -59,7 +58,7 @@ class Communities {
     val isAdminOfAny get() = cache.any { it.admin }
 
     infix fun joinNewCommunity(name: String) =
-        Community(name, colorFactory().nextColor(), true).apply {
+        Comm(name, colorFactory().nextColor(), true).apply {
             fsWriter.create(this)
             fsWriter.grantAdmin(this, login.email)
             join()

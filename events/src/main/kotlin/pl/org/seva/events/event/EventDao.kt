@@ -17,13 +17,13 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.data.room
+package pl.org.seva.events.event
 
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Delete
 import androidx.room.Insert
-import pl.org.seva.events.data.room.entity.EventEntity
+import pl.org.seva.events.tools.db.EventsDb
 
 
 @Dao
