@@ -76,7 +76,7 @@ data class Event(
         }
 
         override fun create(parcel: Parcel): Event {
-            val name = parcel.readString()
+            val name = parcel.readString()!!
             val location =
             if (parcel.readInt() == PRESENT) {
                 val lat = parcel.readDouble()

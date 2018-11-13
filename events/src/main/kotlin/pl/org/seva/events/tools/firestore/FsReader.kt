@@ -66,7 +66,7 @@ class FsReader : FsBase() {
                 .doOnSubscribe {
                     get().addOnCompleteListener { result ->
                         if (result.isSuccessful) {
-                            resultSubject.onNext(result.result)
+                            resultSubject.onNext(result.result!!)
                         } else {
                             resultSubject.onError(result.exception!!)
                         }

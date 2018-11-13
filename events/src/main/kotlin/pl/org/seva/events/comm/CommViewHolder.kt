@@ -31,7 +31,7 @@ class CommViewHolder(val view: View, f: (() -> Unit)? = null) : RecyclerView.Vie
         view.setOnClickListener { f?.invoke() }
     }
 
-    val communityName: TextView = view.community
+    val communityName: TextView = view.comm
     val iconProfile: ImageView = view.icon_profile
     val iconText: TextView = view.icon_text
 }
