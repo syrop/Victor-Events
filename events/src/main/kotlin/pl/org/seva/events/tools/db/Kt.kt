@@ -24,13 +24,7 @@ import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.comm.CommDao
 
 inline infix fun CommDao.getAllAsync(crossinline callback: (Collection<Comm>) -> Unit) {
-    val collectionJob = GlobalScope.async(
-            Dispatchers.Default,
-            CoroutineStart.DEFAULT,
-            null) { getAll().map { it.comValue() } }
-    val collection = ArrayList<Comm>(0)
     GlobalScope.launch {
-        collection.addAll(collectionJob.await())
-        callback(collection)
+        callback(getAll().map { it.comValue() })
     }
 }
