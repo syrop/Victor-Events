@@ -44,10 +44,10 @@ class EventsFragment : Fragment() {
     @SuppressLint("RestrictedApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if (!communities.isAdminOfAny) {
-            add_fab.visibility = View.VISIBLE
+            add_event_fab.visibility = View.VISIBLE
         }
 
-        add_fab.setOnClickListener {
+        add_event_fab.setOnClickListener {
             findNavController().navigate(R.id.action_eventsFragment_to_createEventFragment)
         }
     }

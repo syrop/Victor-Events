@@ -47,7 +47,8 @@ class AddCommFragment : Fragment() {
 
     private lateinit var eventsModel: EventsViewModel
 
-    private val searchManager get() = activity!!.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+    private val searchManager get() =
+        activity!!.getSystemService(Context.SEARCH_SERVICE) as SearchManager
 
     private lateinit var adapter: CommAdapter
 
