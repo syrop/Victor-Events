@@ -30,7 +30,7 @@ class EventsActivity : AppCompatActivity() {
         if (communities.isEmpty) {
             nav.navigate(R.id.action_eventsFragment_to_addCommFragment)
         }
-        nav.addOnNavigatedListener { _, destination ->
+        nav.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id == R.id.eventsFragment && communities.isEmpty) {
                 finish()
             }
