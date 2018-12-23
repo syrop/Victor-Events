@@ -59,7 +59,7 @@ class LoginActivity : AppCompatActivity(),
         setContentView(R.layout.activity_login)
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestIdToken(DEFAULT_WEB_CLIENT_ID)
                 .requestEmail()
                 .build()
 
@@ -212,6 +212,9 @@ class LoginActivity : AppCompatActivity(),
     override fun onConnectionSuspended(i: Int) {}
 
     companion object {
+
+        const val DEFAULT_WEB_CLIENT_ID = "1052062614577-5hr7d9u1avkhcp615irenn79i13diskm.apps.googleusercontent.com"
+
         const val ACTION = "action"
         const val LOGIN = "login"
         const val LOGOUT = "logout"
