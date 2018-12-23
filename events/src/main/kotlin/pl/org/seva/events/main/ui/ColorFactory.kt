@@ -17,11 +17,11 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.tools.ui
+package pl.org.seva.events.main.ui
 
 import android.content.Context
 import android.graphics.Color
-import pl.org.seva.events.tools.instance
+import pl.org.seva.events.main.instance
 
 fun colorFactory() = instance<ColorFactory>()
 

@@ -23,20 +23,20 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import pl.org.seva.events.tools.db.EventsDb
+import pl.org.seva.events.main.db.EventsDb
 
 @Dao
 interface CommDao {
 
     @Query("select * from ${EventsDb.COMMUNITIES_TABLE_NAME}")
-    fun getAll(): List<CommEntity>
+    fun getAll(): List<Comm.Entity>
 
     @Insert
-    fun insertAll(vararg comm: CommEntity)
+    fun insertAll(vararg comm: Comm.Entity)
 
     @Insert
-    fun insert(comm: CommEntity)
+    fun insert(comm: Comm.Entity)
 
     @Delete
-    fun delete(comm: CommEntity)
+    fun delete(comm: Comm.Entity)
 }

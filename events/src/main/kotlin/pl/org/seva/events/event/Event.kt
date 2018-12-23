@@ -22,9 +22,11 @@ package pl.org.seva.events.event
 import android.annotation.SuppressLint
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.PrimaryKey
 import com.google.firebase.firestore.GeoPoint
 import kotlinx.android.parcel.Parceler
 import kotlinx.android.parcel.Parcelize
+import pl.org.seva.events.main.db.EventsDb
 import java.time.ZonedDateTime
 
 @SuppressLint("ParcelCreator")
@@ -36,16 +38,41 @@ data class Event(
         val desc: String? = null
 ) : Parcelable {
 
-    val firestore get() = Firestore(name, time.toString(), location, desc)
+    val firestore get() = Fs(name, time.toString(), location, desc)
 
     @Suppress("MemberVisibilityCanBePrivate")
-    data class Firestore(
+    data class Fs(
             val name: String,
             val time: String,
             val location: GeoPoint?,
             val desc: String?) {
         fun value() = Event(name, ZonedDateTime.parse(time), location, desc)
     }
+
+    @androidx.room.Entity(tableName = EventsDb.EVENTS_TABLE_NAME)
+    class Entity() {
+        lateinit var name: String
+        @PrimaryKey
+        var time: String = ""
+        var lat: Double? = null
+        var lon: Double? = null
+        var desc: String? = null
+
+        fun value() = Event(
+                name = name,
+                time = ZonedDateTime.parse(time),
+                location = lat?.let { GeoPoint(it, lon!!) },
+                desc = desc)
+
+        constructor(event: Event): this() {
+            name = event.name
+            time = event.time.toString()
+            lat = event.location?.latitude
+            lon = event.location?.longitude
+            desc = event.desc
+        }
+    }
+
 
     companion object: Parceler<Event> {
         private const val NOT_PRESENT = 0

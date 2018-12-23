@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Wiktor Nizio
+ * Copyright (C) 2018 Wiktor Nizio
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,14 +17,12 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.tools.db
+package pl.org.seva.events.main
 
-import kotlinx.coroutines.*
-import pl.org.seva.events.comm.Comm
-import pl.org.seva.events.comm.CommDao
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 
-inline infix fun CommDao.getAllAsync(crossinline callback: (Collection<Comm>) -> Unit) {
-    GlobalScope.launch {
-        callback(getAll().map { it.comValue() })
-    }
+class EventsViewModel : ViewModel() {
+    val query: MutableLiveData<String> = MutableLiveData()
+    val commToCreate: MutableLiveData<String?> = MutableLiveData()
 }

@@ -4,7 +4,7 @@
           package="pl.org.seva.events">
 
     <application
-        android:name=".tools.EventsApplication"
+        android:name=".main.EventsApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -14,7 +14,7 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity
-            android:name=".event.EventsActivity"
+            android:name=".main.EventsActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">

@@ -17,7 +17,7 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.tools
+package pl.org.seva.events.main
 
 import android.content.Context
 import org.kodein.di.Kodein
@@ -28,11 +28,11 @@ import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
 import pl.org.seva.events.comm.Comms
 import pl.org.seva.events.login.Login
-import pl.org.seva.events.tools.firestore.FsReader
-import pl.org.seva.events.tools.firestore.FsWriter
-import pl.org.seva.events.tools.db.EventsDb
-import pl.org.seva.events.tools.ui.ColorFactory
-import pl.org.seva.events.tools.ui.Toaster
+import pl.org.seva.events.main.fs.FsReader
+import pl.org.seva.events.main.fs.FsWriter
+import pl.org.seva.events.main.db.EventsDb
+import pl.org.seva.events.main.ui.ColorFactory
+import pl.org.seva.events.main.ui.Toaster
 
 fun Context.module() = KodeinModuleBuilder(this).build()
 

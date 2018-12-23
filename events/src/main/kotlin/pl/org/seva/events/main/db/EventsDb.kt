@@ -17,27 +17,28 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.tools
+package pl.org.seva.events.main.db
 
-import android.app.Application
-import com.google.firebase.auth.FirebaseUser
-import org.kodein.di.Kodein
-import org.kodein.di.conf.global
+import androidx.room.Room
+import android.content.Context
+import pl.org.seva.events.main.instance
 
-class EventsApplication : Application() {
+fun db() = instance<EventsDb>()
 
-    init {
-        Kodein.global.addImport(module())
+class EventsDb(context: Context) {
+
+    private val db=
+            Room.databaseBuilder(context, EventsDbAbstract::class.java, DATABASE_NAME).build()
+
+    val eventDao get() = db.eventDao()
+
+    val commDao get() = db.commDao()
+
+    companion object {
+        const val DATABASE_NAME = "events_database"
+        const val DATABASE_VERSION = 1
+
+        const val EVENTS_TABLE_NAME = "events"
+        const val COMMUNITIES_TABLE_NAME = "communities"
     }
-
-    private val bootstrap = bootstrap()
-
-    override fun onCreate() {
-        super.onCreate()
-        bootstrap.boot()
-    }
-
-    fun login(user: FirebaseUser) = bootstrap.login(user)
-
-    fun logout() = bootstrap.logout()
 }

@@ -22,8 +22,10 @@ package pl.org.seva.events.comm
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Parcelable
+import androidx.room.PrimaryKey
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
+import pl.org.seva.events.main.db.EventsDb
 
 @SuppressLint("ParcelCreator")
 @Parcelize
@@ -37,6 +39,22 @@ data class Comm(
     @IgnoredOnParcel
     @Transient
     var empty = false
+
+    @androidx.room.Entity(tableName = EventsDb.COMMUNITIES_TABLE_NAME)
+    class Entity() {
+        @PrimaryKey
+        lateinit var name: String
+        var color: Int = Color.GRAY
+        var admin: Boolean = false
+
+        constructor(comm: Comm): this() {
+            name = comm.name
+            color = comm.color
+            admin = comm.admin
+        }
+
+        fun comValue() = Comm(name = name, color = color, admin = admin)
+    }
 
     companion object {
         fun empty(name: String = "") = Comm(name).apply { empty = true }

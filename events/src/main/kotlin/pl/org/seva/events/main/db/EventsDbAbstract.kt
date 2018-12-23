@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Wiktor Nizio
+ * Copyright (C) 2017 Wiktor Nizio
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,21 +17,19 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.tools
+@file:Suppress("unused")
 
-import android.content.Context
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
-import io.reactivex.disposables.Disposable
-import java.util.logging.Logger
+package pl.org.seva.events.main.db
 
-fun context() = instance<Context>()
+import androidx.room.RoomDatabase
+import androidx.room.Database
+import pl.org.seva.events.comm.Comm
+import pl.org.seva.events.comm.CommDao
+import pl.org.seva.events.event.Event
+import pl.org.seva.events.event.EventDao
 
-fun <T> LiveData<T>.observe(owner: LifecycleOwner, f: (T) -> Unit) =
-        observe(owner, Observer<T> { f(it) })
-
-@Suppress("unused")
-fun Disposable.neverDispose() = Unit
-
-val Any.log get() = Logger.getLogger(this::class.java.name)!!
+@Database(entities = [Event.Entity::class, Comm.Entity::class], version = EventsDb.DATABASE_VERSION)
+abstract class EventsDbAbstract : RoomDatabase() {
+    abstract fun eventDao(): EventDao
+    abstract fun commDao(): CommDao
+}

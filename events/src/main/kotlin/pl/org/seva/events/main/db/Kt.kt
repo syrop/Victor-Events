@@ -17,25 +17,14 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.comm
+package pl.org.seva.events.main.db
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import android.graphics.Color
-import pl.org.seva.events.tools.db.EventsDb
+import kotlinx.coroutines.*
+import pl.org.seva.events.comm.Comm
+import pl.org.seva.events.comm.CommDao
 
-@Entity(tableName = EventsDb.COMMUNITIES_TABLE_NAME)
-class CommEntity() {
-    @PrimaryKey
-    lateinit var name: String
-    var color: Int = Color.GRAY
-    var admin: Boolean = false
-
-    constructor(comm: Comm): this() {
-        name = comm.name
-        color = comm.color
-        admin = comm.admin
+inline infix fun CommDao.getAllAsync(crossinline callback: (Collection<Comm>) -> Unit) {
+    GlobalScope.launch {
+        callback(getAll().map { it.comValue() })
     }
-
-    fun comValue() = Comm(name = name, color = color, admin = admin)
 }

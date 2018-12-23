@@ -17,27 +17,22 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.tools
+package pl.org.seva.events.main.ui
 
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import pl.org.seva.events.comm.communities
-import pl.org.seva.events.login.login
-import pl.org.seva.events.tools.db.db
-import pl.org.seva.events.tools.db.getAllAsync
+import com.google.android.material.snackbar.Snackbar
+import android.view.View
 
-fun bootstrap() = instance<Bootstrap>()
+fun longSnackbar(f: SnackbarBuilder.() -> Unit): SnackbarBuilder = SnackbarBuilder().apply(f)
 
-class Bootstrap {
-    fun boot() {
-        login().setCurrentUser(FirebaseAuth.getInstance().currentUser)
-        db().commDao getAllAsync { communities.addAll(it) }
-    }
+fun permanentSnackbar(f: SnackbarBuilder.() -> Unit): SnackbarBuilder =
+        SnackbarBuilder(Snackbar.LENGTH_INDEFINITE).apply(f)
 
-    fun login(user: FirebaseUser) {
-        login().setCurrentUser(user)
-    }
+class SnackbarBuilder(private var length: Int = Snackbar.LENGTH_LONG) {
+    lateinit var view: View
+    var message = 0
+    var action = 0
 
-    fun logout() {
+    infix fun show(f: () -> Unit) {
+        Snackbar.make(view, message, length).setAction(action, { f() }).show()
     }
 }
