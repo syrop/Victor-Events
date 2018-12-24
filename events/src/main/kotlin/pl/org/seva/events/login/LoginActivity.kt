@@ -44,7 +44,7 @@ class LoginActivity : AppCompatActivity(),
         GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks {
 
-    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var auth: FirebaseAuth
     private lateinit var authStateListener: (firebaseAuth : FirebaseAuth) -> Unit
 
     private lateinit var googleApiClient: GoogleApiClient
@@ -52,7 +52,7 @@ class LoginActivity : AppCompatActivity(),
     private var performedAction: Boolean = false
     private var logoutWhenReady: Boolean = false
 
-    private var createCommunityName: String? = null
+    private var commToCreate: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,14 +63,14 @@ class LoginActivity : AppCompatActivity(),
                 .requestEmail()
                 .build()
 
-        createCommunityName = intent.getStringExtra(COMMUNITY_NAME)
+        commToCreate = intent.getStringExtra(COMMUNITY_NAME)
 
         googleApiClient = GoogleApiClient.Builder(this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .addConnectionCallbacks(this)
                 .build()
 
-        firebaseAuth = FirebaseAuth.getInstance()
+        auth = FirebaseAuth.getInstance()
 
         authStateListener = {
             val user = it.currentUser
@@ -103,7 +103,7 @@ class LoginActivity : AppCompatActivity(),
     private fun logout() {
         finishWhenStateChanges()
         logoutWhenReady = true
-        firebaseAuth.signOut()
+        auth.signOut()
         (application as EventsApplication).logout()
         googleApiClient.connect()
         finish()
@@ -113,7 +113,7 @@ class LoginActivity : AppCompatActivity(),
         fsWriter.login(user)
         (application as EventsApplication).login(user)
         if (performedAction) {
-            createCommunityName?.setResult()
+            commToCreate?.setResult()
             finish()
         }
     }
@@ -131,13 +131,13 @@ class LoginActivity : AppCompatActivity(),
 
     public override fun onStart() {
         super.onStart()
-        firebaseAuth.addAuthStateListener(authStateListener)
+        auth.addAuthStateListener(authStateListener)
     }
 
     public override fun onStop() {
         super.onStop()
         hideProgressDialog()
-        firebaseAuth.removeAuthStateListener(authStateListener)
+        auth.removeAuthStateListener(authStateListener)
     }
 
     override fun onBackPressed() {
@@ -171,7 +171,7 @@ class LoginActivity : AppCompatActivity(),
         showProgressDialog()
 
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
-        firebaseAuth.signInWithCredential(credential)
+        auth.signInWithCredential(credential)
                 .addOnCompleteListener(this) {
                     log.info("signInWithCredential:onComplete:" + it.isSuccessful)
                     hideProgressDialog()
