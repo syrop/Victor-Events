@@ -19,6 +19,7 @@
 
 package pl.org.seva.events.main.fs
 
+import androidx.lifecycle.Lifecycle
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
@@ -29,8 +30,8 @@ import io.reactivex.subjects.PublishSubject
 import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.event.Event
 import pl.org.seva.events.main.instance
-import pl.org.seva.events.main.neverDispose
 import java.time.ZonedDateTime
+import pl.org.seva.events.main.subscribe
 
 val fsReader get() = instance<FsReader>()
 
@@ -44,7 +45,7 @@ class FsReader : FsBase() {
 
     private fun String.isAdmin(email: String): Observable<Boolean> = admins.document(email).doesExist()
 
-    fun findCommunity(name: String, onResult: Comm.() -> Unit) {
+    fun findCommunity(lifecycle: Lifecycle, name: String, onResult: Comm.() -> Unit) {
         val lcName = name.toLowerCase()
         val found = communities.document(lcName).read().map { it.toCommunity(name) }
 
@@ -55,7 +56,7 @@ class FsReader : FsBase() {
                 isAdminObservable,
                 BiFunction { comm: Comm, isAdmin: Boolean ->
                     if (comm.empty) comm else comm.copy(admin = isAdmin) })
-                .subscribe(onResult).neverDispose()
+                .subscribe(lifecycle, onResult)
     }
 
     private fun DocumentReference.doesExist() = read().map { it.exists() }

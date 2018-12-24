@@ -61,10 +61,10 @@ class AddCommFragment : Fragment() {
         if (communities.isEmpty) {
             prompt.setText(R.string.add_comm_please_search_empty)
         }
-        eventsModel.query.observe(this) {
-            if (!it.isEmpty()) {
+        eventsModel.query.observe(this) { query ->
+            if (!query.isEmpty()) {
                 eventsModel.query.value = ""
-                search(it)
+                search(query)
             }
         }
         eventsModel.commToCreate.observe(this) {
@@ -162,7 +162,7 @@ class AddCommFragment : Fragment() {
 
         prompt.visibility = View.GONE
         progress.visibility = View.VISIBLE
-        fsReader.findCommunity(name) {
+        fsReader.findCommunity(lifecycle, name) {
             if (empty) notFound() else found()
         }
     }
