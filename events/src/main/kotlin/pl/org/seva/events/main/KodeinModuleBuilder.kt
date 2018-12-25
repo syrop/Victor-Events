@@ -34,7 +34,7 @@ import pl.org.seva.events.main.db.EventsDb
 import pl.org.seva.events.main.ui.ColorFactory
 import pl.org.seva.events.main.ui.Toaster
 
-fun Context.module() = KodeinModuleBuilder(this).build()
+val Context.module get() = KodeinModuleBuilder(this).build()
 
 inline fun <reified R : Any> instance(): R {
     val result by Kodein.global.instance<R>()

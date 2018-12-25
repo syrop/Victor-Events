@@ -27,7 +27,7 @@ import org.kodein.di.conf.global
 class EventsApplication : Application() {
 
     init {
-        Kodein.global.addImport(module())
+        Kodein.global.addImport(module)
     }
 
     private val bootstrap = bootstrap()
