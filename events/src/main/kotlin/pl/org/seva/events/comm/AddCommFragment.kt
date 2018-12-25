@@ -85,16 +85,16 @@ class AddCommFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
+        fun MenuItem.prepareSearchView() = with (actionView as SearchView) {
+            setSearchableInfo(searchManager.getSearchableInfo(activity!!.componentName))
+            setOnSearchClickListener { onSearchClicked() }
+            setOnCloseListener { onSearchViewClosed() }
+        }
+
         menuInflater.inflate(R.menu.add_community, menu)
         val searchMenuItem = menu.findItem(R.id.action_search)
         searchMenuItem.collapseActionView()
         searchMenuItem.prepareSearchView()
-    }
-
-    private fun MenuItem.prepareSearchView() = with (actionView as SearchView) {
-        setSearchableInfo(searchManager.getSearchableInfo(activity!!.componentName))
-        setOnSearchClickListener { onSearchClicked() }
-        setOnCloseListener { onSearchViewClosed() }
     }
 
     private fun onSearchClicked() {
