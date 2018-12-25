@@ -26,7 +26,7 @@ import pl.org.seva.events.login.login
 import pl.org.seva.events.main.db.db
 import pl.org.seva.events.main.db.getAllAsync
 
-fun bootstrap() = instance<Bootstrap>()
+val bootstrap get() = instance<Bootstrap>()
 
 class Bootstrap {
     fun boot() {

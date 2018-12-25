@@ -30,8 +30,6 @@ class EventsApplication : Application() {
         Kodein.global.addImport(module)
     }
 
-    private val bootstrap = bootstrap()
-
     override fun onCreate() {
         super.onCreate()
         bootstrap.boot()
