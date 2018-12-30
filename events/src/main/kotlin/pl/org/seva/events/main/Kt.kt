@@ -30,4 +30,4 @@ fun context() = instance<Context>()
 fun <T> LiveData<T>.observe(owner: LifecycleOwner, f: (T) -> Unit) =
         observe(owner, Observer<T> { f(it) })
 
-val Any.log get() = Logger.getLogger(this::class.java.name)!!
+val Any.log get() = instance<String, Logger>(this::class.java.name)

@@ -22,10 +22,8 @@ package pl.org.seva.events.main
 import android.content.Context
 import org.kodein.di.Kodein
 import org.kodein.di.conf.global
-import org.kodein.di.generic.bind
-import org.kodein.di.generic.instance
-import org.kodein.di.generic.provider
-import org.kodein.di.generic.singleton
+import org.kodein.di.generic.*
+import pl.org.seva.events.BuildConfig
 import pl.org.seva.events.comm.Comms
 import pl.org.seva.events.login.Login
 import pl.org.seva.events.main.fs.FsReader
@@ -33,11 +31,17 @@ import pl.org.seva.events.main.fs.FsWriter
 import pl.org.seva.events.main.db.EventsDb
 import pl.org.seva.events.main.ui.ColorFactory
 import pl.org.seva.events.main.ui.Toaster
+import java.util.logging.Logger
 
 val Context.module get() = KodeinModuleBuilder(this).build()
 
 inline fun <reified R : Any> instance(): R {
     val result by Kodein.global.instance<R>()
+    return result
+}
+
+inline fun <reified A, reified T : Any> instance(arg: A): T {
+    val result by Kodein.global.instance<A, T>(arg = arg)
     return result
 }
 
@@ -53,5 +57,12 @@ class KodeinModuleBuilder(private val ctx: Context) {
         bind<ColorFactory>() with singleton { ColorFactory(ctx) }
         bind<Context>() with provider { ctx }
         bind<Toaster>() with singleton { Toaster(ctx) }
+        bind<Logger>() with multiton { tag: String ->
+            Logger.getLogger(tag)!!.apply {
+                if (!BuildConfig.DEBUG) {
+                    setFilter { false }
+                }
+            }
+        }
     }
 }
