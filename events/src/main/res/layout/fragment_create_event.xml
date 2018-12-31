@@ -26,6 +26,36 @@
             android:id="@+id/date"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:focusable="false"
+            android:inputType="none"
             android:hint="@string/event_date"/>
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/time_layout"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/date_layout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/time"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:focusable="false"
+            android:inputType="none"
+            android:hint="@string/event_time"/>
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/location_layout"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/time_layout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/location"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:focusable="false"
+            android:inputType="none"
+            android:hint="@string/event_location"/>
     </com.google.android.material.textfield.TextInputLayout>
 </RelativeLayout>

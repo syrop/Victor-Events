@@ -35,5 +35,7 @@ class CreateEventFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         date.setOnClickListener {}
+        time.setOnClickListener {}
+        location.setOnClickListener {}
     }
 }
