@@ -34,8 +34,7 @@ fun Comm.join() = communities join this
 class Comms {
 
     private val cache = mutableListOf<Comm>()
-    private val login = login()
-    private val commDao = db().commDao
+    private val commDao = db.commDao
 
     private val size get() = cache.size
     val isEmpty get() = size == 0

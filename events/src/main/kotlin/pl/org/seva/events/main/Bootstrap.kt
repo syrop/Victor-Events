@@ -30,12 +30,12 @@ val bootstrap get() = instance<Bootstrap>()
 
 class Bootstrap {
     fun boot() {
-        login().setCurrentUser(FirebaseAuth.getInstance().currentUser)
-        db().commDao getAllAsync { communities.addAll(it) }
+        login.setCurrentUser(FirebaseAuth.getInstance().currentUser)
+        db.commDao.getAllAsync { communities.addAll(it) }
     }
 
     fun login(user: FirebaseUser) {
-        login().setCurrentUser(user)
+        login.setCurrentUser(user)
     }
 
     fun logout() {

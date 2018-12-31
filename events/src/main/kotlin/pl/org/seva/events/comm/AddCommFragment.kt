@@ -34,8 +34,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_add_comm.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.fs.fsReader
-import pl.org.seva.events.login.login
 import pl.org.seva.events.login.LoginActivity
+import pl.org.seva.events.login.isLoggedIn
 import pl.org.seva.events.main.EventsViewModel
 import pl.org.seva.events.main.ui.boldSection
 import pl.org.seva.events.main.observe
@@ -153,7 +153,7 @@ class AddCommFragment : Fragment() {
             progress.visibility = View.GONE
             prompt.visibility = View.VISIBLE
             prompt.text = getString(R.string.add_comm_not_found).boldSection(NAME_PLACEHOLDER, name)
-            if (login().isLoggedIn) {
+            if (isLoggedIn) {
                 showCreateCommunitySnackbar(name)
             } else {
                 showLoginToCreateSnackbar(name)

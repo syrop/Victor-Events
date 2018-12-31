@@ -23,7 +23,7 @@ import androidx.room.Room
 import android.content.Context
 import pl.org.seva.events.main.instance
 
-fun db() = instance<EventsDb>()
+val db get() = instance<EventsDb>()
 
 class EventsDb(context: Context) {
 

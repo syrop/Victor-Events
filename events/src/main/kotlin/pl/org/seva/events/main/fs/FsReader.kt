@@ -29,6 +29,8 @@ import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.PublishSubject
 import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.event.Event
+import pl.org.seva.events.login.isLoggedIn
+import pl.org.seva.events.login.login
 import pl.org.seva.events.main.instance
 import java.time.ZonedDateTime
 import pl.org.seva.events.main.subscribe
@@ -49,7 +51,7 @@ class FsReader : FsBase() {
         val lcName = name.toLowerCase()
         val found = communities.document(lcName).read().map { it.toCommunity(name) }
 
-        val isAdminObservable = if (login.isLoggedIn) lcName.isAdmin(login.email)
+        val isAdminObservable = if (isLoggedIn) lcName.isAdmin(login.email)
             else Observable.just(false)
 
         found.zipWith(

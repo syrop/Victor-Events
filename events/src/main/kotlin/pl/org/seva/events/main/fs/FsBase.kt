@@ -27,8 +27,6 @@ abstract class FsBase {
 
     protected val communities get() = db collection COMMUNITIES
 
-    protected val login = pl.org.seva.events.login.login()
-
     private val db = FirebaseFirestore.getInstance()
 
     protected val String.admins get() = db collection PRIVATE document this collection COMM_ADMINS

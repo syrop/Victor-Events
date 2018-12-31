@@ -54,7 +54,7 @@ class EventsFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.events, menu)
-        menu.findItem(R.id.action_login).isVisible = !login().isLoggedIn
+        menu.findItem(R.id.action_login).isVisible = !login.isLoggedIn
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {

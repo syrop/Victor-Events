@@ -23,7 +23,7 @@ import kotlinx.coroutines.*
 import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.comm.CommDao
 
-inline infix fun CommDao.getAllAsync(crossinline callback: (Collection<Comm>) -> Unit) {
+inline fun CommDao.getAllAsync(crossinline callback: (Collection<Comm>) -> Unit) {
     GlobalScope.launch {
         callback(getAll().map { it.comValue() })
     }
