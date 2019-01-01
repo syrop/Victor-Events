@@ -34,8 +34,17 @@ class CreateEventFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        date.setOnClickListener {}
-        time.setOnClickListener {}
+        time.setOnClickListener {
+            TimePickerFragment().show(fragmentManager, TIME_PICKER_TAG)
+        }
+        date.setOnClickListener {
+            DatePickerFragment().show(fragmentManager, DATE_PICKER_TAG)
+        }
         location.setOnClickListener {}
+    }
+
+    companion object {
+        const val TIME_PICKER_TAG = "timePicker"
+        const val DATE_PICKER_TAG = "datePicker"
     }
 }

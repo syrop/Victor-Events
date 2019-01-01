@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Wiktor Nizio
+ * Copyright (C) 2019 Wiktor Nizio
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,24 +19,23 @@
 
 package pl.org.seva.events.event
 
-import android.widget.DatePicker
-import android.app.DatePickerDialog
 import android.app.Dialog
+import android.app.TimePickerDialog
 import android.os.Bundle
+import android.widget.TimePicker
 import androidx.fragment.app.DialogFragment
-import java.util.*
+import java.util.Calendar
 
-class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
+class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
+        val hour = c.get(Calendar.HOUR_OF_DAY)
+        val minute = c.get(Calendar.MINUTE)
 
-        return DatePickerDialog(activity!!, this, year, month, day)
+        return TimePickerDialog(activity, this, hour, minute, true)
     }
 
-    override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
+    override fun onTimeSet(view: TimePicker, hourOfDay: Int, minute: Int) {
     }
 }
