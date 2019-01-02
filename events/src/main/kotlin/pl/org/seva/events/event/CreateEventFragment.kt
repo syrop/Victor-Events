@@ -19,28 +19,40 @@
 
 package pl.org.seva.events.event
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.fragment_create_event.*
 import pl.org.seva.events.R
+import java.time.LocalDate
+import java.time.LocalTime
 
 class CreateEventFragment : Fragment() {
+
+    private lateinit var viewModel: DateTimeViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_create_event, container, false)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        time.setOnClickListener {
-            TimePickerFragment().show(fragmentManager, TIME_PICKER_TAG)
-        }
-        date.setOnClickListener {
-            DatePickerFragment().show(fragmentManager, DATE_PICKER_TAG)
-        }
+        fun showTimePicker() = TimePickerFragment().show(fragmentManager, TIME_PICKER_TAG)
+        fun showDatePicker() = DatePickerFragment().show(fragmentManager, DATE_PICKER_TAG)
+        fun onTimeChanged(t: LocalTime) = time.setText("${t.hour}:${t.minute}")
+        fun onDateChanged(d: LocalDate) = date.setText("${d.year}-${d.monthValue}-${d.dayOfMonth}")
+
+        viewModel = ViewModelProviders.of(activity!!).get(DateTimeViewModel::class.java)
+        time.setOnClickListener { showTimePicker() }
+        date.setOnClickListener { showDatePicker() }
         location.setOnClickListener {}
+        viewModel.time.observe(this, Observer<LocalTime> { onTimeChanged(it) })
+        viewModel.date.observe(this, Observer<LocalDate> { onDateChanged(it) })
     }
 
     companion object {

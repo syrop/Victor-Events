@@ -24,18 +24,24 @@ import android.app.TimePickerDialog
 import android.os.Bundle
 import android.widget.TimePicker
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.ViewModelProviders
+import java.time.LocalTime
 import java.util.Calendar
 
 class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener {
+
+    private lateinit var viewModel: DateTimeViewModel
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val c = Calendar.getInstance()
         val hour = c.get(Calendar.HOUR_OF_DAY)
         val minute = c.get(Calendar.MINUTE)
+        viewModel = ViewModelProviders.of(activity!!).get(DateTimeViewModel::class.java)
 
         return TimePickerDialog(activity, this, hour, minute, true)
     }
 
     override fun onTimeSet(view: TimePicker, hourOfDay: Int, minute: Int) {
+        viewModel.time.value = LocalTime.of(hourOfDay, minute)
     }
 }

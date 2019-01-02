@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Wiktor Nizio
+ * Copyright (C) 2019 Wiktor Nizio
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,16 +17,20 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main
+package pl.org.seva.events.event
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import java.time.LocalDate
+import java.time.LocalTime
 
-class EventsViewModel : ViewModel() {
-    val query by lazy {
-        MutableLiveData<String>()
+class DateTimeViewModel : ViewModel() {
+
+    val time by lazy {
+        MutableLiveData<LocalTime>()
     }
-    val commToCreate by lazy {
-        MutableLiveData<String?>()
+
+    val date by lazy {
+        MutableLiveData<LocalDate>()
     }
 }
