@@ -64,5 +64,6 @@ class KodeinModuleBuilder(private val ctx: Context) {
                 }
             }
         }
+        bind<Permissions>() with singleton { Permissions() }
     }
 }

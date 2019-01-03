@@ -19,22 +19,32 @@
 
 package pl.org.seva.events.event
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.fragment_create_event.*
 import pl.org.seva.events.R
+import pl.org.seva.events.location.MapHolder
+import pl.org.seva.events.location.createMapHolder
+import pl.org.seva.events.main.Permissions
+import pl.org.seva.events.main.permissions
+import pl.org.seva.events.main.requestPermissions
 import java.time.LocalDate
 import java.time.LocalTime
 
 class CreateEventFragment : Fragment() {
 
     private lateinit var viewModel: DateTimeViewModel
+
+    private lateinit var mapHolder: MapHolder
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_create_event, container, false)
@@ -53,7 +63,31 @@ class CreateEventFragment : Fragment() {
         location.setOnClickListener {}
         viewModel.time.observe(this, Observer<LocalTime> { onTimeChanged(it) })
         viewModel.date.observe(this, Observer<LocalDate> { onDateChanged(it) })
+
+        mapHolder = createMapHolder {
+            checkLocationPermission = this@CreateEventFragment::checkLocationPermission
+        }
     }
+
+    private fun checkLocationPermission(onGranted: () -> Unit) {
+        if (ContextCompat.checkSelfPermission(
+                        context!!,
+                        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            onGranted.invoke()
+        } else {
+            requestPermissions(
+                    Permissions.DEFAULT_PERMISSION_REQUEST_ID,
+                    arrayOf(Permissions.PermissionRequest(
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            onGranted = onGranted)))
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+            requestCode: Int,
+            requests: Array<String>,
+            grantResults: IntArray) =
+            permissions.onRequestPermissionsResult(requestCode, requests, grantResults)
 
     companion object {
         const val TIME_PICKER_TAG = "timePicker"

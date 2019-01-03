@@ -19,8 +19,29 @@
 
 package pl.org.seva.events.location
 
+import android.annotation.SuppressLint
+import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.SupportMapFragment
+import pl.org.seva.events.R
+
+fun Fragment.createMapHolder(f: MapHolder.() -> Unit): MapHolder = MapHolder().apply(f).also {
+    val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+    mapFragment.getMapAsync { map -> it withMap map }
+}
 
 open class MapHolder {
     private var map: GoogleMap? = null
+    lateinit var checkLocationPermission: (onGranted: () -> Unit) -> Unit
+
+    infix fun withMap(map: GoogleMap) = map.onReady()
+
+    @SuppressLint("MissingPermission")
+    private fun GoogleMap.onReady() {
+
+        this@MapHolder.map = apply {
+            checkLocationPermission {
+                isMyLocationEnabled = true }
+        }
+    }
 }
