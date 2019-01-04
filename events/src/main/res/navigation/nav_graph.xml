@@ -23,7 +23,11 @@
         android:id="@+id/createEventFragment"
         android:name="pl.org.seva.events.event.CreateEventFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_create_event"/>
+        tools:layout="@layout/fragment_create_event">
+        <action
+            android:id="@+id/action_createEventFragment_to_locationPickerFragment"
+            app:destination="@id/locationPickerFragment"/>
+    </fragment>
     <fragment
         android:id="@+id/addCommFragment"
         android:name="pl.org.seva.events.comm.AddCommFragment"
@@ -34,5 +38,10 @@
         android:name="pl.org.seva.events.login.LoginConfirmationFragment"
         android:label="@string/login_question_label"
         tools:layout="@layout/fragment_login_confirmation"/>
+    <fragment
+        android:id="@+id/locationPickerFragment"
+        android:name="pl.org.seva.events.event.LocationPickerFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_location_picker"/>
 
 </navigation>
