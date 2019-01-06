@@ -20,9 +20,12 @@
 package pl.org.seva.events.main
 
 import android.content.Context
+import androidx.annotation.IdRes
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import java.util.logging.Logger
 
 fun context() = instance<Context>()
@@ -31,3 +34,7 @@ fun <T> LiveData<T>.observe(owner: LifecycleOwner, f: (T) -> Unit) =
         observe(owner, Observer<T> { f(it) })
 
 val Any.log get() = instance<String, Logger>(this::class.java.name)
+
+fun Fragment.navigate(@IdRes resId: Int) = findNavController().navigate(resId)
+
+fun Fragment.popBackStack() = findNavController().popBackStack()

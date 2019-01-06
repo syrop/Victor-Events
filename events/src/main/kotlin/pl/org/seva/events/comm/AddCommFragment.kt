@@ -29,7 +29,6 @@ import androidx.appcompat.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_add_comm.*
 import pl.org.seva.events.R
@@ -39,6 +38,7 @@ import pl.org.seva.events.login.isLoggedIn
 import pl.org.seva.events.main.EventsViewModel
 import pl.org.seva.events.main.ui.boldSection
 import pl.org.seva.events.main.observe
+import pl.org.seva.events.main.popBackStack
 import pl.org.seva.events.main.ui.DividerItemDecoration
 import pl.org.seva.events.main.ui.longSnackbar
 import pl.org.seva.events.main.ui.permanentSnackbar
@@ -113,7 +113,7 @@ class AddCommFragment : Fragment() {
         fun Comm.found() {
             fun Comm.joinAndFinish() {
                 join()
-                findNavController().popBackStack()
+                popBackStack()
             }
             progress.visibility = View.GONE
             recycler.visibility = View.VISIBLE
@@ -173,7 +173,7 @@ class AddCommFragment : Fragment() {
 
         communities joinNewCommunity this
         Toast.makeText(activity, created(), Toast.LENGTH_LONG).show()
-        findNavController().popBackStack()
+        popBackStack()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -185,7 +185,7 @@ class AddCommFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         android.R.id.home -> {
-            findNavController().popBackStack()
+            popBackStack()
             true
         }
         else -> super.onOptionsItemSelected(item)

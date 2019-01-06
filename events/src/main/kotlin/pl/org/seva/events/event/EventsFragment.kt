@@ -23,12 +23,12 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 
 import kotlinx.android.synthetic.main.fragment_events.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.communities
 import pl.org.seva.events.login.login
+import pl.org.seva.events.main.navigate
 
 class EventsFragment : Fragment() {
 
@@ -48,7 +48,7 @@ class EventsFragment : Fragment() {
         }
 
         add_event_fab.setOnClickListener {
-            findNavController().navigate(R.id.action_eventsFragment_to_createEventFragment)
+            navigate(R.id.action_eventsFragment_to_createEventFragment)
         }
     }
 
@@ -59,11 +59,11 @@ class EventsFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_login -> {
-            findNavController().navigate(R.id.action_eventsFragment_to_loginConfirmationFragment)
+            navigate(R.id.action_eventsFragment_to_loginConfirmationFragment)
             true
         }
         R.id.action_seek_community -> {
-            findNavController().navigate(R.id.action_eventsFragment_to_addCommFragment)
+            navigate(R.id.action_eventsFragment_to_addCommFragment)
             true
         }
         else -> super.onOptionsItemSelected(item)
