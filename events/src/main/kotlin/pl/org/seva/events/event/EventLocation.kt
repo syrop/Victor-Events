@@ -19,22 +19,4 @@
 
 package pl.org.seva.events.event
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import java.time.LocalDate
-import java.time.LocalTime
-
-class CreateEventViewModel : ViewModel() {
-
-    val time by lazy {
-        MutableLiveData<LocalTime>()
-    }
-
-    val date by lazy {
-        MutableLiveData<LocalDate>()
-    }
-
-    val location: MutableLiveData<EventLocation> by lazy {
-        MutableLiveData<EventLocation>()
-    }
-}
+data class EventLocation(val asString: String)

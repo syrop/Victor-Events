@@ -19,14 +19,58 @@
 
 package pl.org.seva.events.location
 
+import android.location.Geocoder
 import androidx.fragment.app.Fragment
-import com.google.android.gms.maps.SupportMapFragment
-import pl.org.seva.events.R
+import androidx.lifecycle.ViewModelProviders
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import pl.org.seva.events.event.CreateEventViewModel
+import pl.org.seva.events.event.EventLocation
+import pl.org.seva.events.main.instance
+import java.lang.Exception
 
 fun Fragment.createMutableMapHolder(f: MutableMapHolder.() -> Unit = {}): MutableMapHolder =
-        MutableMapHolder().apply(f).also {
-    val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-    mapFragment.getMapAsync { map -> it withMap map }
-}
+        (MutableMapHolder().apply(f) withFragment this) as MutableMapHolder
 
-class MutableMapHolder : MapHolder()
+class MutableMapHolder : MapHolder() {
+
+    private lateinit var viewModel: CreateEventViewModel
+    private val geocoder: Geocoder = instance()
+
+    override fun withFragment(fragment: Fragment): MapHolder {
+        super.withFragment(fragment)
+        with (fragment) {
+            viewModel = ViewModelProviders.of(activity!!).get(CreateEventViewModel::class.java)
+        }
+        return this
+    }
+
+    override fun withMap(map: GoogleMap) {
+        fun onMapLongClick(latLng: LatLng) {
+            map.clear()
+            map.addMarker(MarkerOptions().position(latLng))
+                    .setIcon(BitmapDescriptorFactory.defaultMarker(0f))
+            viewModel.location.value = try {
+                with(geocoder.getFromLocation(
+                        latLng.latitude,
+                        latLng.longitude,
+                        1)[0]) {
+                        EventLocation(getAddressLine(maxAddressLineIndex))
+                }
+            } catch (ex: Exception) {
+                EventLocation(DEFAULT_ADDRESS)
+            }
+        }
+
+        super.withMap(map)
+        with (map) {
+            setOnMapLongClickListener { onMapLongClick(it) }
+        }
+    }
+
+    companion object {
+        const val DEFAULT_ADDRESS = ""
+    }
+}

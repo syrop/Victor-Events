@@ -38,6 +38,5 @@
         <activity
             android:name=".login.LoginActivity"
             android:label="@string/login_label" />
-
     </application>
 </manifest>

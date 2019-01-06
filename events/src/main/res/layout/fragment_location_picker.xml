@@ -6,12 +6,12 @@
                 android:layout_height="match_parent">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/label_layout"
+        android:id="@+id/address_layout"
         android:layout_height="wrap_content"
         android:layout_width="match_parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/label"
+            android:id="@+id/address"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:focusable="false"
@@ -21,7 +21,7 @@
 
     <fragment
     android:id="@+id/map"
-    android:layout_below="@+id/label_layout"
+    android:layout_below="@+id/address_layout"
     android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"

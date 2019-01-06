@@ -21,28 +21,41 @@ package pl.org.seva.events.location
 
 import android.annotation.SuppressLint
 import androidx.fragment.app.Fragment
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
 import pl.org.seva.events.R
 
-fun Fragment.createMapHolder(f: MapHolder.() -> Unit = {}): MapHolder = MapHolder().apply(f).also {
-    val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-    mapFragment.getMapAsync { map -> it withMap map }
-}
+fun Fragment.createMapHolder(f: MapHolder.() -> Unit = {}): MapHolder =
+        MapHolder().apply(f) withFragment this
 
 open class MapHolder {
     private var map: GoogleMap? = null
     var checkLocationPermission: ((onGranted: () -> Unit) -> Unit)? = null
 
-    infix fun withMap(map: GoogleMap) = map.onReady()
+    open infix fun withFragment(fragment: Fragment): MapHolder {
+        with (fragment) {
+            val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+            mapFragment.getMapAsync { map -> this@MapHolder withMap map }
+        }
+        return this
+    }
 
     @SuppressLint("MissingPermission")
-    private fun GoogleMap.onReady() {
-
-        this@MapHolder.map = apply {
+    protected open infix fun withMap(map: GoogleMap) {
+        with (map) {
+            this@MapHolder.map = this
+            moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(DEFAULT_LAT, DEFAULT_LON), DEFAULT_ZOOM))
             checkLocationPermission?.invoke {
                 isMyLocationEnabled = true
             }
         }
+    }
+
+    companion object {
+        private const val DEFAULT_LAT = 51.1
+        private const val DEFAULT_LON = 17.033333
+        private const val DEFAULT_ZOOM = 15f
     }
 }
