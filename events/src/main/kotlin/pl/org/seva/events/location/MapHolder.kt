@@ -25,14 +25,14 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import pl.org.seva.events.R
 
-fun Fragment.createMapHolder(f: MapHolder.() -> Unit): MapHolder = MapHolder().apply(f).also {
+fun Fragment.createMapHolder(f: MapHolder.() -> Unit = {}): MapHolder = MapHolder().apply(f).also {
     val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
     mapFragment.getMapAsync { map -> it withMap map }
 }
 
 open class MapHolder {
     private var map: GoogleMap? = null
-    lateinit var checkLocationPermission: (onGranted: () -> Unit) -> Unit
+    var checkLocationPermission: ((onGranted: () -> Unit) -> Unit)? = null
 
     infix fun withMap(map: GoogleMap) = map.onReady()
 
@@ -40,8 +40,9 @@ open class MapHolder {
     private fun GoogleMap.onReady() {
 
         this@MapHolder.map = apply {
-            checkLocationPermission {
-                isMyLocationEnabled = true }
+            checkLocationPermission?.invoke {
+                isMyLocationEnabled = true
+            }
         }
     }
 }

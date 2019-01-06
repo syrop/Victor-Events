@@ -35,6 +35,7 @@ import pl.org.seva.events.R
 import pl.org.seva.events.location.MapHolder
 import pl.org.seva.events.location.createMapHolder
 import pl.org.seva.events.main.Permissions
+import pl.org.seva.events.main.navigate
 import pl.org.seva.events.main.permissions
 import pl.org.seva.events.main.requestPermissions
 import java.time.LocalDate
@@ -42,7 +43,7 @@ import java.time.LocalTime
 
 class CreateEventFragment : Fragment() {
 
-    private lateinit var viewModel: DateTimeViewModel
+    private lateinit var viewModel: CreateEventViewModel
 
     private lateinit var mapHolder: MapHolder
 
@@ -54,13 +55,14 @@ class CreateEventFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         fun showTimePicker() = TimePickerFragment().show(fragmentManager, TIME_PICKER_TAG)
         fun showDatePicker() = DatePickerFragment().show(fragmentManager, DATE_PICKER_TAG)
+        fun showLocationPicker() = navigate(R.id.action_createEventFragment_to_locationPickerFragment)
         fun onTimeChanged(t: LocalTime) = time.setText("${t.hour}:${t.minute}")
         fun onDateChanged(d: LocalDate) = date.setText("${d.year}-${d.monthValue}-${d.dayOfMonth}")
 
-        viewModel = ViewModelProviders.of(activity!!).get(DateTimeViewModel::class.java)
+        viewModel = ViewModelProviders.of(activity!!).get(CreateEventViewModel::class.java)
         time.setOnClickListener { showTimePicker() }
         date.setOnClickListener { showDatePicker() }
-        location.setOnClickListener {}
+        location.setOnClickListener { showLocationPicker() }
         viewModel.time.observe(this, Observer<LocalTime> { onTimeChanged(it) })
         viewModel.date.observe(this, Observer<LocalDate> { onDateChanged(it) })
 

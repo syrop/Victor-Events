@@ -30,13 +30,13 @@ import java.util.Calendar
 
 class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener {
 
-    private lateinit var viewModel: DateTimeViewModel
+    private lateinit var viewModel: CreateEventViewModel
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val c = Calendar.getInstance()
         val hour = c.get(Calendar.HOUR_OF_DAY)
         val minute = c.get(Calendar.MINUTE)
-        viewModel = ViewModelProviders.of(activity!!).get(DateTimeViewModel::class.java)
+        viewModel = ViewModelProviders.of(activity!!).get(CreateEventViewModel::class.java)
 
         return TimePickerDialog(activity, this, hour, minute, true)
     }

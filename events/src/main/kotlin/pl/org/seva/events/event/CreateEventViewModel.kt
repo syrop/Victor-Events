@@ -24,7 +24,7 @@ import androidx.lifecycle.ViewModel
 import java.time.LocalDate
 import java.time.LocalTime
 
-class DateTimeViewModel : ViewModel() {
+class CreateEventViewModel : ViewModel() {
 
     val time by lazy {
         MutableLiveData<LocalTime>()

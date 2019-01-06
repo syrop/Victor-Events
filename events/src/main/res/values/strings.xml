@@ -36,4 +36,9 @@
     <string name="add_comm_login_to_create">You can log in to create one</string>
     <string name="add_comm_login">Login</string>
     <string name="add_comm_created">Created community [name]</string>
+
+    <!-- Pick location fragment. -->
+    <string name="pick_location_label">Select location</string>
+    <string name="pick_location_select_location">Select location of your event</string>
+    <string name="pick_location_delete_location">Delete location</string>
 </resources>

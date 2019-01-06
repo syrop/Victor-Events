@@ -19,4 +19,14 @@
 
 package pl.org.seva.events.location
 
+import androidx.fragment.app.Fragment
+import com.google.android.gms.maps.SupportMapFragment
+import pl.org.seva.events.R
+
+fun Fragment.createMutableMapHolder(f: MutableMapHolder.() -> Unit = {}): MutableMapHolder =
+        MutableMapHolder().apply(f).also {
+    val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+    mapFragment.getMapAsync { map -> it withMap map }
+}
+
 class MutableMapHolder : MapHolder()

@@ -5,12 +5,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/label_layout"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/label"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:focusable="false"
+            android:inputType="none"
+            android:hint="@string/pick_location_select_location"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
     <fragment
     android:id="@+id/map"
+    android:layout_below="@+id/label_layout"
     android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:visibility="invisible"
     tools:context=".navigation.NavigationFragment"/>
+
+    <Button
+        android:id="@+id/delete_location"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pick_location_delete_location"/>
 
 </RelativeLayout>

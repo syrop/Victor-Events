@@ -25,9 +25,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import pl.org.seva.events.R
+import pl.org.seva.events.location.MutableMapHolder
+import pl.org.seva.events.location.createMutableMapHolder
 
 class LocationPickerFragment : Fragment() {
+
+    lateinit var mapHolder: MutableMapHolder
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_location_picker, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mapHolder = createMutableMapHolder()
     }
 }
