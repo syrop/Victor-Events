@@ -24,7 +24,9 @@ import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import pl.org.seva.events.R
 
 fun Fragment.createMapHolder(f: MapHolder.() -> Unit = {}): MapHolder =
@@ -33,6 +35,7 @@ fun Fragment.createMapHolder(f: MapHolder.() -> Unit = {}): MapHolder =
 open class MapHolder {
     private var map: GoogleMap? = null
     var checkLocationPermission: ((onGranted: () -> Unit) -> Unit)? = null
+    var onMapAvailable: (GoogleMap.() -> Unit)? = null
 
     open infix fun withFragment(fragment: Fragment): MapHolder {
         with (fragment) {
@@ -47,9 +50,18 @@ open class MapHolder {
         with (map) {
             this@MapHolder.map = this
             moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(DEFAULT_LAT, DEFAULT_LON), DEFAULT_ZOOM))
+            onMapAvailable?.invoke(this)
             checkLocationPermission?.invoke {
                 isMyLocationEnabled = true
             }
+        }
+    }
+
+    fun putMarker(latLng: LatLng) {
+        with (map!!) {
+            clear()
+            addMarker(MarkerOptions().position(latLng))
+                    .setIcon(BitmapDescriptorFactory.defaultMarker(0f))
         }
     }
 

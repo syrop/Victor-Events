@@ -19,4 +19,6 @@
 
 package pl.org.seva.events.event
 
-data class EventLocation(val asString: String)
+import com.google.android.gms.maps.model.LatLng
+
+data class EventLocation(val location: LatLng?, val address: String)

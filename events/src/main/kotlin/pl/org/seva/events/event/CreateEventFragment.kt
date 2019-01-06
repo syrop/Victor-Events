@@ -58,7 +58,7 @@ class CreateEventFragment : Fragment() {
         fun showLocationPicker() = navigate(R.id.action_createEventFragment_to_locationPickerFragment)
         fun onTimeChanged(t: LocalTime) = time.setText("${t.hour}:${t.minute}")
         fun onDateChanged(d: LocalDate) = date.setText("${d.year}-${d.monthValue}-${d.dayOfMonth}")
-        fun onLocationChanged(l: EventLocation) = location.setText(l.asString)
+        fun onLocationChanged(l: EventLocation) = location.setText(l.address)
 
         viewModel = ViewModelProviders.of(activity!!).get(CreateEventViewModel::class.java)
         time.setOnClickListener { showTimePicker() }
@@ -70,6 +70,15 @@ class CreateEventFragment : Fragment() {
 
         mapHolder = createMapHolder {
             checkLocationPermission = this@CreateEventFragment::checkLocationPermission
+            onMapAvailable = {
+                viewModel.location.observe(
+                    this@CreateEventFragment,
+                        Observer<EventLocation> {
+                            it.location ?: return@Observer
+                            putMarker(it.location)
+                        }
+                )
+            }
         }
     }
 

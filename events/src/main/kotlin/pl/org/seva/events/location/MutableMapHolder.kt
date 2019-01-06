@@ -23,9 +23,7 @@ import android.location.Geocoder
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import pl.org.seva.events.event.CreateEventViewModel
 import pl.org.seva.events.event.EventLocation
 import pl.org.seva.events.main.instance
@@ -49,19 +47,18 @@ class MutableMapHolder : MapHolder() {
 
     override fun withMap(map: GoogleMap) {
         fun onMapLongClick(latLng: LatLng) {
-            map.clear()
-            map.addMarker(MarkerOptions().position(latLng))
-                    .setIcon(BitmapDescriptorFactory.defaultMarker(0f))
-            viewModel.location.value = try {
+            putMarker(latLng)
+            val address = try {
                 with(geocoder.getFromLocation(
                         latLng.latitude,
                         latLng.longitude,
                         1)[0]) {
-                        EventLocation(getAddressLine(maxAddressLineIndex))
+                        getAddressLine(maxAddressLineIndex)
                 }
             } catch (ex: Exception) {
-                EventLocation(DEFAULT_ADDRESS)
+                DEFAULT_ADDRESS
             }
+            viewModel.location.value = EventLocation(latLng, address)
         }
 
         super.withMap(map)

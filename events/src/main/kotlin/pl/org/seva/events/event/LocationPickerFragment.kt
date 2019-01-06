@@ -44,7 +44,7 @@ class LocationPickerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(activity!!).get(CreateEventViewModel::class.java)
         delete_location.setOnClickListener { address.setText("") }
-        viewModel.location.observe(this, Observer<EventLocation> { address.setText(it.asString) })
+        viewModel.location.observe(this, Observer<EventLocation> { address.setText(it.address) })
         mapHolder = createMutableMapHolder()
     }
 }
