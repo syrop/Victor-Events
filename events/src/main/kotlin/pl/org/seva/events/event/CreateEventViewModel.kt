@@ -19,8 +19,11 @@
 
 package pl.org.seva.events.event
 
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import pl.org.seva.events.location.MapHolder
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -34,7 +37,11 @@ class CreateEventViewModel : ViewModel() {
         MutableLiveData<LocalDate>()
     }
 
-    val location: MutableLiveData<EventLocation> by lazy {
-        MutableLiveData<EventLocation>()
+    val location: MutableLiveData<EventLocation?> by lazy {
+        MutableLiveData<EventLocation?>()
+    }
+
+    fun observeLocation(owner: LifecycleOwner, mapHolder: MapHolder) {
+        location.observe(owner, Observer { mapHolder.putMarker(it?.location) })
     }
 }

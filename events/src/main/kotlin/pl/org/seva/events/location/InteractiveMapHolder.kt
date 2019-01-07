@@ -29,10 +29,10 @@ import pl.org.seva.events.event.EventLocation
 import pl.org.seva.events.main.instance
 import java.lang.Exception
 
-fun Fragment.createMutableMapHolder(f: MutableMapHolder.() -> Unit = {}): MutableMapHolder =
-        (MutableMapHolder().apply(f) withFragment this) as MutableMapHolder
+fun Fragment.createInteractiveMapHolder(f: InteractiveMapHolder.() -> Unit = {}): InteractiveMapHolder =
+        (InteractiveMapHolder().apply(f) withFragment this) as InteractiveMapHolder
 
-class MutableMapHolder : MapHolder() {
+class InteractiveMapHolder : MapHolder() {
 
     private lateinit var viewModel: CreateEventViewModel
     private val geocoder: Geocoder = instance()
@@ -47,7 +47,6 @@ class MutableMapHolder : MapHolder() {
 
     override fun withMap(map: GoogleMap) {
         fun onMapLongClick(latLng: LatLng) {
-            putMarker(latLng)
             val address = try {
                 with(geocoder.getFromLocation(
                         latLng.latitude,

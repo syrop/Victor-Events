@@ -57,9 +57,10 @@ open class MapHolder {
         }
     }
 
-    fun putMarker(latLng: LatLng) {
+    fun putMarker(latLng: LatLng?) {
         with (map!!) {
             clear()
+            latLng ?: return
             addMarker(MarkerOptions().position(latLng))
                     .setIcon(BitmapDescriptorFactory.defaultMarker(0f))
         }

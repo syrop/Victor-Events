@@ -61,12 +61,19 @@
             android:hint="@string/event_location"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+    <FrameLayout
+        android:id="@+id/map_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/address_layout"
-        android:visibility="invisible"
-        tools:context=".navigation.NavigationFragment"/>
+        android:visibility="invisible">
+
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </FrameLayout>
+
 </RelativeLayout>

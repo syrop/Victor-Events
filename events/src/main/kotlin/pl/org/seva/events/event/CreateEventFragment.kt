@@ -58,7 +58,10 @@ class CreateEventFragment : Fragment() {
         fun showLocationPicker() = navigate(R.id.action_createEventFragment_to_locationPickerFragment)
         fun onTimeChanged(t: LocalTime) = time.setText("${t.hour}:${t.minute}")
         fun onDateChanged(d: LocalDate) = date.setText("${d.year}-${d.monthValue}-${d.dayOfMonth}")
-        fun onLocationChanged(l: EventLocation) = location.setText(l.address)
+        fun onLocationChanged(l: EventLocation?) {
+            location.setText(l?.address ?: "")
+            map_container.visibility = if (l == null) View.INVISIBLE else View.VISIBLE
+        }
 
         viewModel = ViewModelProviders.of(activity!!).get(CreateEventViewModel::class.java)
         time.setOnClickListener { showTimePicker() }
@@ -66,18 +69,12 @@ class CreateEventFragment : Fragment() {
         location.setOnClickListener { showLocationPicker() }
         viewModel.time.observe(this, Observer<LocalTime> { onTimeChanged(it) })
         viewModel.date.observe(this, Observer<LocalDate> { onDateChanged(it) })
-        viewModel.location.observe(this, Observer<EventLocation> { onLocationChanged(it) })
+        viewModel.location.observe(this, Observer { onLocationChanged(it) })
 
         mapHolder = createMapHolder {
             checkLocationPermission = this@CreateEventFragment::checkLocationPermission
             onMapAvailable = {
-                viewModel.location.observe(
-                    this@CreateEventFragment,
-                        Observer<EventLocation> {
-                            it.location ?: return@Observer
-                            putMarker(it.location)
-                        }
-                )
+                viewModel.observeLocation(this@CreateEventFragment, this@createMapHolder)
             }
         }
     }

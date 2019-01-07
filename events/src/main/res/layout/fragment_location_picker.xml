@@ -24,15 +24,14 @@
     android:layout_below="@+id/address_layout"
     android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:visibility="invisible"
-    tools:context=".navigation.NavigationFragment"/>
+    android:layout_height="match_parent"/>
 
     <Button
         android:id="@+id/delete_location"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:enabled="false"
         android:text="@string/pick_location_delete_location"/>
 
 </RelativeLayout>

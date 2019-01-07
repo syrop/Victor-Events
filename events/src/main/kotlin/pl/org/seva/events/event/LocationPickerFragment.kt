@@ -28,12 +28,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.fragment_location_picker.*
 import pl.org.seva.events.R
-import pl.org.seva.events.location.MutableMapHolder
-import pl.org.seva.events.location.createMutableMapHolder
+import pl.org.seva.events.location.InteractiveMapHolder
+import pl.org.seva.events.location.createInteractiveMapHolder
 
 class LocationPickerFragment : Fragment() {
 
-    lateinit var mapHolder: MutableMapHolder
+    private lateinit var mapHolder: InteractiveMapHolder
     private lateinit var viewModel: CreateEventViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -41,10 +41,21 @@ class LocationPickerFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        fun onLocationChanged(l: EventLocation?) {
+            address.setText(l?.address ?: "")
+            delete_location.isEnabled = l != null
+        }
+
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(activity!!).get(CreateEventViewModel::class.java)
-        delete_location.setOnClickListener { address.setText("") }
-        viewModel.location.observe(this, Observer<EventLocation> { address.setText(it.address) })
-        mapHolder = createMutableMapHolder()
+        delete_location.setOnClickListener {
+            viewModel.location.value = null
+        }
+        viewModel.location.observe(this, Observer { onLocationChanged(it) })
+        mapHolder = createInteractiveMapHolder {
+            onMapAvailable = {
+                viewModel.observeLocation(this@LocationPickerFragment, this@createInteractiveMapHolder)
+            }
+        }
     }
 }
