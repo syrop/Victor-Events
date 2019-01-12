@@ -34,7 +34,7 @@ data class Comm(
         val color: Int = Color.GRAY,
         val admin: Boolean = false) : Parcelable {
 
-    val lcName: String get() = name.toLowerCase()
+    val lowerCaseName: String get() = name.toLowerCase()
 
     @IgnoredOnParcel
     @Transient

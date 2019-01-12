@@ -27,17 +27,24 @@ import pl.org.seva.events.main.instance
 import pl.org.seva.events.main.ui.colorFactory
 import pl.org.seva.events.login.login
 
-val communities get() = instance<Comms>()
+val comms get() = instance<Comms>()
 
-fun Comm.join() = communities join this
+fun Comm.join() = comms join this
+
+fun String.joinNewCommunity() = comms joinNewCommunity this
 
 class Comms {
 
     private val cache = mutableListOf<Comm>()
     private val commDao = db.commDao
-
     private val size get() = cache.size
+    val isAdminOf get() = cache.filter { it.admin }
+
+    val isAdminOfAny get() = cache.any { it.admin }
+
     val isEmpty get() = size == 0
+
+    val namesIsAdminOf get() = isAdminOf.map { it.name }.toTypedArray()
 
     operator fun get(index: Int) = cache[index]
 
@@ -51,10 +58,6 @@ class Comms {
     fun addAll(comms: Collection<Comm>) {
         this.cache.addAll(comms)
     }
-
-    val isAdminOf get() = cache.filter { it.admin }
-
-    val isAdminOfAny get() = cache.any { it.admin }
 
     infix fun joinNewCommunity(name: String) =
         Comm(name, colorFactory().nextColor(), true).apply {

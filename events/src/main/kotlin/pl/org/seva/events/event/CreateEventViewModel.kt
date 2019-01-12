@@ -29,6 +29,10 @@ import java.time.LocalTime
 
 class CreateEventViewModel : ViewModel() {
 
+    val comm by lazy {
+        MutableLiveData<String>()
+    }
+
     val time by lazy {
         MutableLiveData<LocalTime>()
     }

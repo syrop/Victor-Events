@@ -30,19 +30,19 @@ import java.util.*
 
 class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
-    private lateinit var viewModel: CreateEventViewModel
+    private lateinit var model: CreateEventViewModel
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
-        viewModel = ViewModelProviders.of(activity!!).get(CreateEventViewModel::class.java)
+        model = ViewModelProviders.of(activity!!).get(CreateEventViewModel::class.java)
 
         return DatePickerDialog(activity!!, this, year, month, day)
     }
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
-        viewModel.date.value = LocalDate.of(year, month + 1, day)
+        model.date.value = LocalDate.of(year, month + 1, day)
     }
 }

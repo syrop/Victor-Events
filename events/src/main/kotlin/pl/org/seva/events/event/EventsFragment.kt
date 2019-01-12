@@ -26,7 +26,7 @@ import androidx.fragment.app.Fragment
 
 import kotlinx.android.synthetic.main.fragment_events.*
 import pl.org.seva.events.R
-import pl.org.seva.events.comm.communities
+import pl.org.seva.events.comm.comms
 import pl.org.seva.events.login.login
 import pl.org.seva.events.main.navigate
 
@@ -43,7 +43,7 @@ class EventsFragment : Fragment() {
 
     @SuppressLint("RestrictedApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        if (communities.isAdminOfAny) {
+        if (comms.isAdminOfAny) {
             add_event_fab.visibility = View.VISIBLE
         }
 

@@ -58,7 +58,7 @@ class AddCommFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         eventsModel = ViewModelProviders.of(activity!!).get(EventsViewModel::class.java)
-        if (communities.isEmpty) {
+        if (comms.isEmpty) {
             prompt.setText(R.string.add_comm_please_search_empty)
         }
         eventsModel.query.observe(this) { query ->
@@ -102,7 +102,7 @@ class AddCommFragment : Fragment() {
     }
 
     private fun onSearchViewClosed(): Boolean {
-        if (communities.isEmpty) {
+        if (comms.isEmpty) {
             prompt.visibility = View.VISIBLE
             communitiesNotFoundPrompt()
         }
@@ -168,11 +168,11 @@ class AddCommFragment : Fragment() {
     }
 
     private fun String.createJoinAndFinish() {
-        fun String.created() =
+        val created =
                 getString(R.string.add_comm_created).boldSection(NAME_PLACEHOLDER, this)
 
-        communities joinNewCommunity this
-        Toast.makeText(activity, created(), Toast.LENGTH_LONG).show()
+        joinNewCommunity()
+        Toast.makeText(activity, created, Toast.LENGTH_LONG).show()
         popBackStack()
     }
 

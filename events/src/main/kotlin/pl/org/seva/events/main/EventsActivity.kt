@@ -11,7 +11,7 @@ import androidx.navigation.ui.NavigationUI
 import kotlinx.android.synthetic.main.activity_events.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.AddCommFragment
-import pl.org.seva.events.comm.communities
+import pl.org.seva.events.comm.comms
 import pl.org.seva.events.login.LoginActivity
 
 class EventsActivity : AppCompatActivity() {
@@ -26,14 +26,14 @@ class EventsActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         NavigationUI.setupActionBarWithNavController(this, nav)
         eventsModel = ViewModelProviders.of(this).get(EventsViewModel::class.java)
-        if (communities.isEmpty) {
+        if (comms.isEmpty) {
             nav.navigate(R.id.action_eventsFragment_to_addCommFragment)
         }
         nav.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.eventsFragment && communities.isEmpty) {
+            if (destination.id == R.id.eventsFragment && comms.isEmpty) {
                 finish()
             }
-            else if (destination.id == R.id.addCommFragment && communities.isEmpty) {
+            else if (destination.id == R.id.addCommFragment && comms.isEmpty) {
                 supportActionBar!!.setDisplayHomeAsUpEnabled(false)
                 supportActionBar!!.setDisplayShowHomeEnabled(false)
             }
