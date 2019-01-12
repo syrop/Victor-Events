@@ -84,7 +84,7 @@ class CreateEventFragment : Fragment() {
         with (comms.namesIsAdminOf) {
             model.comm.value = get(0)
             if (size > 1) {
-                comm_spinner.visibility = View.VISIBLE
+                comm_layout.visibility = View.VISIBLE
                 comm_spinner.adapter = ArrayAdapter(context!!, android.R.layout.simple_spinner_item, this)
                 comm_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onNothingSelected(parent: AdapterView<*>?) = Unit
