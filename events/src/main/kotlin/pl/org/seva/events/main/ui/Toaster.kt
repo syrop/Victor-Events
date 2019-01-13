@@ -28,7 +28,7 @@ fun CharSequence.toast() = toast(this)
 
 fun toast(message: CharSequence) = toaster toast message
 
-private val toaster get() = instance<Toaster>()
+private val toaster by instance<Toaster>()
 
 class Toaster(private val ctx: Context) {
 

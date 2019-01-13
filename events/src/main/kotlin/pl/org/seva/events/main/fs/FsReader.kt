@@ -35,7 +35,7 @@ import pl.org.seva.events.main.instance
 import java.time.ZonedDateTime
 import pl.org.seva.events.main.subscribe
 
-val fsReader get() = instance<FsReader>()
+val fsReader by instance<FsReader>()
 
 class FsReader : FsBase() {
 

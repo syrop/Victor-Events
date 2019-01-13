@@ -22,7 +22,7 @@ package pl.org.seva.events.login
 import com.google.firebase.auth.FirebaseUser
 import pl.org.seva.events.main.instance
 
-val login get() = instance<Login>()
+val login by instance<Login>()
 
 val isLoggedIn get() = login.isLoggedIn
 

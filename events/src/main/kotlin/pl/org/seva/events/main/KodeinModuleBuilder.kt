@@ -37,10 +37,7 @@ import java.util.logging.Logger
 
 val Context.module get() = KodeinModuleBuilder(this).build()
 
-inline fun <reified R : Any> instance(): R {
-    val result by Kodein.global.instance<R>()
-    return result
-}
+inline fun <reified R : Any> instance() = Kodein.global.instance<R>()
 
 inline fun <reified A, reified T : Any> instance(arg: A): T {
     val result by Kodein.global.instance<A, T>(arg = arg)
@@ -57,7 +54,6 @@ class KodeinModuleBuilder(private val ctx: Context) {
         bind<FsWriter>() with singleton { FsWriter() }
         bind<EventsDb>() with singleton { EventsDb(ctx) }
         bind<ColorFactory>() with singleton { ColorFactory(ctx) }
-        bind<Context>() with provider { ctx }
         bind<Toaster>() with singleton { Toaster(ctx) }
         bind<Logger>() with multiton { tag: String ->
             Logger.getLogger(tag)!!.apply {

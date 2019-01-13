@@ -27,7 +27,7 @@ import pl.org.seva.events.main.instance
 import pl.org.seva.events.main.ui.colorFactory
 import pl.org.seva.events.login.login
 
-val comms get() = instance<Comms>()
+val comms by instance<Comms>()
 
 fun Comm.join() = comms join this
 
@@ -64,7 +64,7 @@ class Comms {
     }
 
     infix fun joinNewCommunity(name: String) =
-        Comm(name, colorFactory().nextColor(), true).apply {
+        Comm(name, colorFactory.nextColor(), true).apply {
             fsWriter.create(this)
             fsWriter.grantAdmin(this, login.email)
             join()

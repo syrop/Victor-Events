@@ -23,7 +23,7 @@ import android.content.Context
 import android.graphics.Color
 import pl.org.seva.events.main.instance
 
-fun colorFactory() = instance<ColorFactory>()
+val colorFactory by instance<ColorFactory>()
 
 class ColorFactory(private val application: Context ) {
 

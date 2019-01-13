@@ -31,7 +31,7 @@ fun Fragment.requestPermissions(
                 requestCode,
                 requests)
 
-val permissions get() = instance<Permissions>()
+val permissions by instance<Permissions>()
 
 class Permissions {
 

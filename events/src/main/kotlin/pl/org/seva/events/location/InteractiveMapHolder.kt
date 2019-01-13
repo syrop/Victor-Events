@@ -35,7 +35,7 @@ fun Fragment.createInteractiveMapHolder(f: InteractiveMapHolder.() -> Unit = {})
 class InteractiveMapHolder : MapHolder() {
 
     private lateinit var viewModel: CreateEventViewModel
-    private val geocoder: Geocoder = instance()
+    private val geocoder by instance<Geocoder>()
 
     override fun withFragment(fragment: Fragment): MapHolder {
         super.withFragment(fragment)
