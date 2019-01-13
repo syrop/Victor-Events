@@ -34,6 +34,5 @@ class Toaster(private val ctx: Context) {
 
     infix fun toast(message: CharSequence) {
         Toast.makeText(ctx, message, Toast.LENGTH_SHORT).show()
-        Toast.makeText(ctx, "wiktor", Toast.LENGTH_SHORT).show()
     }
 }
