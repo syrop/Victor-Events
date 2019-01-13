@@ -25,10 +25,10 @@ import pl.org.seva.events.main.instance
 
 val colorFactory by instance<ColorFactory>()
 
-class ColorFactory(private val application: Context ) {
+class ColorFactory(private val appContext: Context ) {
 
     private val colors by lazy {
-        application.run {
+        with(appContext) {
             resources.getIdentifier(COLOR_ARRAY_NAME + COLOR_TYPE,"array", packageName).let {
                 resources.obtainTypedArray(it)
             }
