@@ -23,11 +23,17 @@ import android.content.Context
 import android.widget.Toast
 import pl.org.seva.events.main.instance
 
-val toaster get() = instance<Toaster>()
+@JvmName("extensionToast")
+fun CharSequence.toast() = toast(this)
+
+fun toast(message: CharSequence) = toaster toast message
+
+private val toaster get() = instance<Toaster>()
 
 class Toaster(private val ctx: Context) {
 
-    fun toast(f: Context.() -> String) {
-        Toast.makeText(ctx, ctx.f(), Toast.LENGTH_SHORT).show()
+    infix fun toast(message: CharSequence) {
+        Toast.makeText(ctx, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(ctx, "wiktor", Toast.LENGTH_SHORT).show()
     }
 }

@@ -26,7 +26,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,12 +35,9 @@ import pl.org.seva.events.main.fs.fsReader
 import pl.org.seva.events.login.LoginActivity
 import pl.org.seva.events.login.isLoggedIn
 import pl.org.seva.events.main.EventsViewModel
-import pl.org.seva.events.main.ui.boldSection
 import pl.org.seva.events.main.observe
 import pl.org.seva.events.main.popBackStack
-import pl.org.seva.events.main.ui.DividerItemDecoration
-import pl.org.seva.events.main.ui.longSnackbar
-import pl.org.seva.events.main.ui.permanentSnackbar
+import pl.org.seva.events.main.ui.*
 
 class AddCommFragment : Fragment() {
 
@@ -58,9 +54,8 @@ class AddCommFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         eventsModel = ViewModelProviders.of(activity!!).get(EventsViewModel::class.java)
-        if (comms.isEmpty) {
-            prompt.setText(R.string.add_comm_please_search_empty)
-        }
+        prompt.setText(if (comms.isEmpty) R.string.add_comm_please_search_empty else
+            R.string.add_comm_please_search)
         eventsModel.query.observe(this) { query ->
             if (!query.isEmpty()) {
                 eventsModel.query.value = ""
@@ -111,13 +106,17 @@ class AddCommFragment : Fragment() {
 
     private fun search(name: String) {
         fun Comm.found() {
-            fun Comm.joinAndFinish() {
-                join()
-                popBackStack()
-            }
             progress.visibility = View.GONE
             recycler.visibility = View.VISIBLE
-            adapter = CommAdapter(this) { joinAndFinish() }
+            adapter = CommAdapter(this) {
+                if (isAMemberOf()) {
+                    getString(R.string.add_comm_already_a_member).toast()
+                }
+                else {
+                    join()
+                    popBackStack()
+                }
+            }
             recycler.addItemDecoration(DividerItemDecoration(activity!!))
             recycler.adapter = adapter
             recycler.layoutManager = LinearLayoutManager(context)
@@ -168,11 +167,10 @@ class AddCommFragment : Fragment() {
     }
 
     private fun String.createJoinAndFinish() {
-        val created =
-                getString(R.string.add_comm_created).boldSection(NAME_PLACEHOLDER, this)
-
         joinNewCommunity()
-        Toast.makeText(activity, created, Toast.LENGTH_LONG).show()
+        getString(R.string.add_comm_created)
+                .boldSection(NAME_PLACEHOLDER, this)
+                .toast()
         popBackStack()
     }
 

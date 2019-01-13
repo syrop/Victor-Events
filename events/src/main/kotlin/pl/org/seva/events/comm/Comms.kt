@@ -31,6 +31,8 @@ val comms get() = instance<Comms>()
 
 fun Comm.join() = comms join this
 
+fun Comm.isAMemberOf() = comms contain this
+
 fun String.joinNewCommunity() = comms joinNewCommunity this
 
 class Comms {
@@ -38,7 +40,7 @@ class Comms {
     private val cache = mutableListOf<Comm>()
     private val commDao = db.commDao
     private val size get() = cache.size
-    val isAdminOf get() = cache.filter { it.admin }
+    private val isAdminOf get() = cache.filter { it.admin }
 
     val isAdminOfAny get() = cache.any { it.admin }
 
@@ -47,6 +49,8 @@ class Comms {
     val namesIsAdminOf get() = isAdminOf.map { it.name }.toTypedArray()
 
     operator fun get(index: Int) = cache[index]
+
+    infix fun contain(comm: Comm) = cache.any { it.name == comm.name }
 
     infix fun join(comm: Comm) {
         cache.add(comm)

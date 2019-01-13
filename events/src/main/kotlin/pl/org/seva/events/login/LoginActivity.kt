@@ -24,7 +24,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.View
-import android.widget.Toast
 
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -39,6 +38,7 @@ import pl.org.seva.events.main.EventsApplication
 import pl.org.seva.events.R
 import pl.org.seva.events.main.fs.fsWriter
 import pl.org.seva.events.main.log
+import pl.org.seva.events.main.ui.toast
 
 class LoginActivity : AppCompatActivity(),
         GoogleApiClient.OnConnectionFailedListener,
@@ -186,7 +186,7 @@ class LoginActivity : AppCompatActivity(),
     }
 
     private fun signInFailed() {
-        Toast.makeText(this, R.string.login_authentication_failed, Toast.LENGTH_SHORT).show()
+        getString(R.string.login_authentication_failed).toast()
         finish()
     }
 
@@ -200,7 +200,7 @@ class LoginActivity : AppCompatActivity(),
 
     override fun onConnectionFailed(connectionResult: ConnectionResult) {
         log.warning("onConnectionFailed:$connectionResult")
-        Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show()
+        "Google Play Services error.".toast()
     }
 
     override fun onConnected(bundle: Bundle?) {
