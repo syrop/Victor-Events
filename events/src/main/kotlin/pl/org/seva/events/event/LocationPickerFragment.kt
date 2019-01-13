@@ -25,12 +25,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.fragment_location_picker.*
 import pl.org.seva.events.R
+import pl.org.seva.events.main.extension.viewModel
 import pl.org.seva.events.location.InteractiveMapHolder
 import pl.org.seva.events.location.createInteractiveMapHolder
-import pl.org.seva.events.main.viewModel
 
 class LocationPickerFragment : Fragment() {
 

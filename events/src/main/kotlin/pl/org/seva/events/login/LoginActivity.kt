@@ -36,9 +36,9 @@ import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.activity_login.*
 import pl.org.seva.events.main.EventsApplication
 import pl.org.seva.events.R
+import pl.org.seva.events.main.extension.log
+import pl.org.seva.events.main.extension.toast
 import pl.org.seva.events.main.fs.fsWriter
-import pl.org.seva.events.main.log
-import pl.org.seva.events.main.ui.toast
 
 class LoginActivity : AppCompatActivity(),
         GoogleApiClient.OnConnectionFailedListener,

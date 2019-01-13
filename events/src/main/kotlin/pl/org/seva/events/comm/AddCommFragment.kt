@@ -34,10 +34,8 @@ import pl.org.seva.events.main.fs.fsReader
 import pl.org.seva.events.login.LoginActivity
 import pl.org.seva.events.login.isLoggedIn
 import pl.org.seva.events.main.EventsViewModel
-import pl.org.seva.events.main.observe
-import pl.org.seva.events.main.popBackStack
+import pl.org.seva.events.main.extension.*
 import pl.org.seva.events.main.ui.*
-import pl.org.seva.events.main.viewModel
 
 class AddCommFragment : Fragment() {
 

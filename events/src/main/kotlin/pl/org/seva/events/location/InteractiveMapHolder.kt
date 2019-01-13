@@ -26,7 +26,7 @@ import com.google.android.gms.maps.model.LatLng
 import pl.org.seva.events.event.CreateEventViewModel
 import pl.org.seva.events.event.EventLocation
 import pl.org.seva.events.main.instance
-import pl.org.seva.events.main.viewModel
+import pl.org.seva.events.main.extension.viewModel
 import java.lang.Exception
 
 fun Fragment.createInteractiveMapHolder(f: InteractiveMapHolder.() -> Unit = {}): InteractiveMapHolder =

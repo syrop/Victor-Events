@@ -22,14 +22,7 @@ package pl.org.seva.events.main
 import android.content.pm.PackageManager
 import androidx.fragment.app.Fragment
 import io.reactivex.subjects.PublishSubject
-
-fun Fragment.requestPermissions(
-        requestCode: Int,
-        requests: Array<Permissions.PermissionRequest>) =
-        permissions.request(
-                this,
-                requestCode,
-                requests)
+import pl.org.seva.events.main.extension.subscribe
 
 val permissions by instance<Permissions>()
 

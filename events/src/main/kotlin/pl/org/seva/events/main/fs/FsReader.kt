@@ -33,7 +33,7 @@ import pl.org.seva.events.login.isLoggedIn
 import pl.org.seva.events.login.login
 import pl.org.seva.events.main.instance
 import java.time.ZonedDateTime
-import pl.org.seva.events.main.subscribe
+import pl.org.seva.events.main.extension.subscribe
 
 val fsReader by instance<FsReader>()
 

@@ -23,12 +23,7 @@ import android.content.Context
 import android.widget.Toast
 import pl.org.seva.events.main.instance
 
-@JvmName("extensionToast")
-fun CharSequence.toast() = toast(this)
-
-fun toast(message: CharSequence) = toaster toast message
-
-private val toaster by instance<Toaster>()
+val toaster by instance<Toaster>()
 
 class Toaster(private val ctx: Context) {
 

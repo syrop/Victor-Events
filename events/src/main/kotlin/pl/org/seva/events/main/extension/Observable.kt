@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Wiktor Nizio
+ * Copyright (C) 2019 Wiktor Nizio
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,14 +17,25 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main.db
+package pl.org.seva.events.main.extension
 
-import kotlinx.coroutines.*
-import pl.org.seva.events.comm.Comm
-import pl.org.seva.events.comm.CommDao
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
+import io.reactivex.Observable
+import io.reactivex.disposables.Disposable
 
-inline fun CommDao.getAllAsync(crossinline callback: (Collection<Comm>) -> Unit) {
-    GlobalScope.launch {
-        callback(getAll().map { it.comValue() })
+fun <T> Observable<T>.subscribe(lifecycle: Lifecycle, onNext: (T) -> Unit) =
+        subscribe(onNext).observeLifecycle(lifecycle)
+
+private fun Disposable.observeLifecycle(lifecycle: Lifecycle) =
+        lifecycle.addObserver(RxLifecycleObserver(this))
+
+private class RxLifecycleObserver(private val subscription: Disposable) : LifecycleObserver {
+
+    @Suppress("unused")
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    private fun onEvent() {
+        subscription.dispose()
     }
 }

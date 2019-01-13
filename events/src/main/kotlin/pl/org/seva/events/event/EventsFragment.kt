@@ -27,8 +27,8 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_events.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
+import pl.org.seva.events.main.extension.navigate
 import pl.org.seva.events.login.login
-import pl.org.seva.events.main.navigate
 
 class EventsFragment : Fragment() {
 

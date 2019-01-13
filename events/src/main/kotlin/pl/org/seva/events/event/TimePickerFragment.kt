@@ -24,8 +24,7 @@ import android.app.TimePickerDialog
 import android.os.Bundle
 import android.widget.TimePicker
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.ViewModelProviders
-import pl.org.seva.events.main.viewModel
+import pl.org.seva.events.main.extension.viewModel
 import java.time.LocalTime
 import java.util.Calendar
 

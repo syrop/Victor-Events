@@ -34,6 +34,9 @@ import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_create_event.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
+import pl.org.seva.events.main.extension.navigate
+import pl.org.seva.events.main.extension.requestPermissions
+import pl.org.seva.events.main.extension.viewModel
 import pl.org.seva.events.location.MapHolder
 import pl.org.seva.events.location.createMapHolder
 import pl.org.seva.events.main.*

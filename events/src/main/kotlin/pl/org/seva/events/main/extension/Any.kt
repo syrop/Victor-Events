@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Wiktor Nizio
+ * Copyright (C) 2019 Wiktor Nizio
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,18 +17,9 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main.ui
+package pl.org.seva.events.main.extension
 
-import android.graphics.Typeface
-import android.text.SpannableStringBuilder
-import android.text.Spanned
-import android.text.style.StyleSpan
+import pl.org.seva.events.main.instance
+import java.util.logging.Logger
 
-fun String.boldSection(placeholder: String, replacement: String): CharSequence {
-    val idName = indexOf(placeholder)
-    val idEndName = idName + replacement.length
-    val boldSpan = StyleSpan(Typeface.BOLD)
-    return SpannableStringBuilder(replace(placeholder, replacement)).apply {
-        setSpan(boldSpan, idName, idEndName, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-    }
-}
+val Any.log get() = instance<String, Logger>(this::class.java.name)

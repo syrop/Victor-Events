@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.activity_events.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.AddCommFragment
 import pl.org.seva.events.comm.comms
+import pl.org.seva.events.main.extension.viewModel
 import pl.org.seva.events.login.LoginActivity
 
 class EventsActivity : AppCompatActivity() {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Wiktor Nizio
+ * Copyright (C) 2019 Wiktor Nizio
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,24 +17,11 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main
+package pl.org.seva.events.main.extension
 
-import androidx.annotation.IdRes
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.*
-import androidx.navigation.fragment.findNavController
-import java.util.logging.Logger
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 
 fun <T> LiveData<T>.observe(owner: LifecycleOwner, f: (T) -> Unit) =
         observe(owner, Observer<T> { f(it) })
-
-val Any.log get() = instance<String, Logger>(this::class.java.name)
-
-fun Fragment.navigate(@IdRes resId: Int) = findNavController().navigate(resId)
-
-fun Fragment.popBackStack() = findNavController().popBackStack()
-
-inline fun <reified T : ViewModel> Fragment.viewModel() = activity!!.viewModel<T>()
-
-inline fun <reified T : ViewModel> FragmentActivity.viewModel() = ViewModelProviders.of(this).get(T::class.java)

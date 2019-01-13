@@ -17,25 +17,10 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main
+package pl.org.seva.events.main.extension
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
-import io.reactivex.Observable
-import io.reactivex.disposables.Disposable
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProviders
 
-fun <T> Observable<T>.subscribe(lifecycle: Lifecycle, onNext: (T) -> Unit) =
-        subscribe(onNext).observeLifecycle(lifecycle)
-
-private fun Disposable.observeLifecycle(lifecycle: Lifecycle) =
-        lifecycle.addObserver(RxLifecycleObserver(this))
-
-private class RxLifecycleObserver(private val subscription: Disposable) : LifecycleObserver {
-
-    @Suppress("unused")
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    private fun onEvent() {
-        subscription.dispose()
-    }
-}
+inline fun <reified T : ViewModel> FragmentActivity.viewModel() = ViewModelProviders.of(this).get(T::class.java)

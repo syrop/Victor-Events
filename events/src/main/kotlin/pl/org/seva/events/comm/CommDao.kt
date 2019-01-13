@@ -23,7 +23,15 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import pl.org.seva.events.main.db.EventsDb
+
+inline fun CommDao.getAllAsync(crossinline callback: (Collection<Comm>) -> Unit) {
+    GlobalScope.launch {
+        callback(getAll().map { it.comValue() })
+    }
+}
 
 @Dao
 interface CommDao {
