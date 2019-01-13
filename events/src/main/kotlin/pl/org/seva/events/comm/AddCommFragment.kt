@@ -57,7 +57,7 @@ class AddCommFragment : Fragment() {
         prompt.setText(if (comms.isEmpty) R.string.add_comm_please_search_empty else
             R.string.add_comm_please_search)
         eventsModel.query.observe(this) { query ->
-            if (!query.isEmpty()) {
+            if (query.isNotEmpty()) {
                 eventsModel.query.value = ""
                 search(query)
             }
