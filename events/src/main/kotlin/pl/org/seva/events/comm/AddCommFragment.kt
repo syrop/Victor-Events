@@ -27,7 +27,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_add_comm.*
 import pl.org.seva.events.R
@@ -38,10 +37,11 @@ import pl.org.seva.events.main.EventsViewModel
 import pl.org.seva.events.main.observe
 import pl.org.seva.events.main.popBackStack
 import pl.org.seva.events.main.ui.*
+import pl.org.seva.events.main.viewModel
 
 class AddCommFragment : Fragment() {
 
-    private lateinit var eventsModel: EventsViewModel
+    private val eventsModel by lazy { viewModel<EventsViewModel>() }
 
     private val searchManager get() =
         activity!!.getSystemService(Context.SEARCH_SERVICE) as SearchManager
@@ -53,7 +53,6 @@ class AddCommFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        eventsModel = ViewModelProviders.of(activity!!).get(EventsViewModel::class.java)
         prompt.setText(if (comms.isEmpty) R.string.add_comm_please_search_empty else
             R.string.add_comm_please_search)
         eventsModel.query.observe(this) { query ->

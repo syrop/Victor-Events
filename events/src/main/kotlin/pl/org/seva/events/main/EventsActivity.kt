@@ -5,7 +5,6 @@ import android.app.SearchManager
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import kotlinx.android.synthetic.main.activity_events.*
@@ -18,14 +17,13 @@ class EventsActivity : AppCompatActivity() {
 
     private val nav get() = findNavController(R.id.nav_host_fragment)
 
-    private lateinit var eventsModel: EventsViewModel
+    private val eventsModel by lazy { viewModel<EventsViewModel>() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_events)
         setSupportActionBar(toolbar)
         NavigationUI.setupActionBarWithNavController(this, nav)
-        eventsModel = ViewModelProviders.of(this).get(EventsViewModel::class.java)
         if (comms.isEmpty) {
             nav.navigate(R.id.action_eventsFragment_to_addCommFragment)
         }

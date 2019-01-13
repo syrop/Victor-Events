@@ -20,10 +20,9 @@
 package pl.org.seva.events.main
 
 import androidx.annotation.IdRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
+import androidx.lifecycle.*
 import androidx.navigation.fragment.findNavController
 import java.util.logging.Logger
 
@@ -35,3 +34,7 @@ val Any.log get() = instance<String, Logger>(this::class.java.name)
 fun Fragment.navigate(@IdRes resId: Int) = findNavController().navigate(resId)
 
 fun Fragment.popBackStack() = findNavController().popBackStack()
+
+inline fun <reified T : ViewModel> Fragment.viewModel() = ViewModelProviders.of(activity!!).get(T::class.java)
+
+inline fun <reified T : ViewModel> AppCompatActivity.viewModel() = ViewModelProviders.of(this).get(T::class.java)

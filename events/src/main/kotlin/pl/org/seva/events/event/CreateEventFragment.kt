@@ -31,22 +31,18 @@ import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.fragment_create_event.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.location.MapHolder
 import pl.org.seva.events.location.createMapHolder
-import pl.org.seva.events.main.Permissions
-import pl.org.seva.events.main.navigate
-import pl.org.seva.events.main.permissions
-import pl.org.seva.events.main.requestPermissions
+import pl.org.seva.events.main.*
 import java.time.LocalDate
 import java.time.LocalTime
 
 class CreateEventFragment : Fragment() {
 
-    private lateinit var model: CreateEventViewModel
+    private val model by lazy { viewModel<CreateEventViewModel>() }
 
     private lateinit var mapHolder: MapHolder
 
@@ -66,7 +62,6 @@ class CreateEventFragment : Fragment() {
             map_container.visibility = if (l == null) View.INVISIBLE else View.VISIBLE
         }
 
-        model = ViewModelProviders.of(activity!!).get(CreateEventViewModel::class.java)
         time.setOnClickListener { showTimePicker() }
         date.setOnClickListener { showDatePicker() }
         location.setOnClickListener { showLocationPicker() }

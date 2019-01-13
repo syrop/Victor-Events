@@ -30,11 +30,12 @@ import kotlinx.android.synthetic.main.fragment_location_picker.*
 import pl.org.seva.events.R
 import pl.org.seva.events.location.InteractiveMapHolder
 import pl.org.seva.events.location.createInteractiveMapHolder
+import pl.org.seva.events.main.viewModel
 
 class LocationPickerFragment : Fragment() {
 
     private lateinit var mapHolder: InteractiveMapHolder
-    private lateinit var viewModel: CreateEventViewModel
+    private val viewModel by lazy { viewModel<CreateEventViewModel>() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_location_picker, container, false)
@@ -47,7 +48,6 @@ class LocationPickerFragment : Fragment() {
         }
 
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(activity!!).get(CreateEventViewModel::class.java)
         delete_location.setOnClickListener {
             viewModel.location.value = null
         }

@@ -24,20 +24,19 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.ViewModelProviders
+import pl.org.seva.events.main.viewModel
 import java.time.LocalDate
 import java.util.*
 
 class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
-    private lateinit var model: CreateEventViewModel
+    private val model by lazy { viewModel<CreateEventViewModel>() }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
-        model = ViewModelProviders.of(activity!!).get(CreateEventViewModel::class.java)
 
         return DatePickerDialog(activity!!, this, year, month, day)
     }
