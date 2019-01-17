@@ -28,12 +28,11 @@ import com.google.android.material.textfield.TextInputEditText
 
 fun TextInputEditText.withLiveData(owner: LifecycleOwner, liveData: MutableLiveData<String?>) {
     watch { liveData.value = text.toString() }
-    liveData.observe(owner, Observer {
-        text!!.apply {
-            if (it == toString()) return@apply
-            clear()
-            append(it ?: "")
+    liveData.observe(owner, Observer { value ->
+        if (value == text.toString()) {
+            return@Observer
         }
+        setText(value)
     })
 }
 
