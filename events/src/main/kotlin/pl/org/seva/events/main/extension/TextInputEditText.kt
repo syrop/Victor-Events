@@ -17,39 +17,34 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.event
+package pl.org.seva.events.main.extension
 
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import pl.org.seva.events.location.MapHolder
-import java.time.LocalDate
-import java.time.LocalTime
+import com.google.android.material.textfield.TextInputEditText
 
-class CreateEventViewModel : ViewModel() {
+fun TextInputEditText.withLiveData(owner: LifecycleOwner, liveData: MutableLiveData<String?>) {
+    watch { liveData.value = text.toString() }
+    liveData.observe(owner, Observer {
+        text!!.apply {
+            if (it == toString()) return@apply
+            clear()
+            append(it ?: "")
+        }
+    })
+}
 
-    val comm by lazy {
-        MutableLiveData<String>()
-    }
+private fun TextInputEditText.watch(afterTextChanged: Editable.() -> Unit) {
+    addTextChangedListener(object : TextWatcher {
+        override fun afterTextChanged(s: Editable) {
+            s.afterTextChanged()
+        }
 
-    val time by lazy {
-        MutableLiveData<LocalTime>()
-    }
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) = Unit
 
-    val date by lazy {
-        MutableLiveData<LocalDate>()
-    }
-
-    val location by lazy {
-        MutableLiveData<EventLocation?>()
-    }
-
-    val description by lazy {
-        MutableLiveData<String?>()
-    }
-
-    fun observeLocation(owner: LifecycleOwner, mapHolder: MapHolder) {
-        location.observe(owner, Observer { mapHolder.putMarker(it?.location) })
-    }
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) = Unit
+    })
 }

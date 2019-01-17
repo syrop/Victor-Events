@@ -30,7 +30,7 @@ fun Fragment.navigate(@IdRes resId: Int) = findNavController().navigate(resId)
 
 fun Fragment.popBackStack() = findNavController().popBackStack()
 
-inline fun <reified T : ViewModel> Fragment.viewModel() = activity!!.viewModel<T>()
+inline fun <reified R : ViewModel> Fragment.viewModel() = activity!!.viewModel<R>()
 
 fun Fragment.requestPermissions(
         requestCode: Int,

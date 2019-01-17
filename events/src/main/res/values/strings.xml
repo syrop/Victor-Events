@@ -13,6 +13,7 @@
     <string name="event_date">Date</string>
     <string name="event_time">Time</string>
     <string name="event_location">Location</string>
+    <string name="event_description">Description</string>
 
     <!-- Login activity. -->
     <string name="login_label">Login</string>

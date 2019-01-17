@@ -40,6 +40,7 @@ import pl.org.seva.events.main.extension.viewModel
 import pl.org.seva.events.location.MapHolder
 import pl.org.seva.events.location.createMapHolder
 import pl.org.seva.events.main.*
+import pl.org.seva.events.main.extension.withLiveData
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -62,13 +63,15 @@ class CreateEventFragment : Fragment() {
         fun onTimeChanged(t: LocalTime) = time.setText("${t.hour}:${t.minute}")
         fun onDateChanged(d: LocalDate) = date.setText("${d.year}-${d.monthValue}-${d.dayOfMonth}")
         fun onLocationChanged(l: EventLocation?) {
-            location.setText(l?.address ?: "")
+            address.setText(l?.address ?: "")
             map_container.visibility = if (l == null) View.INVISIBLE else View.VISIBLE
         }
 
         time.setOnClickListener { showTimePicker() }
         date.setOnClickListener { showDatePicker() }
-        location.setOnClickListener { showLocationPicker() }
+        address.setOnClickListener { showLocationPicker() }
+        description.withLiveData(this, model.description)
+
         model.time.observe(this, Observer<LocalTime> { onTimeChanged(it) })
         model.date.observe(this, Observer<LocalDate> { onDateChanged(it) })
         model.location.observe(this, Observer { onLocationChanged(it) })
