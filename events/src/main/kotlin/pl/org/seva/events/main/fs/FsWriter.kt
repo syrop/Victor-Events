@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseUser
 import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.event.Event
 import pl.org.seva.events.main.instance
+import pl.org.seva.events.login.login
 
 val fsWriter by instance<FsWriter>()
 
@@ -30,13 +31,13 @@ class FsWriter : FsBase() {
 
     fun login(user: FirebaseUser) {}
 
-    fun create(comm: Comm) {
+    infix fun createCommunity(comm: Comm) {
         comm writeEvent Event.CREATION_EVENT
         comm.writeName()
     }
 
-    fun grantAdmin(comm: Comm, email: String) {
-        grantAdmin(comm.lowerCaseName, email)
+    infix fun grantAdmin(comm: Comm) {
+        grantAdmin(comm.lowerCaseName, login.email)
     }
 
     private fun grantAdmin(community: String, email: String) {

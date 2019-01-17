@@ -23,6 +23,8 @@ import android.content.Context
 import android.graphics.Color
 import pl.org.seva.events.main.instance
 
+val nextColor get() = colorFactory.nextColor()
+
 val colorFactory by instance<ColorFactory>()
 
 class ColorFactory(private val appContext: Context ) {

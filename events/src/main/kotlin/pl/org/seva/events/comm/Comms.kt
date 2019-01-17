@@ -24,8 +24,7 @@ import kotlinx.coroutines.launch
 import pl.org.seva.events.main.fs.fsWriter
 import pl.org.seva.events.main.db.db
 import pl.org.seva.events.main.instance
-import pl.org.seva.events.main.ui.colorFactory
-import pl.org.seva.events.login.login
+import pl.org.seva.events.main.ui.nextColor
 
 val comms by instance<Comms>()
 
@@ -37,36 +36,36 @@ fun String.joinNewCommunity() = comms joinNewCommunity this
 
 class Comms {
 
-    private val cache = mutableListOf<Comm>()
+    private val commCache = mutableListOf<Comm>()
     private val commDao = db.commDao
-    private val size get() = cache.size
-    private val isAdminOf get() = cache.filter { it.admin }
+    private val size get() = commCache.size
+    private val isAdminOf get() = commCache.filter { it.admin }
 
-    val isAdminOfAny get() = cache.any { it.admin }
+    val isAdminOfAny get() = commCache.any { it.admin }
 
     val isEmpty get() = size == 0
 
     val namesIsAdminOf get() = isAdminOf.map { it.name }.toTypedArray()
 
-    operator fun get(index: Int) = cache[index]
+    operator fun get(index: Int) = commCache[index]
 
-    infix fun contain(comm: Comm) = cache.any { it.name == comm.name }
+    infix fun contain(comm: Comm) = commCache.any { it.name == comm.name }
 
     infix fun join(comm: Comm) {
-        cache.add(comm)
+        commCache.add(comm)
         GlobalScope.launch {
             commDao.insert(Comm.Entity(comm))
         }
     }
 
     fun addAll(comms: Collection<Comm>) {
-        this.cache.addAll(comms)
+        this.commCache.addAll(comms)
     }
 
     infix fun joinNewCommunity(name: String) =
-        Comm(name, colorFactory.nextColor(), true).apply {
-            fsWriter.create(this)
-            fsWriter.grantAdmin(this, login.email)
+        Comm(name, nextColor, true).apply {
+            fsWriter createCommunity this
+            fsWriter grantAdmin this
             join()
         }
 }

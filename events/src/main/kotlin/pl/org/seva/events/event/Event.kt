@@ -35,18 +35,30 @@ data class Event(
         val name: String = CREATION_NAME,
         val time: ZonedDateTime = ZonedDateTime.now(),
         val location: GeoPoint? = null,
+        val address: String? = null,
         val desc: String? = null
 ) : Parcelable {
 
-    val firestore get() = Fs(name, time.toString(), location, desc)
+    val firestore get() = Fs(
+            name = name,
+            time = time.toString(),
+            location = location,
+            address = address,
+            desc = desc)
 
     @Suppress("MemberVisibilityCanBePrivate")
     data class Fs(
             val name: String,
             val time: String,
             val location: GeoPoint?,
+            val address: String?,
             val desc: String?) {
-        fun value() = Event(name, ZonedDateTime.parse(time), location, desc)
+        fun value() = Event(
+                name = name,
+                time = ZonedDateTime.parse(time),
+                location = location,
+                address = address,
+                desc = desc)
     }
 
     @androidx.room.Entity(tableName = EventsDb.EVENTS_TABLE_NAME)
@@ -56,12 +68,14 @@ data class Event(
         var time: String = ""
         var lat: Double? = null
         var lon: Double? = null
+        var address: String? = null
         var desc: String? = null
 
         fun value() = Event(
                 name = name,
                 time = ZonedDateTime.parse(time),
                 location = lat?.let { GeoPoint(it, lon!!) },
+                address = address,
                 desc = desc)
 
         constructor(event: Event): this() {
@@ -69,10 +83,10 @@ data class Event(
             time = event.time.toString()
             lat = event.location?.latitude
             lon = event.location?.longitude
+            address = event.address
             desc = event.desc
         }
     }
-
 
     companion object: Parceler<Event> {
         private const val NOT_PRESENT = 0
