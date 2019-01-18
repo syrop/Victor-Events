@@ -49,7 +49,7 @@ class CreateEventViewModel : ViewModel() {
         MutableLiveData<String?>()
     }
 
-    fun observeLocation(owner: LifecycleOwner, mapHolder: MapHolder) {
+    fun informMarker(owner: LifecycleOwner, mapHolder: MapHolder) {
         location.observe(owner, Observer { mapHolder.putMarker(it?.location) })
     }
 }

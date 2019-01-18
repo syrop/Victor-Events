@@ -110,10 +110,10 @@ class LoginActivity : AppCompatActivity(),
     }
 
     private fun onUserLoggedIn(user: FirebaseUser) {
-        fsWriter.login(user)
+        fsWriter login user
         (application as EventsApplication).login(user)
         if (performedAction) {
-            commToCreate?.setResult()
+            commToCreate?.setResult() ?: setResult(Activity.RESULT_OK)
             finish()
         }
     }

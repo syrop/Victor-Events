@@ -19,16 +19,43 @@
 
 package pl.org.seva.events.login
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.fragment_login_confirmation.*
 import pl.org.seva.events.R
+import pl.org.seva.events.main.extension.popBackStack
 
 class LoginConfirmationFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_login_confirmation, container, false)
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        fun onContainerClicked() {
+            startActivityForResult(Intent(activity, LoginActivity::class.java)
+                    .putExtra(LoginActivity.ACTION, LoginActivity.LOGIN), LOGIN_CREATE_COMM_REQUEST)
+        }
+
+        super.onViewCreated(view, savedInstanceState)
+
+        container.setOnClickListener { onContainerClicked() }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == LOGIN_CREATE_COMM_REQUEST && resultCode == Activity.RESULT_OK) {
+            popBackStack()
+        }
+    }
+
+    companion object {
+        const val LOGIN_CREATE_COMM_REQUEST = 0
+    }
+
 }

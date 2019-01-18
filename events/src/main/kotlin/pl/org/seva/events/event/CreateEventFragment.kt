@@ -37,7 +37,6 @@ import pl.org.seva.events.comm.comms
 import pl.org.seva.events.main.extension.navigate
 import pl.org.seva.events.main.extension.requestPermissions
 import pl.org.seva.events.main.extension.viewModel
-import pl.org.seva.events.location.MapHolder
 import pl.org.seva.events.location.createMapHolder
 import pl.org.seva.events.main.*
 import pl.org.seva.events.main.extension.withLiveData
@@ -48,7 +47,14 @@ class CreateEventFragment : Fragment() {
 
     private val model by lazy { viewModel<CreateEventViewModel>() }
 
-    private lateinit var mapHolder: MapHolder
+    val mapHolder by lazy {
+        createMapHolder {
+            checkLocationPermission = this@CreateEventFragment::checkLocationPermission
+            onMapAvailable = {
+                model.informMarker(this@CreateEventFragment, this@createMapHolder)
+            }
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_create_event, container, false)
@@ -62,8 +68,10 @@ class CreateEventFragment : Fragment() {
 
         fun onTimeChanged(t: LocalTime) = time.setText("${t.hour}:${t.minute}")
         fun onDateChanged(d: LocalDate) = date.setText("${d.year}-${d.monthValue}-${d.dayOfMonth}")
+
         fun onLocationChanged(l: EventLocation?) {
-            address.setText(l?.address ?: "")
+            (l?.address.apply { mapHolder } ?: "").also { addressLine ->
+                address.setText(addressLine) }
             map_container.visibility = if (l == null) View.INVISIBLE else View.VISIBLE
         }
 
@@ -75,13 +83,6 @@ class CreateEventFragment : Fragment() {
         model.time.observe(this, Observer<LocalTime> { onTimeChanged(it) })
         model.date.observe(this, Observer<LocalDate> { onDateChanged(it) })
         model.location.observe(this, Observer { onLocationChanged(it) })
-
-        mapHolder = createMapHolder {
-            checkLocationPermission = this@CreateEventFragment::checkLocationPermission
-            onMapAvailable = {
-                model.observeLocation(this@CreateEventFragment, this@createMapHolder)
-            }
-        }
 
         with (comms.namesIsAdminOf) {
             model.comm.value = get(0)

@@ -23,7 +23,7 @@
 
     <!-- Login question fragment. -->
     <string name="login_question_label">Login</string>
-    <string name="login_confirmation">You do not need to log in to use the program. Only log in if you want to create a new comm or add events to an existing comm.</string>
+    <string name="login_confirmation">You do not need to log in to use the program. Only log in if you want to create a new community or add events to an existing community.\n\nTap anywhere to log in.</string>
 
     <!-- Add comm fragment. -->
     <string name="add_comm_label">Add a community</string>
