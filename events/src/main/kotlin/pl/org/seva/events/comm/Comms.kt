@@ -59,7 +59,7 @@ class Comms {
     }
 
     fun addAll(comms: Collection<Comm>) {
-        this.commCache.addAll(comms)
+        commCache.addAll(comms)
     }
 
     infix fun joinNewCommunity(name: String) =
