@@ -45,7 +45,7 @@ class FsWriter : FsBase() {
     }
 
     private infix fun Comm.writeEvent(event: Event) {
-        lowerCaseName.events.document(event.time.toEpochSecond().toString()).set(event.firestore)
+        lowerCaseName.events.document(event.time.toEpochSecond().toString()).set(event.fsEvent)
     }
 
     private fun Comm.writeName() {

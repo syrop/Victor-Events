@@ -40,19 +40,6 @@ android {
         }
     }
 
-    /* Android Extensions plugin includes several experimental
-       features such as LayoutContainer support and a Parcelable
-       implementation generator. These features are not considered
-       production ready yet, so you need to turn on the experimental
-       mode in build.gradle in order to use them:
-
-       https://kotlinlang.org/docs/tutorials/android-plugin.html
-     */
-
-    androidExtensions {
-        experimental = true
-    }
-
     packagingOptions {
         exclude 'META-INF/rxjava.properties'
         exclude 'META-INF/main.kotlin_module'

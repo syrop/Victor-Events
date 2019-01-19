@@ -54,16 +54,16 @@ class AddCommFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         prompt.setText(if (comms.isEmpty) R.string.add_comm_please_search_empty else
             R.string.add_comm_please_search)
-        eventsModel.query.observe(this) { query ->
-            if (query.isNotEmpty()) {
+        eventsModel.query.observe(this) { name ->
+            if (name.isNotEmpty()) {
                 eventsModel.query.value = ""
-                search(query)
+                search(name)
             }
         }
-        eventsModel.commToCreate.observe(this) {
-            if (!it.isNullOrEmpty()) {
+        eventsModel.commToCreate.observe(this) { name ->
+            if (!name.isNullOrEmpty()) {
                 eventsModel.commToCreate.value = ""
-                it.createJoinAndFinish()
+                name.createJoinAndFinish()
             }
         }
     }
@@ -160,7 +160,7 @@ class AddCommFragment : Fragment() {
         prompt.visibility = View.GONE
         progress.visibility = View.VISIBLE
         fsReader.findCommunity(lifecycle, name) {
-            if (empty) notFound() else found()
+            if (dummy) notFound() else found()
         }
     }
 

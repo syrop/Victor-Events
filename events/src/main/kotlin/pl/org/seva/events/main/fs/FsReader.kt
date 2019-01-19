@@ -49,7 +49,7 @@ class FsReader : FsBase() {
 
     fun findCommunity(lifecycle: Lifecycle, name: String, onResult: Comm.() -> Unit) {
         val lcName = name.toLowerCase()
-        val found = communities.document(lcName).read().map { it.toCommunity(name) }
+        val found = communities.document(lcName).read().map { it.toCommunity() }
 
         val isAdminObservable = if (isLoggedIn) lcName.isAdmin(login.email)
             else Observable.just(false)
@@ -57,7 +57,7 @@ class FsReader : FsBase() {
         found.zipWith(
                 isAdminObservable,
                 BiFunction { comm: Comm, isAdmin: Boolean ->
-                    if (comm.empty) comm else comm.copy(admin = isAdmin) })
+                    if (comm.dummy) comm else comm.copy(admin = isAdmin) })
                 .subscribe(lifecycle, onResult)
     }
 
@@ -97,6 +97,6 @@ class FsReader : FsBase() {
         return Event(name, time = time, location = location, desc = desc)
     }
 
-    private fun DocumentSnapshot.toCommunity(name: String) =
-            if (exists()) Comm(getString(NAME)!!) else Comm.empty(name)
+    private fun DocumentSnapshot.toCommunity() =
+            if (exists()) Comm(getString(NAME)!!) else Comm.DUMMY
 }

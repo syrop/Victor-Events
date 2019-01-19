@@ -19,26 +19,18 @@
 
 package pl.org.seva.events.comm
 
-import android.annotation.SuppressLint
 import android.graphics.Color
-import android.os.Parcelable
 import androidx.room.PrimaryKey
-import kotlinx.android.parcel.IgnoredOnParcel
-import kotlinx.android.parcel.Parcelize
 import pl.org.seva.events.main.db.EventsDb
 
-@SuppressLint("ParcelCreator")
-@Parcelize
 data class Comm(
         val name: String,
         val color: Int = Color.GRAY,
-        val admin: Boolean = false) : Parcelable {
+        val admin: Boolean = false) {
 
     val lowerCaseName: String get() = name.toLowerCase()
 
-    @IgnoredOnParcel
-    @Transient
-    var empty = false
+    val dummy get() = name == DUMMY_NAME
 
     @androidx.room.Entity(tableName = EventsDb.COMMUNITIES_TABLE_NAME)
     class Entity() {
@@ -47,7 +39,7 @@ data class Comm(
         var color: Int = Color.GRAY
         var admin: Boolean = false
 
-        constructor(comm: Comm): this() {
+        constructor(comm: Comm) : this() {
             name = comm.name
             color = comm.color
             admin = comm.admin
@@ -57,6 +49,7 @@ data class Comm(
     }
 
     companion object {
-        fun empty(name: String = "") = Comm(name).apply { empty = true }
+        private const val DUMMY_NAME = ""
+        val DUMMY = Comm(DUMMY_NAME)
     }
 }
