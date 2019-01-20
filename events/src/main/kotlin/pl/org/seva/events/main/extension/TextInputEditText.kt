@@ -26,14 +26,22 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.google.android.material.textfield.TextInputEditText
 
+fun TextInputEditText.withLiveData(owner: LifecycleOwner, liveData: MutableLiveData<String>) {
+    watch { liveData.value = text.toString() }
+    liveData.observe(owner, observer)
+}
+
+@JvmName("nullableWithLiveData")
 fun TextInputEditText.withLiveData(owner: LifecycleOwner, liveData: MutableLiveData<String?>) {
     watch { liveData.value = text.toString() }
-    liveData.observe(owner, Observer { value ->
-        if (value == text.toString()) {
-            return@Observer
-        }
-        setText(value)
-    })
+    liveData.observe(owner, observer)
+}
+
+private val TextInputEditText.observer get() = Observer { value: String? ->
+    if (value == text.toString()) {
+        return@Observer
+    }
+    setText(value)
 }
 
 private fun TextInputEditText.watch(afterTextChanged: Editable.() -> Unit) {

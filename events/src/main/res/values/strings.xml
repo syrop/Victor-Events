@@ -3,6 +3,9 @@
     <string name="activity_create_community">New community</string>
     <string name="action_search">Search</string>
 
+    <!-- Events activity -->
+    <string name="events_activity_dismiss_event">Do you want to dismiss event data?</string>
+
     <!-- Events fragment. -->
     <string name="events_action_login">Login</string>
     <string name="events_action_seek_community">Seek a community</string>

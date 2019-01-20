@@ -32,8 +32,8 @@ import pl.org.seva.events.event.Event
 import pl.org.seva.events.login.isLoggedIn
 import pl.org.seva.events.login.login
 import pl.org.seva.events.main.instance
-import java.time.ZonedDateTime
 import pl.org.seva.events.main.extension.subscribe
+import java.time.LocalDateTime
 
 val fsReader by instance<FsReader>()
 
@@ -92,7 +92,7 @@ class FsReader : FsBase() {
     private fun DocumentSnapshot.toEvent(): Event {
         val name: String = getString(EVENT_NAME)!!
         val location: GeoPoint? = getGeoPoint(EVENT_LOCATION)
-        val time: ZonedDateTime = ZonedDateTime.parse(getString(EVENT_TIME))
+        val time: LocalDateTime = LocalDateTime.parse(getString(EVENT_TIME))
         val desc: String? = getString(EVENT_DESC)
         return Event(name, time = time, location = location, desc = desc)
     }

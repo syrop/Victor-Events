@@ -33,6 +33,10 @@ class CreateEventViewModel : ViewModel() {
         MutableLiveData<String>()
     }
 
+    val name by lazy {
+        MutableLiveData<String>()
+    }
+
     val time by lazy {
         MutableLiveData<LocalTime>()
     }
@@ -51,5 +55,15 @@ class CreateEventViewModel : ViewModel() {
 
     fun informMarker(owner: LifecycleOwner, mapHolder: MapHolder) {
         location.observe(owner, Observer { mapHolder.putMarker(it?.location) })
+    }
+
+    val isFilledIn get() = eventData.any { it.value != null }
+
+    fun clear() = eventData.onEach {
+        it.value = null
+    }
+
+    private val eventData by lazy {
+        listOf(name, time, date, location, description)
     }
 }

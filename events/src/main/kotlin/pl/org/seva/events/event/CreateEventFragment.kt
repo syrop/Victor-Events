@@ -47,7 +47,7 @@ class CreateEventFragment : Fragment() {
 
     private val model by lazy { viewModel<CreateEventViewModel>() }
 
-    val mapHolder by lazy {
+    private val mapHolder by lazy {
         createMapHolder {
             checkLocationPermission = this@CreateEventFragment::checkLocationPermission
             onMapAvailable = {
@@ -66,22 +66,23 @@ class CreateEventFragment : Fragment() {
         fun showDatePicker() = DatePickerFragment().show(fragmentManager, DATE_PICKER_TAG)
         fun showLocationPicker() = navigate(R.id.action_createEventFragment_to_locationPickerFragment)
 
-        fun onTimeChanged(t: LocalTime) = time.setText("${t.hour}:${t.minute}")
-        fun onDateChanged(d: LocalDate) = date.setText("${d.year}-${d.monthValue}-${d.dayOfMonth}")
+        fun onTimeChanged(t: LocalTime?) = time.setText(if (t == null) "" else "${t.hour}:${t.minute}")
+        fun onDateChanged(d: LocalDate?) = date.setText(if (d == null) "" else "${d.year}-${d.monthValue}-${d.dayOfMonth}")
 
         fun onLocationChanged(l: EventLocation?) {
-            (l?.address.apply { mapHolder } ?: "").also { addressLine ->
+            (l?.address?.apply { mapHolder } ?: "").also { addressLine ->
                 address.setText(addressLine) }
             map_container.visibility = if (l == null) View.INVISIBLE else View.VISIBLE
         }
 
+        name.withLiveData(this, model.name)
         time.setOnClickListener { showTimePicker() }
         date.setOnClickListener { showDatePicker() }
         address.setOnClickListener { showLocationPicker() }
         description.withLiveData(this, model.description)
 
-        model.time.observe(this, Observer<LocalTime> { onTimeChanged(it) })
-        model.date.observe(this, Observer<LocalDate> { onDateChanged(it) })
+        model.time.observe(this, Observer { onTimeChanged(it) })
+        model.date.observe(this, Observer { onDateChanged(it) })
         model.location.observe(this, Observer { onLocationChanged(it) })
 
         with (comms.namesIsAdminOf) {

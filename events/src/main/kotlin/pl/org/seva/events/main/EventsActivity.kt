@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.SearchManager
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
@@ -11,14 +12,18 @@ import kotlinx.android.synthetic.main.activity_events.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.AddCommFragment
 import pl.org.seva.events.comm.comms
+import pl.org.seva.events.event.CreateEventViewModel
 import pl.org.seva.events.main.extension.viewModel
 import pl.org.seva.events.login.LoginActivity
+import pl.org.seva.events.main.extension.question
 
 class EventsActivity : AppCompatActivity() {
 
-    private val nav get() = findNavController(R.id.nav_host_fragment)
+    private val nav by lazy { findNavController(R.id.nav_host_fragment) }
 
-    private val eventsModel by lazy { viewModel<EventsViewModel>() }
+    private val model by lazy { viewModel<EventsViewModel>() }
+
+    private val createEventsViewModel by lazy { viewModel<CreateEventViewModel>() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,17 +44,40 @@ class EventsActivity : AppCompatActivity() {
         }
     }
 
+    private fun showDismissEventDialog(): Boolean {
+        return if (nav.currentDestination?.id == R.id.createEventFragment && createEventsViewModel.isFilledIn) {
+            question(
+                    message = getString(R.string.events_activity_dismiss_event),
+                    yes = {
+                        createEventsViewModel.clear()
+                        nav.popBackStack()
+                    })
+            true
+        }
+        else false
+    }
+
+    override fun onBackPressed() {
+        if (!showDismissEventDialog()) {
+            super.onBackPressed()
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return if (item.itemId == android.R.id.home) showDismissEventDialog() else false
+    }
+
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         if (Intent.ACTION_SEARCH == intent.action) {
-            eventsModel.query.value = intent.getStringExtra(SearchManager.QUERY)
+            model.query.value = intent.getStringExtra(SearchManager.QUERY)
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AddCommFragment.LOGIN_CREATE_COMM_REQUEST && resultCode == Activity.RESULT_OK) {
-            eventsModel.commToCreate.value = data!!.getStringExtra(LoginActivity.COMMUNITY_NAME)
+            model.commToCreate.value = data!!.getStringExtra(LoginActivity.COMMUNITY_NAME)
         }
     }
 

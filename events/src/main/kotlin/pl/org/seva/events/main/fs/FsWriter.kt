@@ -24,6 +24,7 @@ import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.event.Event
 import pl.org.seva.events.main.instance
 import pl.org.seva.events.login.login
+import java.time.ZoneOffset
 
 val fsWriter by instance<FsWriter>()
 
@@ -45,7 +46,7 @@ class FsWriter : FsBase() {
     }
 
     private infix fun Comm.writeEvent(event: Event) {
-        lcName.events.document(event.time.toEpochSecond().toString()).set(event.fsEvent)
+        lcName.events.document(event.time.toEpochSecond(ZoneOffset.UTC).toString()).set(event.fsEvent)
     }
 
     private fun Comm.writeName() {
