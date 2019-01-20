@@ -23,12 +23,12 @@ import android.annotation.SuppressLint
 import androidx.room.PrimaryKey
 import com.google.firebase.firestore.GeoPoint
 import pl.org.seva.events.main.db.EventsDb
-import java.time.ZonedDateTime
+import java.time.LocalDateTime
 
 @SuppressLint("ParcelCreator")
 data class Event(
         val name: String = CREATION_NAME,
-        val time: ZonedDateTime = ZonedDateTime.now(),
+        val time: LocalDateTime = LocalDateTime.now(),
         val location: GeoPoint? = null,
         val address: String? = null,
         val desc: String? = null
@@ -50,7 +50,7 @@ data class Event(
             val desc: String?) {
         fun value() = Event(
                 name = name,
-                time = ZonedDateTime.parse(time),
+                time = LocalDateTime.parse(time),
                 location = location,
                 address = address,
                 desc = desc)
@@ -68,7 +68,7 @@ data class Event(
 
         fun value() = Event(
                 name = name,
-                time = ZonedDateTime.parse(time),
+                time = LocalDateTime.parse(time),
                 location = lat?.let { GeoPoint(it, lon!!) },
                 address = address,
                 desc = desc)
