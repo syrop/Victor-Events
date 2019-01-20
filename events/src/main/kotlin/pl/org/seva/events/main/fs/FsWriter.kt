@@ -37,7 +37,7 @@ class FsWriter : FsBase() {
     }
 
     infix fun grantAdmin(comm: Comm) {
-        grantAdmin(comm.lowerCaseName, login.email)
+        grantAdmin(comm.lcName, login.email)
     }
 
     private fun grantAdmin(community: String, email: String) {
@@ -45,10 +45,10 @@ class FsWriter : FsBase() {
     }
 
     private infix fun Comm.writeEvent(event: Event) {
-        lowerCaseName.events.document(event.time.toEpochSecond().toString()).set(event.fsEvent)
+        lcName.events.document(event.time.toEpochSecond().toString()).set(event.fsEvent)
     }
 
     private fun Comm.writeName() {
-        lowerCaseName.document.set(mapOf(FsBase.NAME to name))
+        lcName.document.set(mapOf(FsBase.NAME to name))
     }
 }

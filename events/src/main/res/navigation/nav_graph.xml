@@ -39,7 +39,7 @@
     <fragment
         android:id="@+id/loginConfirmationFragment"
         android:name="pl.org.seva.events.login.LoginConfirmationFragment"
-        android:label="@string/login_question_label"
+        android:label="@string/login_confirmation_label"
         tools:layout="@layout/fragment_login_confirmation"/>
 
     <fragment

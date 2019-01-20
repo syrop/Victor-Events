@@ -47,4 +47,7 @@ interface CommDao {
 
     @Delete
     fun delete(comm: Comm.Entity)
+
+    @Query("delete from ${EventsDb.COMMUNITIES_TABLE_NAME}")
+    fun clear()
 }

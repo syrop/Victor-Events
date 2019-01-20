@@ -19,10 +19,15 @@
 
 package pl.org.seva.events.comm
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import io.reactivex.Observable
+import io.reactivex.functions.BiFunction
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import pl.org.seva.events.main.fs.fsWriter
 import pl.org.seva.events.main.db.db
+import pl.org.seva.events.main.fs.fsReader
 import pl.org.seva.events.main.instance
 import pl.org.seva.events.main.ui.nextColor
 
@@ -60,6 +65,28 @@ class Comms {
 
     fun addAll(comms: Collection<Comm>) {
         commCache.addAll(comms)
+    }
+
+    fun refreshAdminStatus(): LiveData<Unit> {
+        val commArray = commCache.toTypedArray()
+        val commObservable =
+                Observable.defer { Observable.fromArray(*commArray) }
+        val adminsObservable =
+                commObservable.flatMap { fsReader.isAdmin(it.lcName) }
+        commCache.clear()
+        return MutableLiveData<Unit>().apply {
+            commObservable.zipWith(
+                    adminsObservable,
+                    BiFunction { comm: Comm, admin: Boolean -> comm.copy(admin = admin) }).
+                    doOnComplete {
+                        GlobalScope.launch {
+                            commDao.clear()
+                            commCache.map { Comm.Entity(it) }
+                                    .forEach { commDao.insert(it) }
+                        }
+                        value = Unit
+                    }.subscribe { commCache.add(it) }
+        }
     }
 
     infix fun joinNewCommunity(name: String) =

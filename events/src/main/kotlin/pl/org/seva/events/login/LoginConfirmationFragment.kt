@@ -26,8 +26,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_login_confirmation.*
 import pl.org.seva.events.R
+import pl.org.seva.events.comm.comms
+import pl.org.seva.events.main.extension.boldSection
 import pl.org.seva.events.main.extension.popBackStack
 
 class LoginConfirmationFragment : Fragment() {
@@ -43,19 +46,26 @@ class LoginConfirmationFragment : Fragment() {
         }
 
         super.onViewCreated(view, savedInstanceState)
+        prompt.text = getString(R.string.login_confirmation_prompt).boldSection(
+                TAP_ANYWHERE_PLACEHOLDER,
+                getString(R.string.login_confirmation_tap_anywhere))
 
-        container.setOnClickListener { onContainerClicked() }
+        layout.setOnClickListener { onContainerClicked() }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == LOGIN_CREATE_COMM_REQUEST && resultCode == Activity.RESULT_OK) {
-            popBackStack()
+            prompt.visibility = View.GONE
+            progress.visibility = View.VISIBLE
+            comms.refreshAdminStatus().observe(this, Observer { popBackStack() })
         }
     }
 
     companion object {
         const val LOGIN_CREATE_COMM_REQUEST = 0
+        @Suppress("SpellCheckingInspection")
+        const val TAP_ANYWHERE_PLACEHOLDER = "[TAPANYWHERE]"
     }
 
 }

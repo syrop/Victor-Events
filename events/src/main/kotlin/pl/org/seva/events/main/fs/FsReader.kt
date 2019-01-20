@@ -45,13 +45,13 @@ class FsReader : FsBase() {
                 .map { it.toEvent() }
     }
 
-    private fun String.isAdmin(email: String): Observable<Boolean> = admins.document(email).doesExist()
+    infix fun isAdmin(name: String): Observable<Boolean> = name.admins.document(login.email).doesExist()
 
     fun findCommunity(lifecycle: Lifecycle, name: String, onResult: Comm.() -> Unit) {
         val lcName = name.toLowerCase()
         val found = communities.document(lcName).read().map { it.toCommunity() }
 
-        val isAdminObservable = if (isLoggedIn) lcName.isAdmin(login.email)
+        val isAdminObservable = if (isLoggedIn) isAdmin(lcName)
             else Observable.just(false)
 
         found.zipWith(

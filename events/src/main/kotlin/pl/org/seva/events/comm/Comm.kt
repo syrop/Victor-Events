@@ -28,7 +28,7 @@ data class Comm(
         val color: Int = Color.GRAY,
         val admin: Boolean = false) {
 
-    val lowerCaseName: String get() = name.toLowerCase()
+    val lcName: String get() = name.toLowerCase()
 
     val dummy get() = name == DUMMY_NAME
 
