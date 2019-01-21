@@ -26,20 +26,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_create_event.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
-import pl.org.seva.events.main.extension.navigate
-import pl.org.seva.events.main.extension.requestPermissions
-import pl.org.seva.events.main.extension.viewModel
 import pl.org.seva.events.location.createMapHolder
 import pl.org.seva.events.main.*
-import pl.org.seva.events.main.extension.withLiveData
+import pl.org.seva.events.main.extension.*
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -85,17 +80,12 @@ class CreateEventFragment : Fragment() {
         model.date.observe(this, Observer { onDateChanged(it) })
         model.location.observe(this, Observer { onLocationChanged(it) })
 
-        with (comms.namesIsAdminOf) {
+        comms.namesIsAdminOf.apply {
             model.comm.value = get(0)
             if (size > 1) {
                 comm_layout.visibility = View.VISIBLE
-                comm_spinner.adapter = ArrayAdapter(context!!, android.R.layout.simple_spinner_item, this)
-                comm_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onNothingSelected(parent: AdapterView<*>?) = Unit
-
-                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                        model.comm.value = get(position)
-                    }
+                comm_spinner.withObjects(context!!, this) {
+                    position -> model.comm.value = get(position)
                 }
             }
         }
@@ -106,7 +96,8 @@ class CreateEventFragment : Fragment() {
                         context!!,
                         Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             onGranted.invoke()
-        } else {
+        }
+        else {
             requestPermissions(
                     Permissions.DEFAULT_PERMISSION_REQUEST_ID,
                     arrayOf(Permissions.PermissionRequest(
