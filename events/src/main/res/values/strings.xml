@@ -41,8 +41,8 @@
     <string name="searchable_add_community_hint">Community name</string>
     <string name="add_comm_login_to_create">You can log in to create one</string>
     <string name="add_comm_login">Login</string>
-    <string name="add_comm_created">Created community [name]</string>
-    <string name="add_comm_joined">Joined a community [name]</string>
+    <string name="add_comm_created">Created community: [name].</string>
+    <string name="add_comm_joined">Joined a community: [name].</string>
     <string name="add_comm_already_a_member">You are already a member of that community.</string>
 
     <!-- Pick location fragment. -->
