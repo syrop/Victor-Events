@@ -84,7 +84,7 @@ class AddCommFragment : Fragment() {
             setOnCloseListener { onSearchViewClosed() }
         }
 
-        menuInflater.inflate(R.menu.add_community, menu)
+        menuInflater.inflate(R.menu.add_comm, menu)
         val searchMenuItem = menu.findItem(R.id.action_search)
         searchMenuItem.collapseActionView()
         searchMenuItem.prepareSearchView()

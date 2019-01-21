@@ -1,33 +1,11 @@
 <resources>
     <string name="app_name">Victor Events</string>
-    <string name="activity_create_community">New community</string>
-    <string name="action_search">Search</string>
-
-    <!-- Events activity -->
-    <string name="events_activity_dismiss_event">Do you want to dismiss event data?</string>
 
     <!-- Events fragment. -->
+    <string name="events_activity_dismiss_event">Do you want to dismiss event data?</string>
     <string name="events_action_login">Login</string>
-    <string name="events_action_seek_community">Seek a community</string>
-
-    <!-- Create event Fragment. -->
-    <string name="event_comm">Community:</string>
-    <string name="event_name">Name</string>
-    <string name="event_date">Date</string>
-    <string name="event_time">Time</string>
-    <string name="event_location">Location</string>
-    <string name="event_description">Description</string>
-
-    <!-- Login activity. -->
-    <string name="login_label">Login</string>
-    <string name="login_authentication_failed">Authentication failed.</string>
-    <string name="login_loading">Loading…</string>
-    <string name="login_please_log_in">Please log in.</string>
-
-    <!-- Login question fragment. -->
-    <string name="login_confirmation_label">Login</string>
-    <string name="login_confirmation_prompt">You do not need to log in to use the app. Only log in if you want to create a new community or add events to an existing community.\n\n[TAPANYWHERE]</string>
-    <string name="login_confirmation_tap_anywhere">Tap anywhere to log in.</string>
+    <string name="events_action_add_comm">Add a community</string>
+    <string name="events_action_leave_comm">Leave a community</string>
 
     <!-- Add comm fragment. -->
     <string name="add_comm_label">Add a community</string>
@@ -44,6 +22,30 @@
     <string name="add_comm_created">Created community: [name].</string>
     <string name="add_comm_joined">Joined a community: [name].</string>
     <string name="add_comm_already_a_member">You are already a member of that community.</string>
+    <string name="action_search">Search</string>
+
+    <!-- Leave comm fragment -->
+    <string name="leave_comm_label">Leave a community</string>
+    <string name="leave_comm_comm">Community:</string>
+
+    <!-- Create event Fragment. -->
+    <string name="create_event_comm">Community:</string>
+    <string name="create_event_name">Name</string>
+    <string name="create_event_date">Date</string>
+    <string name="create_event_time">Time</string>
+    <string name="create_event_location">Location</string>
+    <string name="create_event_description">Description</string>
+
+    <!-- Login activity. -->
+    <string name="login_label">Login</string>
+    <string name="login_authentication_failed">Authentication failed.</string>
+    <string name="login_loading">Loading…</string>
+    <string name="login_please_log_in">Please log in.</string>
+
+    <!-- Login confirmation fragment. -->
+    <string name="login_confirmation_label">Login</string>
+    <string name="login_confirmation_prompt">You do not need to log in to use the app. Only log in if you want to create a new community or add events to an existing community.\n\n[TAPANYWHERE]</string>
+    <string name="login_confirmation_tap_anywhere">Tap anywhere to log in.</string>
 
     <!-- Pick location fragment. -->
     <string name="pick_location_label">Select location</string>

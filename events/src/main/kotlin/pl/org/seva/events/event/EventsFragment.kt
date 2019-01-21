@@ -55,6 +55,7 @@ class EventsFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.events, menu)
         menu.findItem(R.id.action_login).isVisible = !login.isLoggedIn
+        menu.findItem(R.id.action_leave_comm).isVisible = comms.isNotEmpty
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
@@ -62,8 +63,12 @@ class EventsFragment : Fragment() {
             navigate(R.id.action_eventsFragment_to_loginConfirmationFragment)
             true
         }
-        R.id.action_seek_community -> {
+        R.id.action_add_comm -> {
             navigate(R.id.action_eventsFragment_to_addCommFragment)
+            true
+        }
+        R.id.action_leave_comm -> {
+            navigate(R.id.action_eventsFragment_to_leaveCommFragment)
             true
         }
         else -> super.onOptionsItemSelected(item)

@@ -46,6 +46,10 @@ class Comms {
 
     val isEmpty get() = size == 0
 
+    val isNotEmpty get() = !isEmpty
+
+    val names get() = commCache.map { it.name }.toTypedArray()
+
     val namesIsAdminOf get() = isAdminOf.map { it.name }.toTypedArray()
 
     operator fun get(index: Int) = commCache[index]

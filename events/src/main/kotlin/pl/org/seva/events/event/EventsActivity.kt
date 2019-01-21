@@ -1,4 +1,4 @@
-package pl.org.seva.events.main
+package pl.org.seva.events.event
 
 import android.app.Activity
 import android.app.SearchManager
@@ -12,9 +12,9 @@ import kotlinx.android.synthetic.main.activity_events.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.AddCommFragment
 import pl.org.seva.events.comm.comms
-import pl.org.seva.events.event.CreateEventViewModel
 import pl.org.seva.events.main.extension.viewModel
 import pl.org.seva.events.login.LoginActivity
+import pl.org.seva.events.main.EventsViewModel
 import pl.org.seva.events.main.extension.question
 
 class EventsActivity : AppCompatActivity() {
