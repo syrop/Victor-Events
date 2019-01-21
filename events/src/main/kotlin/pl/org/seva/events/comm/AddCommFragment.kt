@@ -111,8 +111,7 @@ class AddCommFragment : Fragment() {
                     getString(R.string.add_comm_already_a_member).toast()
                 }
                 else {
-                    join()
-                    popBackStack()
+                    joinAndFinish()
                 }
             }
             recycler.addItemDecoration(DividerItemDecoration(activity!!))
@@ -165,9 +164,17 @@ class AddCommFragment : Fragment() {
     }
 
     private fun String.createJoinAndFinish() {
-        joinNewCommunity()
+        comms joinNewCommunity this
         getString(R.string.add_comm_created)
                 .boldSection(NAME_PLACEHOLDER, this)
+                .toast()
+        popBackStack()
+    }
+
+    private fun Comm.joinAndFinish() {
+        comms join this
+        getString(R.string.add_comm_joined)
+                .boldSection(NAME_PLACEHOLDER, name)
                 .toast()
         popBackStack()
     }

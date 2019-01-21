@@ -33,11 +33,7 @@ import pl.org.seva.events.main.ui.nextColor
 
 val comms by instance<Comms>()
 
-fun Comm.join() = comms join this
-
 fun Comm.isAMemberOf() = comms contain this
-
-fun String.joinNewCommunity() = comms joinNewCommunity this
 
 class Comms {
 
@@ -93,6 +89,6 @@ class Comms {
         Comm(name, nextColor, true).apply {
             fsWriter createCommunity this
             fsWriter grantAdmin this
-            join()
+            join(this)
         }
 }
