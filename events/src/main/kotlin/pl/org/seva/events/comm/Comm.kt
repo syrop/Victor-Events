@@ -32,6 +32,10 @@ data class Comm(
 
     val dummy get() = name == DUMMY_NAME
 
+    val isMemberOf get () = comms contain this
+
+    fun delete() = comms delete this
+
     @androidx.room.Entity(tableName = EventsDb.COMMUNITIES_TABLE_NAME)
     class Entity() {
         @PrimaryKey

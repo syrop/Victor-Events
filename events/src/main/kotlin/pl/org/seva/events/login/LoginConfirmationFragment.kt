@@ -58,7 +58,7 @@ class LoginConfirmationFragment : Fragment() {
         if (requestCode == LOGIN_CREATE_COMM_REQUEST && resultCode == Activity.RESULT_OK) {
             prompt.visibility = View.GONE
             progress.visibility = View.VISIBLE
-            comms.refreshAdminStatus().observe(this, Observer { popBackStack() })
+            comms.refreshAdminStatuses().observe(this, Observer { popBackStack() })
         }
     }
 

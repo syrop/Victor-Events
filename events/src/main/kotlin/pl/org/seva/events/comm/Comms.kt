@@ -33,8 +33,6 @@ import pl.org.seva.events.main.ui.nextColor
 
 val comms by instance<Comms>()
 
-fun Comm.isAMemberOf() = comms contain this
-
 class Comms {
 
     private val commCache = mutableListOf<Comm>()
@@ -56,6 +54,8 @@ class Comms {
 
     infix fun contain(comm: Comm) = commCache.any { it.name == comm.name }
 
+    infix fun delete(comm: Comm) = commCache.remove(comm)
+
     infix fun join(comm: Comm) {
         commCache.add(comm)
         GlobalScope.launch {
@@ -67,7 +67,7 @@ class Comms {
         commCache.addAll(comms)
     }
 
-    fun refreshAdminStatus(): LiveData<Unit> {
+    fun refreshAdminStatuses(): LiveData<Unit> {
         val commArray = commCache.toTypedArray()
         val commObservable =
                 Observable.defer { Observable.fromArray(*commArray) }

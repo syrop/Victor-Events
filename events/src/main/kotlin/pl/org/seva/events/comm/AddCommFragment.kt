@@ -107,7 +107,7 @@ class AddCommFragment : Fragment() {
             progress.visibility = View.GONE
             recycler.visibility = View.VISIBLE
             adapter = CommAdapter(this) {
-                if (isAMemberOf()) {
+                if (isMemberOf) {
                     getString(R.string.add_comm_already_a_member).toast()
                 }
                 else {
