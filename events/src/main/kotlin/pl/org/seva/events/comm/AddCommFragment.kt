@@ -186,14 +186,6 @@ class AddCommFragment : Fragment() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        android.R.id.home -> {
-            popBackStack()
-            true
-        }
-        else -> super.onOptionsItemSelected(item)
-    }
-
     companion object {
         const val NAME_PLACEHOLDER = "[name]"
         const val LOGIN_CREATE_COMM_REQUEST = 0
