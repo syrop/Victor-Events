@@ -27,6 +27,8 @@
     <!-- Leave comm fragment -->
     <string name="leave_comm_label">Leave a community</string>
     <string name="leave_comm_comm">Community:</string>
+    <string name="leave_comm_leave_button">Leave a community</string>
+    <string name="leave_comm_confirmation">Left a community: [name].</string>
 
     <!-- Create event Fragment. -->
     <string name="create_event_comm">Community:</string>

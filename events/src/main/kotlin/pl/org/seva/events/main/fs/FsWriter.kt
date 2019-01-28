@@ -30,7 +30,7 @@ val fsWriter by instance<FsWriter>()
 
 class FsWriter : FsBase() {
 
-    infix fun login(user: FirebaseUser) {}
+    infix fun login(user: FirebaseUser) = Unit
 
     infix fun createCommunity(comm: Comm) {
         comm writeEvent Event.CREATION_EVENT
