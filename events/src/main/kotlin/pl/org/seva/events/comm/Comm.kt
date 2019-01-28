@@ -26,7 +26,7 @@ import pl.org.seva.events.main.db.EventsDb
 data class Comm(
         val name: String,
         val color: Int = Color.GRAY,
-        val admin: Boolean = false) {
+        val isAdmin: Boolean = false) {
 
     val lcName: String get() = name.toLowerCase()
 
@@ -49,15 +49,15 @@ data class Comm(
         @PrimaryKey
         lateinit var name: String
         var color: Int = Color.GRAY
-        var admin: Boolean = false
+        var isAdmin: Boolean = false
 
         constructor(comm: Comm) : this() {
             name = comm.name
             color = comm.color
-            admin = comm.admin
+            isAdmin = comm.isAdmin
         }
 
-        fun comValue() = Comm(name = name, color = color, admin = admin)
+        fun comValue() = Comm(name = name, color = color, isAdmin = isAdmin)
     }
 
     companion object {

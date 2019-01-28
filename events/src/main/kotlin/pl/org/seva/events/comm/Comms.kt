@@ -36,9 +36,9 @@ class Comms {
 
     private val commCache = mutableListOf<Comm>()
     private val size get() = commCache.size
-    private val isAdminOf get() = commCache.filter { it.admin }
+    private val isAdminOf get() = commCache.filter { it.isAdmin }
 
-    val isAdminOfAny get() = commCache.any { it.admin }
+    val isAdminOfAny get() = commCache.any { it.isAdmin }
 
     val isEmpty get() = size == 0
 
@@ -75,7 +75,7 @@ class Comms {
         return MutableLiveData<Unit>().apply {
             commObservable.zipWith(
                     adminsObservable,
-                    BiFunction { comm: Comm, admin: Boolean -> comm.copy(admin = admin) }).
+                    BiFunction { comm: Comm, isAdmin: Boolean -> comm.copy(isAdmin = isAdmin) }).
                     doOnComplete {
                         GlobalScope.launch {
                             commDao.clear()

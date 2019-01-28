@@ -41,7 +41,7 @@ class FsReader : FsBase() {
 
     fun readEvents(community: String): Observable<Event> {
         return community.events.read()
-                .filter {it.exists() }
+                .filter { it.exists() }
                 .map { it.toEvent() }
     }
 
@@ -57,7 +57,7 @@ class FsReader : FsBase() {
         found.zipWith(
                 isAdminObservable,
                 BiFunction { comm: Comm, isAdmin: Boolean ->
-                    if (comm.dummy) comm else comm.copy(admin = isAdmin) })
+                    if (comm.dummy) comm else comm.copy(isAdmin = isAdmin) })
                 .subscribe(lifecycle, onResult)
     }
 
@@ -70,7 +70,8 @@ class FsReader : FsBase() {
                     get().addOnCompleteListener { result ->
                         if (result.isSuccessful) {
                             resultSubject.onNext(result.result!!)
-                        } else {
+                        }
+                        else {
                             resultSubject.onError(result.exception!!)
                         }
                     }
@@ -79,13 +80,15 @@ class FsReader : FsBase() {
 
     private fun CollectionReference.read(): Observable<DocumentSnapshot> {
         val resultSubject = PublishSubject.create<DocumentSnapshot>()
-        return resultSubject.doOnSubscribe { get().addOnCompleteListener { result ->
-            if (result.isSuccessful) {
-                result.result!!.forEach { element -> resultSubject.onNext(element) }
-            } else {
-                resultSubject.onError(result.exception!!)
+        return resultSubject.doOnSubscribe {
+            get().addOnCompleteListener { result ->
+                if (result.isSuccessful) {
+                    result.result!!.forEach { element -> resultSubject.onNext(element) }
+                }
+                else {
+                    resultSubject.onError(result.exception!!)
+                }
             }
-        }
         }
     }
 
