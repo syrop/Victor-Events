@@ -34,7 +34,15 @@ data class Comm(
 
     val isMemberOf get () = comms contain this
 
-    fun delete() = comms delete this
+    fun delete() {
+        comms delete this
+        commDao delete this
+    }
+
+    fun join() {
+        comms join this
+        commDao join this
+    }
 
     @androidx.room.Entity(tableName = EventsDb.COMMUNITIES_TABLE_NAME)
     class Entity() {

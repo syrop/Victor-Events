@@ -93,6 +93,6 @@ class Comms {
         Comm(name, nextColor, true).apply {
             fsWriter createCommunity this
             fsWriter grantAdmin this
-            join(this)
+            join()
         }
 }

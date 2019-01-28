@@ -172,7 +172,7 @@ class AddCommFragment : Fragment() {
     }
 
     private fun Comm.joinAndFinish() {
-        comms join this
+        join()
         getString(R.string.add_comm_joined)
                 .boldSection(NAME_PLACEHOLDER, name)
                 .toast()

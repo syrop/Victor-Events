@@ -26,6 +26,13 @@ import androidx.room.Query
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import pl.org.seva.events.main.db.EventsDb
+import pl.org.seva.events.main.db.db
+
+val commDao by lazy { db.commDao }
+
+infix fun CommDao.delete(comm: Comm) = delete(Comm.Entity(comm))
+
+infix fun CommDao.join(comm: Comm) = insert(Comm.Entity(comm))
 
 inline fun CommDao.getAllAsync(crossinline callback: (Collection<Comm>) -> Unit) {
     GlobalScope.launch {
