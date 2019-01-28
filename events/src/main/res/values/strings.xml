@@ -28,6 +28,7 @@
     <string name="leave_comm_label">Leave a community</string>
     <string name="leave_comm_comm">Community:</string>
     <string name="leave_comm_leave_button">Leave a community</string>
+    <string name="leave_comm_no_changes">No community selected. No changes made.</string>
     <string name="leave_comm_confirmation">Left a community: [name].</string>
 
     <!-- Create event Fragment. -->

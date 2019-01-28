@@ -47,6 +47,9 @@ class LeaveCommFragment : Fragment() {
                             .boldSection(NAME_PLACEHOLDER, name)
                             .toast()
                 }
+                else {
+                    getString(R.string.leave_comm_no_changes).toast()
+                }
             }
 
             popBackStack()
