@@ -26,7 +26,6 @@ import io.reactivex.functions.BiFunction
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import pl.org.seva.events.main.fs.fsWriter
-import pl.org.seva.events.main.db.db
 import pl.org.seva.events.main.fs.fsReader
 import pl.org.seva.events.main.instance
 import pl.org.seva.events.main.ui.nextColor
@@ -36,7 +35,6 @@ val comms by instance<Comms>()
 class Comms {
 
     private val commCache = mutableListOf<Comm>()
-    private val commDao = db.commDao
     private val size get() = commCache.size
     private val isAdminOf get() = commCache.filter { it.admin }
 
@@ -81,8 +79,7 @@ class Comms {
                     doOnComplete {
                         GlobalScope.launch {
                             commDao.clear()
-                            commCache.map { Comm.Entity(it) }
-                                    .forEach { commDao.insert(it) }
+                            commCache.forEach { commDao join it }
                         }
                         value = Unit
                     }.subscribe { commCache.add(it) }
