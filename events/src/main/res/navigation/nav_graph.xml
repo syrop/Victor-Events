@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_eventsFragment_to_leaveCommFragment"
             app:destination="@id/leaveCommFragment"/>
+        <action
+            android:id="@+id/action_eventsFragment_to_deleteCommFragment"
+            app:destination="@id/deleteCommFragment"/>
     </fragment>
 
     <fragment
@@ -57,5 +60,11 @@
         android:name="pl.org.seva.events.comm.LeaveCommFragment"
         android:label="@string/leave_comm_label"
         tools:layout="@layout/fragment_leave_comm"/>
+
+    <fragment
+        android:id="@+id/deleteCommFragment"
+        android:name="pl.org.seva.events.comm.DeleteCommFragment"
+        android:label="@string/delete_comm_label"
+        tools:layout="@layout/fragment_delete_comm"/>
 
 </navigation>

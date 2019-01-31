@@ -34,10 +34,12 @@ data class Comm(
 
     val isMemberOf get () = comms contain this
 
-    fun delete() {
+    fun leave() {
         comms delete this
         commDao delete this
     }
+
+    fun delete() = Unit
 
     fun join() {
         comms join this

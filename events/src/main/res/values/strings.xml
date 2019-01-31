@@ -6,6 +6,7 @@
     <string name="events_action_login">Login</string>
     <string name="events_action_add_comm">Add a community</string>
     <string name="events_action_leave_comm">Leave a community</string>
+    <string name="events_action_delete_comm">Leave a community</string>
 
     <!-- Add comm fragment. -->
     <string name="add_comm_label">Add a community</string>
@@ -30,6 +31,13 @@
     <string name="leave_comm_leave_button">Leave a community</string>
     <string name="leave_comm_no_changes">No community selected. No changes made.</string>
     <string name="leave_comm_confirmation">Left a community: [name].</string>
+
+    <!-- Delete comm fragment -->
+    <string name="delete_comm_label">Delete a community</string>
+    <string name="delete_comm_comm">Community:</string>
+    <string name="delete_comm_delete_button">Leave a community</string>
+    <string name="delete_comm_no_changes">No community selected. No changes made.</string>
+    <string name="delete_comm_confirmation">Deleted a community: [name].</string>
 
     <!-- Create event Fragment. -->
     <string name="create_event_comm">Community:</string>

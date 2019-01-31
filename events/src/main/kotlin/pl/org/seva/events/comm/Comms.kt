@@ -36,7 +36,8 @@ class Comms {
 
     private val commCache = mutableListOf<Comm>()
     private val size get() = commCache.size
-    private val isAdminOf get() = commCache.filter { it.isAdmin }
+
+    val isAdminOf get() = commCache.filter { it.isAdmin }
 
     val isAdminOfAny get() = commCache.any { it.isAdmin }
 

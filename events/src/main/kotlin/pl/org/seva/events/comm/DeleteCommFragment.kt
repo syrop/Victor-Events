@@ -24,45 +24,45 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_leave_comm.*
+import kotlinx.android.synthetic.main.fragment_delete_comm.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.boldSection
 import pl.org.seva.events.main.extension.popBackStack
 import pl.org.seva.events.main.extension.toast
 import pl.org.seva.events.main.extension.withObjects
 
-class LeaveCommFragment : Fragment() {
+class DeleteCommFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return layoutInflater.inflate(R.layout.fragment_leave_comm, container, false)
+        return layoutInflater.inflate(R.layout.fragment_delete_comm, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         var pendingDeletion: Comm? = null
 
-        fun leavePendingCommunity() {
+        fun deletePendingCommunity() {
             with (pendingDeletion) {
-                if (this?.leave() != null) {
-                    getString(R.string.leave_comm_confirmation)
+                if (this?.delete() != null) {
+                    getString(R.string.delete_comm_confirmation)
                             .boldSection(NAME_PLACEHOLDER, name)
                             .toast()
                 }
                 else {
-                    getString(R.string.leave_comm_no_changes).toast()
+                    getString(R.string.delete_comm_confirmation).toast()
                 }
             }
 
             popBackStack()
         }
 
-        comms.names.apply {
+        comms.isAdminOf.apply {
             comm_layout.visibility = View.VISIBLE
-            comm_spinner.withObjects(context!!, this) { position ->
-                pendingDeletion = comms[position]
+            comm_spinner.withObjects(context!!, map { it.name }.toTypedArray()) { position ->
+                pendingDeletion = this[position]
             }
         }
 
-        leave_button.setOnClickListener { leavePendingCommunity() }
+        delete_button.setOnClickListener { deletePendingCommunity() }
     }
 
     companion object {

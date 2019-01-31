@@ -56,6 +56,7 @@ class EventsFragment : Fragment() {
         menuInflater.inflate(R.menu.events, menu)
         menu.findItem(R.id.action_login).isVisible = !login.isLoggedIn
         menu.findItem(R.id.action_leave_comm).isVisible = comms.isNotEmpty
+        menu.findItem(R.id.action_delete_comm).isVisible = comms.isAdminOfAny
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
@@ -69,6 +70,10 @@ class EventsFragment : Fragment() {
         }
         R.id.action_leave_comm -> {
             navigate(R.id.action_eventsFragment_to_leaveCommFragment)
+            true
+        }
+        R.id.action_delete_comm -> {
+            navigate(R.id.action_eventsFragment_to_deleteCommFragment)
             true
         }
         else -> super.onOptionsItemSelected(item)
