@@ -36,14 +36,14 @@ data class Comm(
 
     fun leave() {
         comms delete this
-        commDao delete this
+        commDao deleteAsync this
     }
 
     fun delete() = Unit
 
     fun join() {
         comms join this
-        commDao join this
+        commDao joinAsync this
     }
 
     @androidx.room.Entity(tableName = EventsDb.COMMUNITIES_TABLE_NAME)

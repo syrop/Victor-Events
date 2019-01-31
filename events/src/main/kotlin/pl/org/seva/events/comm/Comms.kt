@@ -55,12 +55,7 @@ class Comms {
 
     infix fun delete(comm: Comm) = commCache.remove(comm)
 
-    infix fun join(comm: Comm) {
-        commCache.add(comm)
-        GlobalScope.launch {
-            commDao.insert(Comm.Entity(comm))
-        }
-    }
+    infix fun join(comm: Comm) = commCache.add(comm)
 
     fun addAll(comms: Collection<Comm>) {
         commCache.addAll(comms)

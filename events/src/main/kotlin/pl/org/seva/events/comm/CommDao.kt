@@ -32,7 +32,11 @@ val commDao by lazy { db.commDao }
 
 infix fun CommDao.delete(comm: Comm) = delete(Comm.Entity(comm))
 
+infix fun CommDao.deleteAsync(comm: Comm) = GlobalScope.launch { delete(comm) }
+
 infix fun CommDao.join(comm: Comm) = insert(Comm.Entity(comm))
+
+infix fun CommDao.joinAsync(comm: Comm) = GlobalScope.launch { join(comm) }
 
 inline fun CommDao.getAllAsync(crossinline callback: (Collection<Comm>) -> Unit) {
     GlobalScope.launch {

@@ -48,7 +48,7 @@ class DeleteCommFragment : Fragment() {
                             .toast()
                 }
                 else {
-                    getString(R.string.delete_comm_confirmation).toast()
+                    getString(R.string.delete_comm_no_changes).toast()
                 }
             }
 
@@ -57,8 +57,11 @@ class DeleteCommFragment : Fragment() {
 
         comms.isAdminOf.apply {
             comm_layout.visibility = View.VISIBLE
-            comm_spinner.withObjects(context!!, map { it.name }.toTypedArray()) { position ->
-                pendingDeletion = this[position]
+            comm_spinner.withObjects(
+                    context!!,
+                    listOf(getString(R.string.delete_comm_none))
+                            .plus(map { it.name }).toTypedArray()) { position ->
+                pendingDeletion = if (position == 0) null else this[position - 1]
             }
         }
 

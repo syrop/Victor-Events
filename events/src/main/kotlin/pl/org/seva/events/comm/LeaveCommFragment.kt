@@ -38,10 +38,10 @@ class LeaveCommFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        var pendingDeletion: Comm? = null
+        var pendingLeaving: Comm? = null
 
         fun leavePendingCommunity() {
-            with (pendingDeletion) {
+            with (pendingLeaving) {
                 if (this?.leave() != null) {
                     getString(R.string.leave_comm_confirmation)
                             .boldSection(NAME_PLACEHOLDER, name)
@@ -57,8 +57,10 @@ class LeaveCommFragment : Fragment() {
 
         comms.names.apply {
             comm_layout.visibility = View.VISIBLE
-            comm_spinner.withObjects(context!!, this) { position ->
-                pendingDeletion = comms[position]
+            comm_spinner.withObjects(
+                    context!!,
+                    arrayOf(getString(R.string.leave_comm_none)).plus(this)) { position ->
+                pendingLeaving = if (position == 0) null else comms[position - 1]
             }
         }
 
