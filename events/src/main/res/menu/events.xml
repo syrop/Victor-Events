@@ -19,5 +19,9 @@
         android:id="@+id/action_delete_comm"
         android:title="@string/events_action_delete_comm"
         app:showAsAction="never"/>
+   <item
+        android:id="@+id/action_system_messages"
+        android:title="@string/events_action_system_messages"
+        app:showAsAction="never"/>
 
 </menu>

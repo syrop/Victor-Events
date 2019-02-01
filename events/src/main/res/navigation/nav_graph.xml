@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_eventsFragment_to_deleteCommFragment"
             app:destination="@id/deleteCommFragment"/>
+        <action
+            android:id="@+id/action_eventsFragment_to_systemMessagesFragment"
+            app:destination="@id/systemMessagesFragment"/>
     </fragment>
 
     <fragment
@@ -66,5 +69,11 @@
         android:name="pl.org.seva.events.comm.DeleteCommFragment"
         android:label="@string/delete_comm_label"
         tools:layout="@layout/fragment_delete_comm"/>
+
+    <fragment
+        android:id="@+id/systemMessagesFragment"
+        android:name="pl.org.seva.events.messages.SystemMessagesFragment"
+        android:label="@string/system_messages_label"
+        tools:layout="@layout/fragment_system_messages"/>
 
 </navigation>

@@ -7,8 +7,9 @@
     <string name="events_action_add_comm">Add a community</string>
     <string name="events_action_leave_comm">Leave a community</string>
     <string name="events_action_delete_comm">Delete a community</string>
+    <string name="events_action_system_messages">View System Messages</string>
 
-    <!-- Add comm fragment. -->
+    <!-- Add comm fragment -->
     <string name="add_comm_label">Add a community</string>
     <string name="add_comm_please_search_empty">You are currently not following any communities. Please seek them.</string>
     <string name="add_comm_please_search">Please seek communities to follow.</string>
@@ -41,7 +42,11 @@
     <string name="delete_comm_no_changes">No community selected. No changes made.</string>
     <string name="delete_comm_confirmation">Deleted a community: [name].</string>
 
-    <!-- Create event Fragment. -->
+    <!-- System Messages fragment -->
+    <string name="system_messages_label">System Messages</string>
+    <string name="system_messages_no_messages">There are currently no System Messages.</string>
+
+    <!-- Create event Fragment -->
     <string name="create_event_comm">Community:</string>
     <string name="create_event_name">Name</string>
     <string name="create_event_date">Date</string>
@@ -49,18 +54,18 @@
     <string name="create_event_location">Location</string>
     <string name="create_event_description">Description</string>
 
-    <!-- Login activity. -->
+    <!-- Login activity -->
     <string name="login_label">Login</string>
     <string name="login_authentication_failed">Authentication failed.</string>
     <string name="login_loading">Loading…</string>
     <string name="login_please_log_in">Please log in.</string>
 
-    <!-- Login confirmation fragment. -->
+    <!-- Login confirmation fragment -->
     <string name="login_confirmation_label">Login</string>
     <string name="login_confirmation_prompt">You do not need to log in to use the app. Only log in if you want to create a new community or add events to an existing community.\n\n[TAPANYWHERE]</string>
     <string name="login_confirmation_tap_anywhere">Tap anywhere to log in.</string>
 
-    <!-- Pick location fragment. -->
+    <!-- Pick location fragment -->
     <string name="pick_location_label">Select location</string>
     <string name="pick_location_select_location">Select location of your event</string>
     <string name="pick_location_delete_location">Delete location</string>

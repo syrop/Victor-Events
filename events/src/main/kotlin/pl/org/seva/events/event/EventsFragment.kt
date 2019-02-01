@@ -76,6 +76,10 @@ class EventsFragment : Fragment() {
             navigate(R.id.action_eventsFragment_to_deleteCommFragment)
             true
         }
+        R.id.action_system_messages -> {
+            navigate(R.id.action_eventsFragment_to_systemMessagesFragment)
+            true
+        }
         else -> super.onOptionsItemSelected(item)
     }
 }
