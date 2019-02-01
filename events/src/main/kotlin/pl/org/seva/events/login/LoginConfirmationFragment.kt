@@ -30,7 +30,7 @@ import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_login_confirmation.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
-import pl.org.seva.events.main.extension.boldSection
+import pl.org.seva.events.main.extension.bold
 import pl.org.seva.events.main.extension.popBackStack
 
 class LoginConfirmationFragment : Fragment() {
@@ -46,7 +46,7 @@ class LoginConfirmationFragment : Fragment() {
         }
 
         super.onViewCreated(view, savedInstanceState)
-        prompt.text = getString(R.string.login_confirmation_prompt).boldSection(
+        prompt.text = getString(R.string.login_confirmation_prompt).bold(
                 TAP_ANYWHERE_PLACEHOLDER,
                 getString(R.string.login_confirmation_tap_anywhere))
 

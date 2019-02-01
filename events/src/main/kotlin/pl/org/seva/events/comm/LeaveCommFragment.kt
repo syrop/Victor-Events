@@ -26,7 +26,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_leave_comm.*
 import pl.org.seva.events.R
-import pl.org.seva.events.main.extension.boldSection
+import pl.org.seva.events.main.extension.bold
 import pl.org.seva.events.main.extension.popBackStack
 import pl.org.seva.events.main.extension.toast
 import pl.org.seva.events.main.extension.withObjects
@@ -44,7 +44,7 @@ class LeaveCommFragment : Fragment() {
             with (pendingLeaving) {
                 if (this?.leave() != null) {
                     getString(R.string.leave_comm_confirmation)
-                            .boldSection(NAME_PLACEHOLDER, name)
+                            .bold(NAME_PLACEHOLDER, name)
                             .toast()
                 }
                 else {

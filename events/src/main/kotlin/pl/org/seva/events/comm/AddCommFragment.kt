@@ -148,7 +148,7 @@ class AddCommFragment : Fragment() {
 
             progress.visibility = View.GONE
             prompt.visibility = View.VISIBLE
-            prompt.text = getString(R.string.add_comm_not_found).boldSection(NAME_PLACEHOLDER, name)
+            prompt.text = getString(R.string.add_comm_not_found).bold(NAME_PLACEHOLDER, name)
             if (isLoggedIn) {
                 showCreateCommunitySnackbar(name)
             } else {
@@ -166,7 +166,7 @@ class AddCommFragment : Fragment() {
     private fun String.createJoinAndFinish() {
         comms joinNewCommunity this
         getString(R.string.add_comm_created)
-                .boldSection(NAME_PLACEHOLDER, this)
+                .bold(NAME_PLACEHOLDER, this)
                 .toast()
         popBackStack()
     }
@@ -174,7 +174,7 @@ class AddCommFragment : Fragment() {
     private fun Comm.joinAndFinish() {
         join()
         getString(R.string.add_comm_joined)
-                .boldSection(NAME_PLACEHOLDER, name)
+                .bold(NAME_PLACEHOLDER, name)
                 .toast()
         popBackStack()
     }
