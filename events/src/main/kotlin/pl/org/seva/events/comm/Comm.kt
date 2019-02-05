@@ -59,7 +59,7 @@ data class Comm(
             isAdmin = comm.isAdmin
         }
 
-        fun comValue() = Comm(name = name, color = color, isAdmin = isAdmin)
+        fun value() = Comm(name = name, color = color, isAdmin = isAdmin)
     }
 
     companion object {

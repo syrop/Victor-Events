@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Wiktor Nizio
+ * Copyright (C) 2019 Wiktor Nizio
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,31 +17,18 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main
+package pl.org.seva.events.message
 
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import pl.org.seva.events.comm.comms
-import pl.org.seva.events.comm.getAllAsync
-import pl.org.seva.events.login.login
-import pl.org.seva.events.main.db.db
-import pl.org.seva.events.message.getAllAsync
-import pl.org.seva.events.message.messages
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import pl.org.seva.events.R
 
-val bootstrap by instance<Bootstrap>()
+class MessagesFragment : Fragment() {
 
-class Bootstrap {
-
-    fun boot() {
-        login.setCurrentUser(FirebaseAuth.getInstance().currentUser)
-        db.commDao.getAllAsync { comms.addAll(it) }
-        db.messageDao.getAllAsync { messages.addAll(it) }
-    }
-
-    fun login(user: FirebaseUser) {
-        login.setCurrentUser(user)
-    }
-
-    fun logout() {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return layoutInflater.inflate(R.layout.fragment_system_messages, container, false)
     }
 }

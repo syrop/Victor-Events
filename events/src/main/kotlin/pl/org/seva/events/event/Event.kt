@@ -25,7 +25,6 @@ import com.google.firebase.firestore.GeoPoint
 import pl.org.seva.events.main.db.EventsDb
 import java.time.LocalDateTime
 
-@SuppressLint("ParcelCreator")
 data class Event(
         val name: String = CREATION_NAME,
         val time: LocalDateTime = LocalDateTime.now(),

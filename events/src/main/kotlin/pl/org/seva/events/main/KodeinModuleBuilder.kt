@@ -32,6 +32,7 @@ import pl.org.seva.events.main.fs.FsWriter
 import pl.org.seva.events.main.db.EventsDb
 import pl.org.seva.events.main.ui.ColorFactory
 import pl.org.seva.events.main.ui.Toaster
+import pl.org.seva.events.message.Messages
 import java.util.*
 import java.util.logging.Logger
 
@@ -64,5 +65,6 @@ class KodeinModuleBuilder(private val ctx: Context) {
         }
         bind<Permissions>() with singleton { Permissions() }
         bind<Geocoder>() with singleton { Geocoder(ctx, Locale.getDefault()) }
+        bind<Messages>() with singleton { Messages() }
     }
 }

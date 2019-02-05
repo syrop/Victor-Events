@@ -30,9 +30,11 @@ class EventsDb(context: Context) {
     private val db=
             Room.databaseBuilder(context, EventsDbAbstract::class.java, DATABASE_NAME).build()
 
-    val eventDao get() = db.eventDao()
+    val eventDao by lazy { db.eventDao() }
 
-    val commDao get() = db.commDao()
+    val commDao by lazy { db.commDao() }
+
+    val messageDao by lazy { db.messageDao() }
 
     companion object {
         const val DATABASE_NAME = "events_database"
@@ -40,5 +42,6 @@ class EventsDb(context: Context) {
 
         const val EVENTS_TABLE_NAME = "events"
         const val COMMUNITIES_TABLE_NAME = "communities"
+        const val MESSAGES_TABLE_NAME = "messages"
     }
 }

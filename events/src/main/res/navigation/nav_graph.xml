@@ -72,7 +72,7 @@
 
     <fragment
         android:id="@+id/systemMessagesFragment"
-        android:name="pl.org.seva.events.messages.SystemMessagesFragment"
+        android:name="pl.org.seva.events.message.MessagesFragment"
         android:label="@string/system_messages_label"
         tools:layout="@layout/fragment_system_messages"/>
 

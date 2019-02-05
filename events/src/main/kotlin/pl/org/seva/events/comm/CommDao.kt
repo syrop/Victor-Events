@@ -40,7 +40,7 @@ infix fun CommDao.joinAsync(comm: Comm) = GlobalScope.launch { join(comm) }
 
 inline fun CommDao.getAllAsync(crossinline callback: (Collection<Comm>) -> Unit) {
     GlobalScope.launch {
-        callback(getAll().map { it.comValue() })
+        callback(getAll().map { it.value() })
     }
 }
 

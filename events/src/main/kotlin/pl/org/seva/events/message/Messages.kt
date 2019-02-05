@@ -17,18 +17,18 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.messages
+package pl.org.seva.events.message
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import pl.org.seva.events.R
+import pl.org.seva.events.main.instance
 
-class SystemMessagesFragment : Fragment() {
+val messages by instance<Messages>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return layoutInflater.inflate(R.layout.fragment_system_messages, container, false)
+class Messages {
+
+    private val messageCache = mutableListOf<Message>()
+
+    fun addAll(messages: Collection<Message>) {
+        messageCache.addAll(messages)
     }
+
 }
