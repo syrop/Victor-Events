@@ -6,3 +6,4 @@
 app/libs/
 *.apk
 navigator/release/
+events/libs/
