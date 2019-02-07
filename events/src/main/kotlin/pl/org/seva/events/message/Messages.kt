@@ -27,6 +27,10 @@ class Messages {
 
     private val messageCache = mutableListOf<Message>()
 
+    val size get() = messageCache.size
+
+    operator fun get(position: Int) = messageCache[position]
+
     fun addAll(messages: Collection<Message>) {
         messageCache.addAll(messages)
     }

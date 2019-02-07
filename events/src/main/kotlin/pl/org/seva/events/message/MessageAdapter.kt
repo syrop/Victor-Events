@@ -19,16 +19,32 @@
 
 package pl.org.seva.events.message
 
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.row_message.view.*
 import pl.org.seva.events.R
 
-class MessagesFragment : Fragment() {
+class MessageAdapter : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return layoutInflater.inflate(R.layout.fragment_messages, container, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+            ViewHolder(parent.inflate())
+
+    private fun ViewGroup.inflate() =
+            LayoutInflater.from(context).inflate(R.layout.row_message, this, false)
+
+    override fun getItemCount() = messages.size
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        with(messages[position]) {
+            holder.time.text = time.toString()
+            holder.content.text = content
+        }
+    }
+
+    class ViewHolder internal constructor(view: View) : RecyclerView.ViewHolder(view) {
+        val time = view.time!!
+        val content = view.content!!
     }
 }

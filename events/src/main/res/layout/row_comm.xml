@@ -7,8 +7,6 @@
     android:paddingBottom="16dp"
     android:background="@drawable/bg_list_row"
     android:paddingEnd="?listPreferredItemPaddingRight"
-    android:paddingLeft="?listPreferredItemPaddingLeft"
-    android:paddingRight="?listPreferredItemPaddingRight"
     android:paddingStart="?listPreferredItemPaddingLeft"
     android:paddingTop="16dp">
 
@@ -19,13 +17,10 @@
         android:ellipsize="end"
         tools:text="Community"
         android:lines="1"
-        android:layout_toRightOf="@+id/icon_container"
         android:textColor="@color/comm"
         android:textSize="16sp"
         android:textStyle="bold"
         android:paddingEnd="16dp"
-        android:paddingLeft="72dp"
-        android:paddingRight="16dp"
         android:paddingStart="72dp"
         android:layout_toEndOf="@+id/icon_container"/>
 

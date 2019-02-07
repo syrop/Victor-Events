@@ -25,7 +25,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import kotlinx.android.synthetic.main.row_community.view.*
+import kotlinx.android.synthetic.main.row_comm.view.*
 import pl.org.seva.events.R
 
 class CommAdapter(
@@ -38,7 +38,7 @@ class CommAdapter(
             }
 
     private fun ViewGroup.inflate() =
-            LayoutInflater.from(context).inflate(R.layout.row_community, this, false)
+            LayoutInflater.from(context).inflate(R.layout.row_comm, this, false)
 
     override fun getItemCount() = 1
 
