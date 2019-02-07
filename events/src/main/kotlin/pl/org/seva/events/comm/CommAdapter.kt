@@ -21,15 +21,19 @@ package pl.org.seva.events.comm
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import kotlinx.android.synthetic.main.row_community.view.*
 import pl.org.seva.events.R
 
 class CommAdapter(
         private val comm: Comm,
-        private var listener: (Comm.() -> Unit)? = null) : RecyclerView.Adapter<CommViewHolder>() {
+        private var listener: (Comm.() -> Unit)? = null) : RecyclerView.Adapter<CommAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-            CommViewHolder(parent.inflate()) {
+            ViewHolder(parent.inflate()) {
                 onClick()
             }
 
@@ -40,10 +44,21 @@ class CommAdapter(
 
     private fun onClick() = listener?.invoke(comm)
 
-    override fun onBindViewHolder(holder: CommViewHolder, position: Int) = with (holder) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = with (holder) {
         communityName.text = comm.name
         iconText.text = comm.name.substring(0, 1)
         iconProfile.setImageResource(R.drawable.bg_circle)
         iconProfile.setColorFilter(comm.color)
+    }
+
+    class ViewHolder internal constructor(val view: View, f: (() -> Unit)? = null) : RecyclerView.ViewHolder(view) {
+
+        init {
+            view.setOnClickListener { f?.invoke() }
+        }
+
+        val communityName: TextView = view.comm
+        val iconProfile: ImageView = view.icon_profile
+        val iconText: TextView = view.icon_text
     }
 }
