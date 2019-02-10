@@ -22,4 +22,7 @@ package pl.org.seva.events.main.extension
 import pl.org.seva.events.main.instance
 import java.util.logging.Logger
 
-val Any.log get() = instance<String, Logger>(this::class.java.name)
+val Any.log: Logger get() {
+    val result by instance<String, Logger>(this::class.java.name)
+    return result
+}
