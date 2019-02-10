@@ -40,7 +40,7 @@ import java.time.LocalTime
 
 class CreateEventFragment : Fragment() {
 
-    private val model by lazy { viewModel<CreateEventViewModel>() }
+    private val model by viewModel<CreateEventViewModel>()
 
     private val mapHolder by lazy {
         createMapHolder {

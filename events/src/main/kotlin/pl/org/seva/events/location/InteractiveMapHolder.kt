@@ -40,7 +40,9 @@ class InteractiveMapHolder : MapHolder() {
     override fun withFragment(fragment: Fragment): MapHolder {
         super.withFragment(fragment)
         with (fragment) {
-            viewModel = viewModel()
+            val viewModel by viewModel<CreateEventViewModel>()
+            this@InteractiveMapHolder.viewModel = viewModel
+            viewModel<CreateEventViewModel>()
         }
         return this
     }

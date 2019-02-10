@@ -39,7 +39,7 @@ import pl.org.seva.events.main.ui.*
 
 class AddCommFragment : Fragment() {
 
-    private val eventsModel by lazy { viewModel<EventsViewModel>() }
+    private val eventsModel by viewModel<EventsViewModel>()
 
     private val searchManager by lazy {
         activity!!.getSystemService(Context.SEARCH_SERVICE) as SearchManager

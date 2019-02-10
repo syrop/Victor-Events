@@ -22,9 +22,12 @@ package pl.org.seva.events.main.extension
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import org.kodein.di.LazyDelegate
 import pl.org.seva.events.main.Permissions
 import pl.org.seva.events.main.permissions
+import kotlin.reflect.KProperty
 
 fun Fragment.navigate(@IdRes resId: Int): Boolean {
     findNavController().navigate(resId)
@@ -33,7 +36,11 @@ fun Fragment.navigate(@IdRes resId: Int): Boolean {
 
 fun Fragment.popBackStack() = findNavController().popBackStack()
 
-inline fun <reified R : ViewModel> Fragment.viewModel() = activity!!.viewModel<R>()
+inline fun <reified R : ViewModel> Fragment.viewModel() = object : LazyDelegate<R> {
+    override fun provideDelegate(receiver: Any?, prop: KProperty<Any?>) = lazy {
+        ViewModelProviders.of(this@viewModel.activity!!).get(R::class.java)
+    }
+}
 
 fun Fragment.requestPermissions(
         requestCode: Int,

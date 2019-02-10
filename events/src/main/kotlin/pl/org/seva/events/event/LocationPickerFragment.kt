@@ -32,7 +32,7 @@ import pl.org.seva.events.location.createInteractiveMapHolder
 
 class LocationPickerFragment : Fragment() {
 
-    private val viewModel by lazy { viewModel<CreateEventViewModel>() }
+    private val viewModel by viewModel<CreateEventViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_location_picker, container, false)

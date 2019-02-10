@@ -21,9 +21,9 @@ class EventsActivity : AppCompatActivity() {
 
     private val nav by lazy { findNavController(R.id.nav_host_fragment) }
 
-    private val model by lazy { viewModel<EventsViewModel>() }
+    private val model by viewModel<EventsViewModel>()
 
-    private val createEventsViewModel by lazy { viewModel<CreateEventViewModel>() }
+    private val createEventsViewModel by viewModel<CreateEventViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
