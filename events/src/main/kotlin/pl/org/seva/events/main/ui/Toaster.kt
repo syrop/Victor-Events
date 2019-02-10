@@ -28,6 +28,8 @@ val toaster by instance<Toaster>()
 class Toaster(private val ctx: Context) {
 
     infix fun toast(message: CharSequence) {
-        Toast.makeText(ctx, message, Toast.LENGTH_SHORT).show()
+        if (message.isNotBlank()) {
+            Toast.makeText(ctx, message, Toast.LENGTH_SHORT).show()
+        }
     }
 }

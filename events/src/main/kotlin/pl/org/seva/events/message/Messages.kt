@@ -34,5 +34,4 @@ class Messages {
     fun addAll(messages: Collection<Message>) {
         messageCache.addAll(messages)
     }
-
 }

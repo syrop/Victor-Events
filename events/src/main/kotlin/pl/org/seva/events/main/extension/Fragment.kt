@@ -26,7 +26,10 @@ import androidx.navigation.fragment.findNavController
 import pl.org.seva.events.main.Permissions
 import pl.org.seva.events.main.permissions
 
-fun Fragment.navigate(@IdRes resId: Int) = findNavController().navigate(resId)
+fun Fragment.navigate(@IdRes resId: Int): Boolean {
+    findNavController().navigate(resId)
+    return true
+}
 
 fun Fragment.popBackStack() = findNavController().popBackStack()
 

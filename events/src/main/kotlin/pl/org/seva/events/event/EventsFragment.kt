@@ -60,26 +60,11 @@ class EventsFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.action_login -> {
-            navigate(R.id.action_eventsFragment_to_loginConfirmationFragment)
-            true
-        }
-        R.id.action_add_comm -> {
-            navigate(R.id.action_eventsFragment_to_addCommFragment)
-            true
-        }
-        R.id.action_leave_comm -> {
-            navigate(R.id.action_eventsFragment_to_leaveCommFragment)
-            true
-        }
-        R.id.action_delete_comm -> {
-            navigate(R.id.action_eventsFragment_to_deleteCommFragment)
-            true
-        }
-        R.id.action_system_messages -> {
-            navigate(R.id.action_eventsFragment_to_systemMessagesFragment)
-            true
-        }
+        R.id.action_login -> navigate(R.id.action_eventsFragment_to_loginConfirmationFragment)
+        R.id.action_add_comm -> navigate(R.id.action_eventsFragment_to_addCommFragment)
+        R.id.action_leave_comm -> navigate(R.id.action_eventsFragment_to_leaveCommFragment)
+        R.id.action_delete_comm -> navigate(R.id.action_eventsFragment_to_deleteCommFragment)
+        R.id.action_system_messages -> navigate(R.id.action_eventsFragment_to_systemMessagesFragment)
         else -> super.onOptionsItemSelected(item)
     }
 }
