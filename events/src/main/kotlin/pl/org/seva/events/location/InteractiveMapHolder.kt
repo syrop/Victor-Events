@@ -42,7 +42,6 @@ class InteractiveMapHolder : MapHolder() {
         with (fragment) {
             val viewModel by viewModel<CreateEventViewModel>()
             this@InteractiveMapHolder.viewModel = viewModel
-            viewModel<CreateEventViewModel>()
         }
         return this
     }
