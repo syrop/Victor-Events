@@ -47,9 +47,8 @@ class AddCommFragment : Fragment() {
 
     private lateinit var adapter: CommAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return layoutInflater.inflate(R.layout.fragment_add_comm, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?)  =
+            inflate(R.layout.fragment_add_comm, container)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         prompt.setText(if (comms.isEmpty) R.string.add_comm_please_search_empty else

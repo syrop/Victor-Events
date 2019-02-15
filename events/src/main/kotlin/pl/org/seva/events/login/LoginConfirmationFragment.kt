@@ -32,12 +32,12 @@ import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.main.extension.bold
 import pl.org.seva.events.main.extension.back
+import pl.org.seva.events.main.extension.inflate
 
 class LoginConfirmationFragment : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_login_confirmation, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
+            inflate(R.layout.fragment_login_confirmation, container)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         fun onContainerClicked() {

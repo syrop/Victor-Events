@@ -26,16 +26,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_delete_comm.*
 import pl.org.seva.events.R
-import pl.org.seva.events.main.extension.bold
-import pl.org.seva.events.main.extension.back
-import pl.org.seva.events.main.extension.toast
-import pl.org.seva.events.main.extension.withObjects
+import pl.org.seva.events.main.extension.*
 
 class DeleteCommFragment : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return layoutInflater.inflate(R.layout.fragment_delete_comm, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
+            inflate(R.layout.fragment_delete_comm, container)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         var pendingDeletion: Comm? = null
