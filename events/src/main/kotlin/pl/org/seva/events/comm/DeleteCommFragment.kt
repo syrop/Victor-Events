@@ -27,7 +27,7 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_delete_comm.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.bold
-import pl.org.seva.events.main.extension.popBackStack
+import pl.org.seva.events.main.extension.back
 import pl.org.seva.events.main.extension.toast
 import pl.org.seva.events.main.extension.withObjects
 
@@ -52,7 +52,7 @@ class DeleteCommFragment : Fragment() {
                 }
             }
 
-            popBackStack()
+            back()
         }
 
         comms.isAdminOf.apply {

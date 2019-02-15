@@ -31,7 +31,7 @@ import kotlinx.android.synthetic.main.fragment_login_confirmation.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.main.extension.bold
-import pl.org.seva.events.main.extension.popBackStack
+import pl.org.seva.events.main.extension.back
 
 class LoginConfirmationFragment : Fragment() {
 
@@ -58,7 +58,7 @@ class LoginConfirmationFragment : Fragment() {
         if (requestCode == LOGIN_CREATE_COMM_REQUEST && resultCode == Activity.RESULT_OK) {
             prompt.visibility = View.GONE
             progress.visibility = View.VISIBLE
-            comms.refreshAdminStatuses().observe(this, Observer { popBackStack() })
+            comms.refreshAdminStatuses().observe(this, Observer { back() })
         }
     }
 

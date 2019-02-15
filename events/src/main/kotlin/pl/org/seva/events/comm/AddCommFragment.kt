@@ -168,7 +168,7 @@ class AddCommFragment : Fragment() {
         getString(R.string.add_comm_created)
                 .bold(NAME_PLACEHOLDER, this)
                 .toast()
-        popBackStack()
+        back()
     }
 
     private fun Comm.joinAndFinish() {
@@ -176,7 +176,7 @@ class AddCommFragment : Fragment() {
         getString(R.string.add_comm_joined)
                 .bold(NAME_PLACEHOLDER, name)
                 .toast()
-        popBackStack()
+        back()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
