@@ -28,7 +28,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_create_event.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
@@ -76,9 +75,9 @@ class CreateEventFragment : Fragment() {
         address.setOnClickListener { showLocationPicker() }
         description.withLiveData(this, model.description)
 
-        model.time.observe(this, Observer { onTimeChanged(it) })
-        model.date.observe(this, Observer { onDateChanged(it) })
-        model.location.observe(this, Observer { onLocationChanged(it) })
+        model.time.observe(this) { onTimeChanged(it) }
+        model.date.observe(this) { onDateChanged(it) }
+        model.location.observe(this)  { onLocationChanged(it) }
 
         comms.namesIsAdminOf.apply {
             model.comm.value = get(0)

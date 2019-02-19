@@ -26,13 +26,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_login_confirmation.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.main.extension.bold
 import pl.org.seva.events.main.extension.back
 import pl.org.seva.events.main.extension.inflate
+import pl.org.seva.events.main.extension.observe
 
 class LoginConfirmationFragment : Fragment() {
 
@@ -58,7 +58,7 @@ class LoginConfirmationFragment : Fragment() {
         if (requestCode == LOGIN_CREATE_COMM_REQUEST && resultCode == Activity.RESULT_OK) {
             prompt.visibility = View.GONE
             progress.visibility = View.VISIBLE
-            comms.refreshAdminStatuses().observe(this, Observer { back() })
+            comms.refreshAdminStatuses().observe(this) { back() }
         }
     }
 

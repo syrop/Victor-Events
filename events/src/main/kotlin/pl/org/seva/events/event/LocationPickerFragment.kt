@@ -21,15 +21,14 @@ package pl.org.seva.events.event
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_location_picker.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.viewModel
 import pl.org.seva.events.location.createInteractiveMapHolder
 import pl.org.seva.events.main.extension.inflate
+import pl.org.seva.events.main.extension.observe
 
 class LocationPickerFragment : Fragment() {
 
@@ -48,7 +47,7 @@ class LocationPickerFragment : Fragment() {
         delete_location.setOnClickListener {
             viewModel.location.value = null
         }
-        viewModel.location.observe(this, Observer { onLocationChanged(it) })
+        viewModel.location.observe(this) { onLocationChanged(it) }
 
         createInteractiveMapHolder {
             onMapAvailable = {
