@@ -55,7 +55,8 @@ class CreateEventFragment : Fragment() {
             inflate(R.layout.fragment_create_event, container)
 
     @SuppressLint("SetTextI18n")
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         fun showTimePicker() = TimePickerFragment().show(fragmentManager, TIME_PICKER_TAG)
         fun showDatePicker() = DatePickerFragment().show(fragmentManager, DATE_PICKER_TAG)
         fun showLocationPicker() = navigate(R.id.action_createEventFragment_to_locationPickerFragment)

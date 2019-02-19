@@ -38,13 +38,12 @@ class LocationPickerFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
             inflate(R.layout.fragment_location_picker, container)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         fun onLocationChanged(l: EventLocation?) {
             address.setText(l?.address ?: "")
             delete_location.isEnabled = l != null
         }
-
-        super.onViewCreated(view, savedInstanceState)
 
         delete_location.setOnClickListener {
             viewModel.location.value = null

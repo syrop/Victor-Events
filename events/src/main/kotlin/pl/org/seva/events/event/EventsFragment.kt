@@ -42,7 +42,8 @@ class EventsFragment : Fragment() {
     }
 
     @SuppressLint("RestrictedApi")
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         if (comms.isAdminOfAny) {
             add_event_fab.visibility = View.VISIBLE
         }
