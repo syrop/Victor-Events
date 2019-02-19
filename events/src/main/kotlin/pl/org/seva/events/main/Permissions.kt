@@ -41,7 +41,7 @@ class Permissions {
             permissionsToRequest.add(permission.permission)
             grantedSubject
                     .filter { it.requestCode == requestCode && it.permission == permission.permission }
-                    .subscribe(lifecycle) {permission.onGranted() }
+                    .subscribe(lifecycle) { permission.onGranted() }
             deniedSubject
                     .filter { it.requestCode == requestCode && it.permission == permission.permission }
                     .subscribe(lifecycle) { permission.onDenied() }
