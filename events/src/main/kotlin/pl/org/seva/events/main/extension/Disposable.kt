@@ -20,7 +20,18 @@
 package pl.org.seva.events.main.extension
 
 import androidx.lifecycle.Lifecycle
-import io.reactivex.Observable
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
+import io.reactivex.disposables.Disposable
 
-fun <T> Observable<T>.subscribe(lifecycle: Lifecycle, onNext: (T) -> Unit) =
-        subscribe(onNext).observeLifecycle(lifecycle)
+fun Disposable.observeLifecycle(lifecycle: Lifecycle) =
+        lifecycle.addObserver(RxLifecycleObserver(this))
+
+private class RxLifecycleObserver(private val subscription: Disposable) : LifecycleObserver {
+
+    @Suppress("unused")
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    private fun onEvent() {
+        subscription.dispose()
+    }
+}
