@@ -51,6 +51,67 @@ class AddCommFragment : Fragment() {
             inflate(R.layout.fragment_add_comm, container)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+        fun search(name: String) {
+            fun Comm.found() {
+                progress.visibility = View.GONE
+                recycler.visibility = View.VISIBLE
+                adapter = CommAdapter(this) {
+                    if (isMemberOf) {
+                        getString(R.string.add_comm_already_a_member).toast()
+                    }
+                    else {
+                        joinAndFinish()
+                    }
+                }
+                recycler.addItemDecoration(DividerItemDecoration(activity!!))
+                recycler.adapter = adapter
+                recycler.layoutManager = LinearLayoutManager(context)
+            }
+
+            fun notFound() {
+                fun showCreateCommunitySnackbar(name: String) {
+                    longSnackbar {
+                        view = layout
+                        message = R.string.add_comm_can_create
+                        action = R.string.add_comm_create
+                    } show {
+                        name.createJoinAndFinish()
+                    }
+                }
+
+                fun showLoginToCreateSnackbar(name: String) {
+                    fun loginToCreateComm(name: String) {
+                        startActivityForResult(Intent(activity, LoginActivity::class.java)
+                                .putExtra(LoginActivity.COMMUNITY_NAME, name)
+                                .putExtra(LoginActivity.ACTION, LoginActivity.LOGIN), LOGIN_CREATE_COMM_REQUEST)
+                    }
+
+                    permanentSnackbar {
+                        view = layout
+                        message = R.string.add_comm_login_to_create
+                        action = R.string.add_comm_login
+                    } show {
+                        loginToCreateComm(name)
+                    }
+                }
+
+                progress.visibility = View.GONE
+                prompt.visibility = View.VISIBLE
+                prompt.text = getString(R.string.add_comm_not_found).bold(NAME_PLACEHOLDER, name)
+                if (isLoggedIn) {
+                    showCreateCommunitySnackbar(name)
+                } else {
+                    showLoginToCreateSnackbar(name)
+                }
+            }
+
+            prompt.visibility = View.GONE
+            progress.visibility = View.VISIBLE
+            fsReader.findCommunity(lifecycle, name) {
+                if (dummy) notFound() else found()
+            }
+        }
+
         super.onActivityCreated(savedInstanceState)
         prompt.setText(if (comms.isEmpty) R.string.add_comm_please_search_empty else
             R.string.add_comm_please_search)
@@ -73,94 +134,15 @@ class AddCommFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
-    private fun communitiesNotFoundPrompt() {
-
-    }
-
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
         fun MenuItem.prepareSearchView() = with (actionView as SearchView) {
             setSearchableInfo(searchManager.getSearchableInfo(activity!!.componentName))
-            setOnSearchClickListener { onSearchClicked() }
-            setOnCloseListener { onSearchViewClosed() }
         }
 
         menuInflater.inflate(R.menu.add_comm, menu)
         val searchMenuItem = menu.findItem(R.id.action_search)
         searchMenuItem.collapseActionView()
         searchMenuItem.prepareSearchView()
-    }
-
-    private fun onSearchClicked() {
-        prompt.visibility = View.GONE
-    }
-
-    private fun onSearchViewClosed(): Boolean {
-        if (comms.isEmpty) {
-            prompt.visibility = View.VISIBLE
-            communitiesNotFoundPrompt()
-        }
-        return false
-    }
-
-    private fun search(name: String) {
-        fun Comm.found() {
-            progress.visibility = View.GONE
-            recycler.visibility = View.VISIBLE
-            adapter = CommAdapter(this) {
-                if (isMemberOf) {
-                    getString(R.string.add_comm_already_a_member).toast()
-                }
-                else {
-                    joinAndFinish()
-                }
-            }
-            recycler.addItemDecoration(DividerItemDecoration(activity!!))
-            recycler.adapter = adapter
-            recycler.layoutManager = LinearLayoutManager(context)
-        }
-
-        fun notFound() {
-            fun showCreateCommunitySnackbar(name: String) {
-                longSnackbar {
-                    view = layout
-                    message = R.string.add_comm_can_create
-                    action = R.string.add_comm_create
-                } show {
-                    name.createJoinAndFinish()
-                }
-            }
-
-            fun showLoginToCreateSnackbar(name: String) {
-                fun loginToCreateComm(name: String) {
-                    startActivityForResult(Intent(activity, LoginActivity::class.java)
-                        .putExtra(LoginActivity.COMMUNITY_NAME, name)
-                        .putExtra(LoginActivity.ACTION, LoginActivity.LOGIN), LOGIN_CREATE_COMM_REQUEST)
-                }
-
-                permanentSnackbar {
-                    view = layout
-                    message = R.string.add_comm_login_to_create
-                    action = R.string.add_comm_login
-                } show {
-                    loginToCreateComm(name)
-                }
-            }
-
-            progress.visibility = View.GONE
-            prompt.visibility = View.VISIBLE
-            prompt.text = getString(R.string.add_comm_not_found).bold(NAME_PLACEHOLDER, name)
-            if (isLoggedIn) {
-                showCreateCommunitySnackbar(name)
-            } else {
-                showLoginToCreateSnackbar(name)
-            }
-        }
-
-        prompt.visibility = View.GONE
-        progress.visibility = View.VISIBLE
-        fsReader.findCommunity(lifecycle, name) {
-            if (dummy) notFound() else found()
-        }
     }
 
     private fun String.createJoinAndFinish() {
