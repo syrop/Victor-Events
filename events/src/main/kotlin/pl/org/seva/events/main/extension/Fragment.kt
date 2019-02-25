@@ -28,8 +28,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import org.kodein.di.LazyDelegate
-import pl.org.seva.events.location.InteractiveMapHolder
-import pl.org.seva.events.location.MapHolder
+import pl.org.seva.events.event.location.InteractiveMapHolder
+import pl.org.seva.events.event.location.MapHolder
 import pl.org.seva.events.main.Permissions
 import pl.org.seva.events.main.permissions
 import kotlin.reflect.KProperty

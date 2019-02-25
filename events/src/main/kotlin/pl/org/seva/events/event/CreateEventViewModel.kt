@@ -22,7 +22,7 @@ package pl.org.seva.events.event
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import pl.org.seva.events.location.MapHolder
+import pl.org.seva.events.event.location.MapHolder
 import pl.org.seva.events.main.extension.observe
 import java.time.LocalDate
 import java.time.LocalTime
