@@ -31,7 +31,6 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_create_event.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
-import pl.org.seva.events.location.createMapHolder
 import pl.org.seva.events.main.*
 import pl.org.seva.events.main.extension.*
 import java.time.LocalDate

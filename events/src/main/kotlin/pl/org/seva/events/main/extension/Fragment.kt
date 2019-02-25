@@ -28,6 +28,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import org.kodein.di.LazyDelegate
+import pl.org.seva.events.location.InteractiveMapHolder
+import pl.org.seva.events.location.MapHolder
 import pl.org.seva.events.main.Permissions
 import pl.org.seva.events.main.permissions
 import kotlin.reflect.KProperty
@@ -55,3 +57,9 @@ fun Fragment.requestPermissions(
 
 fun Fragment.inflate(@LayoutRes resource: Int, root: ViewGroup?): View =
         layoutInflater.inflate(resource, root, false)
+
+fun Fragment.createMapHolder(f: MapHolder.() -> Unit = {}): MapHolder =
+        MapHolder().apply(f) withFragment this
+
+fun Fragment.createInteractiveMapHolder(f: InteractiveMapHolder.() -> Unit = {}): InteractiveMapHolder =
+        (InteractiveMapHolder().apply(f) withFragment this) as InteractiveMapHolder

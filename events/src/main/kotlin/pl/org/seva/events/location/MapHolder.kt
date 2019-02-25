@@ -29,9 +29,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import pl.org.seva.events.R
 
-fun Fragment.createMapHolder(f: MapHolder.() -> Unit = {}): MapHolder =
-        MapHolder().apply(f) withFragment this
-
 open class MapHolder {
     private var map: GoogleMap? = null
     var checkLocationPermission: ((onGranted: () -> Unit) -> Unit)? = null

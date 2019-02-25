@@ -26,7 +26,7 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_location_picker.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.viewModel
-import pl.org.seva.events.location.createInteractiveMapHolder
+import pl.org.seva.events.main.extension.createInteractiveMapHolder
 import pl.org.seva.events.main.extension.inflate
 import pl.org.seva.events.main.extension.observe
 
@@ -44,9 +44,7 @@ class LocationPickerFragment : Fragment() {
             delete_location.isEnabled = l != null
         }
 
-        delete_location.setOnClickListener {
-            viewModel.location.value = null
-        }
+        delete_location.setOnClickListener { viewModel.location.value = null }
         viewModel.location.observe(this) { onLocationChanged(it) }
 
         createInteractiveMapHolder {

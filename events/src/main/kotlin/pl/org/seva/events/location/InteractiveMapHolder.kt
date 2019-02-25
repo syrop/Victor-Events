@@ -29,9 +29,6 @@ import pl.org.seva.events.main.instance
 import pl.org.seva.events.main.extension.viewModel
 import java.lang.Exception
 
-fun Fragment.createInteractiveMapHolder(f: InteractiveMapHolder.() -> Unit = {}): InteractiveMapHolder =
-        (InteractiveMapHolder().apply(f) withFragment this) as InteractiveMapHolder
-
 class InteractiveMapHolder : MapHolder() {
 
     private lateinit var viewModel: CreateEventViewModel
