@@ -23,11 +23,28 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.fragment_messages.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.inflate
+import pl.org.seva.events.main.ui.ItemSwipeListener
 
 class MessagesFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
             inflate(R.layout.fragment_messages, container)
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        messages_view.setHasFixedSize(true)
+        messages_view.layoutManager = LinearLayoutManager(context)
+        messages_view.adapter = MessageAdapter()
+        messages_view.addItemDecoration(DividerItemDecoration(context!!, DividerItemDecoration.VERTICAL))
+        ItemTouchHelper(ItemSwipeListener { position ->
+
+        }).attachToRecyclerView(messages_view)
+    }
 }
