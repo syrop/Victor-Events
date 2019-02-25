@@ -24,12 +24,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_messages.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.inflate
-import pl.org.seva.events.main.ui.ItemSwipeListener
+import pl.org.seva.events.main.extension.swipeListener
 
 class MessagesFragment : Fragment() {
 
@@ -43,8 +42,8 @@ class MessagesFragment : Fragment() {
         messages_view.layoutManager = LinearLayoutManager(context)
         messages_view.adapter = MessageAdapter()
         messages_view.addItemDecoration(DividerItemDecoration(context!!, DividerItemDecoration.VERTICAL))
-        ItemTouchHelper(ItemSwipeListener { position ->
+        messages_view.swipeListener { position ->
 
-        }).attachToRecyclerView(messages_view)
+        }
     }
 }
