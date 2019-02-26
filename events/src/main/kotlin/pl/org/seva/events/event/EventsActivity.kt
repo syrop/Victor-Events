@@ -30,9 +30,7 @@ class EventsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_events)
         setSupportActionBar(toolbar)
         NavigationUI.setupActionBarWithNavController(this, nav)
-        if (comms.isEmpty) {
-            nav.navigate(R.id.action_eventsFragment_to_addCommFragment)
-        }
+
         nav.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id == R.id.eventsFragment && comms.isEmpty) {
                 finish()

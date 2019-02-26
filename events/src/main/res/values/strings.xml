@@ -4,6 +4,7 @@
     <!-- Events fragment. -->
     <string name="events_activity_dismiss_event">Do you want to dismiss event data?</string>
     <string name="events_action_login">Login</string>
+    <string name="events_action_comms">Communities</string>
     <string name="events_action_add_comm">Add a community</string>
     <string name="events_action_leave_comm">Leave a community</string>
     <string name="events_action_delete_comm">Delete a community</string>
@@ -25,6 +26,10 @@
     <string name="add_comm_joined">Joined a community: [name].</string>
     <string name="add_comm_already_a_member">You are already a member of that community.</string>
     <string name="action_search">Search</string>
+
+    <!-- Comm list fragment -->
+    <string name="comm_list_label">Communities</string>
+    <string name="comm_list_no_comms">There are currently no communities</string>
 
     <!-- Leave comm fragment -->
     <string name="leave_comm_label">Leave a community</string>

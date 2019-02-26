@@ -57,7 +57,7 @@ class CreateEventFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         fun showTimePicker() = TimePickerFragment().show(fragmentManager, TIME_PICKER_TAG)
         fun showDatePicker() = DatePickerFragment().show(fragmentManager, DATE_PICKER_TAG)
-        fun showLocationPicker() = navigate(R.id.action_createEventFragment_to_locationPickerFragment)
+        fun showLocationPicker() = nav(R.id.action_createEventFragment_to_locationPickerFragment)
 
         fun onTimeChanged(t: LocalTime?) = time.setText(if (t == null) "" else "${t.hour}:${t.minute}")
         fun onDateChanged(d: LocalDate?) = date.setText(if (d == null) "" else "${d.year}-${d.monthValue}-${d.dayOfMonth}")

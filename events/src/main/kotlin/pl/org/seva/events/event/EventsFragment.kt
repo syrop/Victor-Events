@@ -27,7 +27,7 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_events.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
-import pl.org.seva.events.main.extension.navigate
+import pl.org.seva.events.main.extension.nav
 import pl.org.seva.events.login.login
 import pl.org.seva.events.main.extension.inflate
 
@@ -49,7 +49,7 @@ class EventsFragment : Fragment() {
         }
 
         add_event_fab.setOnClickListener {
-            navigate(R.id.action_eventsFragment_to_createEventFragment)
+            nav(R.id.action_eventsFragment_to_createEventFragment)
         }
     }
 
@@ -61,11 +61,11 @@ class EventsFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.action_login -> navigate(R.id.action_eventsFragment_to_loginConfirmationFragment)
-        R.id.action_add_comm -> navigate(R.id.action_eventsFragment_to_addCommFragment)
-        R.id.action_leave_comm -> navigate(R.id.action_eventsFragment_to_leaveCommFragment)
-        R.id.action_delete_comm -> navigate(R.id.action_eventsFragment_to_deleteCommFragment)
-        R.id.action_system_messages -> navigate(R.id.action_eventsFragment_to_systemMessagesFragment)
+        R.id.action_login -> nav(R.id.action_eventsFragment_to_loginConfirmationFragment)
+        R.id.action_comms -> nav(R.id.action_eventsFragment_to_commListFragment)
+        R.id.action_leave_comm -> nav(R.id.action_eventsFragment_to_leaveCommFragment)
+        R.id.action_delete_comm -> nav(R.id.action_eventsFragment_to_deleteCommFragment)
+        R.id.action_system_messages -> nav(R.id.action_eventsFragment_to_systemMessagesFragment)
         else -> super.onOptionsItemSelected(item)
     }
 }

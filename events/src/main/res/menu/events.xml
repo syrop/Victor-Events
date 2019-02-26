@@ -8,8 +8,8 @@
         android:title="@string/events_action_login"
         app:showAsAction="never"/>
     <item
-        android:id="@+id/action_add_comm"
-        android:title="@string/events_action_add_comm"
+        android:id="@+id/action_comms"
+        android:title="@string/events_action_comms"
         app:showAsAction="never"/>
     <item
         android:id="@+id/action_leave_comm"
