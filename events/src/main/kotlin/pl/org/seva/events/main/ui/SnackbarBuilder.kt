@@ -33,6 +33,6 @@ class SnackbarBuilder(private var length: Int = Snackbar.LENGTH_LONG) {
     var action = 0
 
     infix fun show(f: () -> Unit) {
-        Snackbar.make(view, message, length).setAction(action, { f() }).show()
+        Snackbar.make(view, message, length).setAction(action) { f() }.show()
     }
 }

@@ -19,7 +19,6 @@
 
 package pl.org.seva.events.event
 
-import android.annotation.SuppressLint
 import androidx.room.PrimaryKey
 import com.google.firebase.firestore.GeoPoint
 import pl.org.seva.events.main.db.EventsDb

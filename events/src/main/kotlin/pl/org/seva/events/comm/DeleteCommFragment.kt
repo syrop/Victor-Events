@@ -34,23 +34,23 @@ class DeleteCommFragment : Fragment() {
             inflate(R.layout.fragment_delete_comm, container)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        var pendingDeletion: Comm? = null
+        var commPendingDeletion: Comm? = null
 
         fun deletePendingCommunity() {
-            with (pendingDeletion) {
+            with (commPendingDeletion) {
                 if (this?.delete() != null) {
-                    getString(R.string.delete_comm_confirmation)
-                            .bold(NAME_PLACEHOLDER, name)
+                    getString(pl.org.seva.events.R.string.delete_comm_confirmation)
+                            .bold(pl.org.seva.events.comm.DeleteCommFragment.NAME_PLACEHOLDER, name)
                             .toast()
                 }
                 else {
-                    getString(R.string.delete_comm_no_changes).toast()
+                    getString(pl.org.seva.events.R.string.delete_comm_no_changes).toast()
                 }
             }
-
             back()
         }
+
+        super.onActivityCreated(savedInstanceState)
 
         comms.isAdminOf.apply {
             comm_layout.visibility = View.VISIBLE
@@ -58,7 +58,7 @@ class DeleteCommFragment : Fragment() {
                     context!!,
                     listOf(getString(R.string.delete_comm_none))
                             .plus(map { it.name }).toTypedArray()) { position ->
-                pendingDeletion = if (position == 0) null else this[position - 1]
+                commPendingDeletion = if (position == 0) null else this[position - 1]
             }
         }
 

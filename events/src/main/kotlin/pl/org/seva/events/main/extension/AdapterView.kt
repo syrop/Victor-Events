@@ -24,13 +24,13 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 
-fun <T> AdapterView<*>.withObjects(ctx: Context, objects: Array<T>, f: (Int) -> Unit) {
+fun <T> AdapterView<*>.withObjects(ctx: Context, objects: Array<T>, onSelected: (Int) -> Unit) {
     adapter = ArrayAdapter(ctx, android.R.layout.simple_spinner_item, objects)
     onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
         override fun onNothingSelected(parent: AdapterView<*>?) = Unit
 
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-            f(position)
+            onSelected(position)
         }
     }
 }
