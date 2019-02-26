@@ -21,6 +21,7 @@ package pl.org.seva.events.message
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -36,6 +37,18 @@ class MessagesFragment : Fragment() {
             inflate(R.layout.fragment_messages, container)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+        fun refreshScreen() {
+            if (messages.empty) {
+                messages_view.visibility = View.GONE
+                prompt.visibility = View.VISIBLE
+            }
+            else {
+                messages_view.visibility = View.VISIBLE
+                messages_view.adapter!!.notifyDataSetChanged()
+                prompt.visibility = View.GONE
+            }
+        }
+
         super.onActivityCreated(savedInstanceState)
 
         messages_view.setHasFixedSize(true)
@@ -43,7 +56,9 @@ class MessagesFragment : Fragment() {
         messages_view.adapter = MessageAdapter()
         messages_view.addItemDecoration(DividerItemDecoration(context!!, DividerItemDecoration.VERTICAL))
         messages_view.swipeListener { position ->
-
+            messages.delete(position)
+            refreshScreen()
         }
+        refreshScreen()
     }
 }

@@ -7,7 +7,7 @@
     <string name="events_action_add_comm">Add a community</string>
     <string name="events_action_leave_comm">Leave a community</string>
     <string name="events_action_delete_comm">Delete a community</string>
-    <string name="events_action_system_messages">View System Messages</string>
+    <string name="events_action_system_messages">System Messages</string>
 
     <!-- Add comm fragment -->
     <string name="add_comm_label">Add a community</string>

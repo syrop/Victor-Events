@@ -29,9 +29,15 @@ class Messages {
 
     val size get() = messageCache.size
 
+    val empty get() = messageCache.isEmpty()
+
     operator fun get(position: Int) = messageCache[position]
 
     fun addAll(messages: Collection<Message>) {
         messageCache.addAll(messages)
+    }
+
+    fun delete(position: Int) {
+        messageCache.removeAt(position)
     }
 }
