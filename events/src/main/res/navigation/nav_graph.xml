@@ -42,9 +42,9 @@
 
     <fragment
         android:id="@+id/addCommFragment"
-        android:name="pl.org.seva.events.comm.AddCommFragment"
+        android:name="pl.org.seva.events.comm.CommAddFragment"
         android:label="@string/add_comm_label"
-        tools:layout="@layout/fragment_add_comm"/>
+        tools:layout="@layout/fragment_comm_add"/>
 
     <fragment
         android:id="@+id/loginConfirmationFragment"
@@ -75,6 +75,7 @@
         android:name="pl.org.seva.events.message.MessagesFragment"
         android:label="@string/system_messages_label"
         tools:layout="@layout/fragment_messages"/>
+
     <fragment
         android:id="@+id/commListFragment"
         android:name="pl.org.seva.events.comm.CommListFragment"
@@ -83,6 +84,25 @@
         <action
             android:id="@+id/action_commListFragment_to_addCommFragment"
             app:destination="@id/addCommFragment"/>
+        <action
+            android:id="@+id/action_commListFragment_to_commDetailsFragment"
+            app:destination="@id/commDetailsFragment"/>
     </fragment>
+
+    <fragment
+        android:id="@+id/commDetailsFragment"
+        android:name="pl.org.seva.events.comm.CommDetailsFragment"
+        android:label="@string/comm_details_label"
+        tools:layout="@layout/fragment_comm_edit">
+        <action
+            android:id="@+id/action_commDetailsFragment_to_commEditFragment"
+            app:destination="@id/commEditFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/commEditFragment"
+        android:name="pl.org.seva.events.comm.CommEditFragment"
+        android:label="@string/comm_edit_label"
+        tools:layout="@layout/fragment_comm_edit"/>
 
 </navigation>

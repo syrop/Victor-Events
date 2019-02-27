@@ -29,7 +29,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_add_comm.*
+import kotlinx.android.synthetic.main.fragment_comm_add.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.fs.fsReader
 import pl.org.seva.events.login.LoginActivity
@@ -38,7 +38,7 @@ import pl.org.seva.events.main.EventsViewModel
 import pl.org.seva.events.main.extension.*
 import pl.org.seva.events.main.ui.*
 
-class AddCommFragment : Fragment() {
+class CommAddFragment : Fragment() {
 
     private val eventsModel by viewModel<EventsViewModel>()
 
@@ -49,7 +49,7 @@ class AddCommFragment : Fragment() {
     private lateinit var adapter: CommAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?)  =
-            inflate(R.layout.fragment_add_comm, container)
+            inflate(R.layout.fragment_comm_add, container)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
