@@ -24,12 +24,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_messages.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.inflate
 import pl.org.seva.events.main.extension.swipeListener
+import pl.org.seva.events.main.extension.verticalDivider
 
 class MessagesFragment : Fragment() {
 
@@ -54,7 +54,7 @@ class MessagesFragment : Fragment() {
         messages_view.setHasFixedSize(true)
         messages_view.layoutManager = LinearLayoutManager(context)
         messages_view.adapter = MessageAdapter()
-        messages_view.addItemDecoration(DividerItemDecoration(context!!, DividerItemDecoration.VERTICAL))
+        messages_view.verticalDivider()
         messages_view.swipeListener { position ->
             messages.delete(position)
             refreshScreen()

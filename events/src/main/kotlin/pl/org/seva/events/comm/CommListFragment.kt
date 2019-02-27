@@ -25,7 +25,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_comm_list.*
@@ -61,14 +60,14 @@ class CommListFragment : Fragment() {
             commViewModel.comm = comms[position]
             nav(R.id.action_commListFragment_to_commDetailsFragment)
         }
-        comms_view.addItemDecoration(DividerItemDecoration(context!!, DividerItemDecoration.VERTICAL))
+        comms_view.verticalDivider()
         comms_view.swipeListener { position ->
             val comm = comms[position]
             comm.leave()
             refreshScreen()
             Snackbar.make(
                     comms_view,
-                    getString(R.string.comm_list_leave).replace(NAME_PLACEHOLDER, comm.name),
+                    getString(R.string.comm_list_leave).bold(NAME_PLACEHOLDER, comm.name),
                     Snackbar.LENGTH_LONG)
                     .setAction(R.string.comm_list_undo) {
                         comm.join()

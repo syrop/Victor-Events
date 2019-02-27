@@ -27,7 +27,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_comm_add.*
 import pl.org.seva.events.R
@@ -65,7 +64,7 @@ class CommAddFragment : Fragment() {
                         joinAndFinish()
                     }
                 }
-                recycler.addItemDecoration(DividerItemDecoration(activity!!, DividerItemDecoration.VERTICAL))
+                recycler.verticalDivider()
                 recycler.adapter = adapter
                 recycler.layoutManager = LinearLayoutManager(context)
             }
