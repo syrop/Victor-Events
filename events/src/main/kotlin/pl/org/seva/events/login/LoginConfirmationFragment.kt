@@ -67,5 +67,4 @@ class LoginConfirmationFragment : Fragment() {
         @Suppress("SpellCheckingInspection")
         const val TAP_ANYWHERE_PLACEHOLDER = "[TAPANYWHERE]"
     }
-
 }

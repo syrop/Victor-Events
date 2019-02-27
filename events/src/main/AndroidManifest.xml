@@ -20,7 +20,7 @@
             android:value="AIzaSyDRtrC48UddOyVlNyH4cj4Pgc-bTs9FN4I"/>
 
         <activity
-            android:name=".event.EventsActivity"
+            android:name=".main.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
