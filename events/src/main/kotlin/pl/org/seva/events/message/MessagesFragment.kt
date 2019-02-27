@@ -38,7 +38,7 @@ class MessagesFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         fun refreshScreen() {
-            if (messages.empty) {
+            if (messages.isEmpty()) {
                 messages_view.visibility = View.GONE
                 prompt.visibility = View.VISIBLE
             }

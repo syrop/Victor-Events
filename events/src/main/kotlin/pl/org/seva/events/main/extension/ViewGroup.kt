@@ -17,27 +17,12 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.message
+package pl.org.seva.events.main.extension
 
-import pl.org.seva.events.main.instance
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 
-val messages by instance<Messages>()
-
-class Messages {
-
-    private val messageCache = mutableListOf<Message>()
-
-    val size get() = messageCache.size
-
-    fun isEmpty() = messageCache.isEmpty()
-
-    operator fun get(position: Int) = messageCache[position]
-
-    fun addAll(messages: Collection<Message>) {
-        messageCache.addAll(messages)
-    }
-
-    fun delete(position: Int) {
-        messageCache.removeAt(position)
-    }
-}
+fun ViewGroup.inflate(@LayoutRes resource: Int): View =
+        LayoutInflater.from(context).inflate(resource, this, false)

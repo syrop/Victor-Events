@@ -30,7 +30,7 @@ data class Comm(
 
     val lcName: String get() = name.toLowerCase()
 
-    val dummy get() = name == DUMMY_NAME
+    val isDummy get() = name == DUMMY_NAME
 
     val isMemberOf get () = comms contain this
 

@@ -21,23 +21,58 @@ package pl.org.seva.events.comm
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_comm_list.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.inflate
 import pl.org.seva.events.main.extension.nav
+import pl.org.seva.events.main.extension.viewModel
 
 class CommListFragment : Fragment() {
+
+    private val commViewModel by viewModel<CommViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
             inflate(R.layout.fragment_comm_list, container)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+        fun refreshScreen() {
+            if (comms.isEmpty()) {
+                comms_view.visibility = View.GONE
+                prompt.visibility = View.VISIBLE
+            }
+            else {
+                comms_view.visibility = View.VISIBLE
+                comms_view.adapter!!.notifyDataSetChanged()
+                prompt.visibility = View.GONE
+            }
+        }
+
         super.onActivityCreated(savedInstanceState)
+
+        comms_view.setHasFixedSize(true)
+        comms_view.layoutManager = LinearLayoutManager(context)
+        comms_view.adapter = CommAdapter(*comms.toTypedArray()) { view ->
+            val position = comms_view.getChildAdapterPosition(view)
+            commViewModel.comm = comms[position]
+            nav(R.id.action_commListFragment_to_commDetailsFragment)
+        }
+
+        comms_view.addItemDecoration(DividerItemDecoration(context!!, DividerItemDecoration.VERTICAL))
 
         add_comm_fab.setOnClickListener {
             nav(R.id.action_commListFragment_to_addCommFragment)
         }
+
+        refreshScreen()
+    }
+
+    class CommViewModel : ViewModel() {
+        lateinit var comm: Comm
     }
 }

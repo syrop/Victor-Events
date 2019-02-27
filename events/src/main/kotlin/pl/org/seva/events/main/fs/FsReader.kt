@@ -57,7 +57,7 @@ class FsReader : FsBase() {
         found.zipWith(
                 isAdminObservable,
                 BiFunction { comm: Comm, isAdmin: Boolean ->
-                    if (comm.dummy) comm else comm.copy(isAdmin = isAdmin) })
+                    if (comm.isDummy) comm else comm.copy(isAdmin = isAdmin) })
                 .subscribe(lifecycle, onResult)
     }
 

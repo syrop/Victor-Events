@@ -42,9 +42,9 @@ class Comms {
 
     val isAdminOfAny get() = commCache.any { it.isAdmin }
 
-    val isEmpty get() = size == 0
+    fun isEmpty() = commCache.isEmpty()
 
-    val isNotEmpty get() = !isEmpty
+    fun isNotEmpty() = commCache.isNotEmpty()
 
     val names get() = commCache.map { it.name }.toTypedArray()
 
@@ -61,6 +61,8 @@ class Comms {
     fun addAll(comms: Collection<Comm>) {
         commCache.addAll(comms)
     }
+
+    fun toTypedArray() = commCache.toTypedArray()
 
     fun refreshAdminStatuses(): LiveData<Unit> {
         val commArray = commCache.toTypedArray()
