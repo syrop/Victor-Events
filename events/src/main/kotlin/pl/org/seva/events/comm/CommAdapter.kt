@@ -45,7 +45,7 @@ class CommAdapter(
         iconProfile.setColorFilter(comm.color)
     }
 
-    class ViewHolder internal constructor(val view: View, onClick: (View) -> Unit) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(val view: View, onClick: (View) -> Unit) : RecyclerView.ViewHolder(view) {
 
         init {
             view.setOnClickListener(onClick)

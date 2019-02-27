@@ -56,7 +56,7 @@ class Comms {
 
     infix fun delete(comm: Comm) = commCache.remove(comm)
 
-    infix fun join(comm: Comm) = commCache.add(comm)
+    infix fun join(comm: Comm) = !commCache.contains(comm) && commCache.add(comm)
 
     fun addAll(comms: Collection<Comm>) {
         commCache.addAll(comms)

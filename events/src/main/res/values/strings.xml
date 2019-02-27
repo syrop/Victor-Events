@@ -30,20 +30,14 @@
     <!-- Comm list fragment -->
     <string name="comm_list_label">Communities</string>
     <string name="comm_list_no_comms">There are currently no communities</string>
+    <string name="comm_list_leave">Left a community: [name].</string>
+    <string name="comm_list_undo">Undo</string>
 
     <!-- Comm details fragment -->
     <string name="comm_details_label">Community</string>
 
     <!-- Comm edit fragment -->
     <string name="comm_edit_label">Edit community</string>
-
-    <!-- Leave comm fragment -->
-    <string name="leave_comm_label">Leave a community</string>
-    <string name="leave_comm_comm">Community:</string>
-    <string name="leave_comm_none">[None]</string>
-    <string name="leave_comm_leave_button">Leave a community</string>
-    <string name="leave_comm_no_changes">No community selected. No changes made.</string>
-    <string name="leave_comm_confirmation">Left a community: [name].</string>
 
     <!-- Delete comm fragment -->
     <string name="delete_comm_label">Delete a community</string>
