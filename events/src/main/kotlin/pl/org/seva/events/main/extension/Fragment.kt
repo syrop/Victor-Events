@@ -23,6 +23,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
@@ -63,3 +64,9 @@ fun Fragment.createMapHolder(f: MapHolder.() -> Unit = {}): MapHolder =
 
 fun Fragment.createInteractiveMapHolder(f: InteractiveMapHolder.() -> Unit = {}): InteractiveMapHolder =
         (InteractiveMapHolder().apply(f) withFragment this) as InteractiveMapHolder
+
+var Fragment.title: CharSequence get() = (activity!! as AppCompatActivity).supportActionBar!!.title!!
+set(value) {
+    (activity!! as AppCompatActivity).supportActionBar!!.title = value
+}
+

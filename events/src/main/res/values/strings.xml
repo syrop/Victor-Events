@@ -34,7 +34,7 @@
     <string name="comm_list_undo">Undo</string>
 
     <!-- Comm details fragment -->
-    <string name="comm_details_label">Community</string>
+    <string name="comm_details_label"/>
 
     <!-- Comm edit fragment -->
     <string name="comm_edit_label">Edit community</string>
