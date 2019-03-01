@@ -21,28 +21,33 @@ package pl.org.seva.events.comm
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_comm_edit.*
-import kotlinx.android.synthetic.main.fragment_comm_list.*
+import kotlinx.android.synthetic.main.fragment_comm_delete.*
 import pl.org.seva.events.R
-import pl.org.seva.events.main.extension.bold
-import pl.org.seva.events.main.extension.inflate
-import pl.org.seva.events.main.extension.nav
-import pl.org.seva.events.main.extension.viewModel
+import pl.org.seva.events.main.extension.*
 
-class CommEditFragment : Fragment() {
+class CommDeleteFragment : Fragment() {
 
     private val commViewModel by viewModel<CommListFragment.CommViewModel>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-            inflate(R.layout.fragment_comm_edit, container)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+            inflate(R.layout.fragment_comm_delete, container)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        delete_comm_fab.setOnClickListener {
-            nav(R.id.action_commEditFragment_to_commDeleteFragment)
+        val comm = commViewModel.comm
+        title = getString(R.string.comm_delete_title).replace(NAME_PLACEHOLDER, comm.name)
+        prompt.text = getString(R.string.comm_delete_prompt).bold(NAME_PLACEHOLDER, comm.name)
+        layout.setOnClickListener {
+            comm.delete()
+            getString(R.string.comm_delete_toast).bold(NAME_PLACEHOLDER, comm.name).longToast()
+            back()
         }
+    }
+
+    companion object {
+        const val NAME_PLACEHOLDER = "[name]"
     }
 }

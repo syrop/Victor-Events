@@ -22,3 +22,5 @@ package pl.org.seva.events.main.extension
 import pl.org.seva.events.main.ui.toaster
 
 fun CharSequence.toast() = toaster toast this
+
+fun CharSequence.longToast() = toaster longToast  this

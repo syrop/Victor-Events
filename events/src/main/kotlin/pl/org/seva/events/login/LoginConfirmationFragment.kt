@@ -41,16 +41,15 @@ class LoginConfirmationFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        fun onContainerClicked() {
-            startActivityForResult(Intent(activity, LoginActivity::class.java)
-                    .putExtra(LoginActivity.ACTION, LoginActivity.LOGIN), LOGIN_CREATE_COMM_REQUEST)
-        }
 
         prompt.text = getString(R.string.login_confirmation_prompt).bold(
                 TAP_ANYWHERE_PLACEHOLDER,
                 getString(R.string.login_confirmation_tap_anywhere))
 
-        layout.setOnClickListener { onContainerClicked() }
+        layout.setOnClickListener {
+            startActivityForResult(Intent(activity, LoginActivity::class.java)
+                    .putExtra(LoginActivity.ACTION, LoginActivity.LOGIN), LOGIN_CREATE_COMM_REQUEST)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

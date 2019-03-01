@@ -36,8 +36,12 @@
 
     <!-- Comm edit fragment -->
     <string name="comm_edit_label">Edit community</string>
-    <string name="comm_edit_deleted">Deleted a community: [name].</string>
-    <string name="comm_edit_undelete">Undelete</string>
+
+    <!-- Comm delete fragment -->
+    <string name="comm_delete_label"/>
+    <string name="comm_delete_title">Delete: [name]</string>
+    <string name="comm_delete_prompt">Tap anywhere to delete the community: [name].\n\n (This action cannot be undone).</string>
+    <string name="comm_delete_toast">Deleted: [name]</string>
 
     <!-- System Messages fragment -->
     <string name="system_messages_label">System Messages</string>

@@ -85,6 +85,15 @@
         android:id="@+id/commEditFragment"
         android:name="pl.org.seva.events.comm.CommEditFragment"
         android:label="@string/comm_edit_label"
-        tools:layout="@layout/fragment_comm_edit"/>
+        tools:layout="@layout/fragment_comm_edit">
+        <action
+            android:id="@+id/action_commEditFragment_to_commDeleteFragment"
+            app:destination="@id/commDeleteFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/commDeleteFragment"
+        android:name="pl.org.seva.events.comm.CommDeleteFragment"
+        android:label="@string/comm_delete_label"
+        tools:layout="@layout/fragment_comm_delete"/>
 
 </navigation>

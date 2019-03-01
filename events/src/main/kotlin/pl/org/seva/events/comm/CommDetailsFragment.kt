@@ -26,6 +26,7 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_comm_details.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.inflate
+import pl.org.seva.events.main.extension.nav
 import pl.org.seva.events.main.extension.viewModel
 import pl.org.seva.events.main.extension.title
 
@@ -47,6 +48,9 @@ class CommDetailsFragment : Fragment() {
         }
         else {
             edit_comm_fab.hide()
+        }
+        edit_comm_fab.setOnClickListener {
+            nav(R.id.action_commDetailsFragment_to_commEditFragment)
         }
     }
 }
