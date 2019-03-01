@@ -26,11 +26,15 @@ import java.time.LocalDateTime
 data class Message(val time: LocalDateTime, val content: String) {
 
     @androidx.room.Entity(tableName = EventsDb.MESSAGES_TABLE_NAME)
-    class Entity {
-        lateinit var name: String
+    class Entity() {
         @PrimaryKey
         var time: String = ""
         var content: String = ""
+
+        constructor(message: Message) : this() {
+            time = message.time.toString()
+            content = message.content
+        }
 
         fun value() = Message(
                 time = LocalDateTime.parse(time),

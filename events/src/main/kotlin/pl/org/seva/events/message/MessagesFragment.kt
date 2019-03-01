@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_messages.*
 import pl.org.seva.events.R
+import pl.org.seva.events.main.db.db
 import pl.org.seva.events.main.extension.inflate
 import pl.org.seva.events.main.extension.swipeListener
 import pl.org.seva.events.main.extension.verticalDivider
@@ -56,7 +57,8 @@ class MessagesFragment : Fragment() {
         messages_view.adapter = MessageAdapter()
         messages_view.verticalDivider()
         messages_view.swipeListener { position ->
-            messages.delete(position)
+            messages delete position
+            db.messageDao deleteAsync messages[position]
             refreshScreen()
         }
         refreshScreen()

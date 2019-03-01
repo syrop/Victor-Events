@@ -37,7 +37,7 @@ class Messages {
         messageCache.addAll(messages)
     }
 
-    fun delete(position: Int) {
+    infix fun delete(position: Int) {
         messageCache.removeAt(position)
     }
 }
