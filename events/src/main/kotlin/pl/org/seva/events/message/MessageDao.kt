@@ -28,7 +28,6 @@ import kotlinx.coroutines.launch
 import pl.org.seva.events.main.db.EventsDb
 
 inline fun MessageDao.getAllAsync(crossinline callback: (Collection<Message>) -> Unit) {
-
     GlobalScope.launch {
         callback(getAll().map { it.value() })
     }
