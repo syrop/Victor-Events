@@ -6,8 +6,6 @@
     <string name="events_action_login">Login</string>
     <string name="events_action_comms">Communities</string>
     <string name="events_action_add_comm">Add a community</string>
-    <string name="events_action_leave_comm">Leave a community</string>
-    <string name="events_action_delete_comm">Delete a community</string>
     <string name="events_action_system_messages">System Messages</string>
 
     <!-- Add comm fragment -->
@@ -38,14 +36,8 @@
 
     <!-- Comm edit fragment -->
     <string name="comm_edit_label">Edit community</string>
-
-    <!-- Delete comm fragment -->
-    <string name="delete_comm_label">Delete a community</string>
-    <string name="delete_comm_comm">Community:</string>
-    <string name="delete_comm_none">[None]</string>
-    <string name="delete_comm_delete_button">Leave a community</string>
-    <string name="delete_comm_no_changes">No community selected. No changes made.</string>
-    <string name="delete_comm_confirmation">Deleted a community: [name].</string>
+    <string name="comm_edit_deleted">Deleted a community: [name].</string>
+    <string name="comm_edit_undelete">Undelete</string>
 
     <!-- System Messages fragment -->
     <string name="system_messages_label">System Messages</string>

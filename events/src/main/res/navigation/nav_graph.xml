@@ -17,9 +17,6 @@
             android:id="@+id/action_eventsFragment_to_loginConfirmationFragment"
             app:destination="@id/loginConfirmationFragment"/>
         <action
-            android:id="@+id/action_eventsFragment_to_deleteCommFragment"
-            app:destination="@id/deleteCommFragment"/>
-        <action
             android:id="@+id/action_eventsFragment_to_systemMessagesFragment"
             app:destination="@id/systemMessagesFragment"/>
         <action
@@ -54,12 +51,6 @@
         android:name="pl.org.seva.events.event.LocationPickerFragment"
         android:label="@string/pick_location_label"
         tools:layout="@layout/fragment_location_picker"/>
-
-    <fragment
-        android:id="@+id/deleteCommFragment"
-        android:name="pl.org.seva.events.comm.DeleteCommFragment"
-        android:label="@string/delete_comm_label"
-        tools:layout="@layout/fragment_delete_comm"/>
 
     <fragment
         android:id="@+id/systemMessagesFragment"

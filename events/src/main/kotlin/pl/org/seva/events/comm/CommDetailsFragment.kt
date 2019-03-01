@@ -23,6 +23,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.fragment_comm_details.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.inflate
 import pl.org.seva.events.main.extension.viewModel
@@ -39,6 +40,13 @@ class CommDetailsFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        title = commViewModel.comm.name
+        val comm = commViewModel.comm
+        title = comm.name
+        if (comm.isAdmin) {
+            edit_comm_fab.show()
+        }
+        else {
+            edit_comm_fab.hide()
+        }
     }
 }

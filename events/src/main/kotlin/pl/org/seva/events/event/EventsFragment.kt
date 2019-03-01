@@ -56,13 +56,11 @@ class EventsFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.events, menu)
         menu.findItem(R.id.action_login).isVisible = !login.isLoggedIn
-        menu.findItem(R.id.action_delete_comm).isVisible = comms.isAdminOfAny
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_login -> nav(R.id.action_eventsFragment_to_loginConfirmationFragment)
         R.id.action_comms -> nav(R.id.action_eventsFragment_to_commListFragment)
-        R.id.action_delete_comm -> nav(R.id.action_eventsFragment_to_deleteCommFragment)
         R.id.action_system_messages -> nav(R.id.action_eventsFragment_to_systemMessagesFragment)
         else -> super.onOptionsItemSelected(item)
     }
