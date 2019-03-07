@@ -22,7 +22,8 @@ package pl.org.seva.events.main
 import android.content.pm.PackageManager
 import androidx.fragment.app.Fragment
 import io.reactivex.subjects.PublishSubject
-import pl.org.seva.events.main.extension.subscribe
+import pl.org.seva.events.main.extension.observe
+import pl.org.seva.events.main.extension.toLiveData
 
 val permissions by instance<Permissions>()
 
@@ -40,10 +41,12 @@ class Permissions {
             permissionsToRequest.add(permission.permission)
             grantedSubject
                     .filter { it.requestCode == requestCode && it.permission == permission.permission }
-                    .subscribe(fragment) { permission.onGranted() }
+                    .toLiveData()
+                    .observe(fragment) { permission.onGranted() }
             deniedSubject
                     .filter { it.requestCode == requestCode && it.permission == permission.permission }
-                    .subscribe(fragment) { permission.onDenied() }
+                    .toLiveData()
+                    .observe(fragment) { permission.onDenied() }
         }
         fragment.requestPermissions(permissionsToRequest.toTypedArray(), requestCode)
     }

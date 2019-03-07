@@ -20,13 +20,12 @@
 package pl.org.seva.events.main.extension
 
 import android.annotation.SuppressLint
-import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.Observable
 
 @SuppressLint("CheckResult")
-fun <T> Observable<T>.subscribe(owner: LifecycleOwner, onNext: (T) -> Unit) {
-    val ld = MutableLiveData<T>()
-    ld.observe(owner, onNext)
-    subscribe { ld.value = it }
-}
+fun <T> Observable<T>.toLiveData() : LiveData<T> =
+    MutableLiveData<T>().apply {
+        this@toLiveData.subscribe { value = it }
+    }

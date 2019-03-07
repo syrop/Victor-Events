@@ -19,7 +19,6 @@
 
 package pl.org.seva.events.main.fs
 
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
@@ -33,7 +32,8 @@ import pl.org.seva.events.event.Event
 import pl.org.seva.events.login.isLoggedIn
 import pl.org.seva.events.login.login
 import pl.org.seva.events.main.instance
-import pl.org.seva.events.main.extension.subscribe
+import pl.org.seva.events.main.extension.observe
+import pl.org.seva.events.main.extension.toLiveData
 import java.time.LocalDateTime
 
 val fsReader by instance<FsReader>()
@@ -59,7 +59,8 @@ class FsReader : FsBase() {
                 isAdminObservable,
                 BiFunction { comm: Comm, isAdmin: Boolean ->
                     if (comm.isDummy) comm else comm.copy(isAdmin = isAdmin) })
-                .subscribe(owner, onResult)
+                .toLiveData()
+                .observe(owner, onResult)
     }
 
     private fun DocumentReference.doesExist() = read().map { it.exists() }
