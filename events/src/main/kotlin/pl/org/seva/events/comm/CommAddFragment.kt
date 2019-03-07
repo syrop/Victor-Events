@@ -108,7 +108,7 @@ class CommAddFragment : Fragment() {
 
             prompt.visibility = View.GONE
             progress.visibility = View.VISIBLE
-            fsReader.findCommunity(lifecycle, name) {
+            fsReader.findCommunity(this, name) {
                 if (isDummy) notFound() else found()
             }
         }

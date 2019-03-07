@@ -20,6 +20,7 @@
 package pl.org.seva.events.main.fs
 
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
@@ -47,7 +48,7 @@ class FsReader : FsBase() {
 
     infix fun isAdmin(name: String): Observable<Boolean> = name.admins.document(login.email).doesExist()
 
-    fun findCommunity(lifecycle: Lifecycle, name: String, onResult: Comm.() -> Unit) {
+    fun findCommunity(owner: LifecycleOwner, name: String, onResult: Comm.() -> Unit) {
         val lcName = name.toLowerCase()
         val found = communities.document(lcName).read().map { it.toCommunity() }
 
@@ -58,7 +59,7 @@ class FsReader : FsBase() {
                 isAdminObservable,
                 BiFunction { comm: Comm, isAdmin: Boolean ->
                     if (comm.isDummy) comm else comm.copy(isAdmin = isAdmin) })
-                .subscribe(lifecycle, onResult)
+                .subscribe(owner, onResult)
     }
 
     private fun DocumentReference.doesExist() = read().map { it.exists() }

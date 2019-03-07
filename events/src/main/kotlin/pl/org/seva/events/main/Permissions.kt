@@ -35,16 +35,15 @@ class Permissions {
             fragment: Fragment,
             requestCode: Int,
             requests: Array<PermissionRequest>) {
-        val lifecycle = fragment.lifecycle
         val permissionsToRequest = ArrayList<String>()
         requests.forEach { permission ->
             permissionsToRequest.add(permission.permission)
             grantedSubject
                     .filter { it.requestCode == requestCode && it.permission == permission.permission }
-                    .subscribe(lifecycle) { permission.onGranted() }
+                    .subscribe(fragment) { permission.onGranted() }
             deniedSubject
                     .filter { it.requestCode == requestCode && it.permission == permission.permission }
-                    .subscribe(lifecycle) { permission.onDenied() }
+                    .subscribe(fragment) { permission.onDenied() }
         }
         fragment.requestPermissions(permissionsToRequest.toTypedArray(), requestCode)
     }
