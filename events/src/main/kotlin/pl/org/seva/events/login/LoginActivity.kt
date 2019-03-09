@@ -34,8 +34,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.activity_login.*
-import pl.org.seva.events.main.EventsApplication
 import pl.org.seva.events.R
+import pl.org.seva.events.main.extension.eventsApplication
 import pl.org.seva.events.main.extension.log
 import pl.org.seva.events.main.extension.toast
 import pl.org.seva.events.main.fs.fsWriter
@@ -49,12 +49,46 @@ class LoginActivity : AppCompatActivity(),
 
     private lateinit var googleApiClient: GoogleApiClient
 
-    private var performedAction: Boolean = false
+    private var finishWhenReady: Boolean = false
     private var logoutWhenReady: Boolean = false
 
     private var commToCreate: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        fun String.setResult() {
+            setResult(Activity.RESULT_OK, Intent().putExtra(COMMUNITY_NAME, this))
+        }
+
+        fun onUserLoggedIn(user: FirebaseUser) {
+            fsWriter login user
+            eventsApplication.login(user)
+            if (finishWhenReady) {
+                commToCreate?.setResult() ?: setResult(Activity.RESULT_OK)
+                finish()
+            }
+        }
+
+        fun onUserLoggedOut() {
+            eventsApplication.logout()
+            if (finishWhenReady) {
+                finish()
+            }
+        }
+
+        fun login() {
+            val signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient)
+            startActivityForResult(signInIntent, SIGN_IN_REQUEST_ID)
+        }
+
+        fun logout() {
+            finishWhenReady = true
+            logoutWhenReady = true
+            auth.signOut()
+            eventsApplication.logout()
+            googleApiClient.connect()
+            finish()
+        }
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
@@ -95,40 +129,6 @@ class LoginActivity : AppCompatActivity(),
         }
     }
 
-    private fun login() {
-        val signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient)
-        startActivityForResult(signInIntent, SIGN_IN_REQUEST_ID)
-    }
-
-    private fun logout() {
-        finishWhenStateChanges()
-        logoutWhenReady = true
-        auth.signOut()
-        (application as EventsApplication).logout()
-        googleApiClient.connect()
-        finish()
-    }
-
-    private fun onUserLoggedIn(user: FirebaseUser) {
-        fsWriter login user
-        (application as EventsApplication).login(user)
-        if (performedAction) {
-            commToCreate?.setResult() ?: setResult(Activity.RESULT_OK)
-            finish()
-        }
-    }
-
-    private fun String.setResult() {
-        setResult(Activity.RESULT_OK, Intent().putExtra(COMMUNITY_NAME, this))
-    }
-
-    private fun onUserLoggedOut() {
-        (application as EventsApplication).logout()
-        if (performedAction) {
-            finish()
-        }
-    }
-
     public override fun onStart() {
         super.onStart()
         auth.addAuthStateListener(authStateListener)
@@ -136,7 +136,7 @@ class LoginActivity : AppCompatActivity(),
 
     public override fun onStop() {
         super.onStop()
-        hideProgressDialog()
+        progress.visibility = View.GONE
         auth.removeAuthStateListener(authStateListener)
     }
 
@@ -146,11 +146,35 @@ class LoginActivity : AppCompatActivity(),
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        fun signInFailed() {
+            getString(R.string.login_authentication_failed).toast()
+            finish()
+        }
+
+        fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
+            log.info("firebaseAuthWithGoogle:" + acct.id!!)
+            progress.visibility = View.VISIBLE
+
+            val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
+            auth.signInWithCredential(credential)
+                    .addOnCompleteListener(this) {
+                        log.info("signInWithCredential:onComplete:" + it.isSuccessful)
+                        progress.visibility = View.GONE
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!it.isSuccessful) {
+                            signInFailed()
+                        }
+                    }
+        }
+
         super.onActivityResult(requestCode, resultCode, data)
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...)
         if (requestCode == SIGN_IN_REQUEST_ID) {
-            finishWhenStateChanges()
+            finishWhenReady = true
             val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
             if (result.isSuccess) {
                 // Google Sign In was successful, authenticate with Firebase
@@ -160,42 +184,6 @@ class LoginActivity : AppCompatActivity(),
                 signInFailed()
             }
         }
-    }
-
-    private fun finishWhenStateChanges() {
-        performedAction = true
-    }
-
-    private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-        log.info("firebaseAuthWithGoogle:" + acct.id!!)
-        showProgressDialog()
-
-        val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
-        auth.signInWithCredential(credential)
-                .addOnCompleteListener(this) {
-                    log.info("signInWithCredential:onComplete:" + it.isSuccessful)
-                    hideProgressDialog()
-
-                    // If sign in fails, display a message to the user. If sign in succeeds
-                    // the auth state listener will be notified and logic to handle the
-                    // signed in user can be handled in the listener.
-                    if (!it.isSuccessful) {
-                        signInFailed()
-                    }
-                }
-    }
-
-    private fun signInFailed() {
-        getString(R.string.login_authentication_failed).toast()
-        finish()
-    }
-
-    private fun showProgressDialog() {
-        progress.visibility = View.VISIBLE
-    }
-
-    private fun hideProgressDialog() {
-        progress.visibility = View.GONE
     }
 
     override fun onConnectionFailed(connectionResult: ConnectionResult) {
@@ -209,7 +197,7 @@ class LoginActivity : AppCompatActivity(),
         }
     }
 
-    override fun onConnectionSuspended(i: Int) {}
+    override fun onConnectionSuspended(i: Int) = Unit
 
     companion object {
 
