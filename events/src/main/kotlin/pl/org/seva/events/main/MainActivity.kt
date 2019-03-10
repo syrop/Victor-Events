@@ -37,9 +37,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return if (item.itemId == android.R.id.home) showDismissEventDialog() else false
-    }
+    override fun onOptionsItemSelected(item: MenuItem) =
+            if (item.itemId == android.R.id.home) showDismissEventDialog() else false
 
     private fun showDismissEventDialog() =
             if (navController.currentDestination?.id == R.id.createEventFragment && createEventsViewModel.isFilledIn) {
