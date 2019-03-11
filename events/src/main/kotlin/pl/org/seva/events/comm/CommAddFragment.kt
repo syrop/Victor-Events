@@ -51,7 +51,6 @@ class CommAddFragment : Fragment() {
             inflate(R.layout.fragment_comm_add, container)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         fun search(name: String) {
             fun Comm.found() {
                 progress.visibility = View.GONE
@@ -113,6 +112,7 @@ class CommAddFragment : Fragment() {
             }
         }
 
+        super.onActivityCreated(savedInstanceState)
         prompt.setText(if (comms.isEmpty()) R.string.add_comm_please_search_empty else
             R.string.add_comm_please_search)
         eventsModel.query.observe(this) { name ->

@@ -8,7 +8,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
-import kotlinx.android.synthetic.main.activity_events.*
+import kotlinx.android.synthetic.main.activity_main.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.CommAddFragment
 import pl.org.seva.events.event.CreateEventViewModel
@@ -26,10 +26,19 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_events)
+        setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         NavigationUI.setupActionBarWithNavController(this, navController)
     }
+
+    override fun onBackPressed() {
+        if (!showDismissEventDialog()) {
+            super.onBackPressed()
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) =
+            if (item.itemId == android.R.id.home) showDismissEventDialog() else false
 
     private fun showDismissEventDialog() =
             if (navController.currentDestination?.id == R.id.createEventFragment && createEventsViewModel.isFilledIn) {
@@ -42,16 +51,6 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             else false
-
-    override fun onBackPressed() {
-        if (!showDismissEventDialog()) {
-            super.onBackPressed()
-        }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return if (item.itemId == android.R.id.home) showDismissEventDialog() else false
-    }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
