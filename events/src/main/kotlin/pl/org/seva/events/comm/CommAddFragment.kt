@@ -55,7 +55,7 @@ class CommAddFragment : Fragment() {
             fun Comm.found() {
                 progress.visibility = View.GONE
                 recycler.visibility = View.VISIBLE
-                adapter = CommAdapter(this) {
+                adapter = FixedCommAdapter(this) {
                     if (isMemberOf) {
                         getString(R.string.add_comm_already_a_member).toast()
                     }

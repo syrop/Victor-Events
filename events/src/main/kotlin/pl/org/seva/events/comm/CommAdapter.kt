@@ -28,17 +28,17 @@ import kotlinx.android.synthetic.main.row_comm.view.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.inflate
 
-class CommAdapter(
-        private vararg val comms: Comm,
-        private val onClick: (View) -> Unit) : RecyclerView.Adapter<CommAdapter.ViewHolder>() {
+open class CommAdapter(private val onClick: (View) -> Unit) : RecyclerView.Adapter<CommAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             ViewHolder(parent.inflate(R.layout.row_comm), onClick)
 
     override fun getItemCount() = comms.size
 
+    protected open fun getItem(position: Int): Comm = comms[position]
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = with (holder) {
-        val comm = comms[position]
+        val comm = getItem(position)
         communityName.text = comm.name
         iconText.text = comm.name.substring(0, 1)
         iconProfile.setImageResource(R.drawable.bg_circle)
