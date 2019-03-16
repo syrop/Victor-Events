@@ -1,37 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/address_layout"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/address"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:focusable="false"
-            android:inputType="none"
-            android:hint="@string/pick_location_select_location"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <fragment
-    android:id="@+id/map"
-    android:layout_below="@+id/address_layout"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
-
-    <Button
-        android:id="@+id/delete_location"
-        android:layout_alignParentBottom="true"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:enabled="false"
-        android:text="@string/pick_location_delete_location"/>
+        android:layout_height="match_parent">
 
-</RelativeLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/address_layout"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/address"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:focusable="false"
+                android:inputType="none"
+                android:hint="@string/pick_location_select_location"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <fragment
+        android:id="@+id/map"
+        android:layout_below="@+id/address_layout"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    </RelativeLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/delete_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:srcCompat="@android:drawable/ic_delete"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -69,5 +69,4 @@
     <!-- Pick location fragment -->
     <string name="pick_location_label">Select location</string>
     <string name="pick_location_select_location">Select location of your event</string>
-    <string name="pick_location_delete_location">Delete location</string>
 </resources>

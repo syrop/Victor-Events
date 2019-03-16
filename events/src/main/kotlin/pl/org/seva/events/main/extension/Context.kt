@@ -19,17 +19,17 @@
 
 package pl.org.seva.events.main.extension
 
-import android.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 
 fun Context.question(message: String, yes: () -> Unit = {}, no: () -> Unit = {}) {
-    YesNoListener(yes, no).apply {
-        AlertDialog.Builder(this@question)
-                .setMessage(message)
-                .setPositiveButton(android.R.string.yes, this)
-                .setNegativeButton(android.R.string.no, this).show()
-    }
+    val listener = YesNoListener(yes, no)
+
+    AlertDialog.Builder(this@question)
+            .setMessage(message)
+            .setPositiveButton(android.R.string.yes, listener)
+            .setNegativeButton(android.R.string.no, listener).show()
 }
 
 private class YesNoListener(

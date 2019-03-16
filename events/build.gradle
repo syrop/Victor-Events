@@ -99,8 +99,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
+    implementation 'com.google.android.material:material:1.1.0-alpha04'
 
-    implementation 'com.google.android.material:material:1.0.0'
     implementation 'commons-io:commons-io:2.5'
     androidTestImplementation 'org.mockito:mockito-android:2.18.3'
     testImplementation 'junit:junit:4.12'

@@ -45,10 +45,10 @@ class EventsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         if (comms.isAdminOfAny) {
-            add_event_fab.visibility = View.VISIBLE
+            add_event.visibility = View.VISIBLE
         }
 
-        add_event_fab.setOnClickListener {
+        add_event.setOnClickListener {
             nav(R.id.action_eventsFragment_to_createEventFragment)
         }
     }

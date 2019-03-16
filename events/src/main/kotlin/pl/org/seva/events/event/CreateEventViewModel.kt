@@ -57,7 +57,8 @@ class CreateEventViewModel : ViewModel() {
         location.observe(owner) { mapHolder.putMarker(it?.location) }
     }
 
-    val isFilledIn get() = eventData.any { it.value != null }
+    val isFilledIn
+        get() = eventData.any { !it.value?.toString().isNullOrEmpty() }
 
     fun clear() = eventData.onEach {
         it.value = null

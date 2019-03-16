@@ -55,8 +55,8 @@ class CreateEventFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        fun showTimePicker() = TimePickerFragment().show(fragmentManager, TIME_PICKER_TAG)
-        fun showDatePicker() = DatePickerFragment().show(fragmentManager, DATE_PICKER_TAG)
+        fun showTimePicker() = TimePickerFragment().show(fragmentManager!!, TIME_PICKER_TAG)
+        fun showDatePicker() = DatePickerFragment().show(fragmentManager!!, DATE_PICKER_TAG)
         fun showLocationPicker() = nav(R.id.action_createEventFragment_to_locationPickerFragment)
 
         fun onTimeChanged(t: LocalTime?) = time.setText(if (t == null) "" else "${t.hour}:${t.minute}")

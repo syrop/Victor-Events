@@ -21,6 +21,7 @@ package pl.org.seva.events.event
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_location_picker.*
@@ -38,11 +39,12 @@ class LocationPickerFragment : Fragment() {
             inflate(R.layout.fragment_location_picker, container)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         fun onLocationChanged(l: EventLocation?) {
             address.setText(l?.address ?: "")
-            delete_location.isEnabled = l != null
+            delete_location.visibility = if (l != null) View.VISIBLE else View.GONE
         }
+
+        super.onActivityCreated(savedInstanceState)
 
         delete_location.setOnClickListener { viewModel.location.value = null }
         viewModel.location.observe(this) { onLocationChanged(it) }
