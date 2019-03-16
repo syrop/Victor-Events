@@ -40,7 +40,7 @@
     <!-- Comm delete fragment -->
     <string name="comm_delete_label"/>
     <string name="comm_delete_title">Delete: [name]</string>
-    <string name="comm_delete_prompt">Tap anywhere to delete the community: [name].\n\n (This action cannot be undone).</string>
+    <string name="comm_delete_prompt">Delete the community: [name].\n (This action cannot be undone).</string>
     <string name="comm_delete_toast">Deleted: [name]</string>
 
     <!-- System Messages fragment -->
@@ -52,8 +52,8 @@
     <string name="create_event_name">Name</string>
     <string name="create_event_date">Date</string>
     <string name="create_event_time">Time</string>
-    <string name="create_event_location">Location</string>
-    <string name="create_event_description">Description</string>
+    <string name="create_event_description">Description (optional)</string>
+    <string name="create_event_location">Location (optional)</string>
 
     <!-- Login activity -->
     <string name="login_label">Login</string>
@@ -63,8 +63,8 @@
 
     <!-- Login confirmation fragment -->
     <string name="login_confirmation_label">Login</string>
-    <string name="login_confirmation_prompt">You do not need to log in to use the app. Only log in if you want to create a new community or add events to an existing community.\n\n[TAPANYWHERE]</string>
-    <string name="login_confirmation_tap_anywhere">Tap anywhere to log in.</string>
+    <string name="login_confirmation_prompt">You do not need to log in to use the app. Only log in if you want to create a new community or add events to an existing community.</string>
+    <string name="login_confirmation_button">Log in</string>
 
     <!-- Pick location fragment -->
     <string name="pick_location_label">Select location</string>

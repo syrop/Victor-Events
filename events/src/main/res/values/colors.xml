@@ -7,6 +7,7 @@
     <color name="row_activated">#e0e0e0</color>
     <color name="bg_circle_default">#666666</color>
     <color name="colorOnFab">#EEEEEE</color>
+    <color name="snackbar">#000000</color>
 
     <array name="mdcolor_400">
         <item name="red_400" type="color">#e84e40</item>

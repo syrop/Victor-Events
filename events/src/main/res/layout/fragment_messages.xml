@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:text="@string/system_messages_no_messages"
         android:textSize="20sp"
+        android:layout_margin="16dp"
         android:layout_centerInParent="true"/>
 
     <androidx.recyclerview.widget.RecyclerView

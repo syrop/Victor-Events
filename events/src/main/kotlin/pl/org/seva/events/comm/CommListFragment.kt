@@ -76,7 +76,7 @@ class CommListFragment : Fragment() {
                     .show()
         }
 
-        add_comm_fab.setOnClickListener {
+        add_comm.setOnClickListener {
             nav(R.id.action_commListFragment_to_addCommFragment)
         }
 

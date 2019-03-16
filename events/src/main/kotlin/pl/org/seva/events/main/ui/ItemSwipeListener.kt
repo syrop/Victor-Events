@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.RecyclerView
 class ItemSwipeListener(private val onItemSwiped: (Int) -> Unit) : ItemTouchHelper.Callback() {
 
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) =
-            ItemTouchHelper.Callback.makeMovementFlags(0, ItemTouchHelper.START or ItemTouchHelper.END)
+            makeMovementFlags(0, ItemTouchHelper.START or ItemTouchHelper.END)
 
     override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
                         target: RecyclerView.ViewHolder) = false

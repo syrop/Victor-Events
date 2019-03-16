@@ -40,9 +40,12 @@ class CommDeleteFragment : Fragment() {
         val comm = commViewModel.comm
         title = getString(R.string.comm_delete_title).replace(NAME_PLACEHOLDER, comm.name)
         prompt.text = getString(R.string.comm_delete_prompt).bold(NAME_PLACEHOLDER, comm.name)
-        layout.setOnClickListener {
+        ok.setOnClickListener {
             comm.delete()
             getString(R.string.comm_delete_toast).bold(NAME_PLACEHOLDER, comm.name).longToast()
+            back()
+        }
+        cancel.setOnClickListener {
             back()
         }
     }

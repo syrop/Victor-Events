@@ -29,7 +29,6 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_login_confirmation.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
-import pl.org.seva.events.main.extension.bold
 import pl.org.seva.events.main.extension.back
 import pl.org.seva.events.main.extension.inflate
 import pl.org.seva.events.main.extension.observe
@@ -42,13 +41,12 @@ class LoginConfirmationFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        prompt.text = getString(R.string.login_confirmation_prompt).bold(
-                TAP_ANYWHERE_PLACEHOLDER,
-                getString(R.string.login_confirmation_tap_anywhere))
-
-        layout.setOnClickListener {
+        ok.setOnClickListener {
             startActivityForResult(Intent(activity, LoginActivity::class.java)
                     .putExtra(LoginActivity.ACTION, LoginActivity.LOGIN), LOGIN_CREATE_COMM_REQUEST)
+        }
+        cancel.setOnClickListener {
+            back()
         }
     }
 
@@ -56,14 +54,16 @@ class LoginConfirmationFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == LOGIN_CREATE_COMM_REQUEST && resultCode == Activity.RESULT_OK) {
             prompt.visibility = View.GONE
+            ok.visibility = View.GONE
+            cancel.visibility = View.GONE
             progress.visibility = View.VISIBLE
-            comms.refreshAdminStatuses().observe(this) { back() }
+            comms.refreshAdminStatuses().observe(this) {
+                back()
+            }
         }
     }
 
     companion object {
         const val LOGIN_CREATE_COMM_REQUEST = 0
-        @Suppress("SpellCheckingInspection")
-        const val TAP_ANYWHERE_PLACEHOLDER = "[TAPANYWHERE]"
     }
 }
