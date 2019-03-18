@@ -33,7 +33,6 @@ import pl.org.seva.events.login.isLoggedIn
 import pl.org.seva.events.login.login
 import pl.org.seva.events.main.instance
 import pl.org.seva.events.main.extension.observe
-import pl.org.seva.events.main.extension.toLiveData
 import java.time.LocalDateTime
 
 val fsReader by instance<FsReader>()
@@ -59,7 +58,6 @@ class FsReader : FsBase() {
                 isAdminObservable,
                 BiFunction { comm: Comm, isAdmin: Boolean ->
                     if (comm.isDummy) comm else comm.copy(isAdmin = isAdmin) })
-                .toLiveData()
                 .observe(owner, onResult)
     }
 

@@ -19,11 +19,22 @@
 
 package pl.org.seva.events.main.extension
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.*
 import io.reactivex.Observable
+import io.reactivex.disposables.Disposable
 
-fun <T> Observable<T>.toLiveData() : LiveData<T> =
-    MutableLiveData<T>().apply {
-        this@toLiveData.subscribe { value = it }
+fun <T> Observable<T>.observe(owner: LifecycleOwner, observer: (T) -> Unit) {
+    val liveData = MutableLiveData<T>()
+    liveData.observe(owner, observer)
+    val disposable = subscribe { liveData.value = it }
+    owner.lifecycle.addObserver(RxLifecycleObserver(disposable))
+}
+
+private class RxLifecycleObserver(private val disposable: Disposable) : LifecycleObserver {
+
+    @Suppress("unused")
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    private fun onEvent() {
+        disposable.dispose()
     }
+}
