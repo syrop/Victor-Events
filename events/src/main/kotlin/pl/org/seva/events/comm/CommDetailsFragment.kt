@@ -30,14 +30,12 @@ import pl.org.seva.events.main.extension.nav
 import pl.org.seva.events.main.extension.viewModel
 import pl.org.seva.events.main.extension.title
 
-
 class CommDetailsFragment : Fragment() {
 
     private val commViewModel by viewModel<CommListFragment.CommViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
             inflate(R.layout.fragment_comm_details, container)
-
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
