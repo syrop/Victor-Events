@@ -22,6 +22,5 @@ package pl.org.seva.events.main.coroutine
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-fun ioLaunch(block: () -> Unit) = GlobalScope.launch { withContext(Dispatchers.IO) { block() } }
+fun ioLaunch(block: () -> Unit) = GlobalScope.launch(Dispatchers.IO) { block() }
