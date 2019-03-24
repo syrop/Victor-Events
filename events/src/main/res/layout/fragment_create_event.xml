@@ -3,27 +3,26 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/comm_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:visibility="gone"
-        android:layout_marginStart="4dp"
         tools:visibility="visible">
 
-        <TextView
-            android:text="@string/create_event_comm"
-            android:layout_width="wrap_content"
-            android:textSize="16sp"
-            android:layout_height="wrap_content"/>
-        <Spinner
-            android:id="@+id/comm_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/comm"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:importantForAutofill="noExcludeDescendants"
+            android:focusable="false"
+            android:inputType="none"
+            android:hint="@string/create_event_comm"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/name_layout"

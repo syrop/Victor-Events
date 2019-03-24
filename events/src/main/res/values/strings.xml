@@ -48,7 +48,7 @@
     <string name="system_messages_no_messages">There are currently no System Messages.</string>
 
     <!-- Create event Fragment -->
-    <string name="create_event_comm">Community:</string>
+    <string name="create_event_comm">Community</string>
     <string name="create_event_name">Name</string>
     <string name="create_event_date">Date</string>
     <string name="create_event_time">Time</string>

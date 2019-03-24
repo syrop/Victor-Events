@@ -26,6 +26,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_create_event.*
@@ -82,8 +83,15 @@ class CreateEventFragment : Fragment() {
             model.comm.value = get(0)
             if (size > 1) {
                 comm_layout.visibility = View.VISIBLE
-                comm_spinner.withObjects(context!!, this) {
-                    position -> model.comm.value = get(position)
+                comm.setText(get(0))
+                comm.withLiveData(this@CreateEventFragment, model.comm)
+                comm.setOnClickListener {
+                    AlertDialog.Builder(context!!)
+                            .setItems(this) { dialog, which ->
+                                comm.setText(get(which))
+                                dialog.dismiss()
+                            }
+                            .show()
                 }
             }
         }
