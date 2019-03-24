@@ -23,19 +23,18 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import pl.org.seva.events.main.coroutine.ioLaunch
 import pl.org.seva.events.main.db.EventsDb
 
-inline fun MessageDao.getAllAsync(crossinline callback: (Collection<Message>) -> Unit) {
-    GlobalScope.launch {
-        callback(getAll().map { it.value() })
-    }
+fun MessageDao.getAllValues() = getAll().map { it.value() }
+
+inline infix fun MessageDao.getAllAsync(crossinline callback: (Collection<Message>) -> Unit) {
+    ioLaunch { callback(getAllValues()) }
 }
 
 infix fun MessageDao.delete(message: Message) = delete(Message.Entity(message))
 
-infix fun MessageDao.deleteAsync(message: Message) = GlobalScope.launch { delete(message) }
+infix fun MessageDao.deleteAsync(message: Message) = ioLaunch { delete(message) }
 
 @Dao
 interface MessageDao {

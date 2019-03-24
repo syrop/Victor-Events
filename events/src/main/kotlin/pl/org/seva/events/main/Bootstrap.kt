@@ -34,8 +34,8 @@ class Bootstrap {
 
     fun boot() {
         login.setCurrentUser(FirebaseAuth.getInstance().currentUser)
-        db.commDao.getAllAsync { comms.addAll(it) }
-        db.messageDao.getAllAsync { messages.addAll(it) }
+        db.commDao getAllAsync { comms.addAll(it) }
+        db.messageDao getAllAsync { messages.addAll(it) }
     }
 
     fun login(user: FirebaseUser) {

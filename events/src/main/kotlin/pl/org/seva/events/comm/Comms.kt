@@ -23,8 +23,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import pl.org.seva.events.main.coroutine.ioLaunch
 import pl.org.seva.events.main.fs.fsWriter
 import pl.org.seva.events.main.fs.fsReader
 import pl.org.seva.events.main.instance
@@ -76,7 +75,7 @@ class Comms {
                     adminsObservable,
                     BiFunction { comm: Comm, isAdmin: Boolean -> comm.copy(isAdmin = isAdmin) }).
                     doOnComplete {
-                        GlobalScope.launch {
+                        ioLaunch {
                             commDao.clear()
                             commCache.forEach { commDao join it }
                         }
