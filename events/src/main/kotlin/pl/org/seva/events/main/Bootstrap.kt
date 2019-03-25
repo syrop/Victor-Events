@@ -22,10 +22,11 @@ package pl.org.seva.events.main
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import pl.org.seva.events.comm.comms
-import pl.org.seva.events.comm.getAllAsync
+import pl.org.seva.events.comm.getAllValues
 import pl.org.seva.events.login.login
+import pl.org.seva.events.main.coroutine.ioLaunch
 import pl.org.seva.events.main.db.db
-import pl.org.seva.events.message.getAllAsync
+import pl.org.seva.events.message.getAllValues
 import pl.org.seva.events.message.messages
 
 val bootstrap by instance<Bootstrap>()
@@ -34,8 +35,8 @@ class Bootstrap {
 
     fun boot() {
         login.setCurrentUser(FirebaseAuth.getInstance().currentUser)
-        db.commDao getAllAsync { comms.addAll(it) }
-        db.messageDao getAllAsync { messages.addAll(it) }
+        ioLaunch { comms.addAll(db.commDao.getAllValues()) }
+        ioLaunch { messages.addAll(db.messageDao.getAllValues()) }
     }
 
     fun login(user: FirebaseUser) {

@@ -28,10 +28,6 @@ import pl.org.seva.events.main.db.EventsDb
 
 fun MessageDao.getAllValues() = getAll().map { it.value() }
 
-inline infix fun MessageDao.getAllAsync(crossinline callback: (Collection<Message>) -> Unit) {
-    ioLaunch { callback(getAllValues()) }
-}
-
 infix fun MessageDao.delete(message: Message) = delete(Message.Entity(message))
 
 infix fun MessageDao.deleteAsync(message: Message) = ioLaunch { delete(message) }

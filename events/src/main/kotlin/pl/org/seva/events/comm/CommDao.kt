@@ -39,10 +39,6 @@ infix fun CommDao.joinAsync(comm: Comm) = ioLaunch { join(comm) }
 
 fun CommDao.getAllValues() = getAll().map { it.value() }
 
-inline infix fun CommDao.getAllAsync(crossinline callback: (Collection<Comm>) -> Unit) {
-    ioLaunch { callback(getAllValues()) }
-}
-
 @Dao
 interface CommDao {
 
