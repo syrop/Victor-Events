@@ -33,6 +33,7 @@
 
     <!-- Comm details fragment -->
     <string name="comm_details_label"/>
+    <string name="comm_details_name">Name</string>
 
     <!-- Comm edit fragment -->
     <string name="comm_edit_label">Edit community</string>
