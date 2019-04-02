@@ -23,18 +23,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_comm_edit.*
-import kotlinx.android.synthetic.main.fragment_comm_list.*
 import pl.org.seva.events.R
-import pl.org.seva.events.main.extension.bold
 import pl.org.seva.events.main.extension.inflate
 import pl.org.seva.events.main.extension.nav
 import pl.org.seva.events.main.extension.viewModel
 
 class CommEditFragment : Fragment() {
 
-    private val commViewModel by viewModel<CommListFragment.CommViewModel>()
+    private val commViewModel by viewModel<CommViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
             inflate(R.layout.fragment_comm_edit, container)

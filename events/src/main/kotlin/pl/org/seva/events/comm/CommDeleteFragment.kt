@@ -30,7 +30,7 @@ import pl.org.seva.events.main.extension.*
 
 class CommDeleteFragment : Fragment() {
 
-    private val commViewModel by viewModel<CommListFragment.CommViewModel>()
+    private val commViewModel by viewModel<CommViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
             inflate(R.layout.fragment_comm_delete, container)

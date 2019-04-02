@@ -83,10 +83,6 @@ class CommListFragment : Fragment() {
         refreshScreen()
     }
 
-    class CommViewModel : ViewModel() {
-        lateinit var comm: Comm
-    }
-
     companion object {
         const val NAME_PLACEHOLDER = "[name]"
     }
