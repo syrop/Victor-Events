@@ -50,5 +50,7 @@ class CommDetailsFragment : Fragment() {
         edit_comm_fab.setOnClickListener {
             nav(R.id.action_commDetailsFragment_to_commEditFragment)
         }
+        name.setText(comm.name)
+        description.setText(comm.description)
     }
 }

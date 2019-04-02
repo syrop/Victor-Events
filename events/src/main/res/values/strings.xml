@@ -34,9 +34,13 @@
     <!-- Comm details fragment -->
     <string name="comm_details_label"/>
     <string name="comm_details_name">Name</string>
+    <string name="comm_details_description">Description</string>
+
 
     <!-- Comm edit fragment -->
     <string name="comm_edit_label">Edit community</string>
+    <string name="comm_edit_name">Name</string>
+    <string name="comm_edit_description">Description</string>
 
     <!-- Comm delete fragment -->
     <string name="comm_delete_label"/>
