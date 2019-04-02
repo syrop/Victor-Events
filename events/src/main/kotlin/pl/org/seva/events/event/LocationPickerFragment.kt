@@ -24,7 +24,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_location_picker.*
+import kotlinx.android.synthetic.main.fr_location_picker.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.viewModel
 import pl.org.seva.events.main.extension.createInteractiveMapHolder
@@ -36,7 +36,7 @@ class LocationPickerFragment : Fragment() {
     private val viewModel by viewModel<CreateEventViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-            inflate(R.layout.fragment_location_picker, container)
+            inflate(R.layout.fr_location_picker, container)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         fun onLocationChanged(l: EventLocation?) {

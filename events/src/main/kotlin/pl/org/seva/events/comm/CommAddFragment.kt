@@ -28,7 +28,7 @@ import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_comm_add.*
+import kotlinx.android.synthetic.main.fr_comm_add.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.fs.fsReader
 import pl.org.seva.events.login.LoginActivity
@@ -48,7 +48,7 @@ class CommAddFragment : Fragment() {
     private lateinit var adapter: CommAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?)  =
-            inflate(R.layout.fragment_comm_add, container)
+            inflate(R.layout.fr_comm_add, container)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         fun search(name: String) {

@@ -24,7 +24,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 
-import kotlinx.android.synthetic.main.fragment_events.*
+import kotlinx.android.synthetic.main.fr_events.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.main.extension.nav
@@ -34,7 +34,7 @@ import pl.org.seva.events.main.extension.inflate
 class EventsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-            inflate(R.layout.fragment_events, container)
+            inflate(R.layout.fr_events, container)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -33,7 +33,7 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.act_login.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.eventsApplication
 import pl.org.seva.events.main.extension.log
@@ -90,7 +90,7 @@ class LoginActivity : AppCompatActivity(),
         }
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.act_login)
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(DEFAULT_WEB_CLIENT_ID)

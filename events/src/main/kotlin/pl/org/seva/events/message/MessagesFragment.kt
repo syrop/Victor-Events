@@ -25,7 +25,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_messages.*
+import kotlinx.android.synthetic.main.fr_messages.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.db.db
 import pl.org.seva.events.main.extension.inflate
@@ -35,7 +35,7 @@ import pl.org.seva.events.main.extension.verticalDivider
 class MessagesFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-            inflate(R.layout.fragment_messages, container)
+            inflate(R.layout.fr_messages, container)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         fun refreshScreen() {

@@ -24,7 +24,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_comm_delete.*
+import kotlinx.android.synthetic.main.fr_comm_delete.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.*
 
@@ -33,7 +33,7 @@ class CommDeleteFragment : Fragment() {
     private val commViewModel by viewModel<CommViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflate(R.layout.fragment_comm_delete, container)
+            inflate(R.layout.fr_comm_delete, container)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

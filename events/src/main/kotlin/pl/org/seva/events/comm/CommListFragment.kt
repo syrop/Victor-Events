@@ -24,10 +24,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_comm_list.*
+import kotlinx.android.synthetic.main.fr_comm_list.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.*
 
@@ -36,7 +35,7 @@ class CommListFragment : Fragment() {
     private val commViewModel by viewModel<CommViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-            inflate(R.layout.fragment_comm_list, container)
+            inflate(R.layout.fr_comm_list, container)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         fun refreshScreen() {
