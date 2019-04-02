@@ -22,9 +22,11 @@ package pl.org.seva.events.comm
 import android.graphics.Color
 import androidx.room.PrimaryKey
 import pl.org.seva.events.main.db.EventsDb
+import java.io.FileDescriptor
 
 data class Comm(
         val name: String,
+        val description: String = "",
         val color: Int = Color.GRAY,
         val isAdmin: Boolean = false) {
 
@@ -51,20 +53,23 @@ data class Comm(
     class Entity() {
         @PrimaryKey
         lateinit var name: String
+        lateinit var description: String
         var color: Int = Color.GRAY
         var isAdmin: Boolean = false
 
         constructor(comm: Comm) : this() {
             name = comm.name
+            description = comm.description
             color = comm.color
             isAdmin = comm.isAdmin
         }
 
-        fun value() = Comm(name = name, color = color, isAdmin = isAdmin)
+        fun value() = Comm(name = name, description = description, color = color, isAdmin = isAdmin)
     }
 
     companion object {
         private const val DUMMY_NAME = ""
-        val DUMMY = Comm(DUMMY_NAME)
+        private const val DUMMY_DESCRIPTION = ""
+        val DUMMY = Comm(DUMMY_NAME, DUMMY_DESCRIPTION)
     }
 }
