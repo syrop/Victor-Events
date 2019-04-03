@@ -29,8 +29,7 @@ data class Event(
         val time: LocalDateTime = LocalDateTime.now(),
         val location: GeoPoint? = null,
         val address: String? = null,
-        val desc: String? = null
-) {
+        val desc: String? = null) {
 
     val fsEvent get() = Fs(
             name = name,
