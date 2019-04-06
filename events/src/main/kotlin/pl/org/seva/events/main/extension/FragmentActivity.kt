@@ -22,12 +22,8 @@ package pl.org.seva.events.main.extension
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
-import org.kodein.di.LazyDelegate
-import kotlin.reflect.KProperty
 
-inline fun <reified R : ViewModel> FragmentActivity.viewModel() = object : LazyDelegate<R> {
-    override fun provideDelegate(receiver: Any?, prop: KProperty<Any?>) = lazy { provideViewModel<R>() }
-}
+inline fun <reified R : ViewModel> FragmentActivity.viewModel() = lazy { provideViewModel<R>() }
 
 inline fun <reified R : ViewModel> FragmentActivity.provideViewModel() =
         ViewModelProviders.of(this).get(R::class.java)

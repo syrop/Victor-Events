@@ -27,12 +27,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
-import org.kodein.di.LazyDelegate
 import pl.org.seva.events.event.location.InteractiveMapHolder
 import pl.org.seva.events.event.location.MapHolder
 import pl.org.seva.events.main.Permissions
 import pl.org.seva.events.main.permissions
-import kotlin.reflect.KProperty
 
 fun Fragment.nav(@IdRes resId: Int): Boolean {
     findNavController().navigate(resId)
@@ -41,9 +39,7 @@ fun Fragment.nav(@IdRes resId: Int): Boolean {
 
 fun Fragment.back() = findNavController().popBackStack()
 
-inline fun <reified R : ViewModel> Fragment.viewModel() = object : LazyDelegate<R> {
-    override fun provideDelegate(receiver: Any?, prop: KProperty<Any?>) = lazy { provideViewModel<R>() }
-}
+inline fun <reified R : ViewModel> Fragment.viewModel() = lazy { provideViewModel<R>() }
 
 inline fun <reified R : ViewModel> Fragment.provideViewModel() = activity!!.provideViewModel<R>()
 
