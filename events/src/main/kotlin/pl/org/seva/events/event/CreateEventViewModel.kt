@@ -29,29 +29,17 @@ import java.time.LocalTime
 
 class CreateEventViewModel : ViewModel() {
 
-    val comm by lazy {
-        MutableLiveData<String>()
-    }
+    val comm by lazy { MutableLiveData<String>() }
 
-    val name by lazy {
-        MutableLiveData<String>()
-    }
+    val name by lazy { MutableLiveData<String>() }
 
-    val time by lazy {
-        MutableLiveData<LocalTime>()
-    }
+    val time by lazy { MutableLiveData<LocalTime>() }
 
-    val date by lazy {
-        MutableLiveData<LocalDate>()
-    }
+    val date by lazy { MutableLiveData<LocalDate>() }
 
-    val location by lazy {
-        MutableLiveData<EventLocation?>()
-    }
+    val location by lazy { MutableLiveData<EventLocation?>() }
 
-    val description by lazy {
-        MutableLiveData<String?>()
-    }
+    val description by lazy { MutableLiveData<String?>() }
 
     fun informMarker(owner: LifecycleOwner, mapHolder: MapHolder) {
         location(owner) { mapHolder.putMarker(it?.location) }
@@ -60,9 +48,7 @@ class CreateEventViewModel : ViewModel() {
     val isFilledIn
         get() = eventData.any { !it.value?.toString().isNullOrEmpty() }
 
-    fun clear() = eventData.onEach {
-        it.value = null
-    }
+    fun clear() = eventData.onEach { it.value = null }
 
     private val eventData by lazy {
         listOf(name, time, date, location, description)
