@@ -25,8 +25,8 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import pl.org.seva.events.event.CreateEventViewModel
 import pl.org.seva.events.event.EventLocation
+import pl.org.seva.events.main.extension.provideViewModel
 import pl.org.seva.events.main.instance
-import pl.org.seva.events.main.extension.viewModel
 import java.lang.Exception
 
 class InteractiveMapHolder : MapHolder() {
@@ -36,10 +36,7 @@ class InteractiveMapHolder : MapHolder() {
 
     override fun withFragment(fragment: Fragment): MapHolder {
         super.withFragment(fragment)
-        with (fragment) {
-            val viewModel by viewModel<CreateEventViewModel>()
-            this@InteractiveMapHolder.viewModel = viewModel
-        }
+        viewModel = fragment.provideViewModel()
         return this
     }
 
