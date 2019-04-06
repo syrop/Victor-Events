@@ -26,7 +26,8 @@ import org.kodein.di.LazyDelegate
 import kotlin.reflect.KProperty
 
 inline fun <reified R : ViewModel> FragmentActivity.viewModel() = object : LazyDelegate<R> {
-    override fun provideDelegate(receiver: Any?, prop: KProperty<Any?>) = lazy {
-        ViewModelProviders.of(this@viewModel).get(R::class.java)
-    }
+    override fun provideDelegate(receiver: Any?, prop: KProperty<Any?>) = lazy { provideViewModel<R>() }
 }
+
+inline fun <reified R : ViewModel> FragmentActivity.provideViewModel() =
+        ViewModelProviders.of(this).get(R::class.java)

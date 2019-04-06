@@ -26,7 +26,6 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import org.kodein.di.LazyDelegate
 import pl.org.seva.events.event.location.InteractiveMapHolder
@@ -43,10 +42,10 @@ fun Fragment.nav(@IdRes resId: Int): Boolean {
 fun Fragment.back() = findNavController().popBackStack()
 
 inline fun <reified R : ViewModel> Fragment.viewModel() = object : LazyDelegate<R> {
-    override fun provideDelegate(receiver: Any?, prop: KProperty<Any?>) = lazy {
-        ViewModelProviders.of(this@viewModel.activity!!).get(R::class.java)
-    }
+    override fun provideDelegate(receiver: Any?, prop: KProperty<Any?>) = lazy { provideViewModel<R>() }
 }
+
+inline fun <reified R : ViewModel> Fragment.provideViewModel() = activity!!.provideViewModel<R>()
 
 fun Fragment.requestPermissions(
         requestCode: Int,
@@ -69,4 +68,3 @@ var Fragment.title: CharSequence get() = (activity!! as AppCompatActivity).suppo
 set(value) {
     (activity!! as AppCompatActivity).supportActionBar!!.title = value
 }
-
