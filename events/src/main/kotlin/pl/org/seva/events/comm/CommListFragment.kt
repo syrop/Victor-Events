@@ -32,8 +32,6 @@ import pl.org.seva.events.main.extension.*
 
 class CommListFragment : Fragment() {
 
-    private val commViewModel by viewModel<CommViewModel>()
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
             inflate(R.layout.fr_comm_list, container)
 
@@ -56,6 +54,7 @@ class CommListFragment : Fragment() {
         comms_view.layoutManager = LinearLayoutManager(context)
         comms_view.adapter = CommAdapter { view ->
             val position = comms_view.getChildAdapterPosition(view)
+            val commViewModel = provideViewModel<CommViewModel>()
             commViewModel.comm = comms[position]
             nav(R.id.action_commListFragment_to_commDetailsFragment)
         }

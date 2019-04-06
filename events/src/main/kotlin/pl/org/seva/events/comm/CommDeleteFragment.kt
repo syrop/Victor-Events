@@ -30,14 +30,12 @@ import pl.org.seva.events.main.extension.*
 
 class CommDeleteFragment : Fragment() {
 
-    private val commViewModel by viewModel<CommViewModel>()
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
             inflate(R.layout.fr_comm_delete, container)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val comm = commViewModel.comm
+        val comm = provideViewModel<CommViewModel>().comm
         title = getString(R.string.comm_delete_title).replace(NAME_PLACEHOLDER, comm.name)
         prompt.text = getString(R.string.comm_delete_prompt).bold(NAME_PLACEHOLDER, comm.name)
         ok.setOnClickListener {

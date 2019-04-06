@@ -121,7 +121,7 @@ class CommAddFragment : Fragment() {
                 search(name)
             }
         }
-        eventsModel.commToCreate.observe(this) { name ->
+        eventsModel.commToCreate(this) { name ->
             if (!name.isNullOrEmpty()) {
                 eventsModel.commToCreate.value = ""
                 name.createJoinAndFinish()

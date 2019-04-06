@@ -75,9 +75,9 @@ class CreateEventFragment : Fragment() {
         address.setOnClickListener { showLocationPicker() }
         description.withLiveData(this, model.description)
 
-        model.time.observe(this) { onTimeChanged(it) }
-        model.date.observe(this) { onDateChanged(it) }
-        model.location.observe(this)  { onLocationChanged(it) }
+        model.time(this) { onTimeChanged(it) }
+        model.date(this) { onDateChanged(it) }
+        model.location(this) { onLocationChanged(it) }
 
         comms.namesIsAdminOf.apply {
             model.comm.value = get(0)

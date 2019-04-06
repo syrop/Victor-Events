@@ -27,11 +27,8 @@ import kotlinx.android.synthetic.main.fr_comm_edit.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.inflate
 import pl.org.seva.events.main.extension.nav
-import pl.org.seva.events.main.extension.viewModel
 
 class CommEditFragment : Fragment() {
-
-    private val commViewModel by viewModel<CommViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
             inflate(R.layout.fr_comm_edit, container)

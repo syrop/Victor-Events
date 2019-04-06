@@ -23,7 +23,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import pl.org.seva.events.event.location.MapHolder
-import pl.org.seva.events.main.extension.observe
+import pl.org.seva.events.main.extension.invoke
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -54,7 +54,7 @@ class CreateEventViewModel : ViewModel() {
     }
 
     fun informMarker(owner: LifecycleOwner, mapHolder: MapHolder) {
-        location.observe(owner) { mapHolder.putMarker(it?.location) }
+        location(owner) { mapHolder.putMarker(it?.location) }
     }
 
     val isFilledIn

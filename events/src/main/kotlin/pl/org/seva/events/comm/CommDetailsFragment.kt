@@ -25,21 +25,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fr_comm_details.*
 import pl.org.seva.events.R
-import pl.org.seva.events.main.extension.inflate
-import pl.org.seva.events.main.extension.nav
-import pl.org.seva.events.main.extension.viewModel
-import pl.org.seva.events.main.extension.title
+import pl.org.seva.events.main.extension.*
 
 class CommDetailsFragment : Fragment() {
-
-    private val commViewModel by viewModel<CommViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
             inflate(R.layout.fr_comm_details, container)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val comm = commViewModel.comm
+        val comm = provideViewModel<CommViewModel>().comm
         title = comm.name
         if (comm.isAdmin) {
             edit_comm_fab.show()
