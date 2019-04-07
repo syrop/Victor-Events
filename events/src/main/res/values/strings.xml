@@ -69,7 +69,8 @@
     <string name="login_confirmation_label">Login</string>
     <string name="login_confirmation_prompt">You do not need to log in to use the app. Only log in if you want to create a new community or add events to an existing community.</string>
     <string name="login_confirmation_button">Log in</string>
-    <string name="login_confirmation_privacy_policy">Privacy policy</string>
+    <string name="login_confirmation_privacy_policy">View privacy policy</string>
+    <string name="login_confirmation_privacy_uri" translatable="false">https://github.com/syrop/Victor-Events/blob/master/PRIVACY.md</string>
 
     <!-- Pick location fragment -->
     <string name="pick_location_label">Select location</string>

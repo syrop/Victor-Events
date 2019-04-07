@@ -30,6 +30,7 @@ import kotlinx.android.synthetic.main.fr_login_conf.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.main.extension.back
+import pl.org.seva.events.main.extension.inBrowser
 import pl.org.seva.events.main.extension.inflate
 import pl.org.seva.events.main.extension.observe
 
@@ -46,7 +47,7 @@ class LoginConfirmationFragment : Fragment() {
                     .putExtra(LoginActivity.ACTION, LoginActivity.LOGIN), LOGIN_CREATE_COMM_REQUEST)
         }
         cancel.setOnClickListener { back() }
-        privacy_policy.setOnClickListener {  }
+        privacy_policy.setOnClickListener { inBrowser(getString(R.string.login_confirmation_privacy_uri)) }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -56,9 +57,7 @@ class LoginConfirmationFragment : Fragment() {
             ok.visibility = View.GONE
             cancel.visibility = View.GONE
             progress.visibility = View.VISIBLE
-            comms.refreshAdminStatuses().observe(this) {
-                back()
-            }
+            comms.refreshAdminStatuses().observe(this) { back() }
         }
     }
 
