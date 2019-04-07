@@ -19,6 +19,8 @@
 
 package pl.org.seva.events.main.extension
 
+import android.content.Intent
+import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IdRes
@@ -63,4 +65,10 @@ fun Fragment.createInteractiveMapHolder(f: InteractiveMapHolder.() -> Unit = {})
 var Fragment.title: CharSequence get() = (activity!! as AppCompatActivity).supportActionBar!!.title!!
 set(value) {
     (activity!! as AppCompatActivity).supportActionBar!!.title = value
+}
+
+fun Fragment.inBrowser(uri: String) {
+    val i = Intent(Intent.ACTION_VIEW)
+    i.data = Uri.parse(uri)
+    startActivity(i)
 }

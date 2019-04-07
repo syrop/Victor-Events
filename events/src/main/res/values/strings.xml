@@ -36,7 +36,6 @@
     <string name="comm_details_name">Name</string>
     <string name="comm_details_description">Description</string>
 
-
     <!-- Comm edit fragment -->
     <string name="comm_edit_label">Edit community</string>
     <string name="comm_edit_name">Name</string>
@@ -70,6 +69,7 @@
     <string name="login_confirmation_label">Login</string>
     <string name="login_confirmation_prompt">You do not need to log in to use the app. Only log in if you want to create a new community or add events to an existing community.</string>
     <string name="login_confirmation_button">Log in</string>
+    <string name="login_confirmation_privacy_policy">Privacy policy</string>
 
     <!-- Pick location fragment -->
     <string name="pick_location_label">Select location</string>
