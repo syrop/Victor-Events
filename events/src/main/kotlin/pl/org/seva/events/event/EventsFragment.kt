@@ -44,13 +44,8 @@ class EventsFragment : Fragment() {
     @SuppressLint("RestrictedApi")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        if (comms.isAdminOfAny) {
-            add_event.visibility = View.VISIBLE
-        }
-
-        add_event.setOnClickListener {
-            nav(R.id.action_eventsFragment_to_createEventFragment)
-        }
+        if (comms.isAdminOfAny) { add_event.visibility = View.VISIBLE }
+        add_event.setOnClickListener { nav(R.id.action_eventsFragment_to_createEventFragment) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -64,6 +59,7 @@ class EventsFragment : Fragment() {
         R.id.action_log_out -> nav(R.id.action_eventsFragment_to_logOutConfirmationFragment)
         R.id.action_comms -> nav(R.id.action_eventsFragment_to_commListFragment)
         R.id.action_system_messages -> nav(R.id.action_eventsFragment_to_systemMessagesFragment)
+        R.id.action_about -> nav(R.id.action_eventsFragment_to_aboutFragment)
         else -> super.onOptionsItemSelected(item)
     }
 }

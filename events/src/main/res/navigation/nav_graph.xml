@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_eventsFragment_to_logOutConfirmationFragment"
             app:destination="@id/logOutConfirmationFragment"/>
+        <action
+            android:id="@+id/action_eventsFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment"/>
     </fragment>
 
     <fragment
@@ -99,11 +102,17 @@
             android:id="@+id/action_commEditFragment_to_commDeleteFragment"
             app:destination="@id/commDeleteFragment"/>
     </fragment>
+
     <fragment
         android:id="@+id/commDeleteFragment"
         android:name="pl.org.seva.events.comm.CommDeleteFragment"
         android:label="@string/comm_delete_label"
         tools:layout="@layout/fr_comm_delete"/>
 
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="pl.org.seva.events.about.AboutFragment"
+        android:label="@string/about_label"
+        tools:layout="@layout/fr_about"/>
 
 </navigation>

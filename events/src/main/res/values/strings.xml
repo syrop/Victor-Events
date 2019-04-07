@@ -8,6 +8,7 @@
     <string name="events_action_comms">Communities</string>
     <string name="events_action_add_comm">Add a community</string>
     <string name="events_action_system_messages">System Messages</string>
+    <string name="events_action_about">About</string>
 
     <!-- Add comm fragment -->
     <string name="add_comm_label">Add a community</string>
@@ -78,8 +79,10 @@
     <string name="log_out_confirmation_prompt">You do not need to be logged in if you only want to follow communities.\n\nBeing logged in only helps when you want to create or edit communities or events. Please confirm if you want to log out.</string>
     <string name="log_out_confirmation_button">Log out</string>
 
-
     <!-- Pick location fragment -->
     <string name="pick_location_label">Select location</string>
     <string name="pick_location_select_location">Select location of your event</string>
+
+    <!-- About fragment -->
+    <string name="about_label">About</string>
 </resources>
