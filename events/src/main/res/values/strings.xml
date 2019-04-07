@@ -85,4 +85,7 @@
 
     <!-- About fragment -->
     <string name="about_label">About</string>
+    <string name="about_developer">Developer: Wiktor Nizio</string>
+    <string name="about_github">View on GitHub</string>
+    <string name="about_github_url" translatable="false">https://github.com/syrop/Victor-Events</string>
 </resources>
