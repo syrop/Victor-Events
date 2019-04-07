@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Wiktor Nizio
+ * Copyright (C) 2019 Wiktor Nizio
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,37 +26,35 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fr_login_conf.*
+import kotlinx.android.synthetic.main.fr_log_out_conf.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.main.extension.back
-import pl.org.seva.events.main.extension.inBrowser
 import pl.org.seva.events.main.extension.inflate
 import pl.org.seva.events.main.extension.observe
 
-class LoginConfirmationFragment : Fragment() {
+class LogOutConfirmationFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-            inflate(R.layout.fr_login_conf, container)
+            inflate(R.layout.fr_log_out_conf, container)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        ok.setOnClickListener {
+        log_out.setOnClickListener {
             val intent = Intent(activity, LoginActivity::class.java)
-                    .putExtra(LoginActivity.ACTION, LoginActivity.LOGIN)
-            startActivityForResult(intent, LOGIN_REQUEST)
+                    .putExtra(LoginActivity.ACTION, LoginActivity.LOGOUT)
+            startActivityForResult(intent, LOG_OUT_REQUEST)
         }
+
         cancel.setOnClickListener { back() }
-        privacy_policy.setOnClickListener { inBrowser(getString(R.string.login_confirmation_privacy_uri)) }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == LOGIN_REQUEST && resultCode == Activity.RESULT_OK) {
+        if (requestCode == LOG_OUT_REQUEST && resultCode == Activity.RESULT_OK) {
             prompt.visibility = View.GONE
-            ok.visibility = View.GONE
-            privacy_policy.visibility = View.GONE
+            log_out.visibility = View.GONE
             cancel.visibility = View.GONE
             progress.visibility = View.VISIBLE
             comms.refreshAdminStatuses().observe(this) { back() }
@@ -64,6 +62,6 @@ class LoginConfirmationFragment : Fragment() {
     }
 
     companion object {
-        const val LOGIN_REQUEST = 0
+        const val LOG_OUT_REQUEST = 0
     }
 }

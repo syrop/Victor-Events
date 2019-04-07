@@ -44,5 +44,6 @@ class Bootstrap {
     }
 
     fun logout() {
+        login.setCurrentUser(null)
     }
 }

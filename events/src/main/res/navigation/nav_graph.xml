@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_eventsFragment_to_commListFragment"
             app:destination="@id/commListFragment"/>
+        <action
+            android:id="@+id/action_eventsFragment_to_logOutConfirmationFragment"
+            app:destination="@id/logOutConfirmationFragment"/>
     </fragment>
 
     <fragment
@@ -45,6 +48,12 @@
         android:name="pl.org.seva.events.login.LoginConfirmationFragment"
         android:label="@string/login_confirmation_label"
         tools:layout="@layout/fr_login_conf"/>
+
+    <fragment
+        android:id="@+id/logOutConfirmationFragment"
+        android:name="pl.org.seva.events.login.LogOutConfirmationFragment"
+        android:label="@string/log_out_confirmation_label"
+        tools:layout="@layout/fr_log_out_conf"/>
 
     <fragment
         android:id="@+id/locationPickerFragment"
@@ -95,5 +104,6 @@
         android:name="pl.org.seva.events.comm.CommDeleteFragment"
         android:label="@string/comm_delete_label"
         tools:layout="@layout/fr_comm_delete"/>
+
 
 </navigation>

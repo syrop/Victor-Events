@@ -86,6 +86,7 @@ class LoginActivity : AppCompatActivity(),
             auth.signOut()
             eventsApplication.logout()
             googleApiClient.connect()
+            setResult(Activity.RESULT_OK)
             finish()
         }
 
@@ -120,8 +121,6 @@ class LoginActivity : AppCompatActivity(),
         when (intent.getStringExtra(ACTION)) {
             LOGOUT -> {
                 logout()
-                finish()
-                return
             }
             LOGIN -> {
                 login()
@@ -205,7 +204,7 @@ class LoginActivity : AppCompatActivity(),
 
         const val ACTION = "action"
         const val LOGIN = "login"
-        const val LOGOUT = "logout"
+        const val LOGOUT = "log_out"
 
         const val COMMUNITY_NAME = "community_name"
 

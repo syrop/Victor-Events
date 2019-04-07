@@ -45,7 +45,8 @@ class FsReader : FsBase() {
                 .map { it.toEvent() }
     }
 
-    infix fun isAdmin(name: String): Observable<Boolean> = name.admins.document(login.email).doesExist()
+    infix fun isAdmin(name: String): Observable<Boolean> = if (login.isLoggedIn)
+            name.admins.document(login.email).doesExist() else Observable.just(false)
 
     fun findCommunity(owner: LifecycleOwner, name: String, onResult: Comm.() -> Unit) {
         val lcName = name.toLowerCase()

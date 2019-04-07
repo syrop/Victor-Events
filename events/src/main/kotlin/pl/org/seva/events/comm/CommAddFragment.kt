@@ -81,9 +81,10 @@ class CommAddFragment : Fragment() {
 
                 fun showLoginToCreateSnackbar(name: String) {
                     fun loginToCreateComm(name: String) {
-                        startActivityForResult(Intent(activity, LoginActivity::class.java)
+                        val intent = Intent(activity, LoginActivity::class.java)
                                 .putExtra(LoginActivity.COMMUNITY_NAME, name)
-                                .putExtra(LoginActivity.ACTION, LoginActivity.LOGIN), LOGIN_CREATE_COMM_REQUEST)
+                                .putExtra(LoginActivity.ACTION, LoginActivity.LOGIN)
+                        startActivityForResult(intent, LOGIN_CREATE_COMM_REQUEST)
                     }
 
                     permanentSnackbar {

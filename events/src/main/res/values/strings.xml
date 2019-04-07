@@ -4,6 +4,7 @@
     <!-- Events fragment. -->
     <string name="events_activity_dismiss_event">Do you want to dismiss event data?</string>
     <string name="events_action_login">Login</string>
+    <string name="events_action_log_out">Log out</string>
     <string name="events_action_comms">Communities</string>
     <string name="events_action_add_comm">Add a community</string>
     <string name="events_action_system_messages">System Messages</string>
@@ -71,6 +72,12 @@
     <string name="login_confirmation_button">Log in</string>
     <string name="login_confirmation_privacy_policy">View privacy policy</string>
     <string name="login_confirmation_privacy_uri" translatable="false">https://github.com/syrop/Victor-Events/blob/master/PRIVACY.md</string>
+
+    <!-- Log out confirmation fragment -->
+    <string name="log_out_confirmation_label">Log out</string>
+    <string name="log_out_confirmation_prompt">You do not need to be logged in if you only want to follow communities.\n\nBeing logged in only helps when you want to create or edit communities or events. Please confirm if you want to log out.</string>
+    <string name="log_out_confirmation_button">Log out</string>
+
 
     <!-- Pick location fragment -->
     <string name="pick_location_label">Select location</string>

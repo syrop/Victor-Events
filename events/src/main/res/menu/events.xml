@@ -15,5 +15,9 @@
         android:id="@+id/action_login"
         android:title="@string/events_action_login"
         app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_log_out"
+        android:title="@string/events_action_log_out"
+        app:showAsAction="never"/>
 
 </menu>

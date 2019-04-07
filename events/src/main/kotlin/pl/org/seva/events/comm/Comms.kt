@@ -61,8 +61,6 @@ class Comms {
         commCache.addAll(comms)
     }
 
-    fun toTypedArray() = commCache.toTypedArray()
-
     fun refreshAdminStatuses(): LiveData<Unit> {
         val commArray = commCache.toTypedArray()
         val commObservable =
