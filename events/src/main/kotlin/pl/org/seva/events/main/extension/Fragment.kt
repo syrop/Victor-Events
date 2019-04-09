@@ -41,9 +41,9 @@ fun Fragment.nav(@IdRes resId: Int): Boolean {
 
 fun Fragment.back() = findNavController().popBackStack()
 
-inline fun <reified R : ViewModel> Fragment.viewModel() = lazy { provideViewModel<R>() }
+inline fun <reified R : ViewModel> Fragment.viewModel() = lazy { getViewModel<R>() }
 
-inline fun <reified R : ViewModel> Fragment.provideViewModel() = activity!!.provideViewModel<R>()
+inline fun <reified R : ViewModel> Fragment.getViewModel() = activity!!.getViewModel<R>()
 
 fun Fragment.requestPermissions(
         requestCode: Int,

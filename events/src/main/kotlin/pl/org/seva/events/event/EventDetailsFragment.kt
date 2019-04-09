@@ -25,7 +25,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.inflate
-import pl.org.seva.events.main.extension.provideViewModel
+import pl.org.seva.events.main.extension.getViewModel
 import pl.org.seva.events.main.extension.title
 
 class EventDetailsFragment : Fragment() {
@@ -35,7 +35,7 @@ class EventDetailsFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val event = provideViewModel<EventViewModel>().event
+        val event = getViewModel<EventViewModel>().event
         title = event.name
     }
 }

@@ -41,7 +41,7 @@ class LocationPickerFragment : Fragment() {
 
         super.onActivityCreated(savedInstanceState)
 
-        val viewModel = provideViewModel<EventCreateViewModel>()
+        val viewModel = getViewModel<EventCreateViewModel>()
         delete_location.setOnClickListener { viewModel.location.value = null }
         viewModel.location(this) { onLocationChanged(it) }
 

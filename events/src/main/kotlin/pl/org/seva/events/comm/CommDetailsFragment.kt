@@ -34,7 +34,7 @@ class CommDetailsFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val comm = provideViewModel<CommViewModel>().comm
+        val comm = getViewModel<CommViewModel>().comm
         title = comm.name
         if (comm.isAdmin) {
             edit_comm_fab.show()
