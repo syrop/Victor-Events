@@ -27,7 +27,7 @@ import pl.org.seva.events.main.extension.invoke
 import java.time.LocalDate
 import java.time.LocalTime
 
-class CreateEventViewModel : ViewModel() {
+class EventCreateViewModel : ViewModel() {
 
     val comm by lazy { MutableLiveData<String>() }
 

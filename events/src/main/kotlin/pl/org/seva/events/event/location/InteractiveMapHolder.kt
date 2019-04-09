@@ -23,7 +23,7 @@ import android.location.Geocoder
 import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
-import pl.org.seva.events.event.CreateEventViewModel
+import pl.org.seva.events.event.EventCreateViewModel
 import pl.org.seva.events.event.EventLocation
 import pl.org.seva.events.main.extension.provideViewModel
 import pl.org.seva.events.main.instance
@@ -31,7 +31,7 @@ import java.lang.Exception
 
 class InteractiveMapHolder : MapHolder() {
 
-    private lateinit var viewModel: CreateEventViewModel
+    private lateinit var viewModel: EventCreateViewModel
     private val geocoder by instance<Geocoder>()
 
     override fun withFragment(fragment: Fragment): MapHolder {

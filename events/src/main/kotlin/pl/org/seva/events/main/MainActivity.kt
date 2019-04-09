@@ -11,7 +11,7 @@ import androidx.navigation.ui.NavigationUI
 import kotlinx.android.synthetic.main.act_main.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.CommAddFragment
-import pl.org.seva.events.event.CreateEventViewModel
+import pl.org.seva.events.event.EventCreateViewModel
 import pl.org.seva.events.main.extension.viewModel
 import pl.org.seva.events.login.LoginActivity
 import pl.org.seva.events.main.extension.question
@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 
     private val model by viewModel<EventsViewModel>()
 
-    private val createEventsViewModel by viewModel<CreateEventViewModel>()
+    private val createEventsViewModel by viewModel<EventCreateViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
             if (item.itemId == android.R.id.home) showDismissEventDialog() else false
 
     private fun showDismissEventDialog() =
-            if (navController.currentDestination?.id == R.id.createEventFragment && createEventsViewModel.isFilledIn) {
+            if (navController.currentDestination?.id == R.id.eventCreateFragment && createEventsViewModel.isFilledIn) {
                 question(
                         message = getString(R.string.events_activity_dismiss_event),
                         yes = {

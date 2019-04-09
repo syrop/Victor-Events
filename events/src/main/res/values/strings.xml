@@ -34,7 +34,7 @@
     <string name="comm_list_undo">Undo</string>
 
     <!-- Comm details fragment -->
-    <string name="comm_details_label"/>
+    <string name="comm_details_label" translatable="false"/>
     <string name="comm_details_name">Name</string>
     <string name="comm_details_description">Description</string>
 
@@ -44,22 +44,25 @@
     <string name="comm_edit_description">Description</string>
 
     <!-- Comm delete fragment -->
-    <string name="comm_delete_label"/>
+    <string name="comm_delete_label" translatable="false"/>
     <string name="comm_delete_title">Delete: [name]</string>
     <string name="comm_delete_prompt">Delete the community: [name].\n (This action cannot be undone).</string>
     <string name="comm_delete_toast">Deleted: [name]</string>
 
-    <!-- System Messages fragment -->
+    <!-- System messages fragment -->
     <string name="system_messages_label">System Messages</string>
     <string name="system_messages_no_messages">There are currently no System Messages.</string>
 
-    <!-- Create event Fragment -->
+    <!-- Event create fragment -->
     <string name="create_event_comm">Community</string>
     <string name="create_event_name">Name</string>
     <string name="create_event_date">Date</string>
     <string name="create_event_time">Time</string>
     <string name="create_event_description">Description (optional)</string>
     <string name="create_event_location">Location (optional)</string>
+
+    <!-- Event details fragment -->
+    <string name="event_details_label" translatable="false"/>
 
     <!-- Login activity -->
     <string name="login_label">Login</string>

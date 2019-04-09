@@ -29,7 +29,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fr_create_event.*
+import kotlinx.android.synthetic.main.fr_event_create.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.main.*
@@ -37,21 +37,21 @@ import pl.org.seva.events.main.extension.*
 import java.time.LocalDate
 import java.time.LocalTime
 
-class CreateEventFragment : Fragment() {
+class EventCreateFragment : Fragment() {
 
-    private val model by viewModel<CreateEventViewModel>()
+    private val model by viewModel<EventCreateViewModel>()
 
     private val mapHolder by lazy {
         createMapHolder {
-            checkLocationPermission = this@CreateEventFragment::checkLocationPermission
+            checkLocationPermission = this@EventCreateFragment::checkLocationPermission
             onMapAvailable = {
-                model.informMarker(this@CreateEventFragment, this@createMapHolder)
+                model.informMarker(this@EventCreateFragment, this@createMapHolder)
             }
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-            inflate(R.layout.fr_create_event, container)
+            inflate(R.layout.fr_event_create, container)
 
     @SuppressLint("SetTextI18n")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -84,7 +84,7 @@ class CreateEventFragment : Fragment() {
             if (size > 1) {
                 comm_layout.visibility = View.VISIBLE
                 comm.setText(get(0))
-                comm.withLiveData(this@CreateEventFragment, model.comm)
+                comm.withLiveData(this@EventCreateFragment, model.comm)
                 comm.setOnClickListener {
                     AlertDialog.Builder(context!!)
                             .setItems(this) { dialog, which ->

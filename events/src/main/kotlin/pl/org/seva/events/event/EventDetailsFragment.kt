@@ -19,28 +19,23 @@
 
 package pl.org.seva.events.event
 
-import android.app.Dialog
-import android.app.TimePickerDialog
 import android.os.Bundle
-import android.widget.TimePicker
-import androidx.fragment.app.DialogFragment
-import pl.org.seva.events.main.extension.viewModel
-import java.time.LocalTime
-import java.util.Calendar
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import pl.org.seva.events.R
+import pl.org.seva.events.main.extension.inflate
+import pl.org.seva.events.main.extension.provideViewModel
+import pl.org.seva.events.main.extension.title
 
-class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener {
+class EventDetailsFragment : Fragment() {
 
-    private val viewModel by viewModel<EventCreateViewModel>()
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
+            inflate(R.layout.fr_event_details, container)
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val c = Calendar.getInstance()
-        val hour = c.get(Calendar.HOUR_OF_DAY)
-        val minute = c.get(Calendar.MINUTE)
-
-        return TimePickerDialog(activity, this, hour, minute, true)
-    }
-
-    override fun onTimeSet(view: TimePicker, hourOfDay: Int, minute: Int) {
-        viewModel.time.value = LocalTime.of(hourOfDay, minute)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        val event = provideViewModel<EventViewModel>().event
+        title = event.name
     }
 }

@@ -12,7 +12,7 @@
         tools:layout="@layout/fr_events">
         <action
             android:id="@+id/action_eventsFragment_to_createEventFragment"
-            app:destination="@id/createEventFragment"/>
+            app:destination="@id/eventCreateFragment"/>
         <action
             android:id="@+id/action_eventsFragment_to_loginConfirmationFragment"
             app:destination="@id/loginConfirmationFragment"/>
@@ -28,17 +28,26 @@
         <action
             android:id="@+id/action_eventsFragment_to_aboutFragment"
             app:destination="@id/aboutFragment"/>
+        <action
+            android:id="@+id/action_eventsFragment_to_eventDetailsFragment"
+            app:destination="@id/eventDetailsFragment"/>
     </fragment>
 
     <fragment
-        android:id="@+id/createEventFragment"
-        android:name="pl.org.seva.events.event.CreateEventFragment"
+        android:id="@+id/eventCreateFragment"
+        android:name="pl.org.seva.events.event.EventCreateFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fr_create_event">
+        tools:layout="@layout/fr_event_create">
         <action
             android:id="@+id/action_createEventFragment_to_locationPickerFragment"
             app:destination="@id/locationPickerFragment"/>
     </fragment>
+
+    <fragment
+        android:id="@+id/eventDetailsFragment"
+        android:name="pl.org.seva.events.event.EventDetailsFragment"
+        android:label="@string/event_details_label"
+        tools:layout="@layout/fr_event_details"/>
 
     <fragment
         android:id="@+id/addCommFragment"

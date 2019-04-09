@@ -30,7 +30,7 @@ import java.util.*
 
 class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
-    private val model by viewModel<CreateEventViewModel>()
+    private val model by viewModel<EventCreateViewModel>()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val c = Calendar.getInstance()
