@@ -22,7 +22,7 @@ package pl.org.seva.events.comm
 import android.graphics.Color
 import androidx.room.PrimaryKey
 import pl.org.seva.events.main.db.EventsDb
-import java.io.FileDescriptor
+import pl.org.seva.events.main.fs.fsWriter
 
 data class Comm(
         val name: String,
@@ -41,7 +41,10 @@ data class Comm(
         commDao deleteAsync this
     }
 
-    fun delete() = Unit
+    fun delete() {
+        leave()
+        fsWriter delete this
+    }
 
     fun join() {
         if (comms join this) {

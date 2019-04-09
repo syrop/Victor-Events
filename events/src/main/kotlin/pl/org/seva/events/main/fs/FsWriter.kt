@@ -32,9 +32,13 @@ class FsWriter : FsBase() {
 
     infix fun login(user: FirebaseUser) = Unit
 
-    infix fun createCommunity(comm: Comm) {
+    infix fun create(comm: Comm) {
         comm writeEvent Event.CREATION_EVENT
         comm.writeName()
+    }
+
+    infix fun delete(comm: Comm) {
+        comm.lcName.document.delete()
     }
 
     infix fun grantAdmin(comm: Comm) {

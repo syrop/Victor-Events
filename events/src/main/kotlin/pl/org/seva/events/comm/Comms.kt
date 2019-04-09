@@ -84,7 +84,7 @@ class Comms {
 
     infix fun joinNewCommunity(name: String) =
         Comm(name, color = nextColor, isAdmin = true).apply {
-            fsWriter createCommunity this
+            fsWriter create this
             fsWriter grantAdmin this
             join()
         }
