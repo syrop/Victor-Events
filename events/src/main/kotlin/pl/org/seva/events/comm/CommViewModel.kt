@@ -19,8 +19,20 @@
 
 package pl.org.seva.events.comm
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class CommViewModel : ViewModel() {
-    lateinit var comm: Comm
+    var comm = Comm.DUMMY
+    set(value) {
+        field = value
+        reset()
+    }
+    val name by lazy { MutableLiveData<String>() }
+    val desc by lazy { MutableLiveData<String>() }
+
+    fun reset() {
+        name.value = comm.name
+        desc.value = comm.desc
+    }
 }

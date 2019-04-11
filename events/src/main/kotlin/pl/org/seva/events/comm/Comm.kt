@@ -26,7 +26,7 @@ import pl.org.seva.events.main.fs.fsWriter
 
 data class Comm(
         val name: String,
-        val description: String = "",
+        val desc: String = "",
         val color: Int = Color.GRAY,
         val isAdmin: Boolean = false) {
 
@@ -62,12 +62,12 @@ data class Comm(
 
         constructor(comm: Comm) : this() {
             name = comm.name
-            description = comm.description
+            description = comm.desc
             color = comm.color
             isAdmin = comm.isAdmin
         }
 
-        fun value() = Comm(name = name, description = description, color = color, isAdmin = isAdmin)
+        fun value() = Comm(name = name, desc = description, color = color, isAdmin = isAdmin)
     }
 
     companion object {
