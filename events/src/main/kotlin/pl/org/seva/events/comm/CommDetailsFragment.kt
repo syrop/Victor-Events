@@ -46,6 +46,6 @@ class CommDetailsFragment : Fragment() {
             nav(R.id.action_commDetailsFragment_to_commEditFragment)
         }
         name.setText(comm.name)
-        description.setText(comm.description)
+        description.setText(comm.desc)
     }
 }

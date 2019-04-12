@@ -25,8 +25,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fr_comm_edit.*
 import pl.org.seva.events.R
+import pl.org.seva.events.main.extension.getViewModel
 import pl.org.seva.events.main.extension.inflate
 import pl.org.seva.events.main.extension.nav
+import pl.org.seva.events.main.extension.withLiveData
 
 class CommEditFragment : Fragment() {
 
@@ -38,5 +40,8 @@ class CommEditFragment : Fragment() {
         delete_comm_fab.setOnClickListener {
             nav(R.id.action_commEditFragment_to_commDeleteFragment)
         }
+        val vm = getViewModel<CommViewModel>()
+        name.withLiveData(this, vm.name)
+        description.withLiveData(this, vm.desc)
     }
 }
