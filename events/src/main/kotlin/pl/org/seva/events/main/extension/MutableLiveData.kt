@@ -19,11 +19,8 @@
 
 package pl.org.seva.events.main.extension
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
 import pl.org.seva.events.main.livedata.HotData
 
-operator fun <T> LiveData<T>.invoke(owner: LifecycleOwner, observer: (T) -> Unit) =
-        observe(owner) { observer(it) }
-
-fun <T> LiveData<T>.observe(owner: LifecycleOwner, observer: (T) -> Unit) =
-        observe(owner, Observer<T> { observer(it) })
+operator fun <T> MutableLiveData<T>.plus(owner: LifecycleOwner) = HotData(this, owner)

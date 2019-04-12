@@ -67,11 +67,11 @@ class EventCreateFragment : Fragment() {
             map_container.visibility = if (l == null) View.INVISIBLE else View.VISIBLE
         }
 
-        name.withLiveData(this, model.name)
+        name += model.name + this
         time.setOnClickListener { showTimePicker() }
         date.setOnClickListener { showDatePicker() }
         address.setOnClickListener { showLocationPicker() }
-        description.withLiveData(this, model.description)
+        description += model.description + this
 
         model.time(this) { onTimeChanged(it) }
         model.date(this) { onDateChanged(it) }
@@ -82,7 +82,7 @@ class EventCreateFragment : Fragment() {
             if (size > 1) {
                 comm_layout.visibility = View.VISIBLE
                 comm.setText(get(0))
-                comm.withLiveData(this@EventCreateFragment, model.comm)
+                comm += model.comm + this@EventCreateFragment
                 comm.setOnClickListener {
                     AlertDialog.Builder(context!!)
                             .setItems(this) { dialog, which ->

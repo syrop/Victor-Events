@@ -37,9 +37,9 @@ class EventCreateViewModel : ViewModel() {
 
     val date by lazy { MutableLiveData<LocalDate>() }
 
-    val location by lazy { MutableLiveData<EventLocation?>() }
+    val location by lazy { MutableLiveData<EventLocation>() }
 
-    val description by lazy { MutableLiveData<String?>() }
+    val description by lazy { MutableLiveData<String>() }
 
     fun informMarker(owner: LifecycleOwner, mapHolder: MapHolder) {
         location(owner) { mapHolder.putMarker(it?.location) }
