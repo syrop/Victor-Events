@@ -140,7 +140,7 @@ class CommAddFragment : Fragment() {
             setSearchableInfo(searchManager.getSearchableInfo(activity!!.componentName))
         }
 
-        menuInflater.inflate(R.menu.add_comm, menu)
+        menuInflater.inflate(R.menu.comm_add, menu)
         val searchMenuItem = menu.findItem(R.id.action_search)
         searchMenuItem.collapseActionView()
         searchMenuItem.prepareSearchView()

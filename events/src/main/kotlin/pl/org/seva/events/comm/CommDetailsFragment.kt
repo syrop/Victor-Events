@@ -36,15 +36,9 @@ class CommDetailsFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         val comm = getViewModel<CommViewModel>().comm
         title = comm.name
-        if (comm.isAdmin) {
-            edit_comm_fab.show()
-        }
-        else {
-            edit_comm_fab.hide()
-        }
-        edit_comm_fab.setOnClickListener {
-            nav(R.id.action_commDetailsFragment_to_commEditFragment)
-        }
+        if (comm.isAdmin) { edit_comm_fab.show() }
+        else { edit_comm_fab.hide() }
+        edit_comm_fab.setOnClickListener { nav(R.id.action_commDetailsFragment_to_commEditFragment) }
         name.setText(comm.name)
         description.setText(comm.desc)
     }

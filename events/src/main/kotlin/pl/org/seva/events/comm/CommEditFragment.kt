@@ -21,6 +21,8 @@ package pl.org.seva.events.comm
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fr_comm_edit.*
@@ -43,5 +45,14 @@ class CommEditFragment : Fragment() {
         val vm = getViewModel<CommViewModel>()
         name.withLiveData(this, vm.name)
         description.withLiveData(this, vm.desc)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.comm_edit, menu)
     }
 }
