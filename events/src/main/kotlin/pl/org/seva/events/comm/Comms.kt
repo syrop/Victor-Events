@@ -51,7 +51,7 @@ class Comms {
 
     operator fun get(index: Int) = commCache[index]
 
-    infix fun contain(comm: Comm) = commCache.any { it.name == comm.name }
+    infix fun contains(comm: Comm) = commCache.any { it.name == comm.name }
 
     infix fun delete(comm: Comm) = commCache.remove(comm)
 
