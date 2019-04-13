@@ -30,6 +30,7 @@ import pl.org.seva.events.login.Login
 import pl.org.seva.events.main.fs.FsReader
 import pl.org.seva.events.main.fs.FsWriter
 import pl.org.seva.events.main.db.EventsDb
+import pl.org.seva.events.main.permission.Permissions
 import pl.org.seva.events.main.ui.ColorFactory
 import pl.org.seva.events.main.ui.Toaster
 import pl.org.seva.events.message.Messages

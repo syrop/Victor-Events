@@ -17,12 +17,13 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main
+package pl.org.seva.events.main.permission
 
 import android.content.pm.PackageManager
 import androidx.fragment.app.Fragment
 import io.reactivex.subjects.PublishSubject
 import pl.org.seva.events.main.extension.observe
+import pl.org.seva.events.main.instance
 
 val permissions by instance<Permissions>()
 

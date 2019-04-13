@@ -30,8 +30,9 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fr_event_create.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
-import pl.org.seva.events.main.*
 import pl.org.seva.events.main.extension.*
+import pl.org.seva.events.main.permission.Permissions
+import pl.org.seva.events.main.permission.permissions
 import java.time.LocalDate
 import java.time.LocalTime
 

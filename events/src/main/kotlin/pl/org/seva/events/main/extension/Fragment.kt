@@ -31,8 +31,8 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import pl.org.seva.events.event.location.InteractiveMapHolder
 import pl.org.seva.events.event.location.MapHolder
-import pl.org.seva.events.main.Permissions
-import pl.org.seva.events.main.permissions
+import pl.org.seva.events.main.permission.Permissions
+import pl.org.seva.events.main.permission.permissions
 
 fun Fragment.nav(@IdRes resId: Int): Boolean {
     findNavController().navigate(resId)
