@@ -40,8 +40,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem) =
-            if (item.itemId == android.R.id.home) backOrHome() else false
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        android.R.id.home -> backOrHome()
+        else -> false
+    } || super.onOptionsItemSelected(item)
 
     private fun backOrHome(): Boolean {
         fun showDismissEventDialog() =
