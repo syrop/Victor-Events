@@ -36,7 +36,9 @@ class CommListFragment : Fragment() {
             inflate(R.layout.fr_comm_list, container)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        fun updateViews() {
+        super.onActivityCreated(savedInstanceState)
+
+        comms.observeDataSetChanges(this) {
             if (comms.isEmpty) {
                 comms_view.visibility = View.GONE
                 prompt.visibility = View.VISIBLE
@@ -47,8 +49,6 @@ class CommListFragment : Fragment() {
                 prompt.visibility = View.GONE
             }
         }
-
-        super.onActivityCreated(savedInstanceState)
 
         comms_view.setHasFixedSize(true)
         comms_view.layoutManager = LinearLayoutManager(context)
@@ -62,19 +62,14 @@ class CommListFragment : Fragment() {
         comms_view.swipeListener { position ->
             val comm = comms[position]
             comm.leave()
-            updateViews()
             Snackbar.make(
                     comms_view,
                     getString(R.string.comm_list_leave).bold(NAME_PLACEHOLDER, comm.name),
                     Snackbar.LENGTH_LONG)
-                    .setAction(R.string.comm_list_undo) {
-                        comm.join()
-                        updateViews()
-                    }
+                    .setAction(R.string.comm_list_undo) { comm.join() }
                     .show()
         }
         add_comm.setOnClickListener { nav(R.id.action_commListFragment_to_addCommFragment) }
-        updateViews()
     }
 
     companion object {

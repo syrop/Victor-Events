@@ -27,11 +27,12 @@ import pl.org.seva.events.main.coroutine.ioLaunch
 import pl.org.seva.events.main.fs.fsWriter
 import pl.org.seva.events.main.fs.fsReader
 import pl.org.seva.events.main.instance
+import pl.org.seva.events.main.livedata.LiveRepository
 import pl.org.seva.events.main.ui.nextColor
 
 val comms by instance<Comms>()
 
-class Comms {
+class Comms : LiveRepository() {
 
     private val commCache = mutableListOf<Comm>()
 
@@ -54,11 +55,14 @@ class Comms {
     infix fun contains(comm: Comm) = commCache.any { it.name == comm.name }
 
     infix fun delete(comm: Comm) = commCache.remove(comm)
+            .also { if (it) notifyDataSetChanged() }
 
-    infix fun join(comm: Comm) = !commCache.contains(comm) && commCache.add(comm)
+    infix fun join(comm: Comm) = (!commCache.contains(comm) && commCache.add(comm))
+            .also { if (it) notifyDataSetChanged() }
 
     fun addAll(comms: Collection<Comm>) {
         commCache.addAll(comms)
+        notifyDataSetChanged()
     }
 
     fun refreshAdminStatuses(): LiveData<Unit> {
