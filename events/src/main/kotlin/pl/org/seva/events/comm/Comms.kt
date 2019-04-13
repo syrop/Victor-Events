@@ -41,7 +41,7 @@ class Comms {
 
     val isAdminOfAny get() = commCache.any { it.isAdmin }
 
-    fun isEmpty() = commCache.isEmpty()
+    val isEmpty get() = commCache.isEmpty()
 
     fun isNotEmpty() = commCache.isNotEmpty()
 

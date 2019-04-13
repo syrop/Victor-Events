@@ -114,7 +114,7 @@ class CommAddFragment : Fragment() {
         }
 
         super.onActivityCreated(savedInstanceState)
-        prompt.setText(if (comms.isEmpty()) R.string.add_comm_please_search_empty else
+        prompt.setText(if (comms.isEmpty) R.string.add_comm_please_search_empty else
             R.string.add_comm_please_search)
         eventsModel.query.observe(this) { name ->
             if (name.isNotEmpty()) {
