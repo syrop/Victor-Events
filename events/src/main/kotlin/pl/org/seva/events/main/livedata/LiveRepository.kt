@@ -24,7 +24,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import pl.org.seva.events.main.extension.observe
 
-open class LiveRepository {
+abstract class LiveRepository {
 
     private val liveData = MutableLiveData<Unit>()
 
