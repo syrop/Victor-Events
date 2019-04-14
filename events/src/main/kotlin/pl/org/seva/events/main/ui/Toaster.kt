@@ -21,7 +21,7 @@ package pl.org.seva.events.main.ui
 
 import android.content.Context
 import android.widget.Toast
-import pl.org.seva.events.main.instance
+import pl.org.seva.events.main.init.instance
 
 val toaster by instance<Toaster>()
 

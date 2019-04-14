@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Wiktor Nizio
+ * Copyright (C) 2017 Wiktor Nizio
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,9 +17,22 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main.livedata
+@file:Suppress("unused")
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
+package pl.org.seva.events.main.data.db
 
-data class HotData<T>(val liveData: MutableLiveData<T>, val owner: LifecycleOwner)
+import androidx.room.RoomDatabase
+import androidx.room.Database
+import pl.org.seva.events.comm.Comm
+import pl.org.seva.events.comm.CommDao
+import pl.org.seva.events.event.Event
+import pl.org.seva.events.event.EventDao
+import pl.org.seva.events.message.Message
+import pl.org.seva.events.message.MessageDao
+
+@Database(entities = [Event.Entity::class, Comm.Entity::class, Message.Entity::class], version = EventsDb.DATABASE_VERSION)
+abstract class EventsDbAbstract : RoomDatabase() {
+    abstract fun eventDao(): EventDao
+    abstract fun commDao(): CommDao
+    abstract fun messageDao(): MessageDao
+}

@@ -38,7 +38,7 @@ import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.eventsApplication
 import pl.org.seva.events.main.extension.log
 import pl.org.seva.events.main.extension.toast
-import pl.org.seva.events.main.fs.fsWriter
+import pl.org.seva.events.main.data.fs.fsWriter
 
 class LoginActivity : AppCompatActivity(),
         GoogleApiClient.OnConnectionFailedListener,

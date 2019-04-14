@@ -23,11 +23,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
-import pl.org.seva.events.main.coroutine.ioLaunch
-import pl.org.seva.events.main.fs.fsWriter
-import pl.org.seva.events.main.fs.fsReader
-import pl.org.seva.events.main.instance
-import pl.org.seva.events.main.livedata.LiveRepository
+import pl.org.seva.events.main.parallel.ioLaunch
+import pl.org.seva.events.main.data.fs.fsWriter
+import pl.org.seva.events.main.data.fs.fsReader
+import pl.org.seva.events.main.init.instance
+import pl.org.seva.events.main.parallel.LiveRepository
 import pl.org.seva.events.main.ui.nextColor
 
 val comms by instance<Comms>()

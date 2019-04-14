@@ -20,7 +20,6 @@
 package pl.org.seva.events.main.extension
 
 import androidx.lifecycle.*
-import pl.org.seva.events.main.livedata.HotData
 
 operator fun <T> LiveData<T>.invoke(owner: LifecycleOwner, observer: (T) -> Unit) =
         observe(owner) { observer(it) }

@@ -17,7 +17,7 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main
+package pl.org.seva.events.main.init
 
 import android.content.Context
 import android.location.Geocoder
@@ -27,9 +27,9 @@ import org.kodein.di.generic.*
 import pl.org.seva.events.BuildConfig
 import pl.org.seva.events.comm.Comms
 import pl.org.seva.events.login.Login
-import pl.org.seva.events.main.fs.FsReader
-import pl.org.seva.events.main.fs.FsWriter
-import pl.org.seva.events.main.db.EventsDb
+import pl.org.seva.events.main.data.fs.FsReader
+import pl.org.seva.events.main.data.fs.FsWriter
+import pl.org.seva.events.main.data.db.EventsDb
 import pl.org.seva.events.main.permission.Permissions
 import pl.org.seva.events.main.ui.ColorFactory
 import pl.org.seva.events.main.ui.Toaster

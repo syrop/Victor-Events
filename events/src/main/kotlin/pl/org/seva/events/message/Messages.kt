@@ -19,7 +19,7 @@
 
 package pl.org.seva.events.message
 
-import pl.org.seva.events.main.instance
+import pl.org.seva.events.main.init.instance
 
 val messages by instance<Messages>()
 

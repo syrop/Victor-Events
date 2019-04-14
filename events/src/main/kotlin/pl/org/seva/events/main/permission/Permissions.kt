@@ -23,7 +23,7 @@ import android.content.pm.PackageManager
 import androidx.fragment.app.Fragment
 import io.reactivex.subjects.PublishSubject
 import pl.org.seva.events.main.extension.observe
-import pl.org.seva.events.main.instance
+import pl.org.seva.events.main.init.instance
 
 val permissions by instance<Permissions>()
 

@@ -23,8 +23,8 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import pl.org.seva.events.main.coroutine.ioLaunch
-import pl.org.seva.events.main.db.EventsDb
+import pl.org.seva.events.main.parallel.ioLaunch
+import pl.org.seva.events.main.data.db.EventsDb
 
 fun MessageDao.getAllValues() = getAll().map { it.value() }
 

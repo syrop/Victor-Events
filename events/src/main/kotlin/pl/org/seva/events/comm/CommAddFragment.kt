@@ -30,10 +30,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fr_comm_add.*
 import pl.org.seva.events.R
-import pl.org.seva.events.main.fs.fsReader
+import pl.org.seva.events.main.data.fs.fsReader
 import pl.org.seva.events.login.LoginActivity
 import pl.org.seva.events.login.isLoggedIn
-import pl.org.seva.events.main.EventsViewModel
+import pl.org.seva.events.main.data.EventsViewModel
 import pl.org.seva.events.main.extension.*
 import pl.org.seva.events.main.ui.*
 

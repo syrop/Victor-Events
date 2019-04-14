@@ -26,7 +26,7 @@ import com.google.android.gms.maps.model.LatLng
 import pl.org.seva.events.event.EventCreateViewModel
 import pl.org.seva.events.event.EventLocation
 import pl.org.seva.events.main.extension.getViewModel
-import pl.org.seva.events.main.instance
+import pl.org.seva.events.main.init.instance
 import java.lang.Exception
 
 class InteractiveMapHolder : MapHolder() {

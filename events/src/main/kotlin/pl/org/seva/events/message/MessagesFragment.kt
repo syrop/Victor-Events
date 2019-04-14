@@ -27,7 +27,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fr_messages.*
 import pl.org.seva.events.R
-import pl.org.seva.events.main.db.db
+import pl.org.seva.events.main.data.db.db
 import pl.org.seva.events.main.extension.inflate
 import pl.org.seva.events.main.extension.swipeListener
 import pl.org.seva.events.main.extension.verticalDivider

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Wiktor Nizio
+ * Copyright (C) 2019 Wiktor Nizio
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,16 +17,21 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main
+package pl.org.seva.events.main.parallel
 
+import android.os.Looper
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import pl.org.seva.events.main.extension.observe
 
-class EventsViewModel : ViewModel() {
-    val query by lazy {
-        MutableLiveData<String>()
-    }
-    val commToCreate by lazy {
-        MutableLiveData<String?>()
-    }
+abstract class LiveRepository {
+
+    private val liveData = MutableLiveData<Unit>()
+
+    protected fun notifyDataSetChanged() =
+            if (Looper.getMainLooper().thread === Thread.currentThread()) liveData.value = Unit
+            else liveData.postValue(Unit)
+
+    fun observeDataSetChanges(owner: LifecycleOwner, observer: () -> Unit) =
+            liveData.observe(owner) { observer() }
 }
