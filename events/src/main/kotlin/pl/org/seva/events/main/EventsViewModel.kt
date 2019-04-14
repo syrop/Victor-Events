@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Wiktor Nizio
+ * Copyright (C) 2018 Wiktor Nizio
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,10 +17,16 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main.parallel
+package pl.org.seva.events.main
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 
-fun ioLaunch(block: () -> Unit) = GlobalScope.launch(Dispatchers.IO) { block() }
+class EventsViewModel : ViewModel() {
+    val query by lazy {
+        MutableLiveData<String>()
+    }
+    val commToCreate by lazy {
+        MutableLiveData<String?>()
+    }
+}

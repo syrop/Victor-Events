@@ -17,7 +17,7 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main.permission
+package pl.org.seva.events.main.model
 
 import android.content.pm.PackageManager
 import androidx.fragment.app.Fragment

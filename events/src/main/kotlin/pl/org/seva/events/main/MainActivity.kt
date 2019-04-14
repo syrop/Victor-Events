@@ -15,7 +15,6 @@ import pl.org.seva.events.comm.CommViewModel
 import pl.org.seva.events.event.EventCreateViewModel
 import pl.org.seva.events.main.extension.viewModel
 import pl.org.seva.events.login.LoginActivity
-import pl.org.seva.events.main.data.EventsViewModel
 import pl.org.seva.events.main.extension.question
 
 class MainActivity : AppCompatActivity() {

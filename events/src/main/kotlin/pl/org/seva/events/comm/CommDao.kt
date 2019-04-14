@@ -23,9 +23,9 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import pl.org.seva.events.main.parallel.ioLaunch
-import pl.org.seva.events.main.data.db.EventsDb
-import pl.org.seva.events.main.data.db.db
+import pl.org.seva.events.main.model.ioLaunch
+import pl.org.seva.events.main.model.db.EventsDb
+import pl.org.seva.events.main.model.db.db
 
 val commDao by lazy { db.commDao }
 

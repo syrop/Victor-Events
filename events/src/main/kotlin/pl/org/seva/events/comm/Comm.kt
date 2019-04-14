@@ -21,8 +21,8 @@ package pl.org.seva.events.comm
 
 import android.graphics.Color
 import androidx.room.PrimaryKey
-import pl.org.seva.events.main.data.db.EventsDb
-import pl.org.seva.events.main.data.fs.fsWriter
+import pl.org.seva.events.main.model.db.EventsDb
+import pl.org.seva.events.main.model.fs.fsWriter
 
 data class Comm(
         val name: String,

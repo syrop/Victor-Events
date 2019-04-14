@@ -17,22 +17,31 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-@file:Suppress("unused")
+package pl.org.seva.events.main.model.db
 
-package pl.org.seva.events.main.data.db
+import androidx.room.Room
+import android.content.Context
+import pl.org.seva.events.main.init.instance
 
-import androidx.room.RoomDatabase
-import androidx.room.Database
-import pl.org.seva.events.comm.Comm
-import pl.org.seva.events.comm.CommDao
-import pl.org.seva.events.event.Event
-import pl.org.seva.events.event.EventDao
-import pl.org.seva.events.message.Message
-import pl.org.seva.events.message.MessageDao
+val db by instance<EventsDb>()
 
-@Database(entities = [Event.Entity::class, Comm.Entity::class, Message.Entity::class], version = EventsDb.DATABASE_VERSION)
-abstract class EventsDbAbstract : RoomDatabase() {
-    abstract fun eventDao(): EventDao
-    abstract fun commDao(): CommDao
-    abstract fun messageDao(): MessageDao
+class EventsDb(context: Context) {
+
+    private val db=
+            Room.databaseBuilder(context, EventsDbAbstract::class.java, DATABASE_NAME).build()
+
+    val eventDao by lazy { db.eventDao() }
+
+    val commDao by lazy { db.commDao() }
+
+    val messageDao by lazy { db.messageDao() }
+
+    companion object {
+        const val DATABASE_NAME = "events_database"
+        const val DATABASE_VERSION = 1
+
+        const val EVENTS_TABLE_NAME = "events"
+        const val COMMUNITIES_TABLE_NAME = "communities"
+        const val MESSAGES_TABLE_NAME = "messages"
+    }
 }

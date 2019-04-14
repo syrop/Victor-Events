@@ -22,7 +22,7 @@ package pl.org.seva.events.main.extension
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import pl.org.seva.events.main.ui.ItemSwipeListener
+import pl.org.seva.events.main.view.ItemSwipeListener
 
 fun RecyclerView.swipeListener(listener: (Int) -> Unit) {
     ItemTouchHelper(ItemSwipeListener(listener)).attachToRecyclerView(this)

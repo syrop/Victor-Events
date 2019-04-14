@@ -20,7 +20,7 @@
 package pl.org.seva.events.message
 
 import androidx.room.PrimaryKey
-import pl.org.seva.events.main.data.db.EventsDb
+import pl.org.seva.events.main.model.db.EventsDb
 import java.time.LocalDateTime
 
 data class Message(val time: LocalDateTime, val content: String) {

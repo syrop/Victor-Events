@@ -21,7 +21,7 @@ package pl.org.seva.events.event
 
 import androidx.room.PrimaryKey
 import com.google.firebase.firestore.GeoPoint
-import pl.org.seva.events.main.data.db.EventsDb
+import pl.org.seva.events.main.model.db.EventsDb
 import java.time.LocalDateTime
 
 data class Event(

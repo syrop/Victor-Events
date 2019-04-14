@@ -17,21 +17,9 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main.ui
+package pl.org.seva.events.main.model
 
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
 
-class ItemSwipeListener(private val onItemSwiped: (Int) -> Unit) : ItemTouchHelper.Callback() {
-
-    override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) =
-            makeMovementFlags(0, ItemTouchHelper.START or ItemTouchHelper.END)
-
-    override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
-                        target: RecyclerView.ViewHolder) = false
-
-    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) =
-            onItemSwiped(viewHolder.adapterPosition)
-
-    override fun isLongPressDragEnabled() = false
-}
+data class HotData<T>(val liveData: MutableLiveData<T>, val owner: LifecycleOwner)

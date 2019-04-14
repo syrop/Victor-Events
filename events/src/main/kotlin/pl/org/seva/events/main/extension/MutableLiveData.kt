@@ -21,6 +21,6 @@ package pl.org.seva.events.main.extension
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
-import pl.org.seva.events.main.parallel.HotData
+import pl.org.seva.events.main.model.HotData
 
 operator fun <T> MutableLiveData<T>.plus(owner: LifecycleOwner) = HotData(this, owner)

@@ -24,8 +24,8 @@ import com.google.firebase.auth.FirebaseUser
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.comm.getAllValues
 import pl.org.seva.events.login.login
-import pl.org.seva.events.main.parallel.ioLaunch
-import pl.org.seva.events.main.data.db.db
+import pl.org.seva.events.main.model.ioLaunch
+import pl.org.seva.events.main.model.db.db
 import pl.org.seva.events.message.getAllValues
 import pl.org.seva.events.message.messages
 

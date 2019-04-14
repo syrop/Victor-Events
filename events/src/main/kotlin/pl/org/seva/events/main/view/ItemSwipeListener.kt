@@ -17,21 +17,21 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main.parallel
+package pl.org.seva.events.main.view
 
-import android.os.Looper
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
-import pl.org.seva.events.main.extension.observe
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 
-abstract class LiveRepository {
+class ItemSwipeListener(private val onItemSwiped: (Int) -> Unit) : ItemTouchHelper.Callback() {
 
-    private val liveData = MutableLiveData<Unit>()
+    override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) =
+            makeMovementFlags(0, ItemTouchHelper.START or ItemTouchHelper.END)
 
-    protected fun notifyDataSetChanged() =
-            if (Looper.getMainLooper().thread === Thread.currentThread()) liveData.value = Unit
-            else liveData.postValue(Unit)
+    override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
+                        target: RecyclerView.ViewHolder) = false
 
-    fun observeDataSetChanges(owner: LifecycleOwner, observer: () -> Unit) =
-            liveData.observe(owner) { observer() }
+    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) =
+            onItemSwiped(viewHolder.adapterPosition)
+
+    override fun isLongPressDragEnabled() = false
 }

@@ -17,31 +17,22 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main.data.db
+package pl.org.seva.events.main.view
 
-import androidx.room.Room
-import android.content.Context
-import pl.org.seva.events.main.init.instance
+import com.google.android.material.snackbar.Snackbar
+import android.view.View
 
-val db by instance<EventsDb>()
+fun longSnackbar(f: SnackbarBuilder.() -> Unit): SnackbarBuilder = SnackbarBuilder().apply(f)
 
-class EventsDb(context: Context) {
+fun permanentSnackbar(f: SnackbarBuilder.() -> Unit): SnackbarBuilder =
+        SnackbarBuilder(Snackbar.LENGTH_INDEFINITE).apply(f)
 
-    private val db=
-            Room.databaseBuilder(context, EventsDbAbstract::class.java, DATABASE_NAME).build()
+class SnackbarBuilder(private var length: Int = Snackbar.LENGTH_LONG) {
+    lateinit var view: View
+    var message = 0
+    var action = 0
 
-    val eventDao by lazy { db.eventDao() }
-
-    val commDao by lazy { db.commDao() }
-
-    val messageDao by lazy { db.messageDao() }
-
-    companion object {
-        const val DATABASE_NAME = "events_database"
-        const val DATABASE_VERSION = 1
-
-        const val EVENTS_TABLE_NAME = "events"
-        const val COMMUNITIES_TABLE_NAME = "communities"
-        const val MESSAGES_TABLE_NAME = "messages"
+    infix fun show(f: () -> Unit) {
+        Snackbar.make(view, message, length).setAction(action) { f() }.show()
     }
 }

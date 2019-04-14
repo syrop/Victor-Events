@@ -17,9 +17,21 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main.parallel
+package pl.org.seva.events.main.model
 
+import android.os.Looper
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
+import pl.org.seva.events.main.extension.observe
 
-data class HotData<T>(val liveData: MutableLiveData<T>, val owner: LifecycleOwner)
+abstract class LiveRepository {
+
+    private val liveData = MutableLiveData<Unit>()
+
+    protected fun notifyDataSetChanged() =
+            if (Looper.getMainLooper().thread === Thread.currentThread()) liveData.value = Unit
+            else liveData.postValue(Unit)
+
+    fun observeDataSetChanges(owner: LifecycleOwner, observer: () -> Unit) =
+            liveData.observe(owner) { observer() }
+}
