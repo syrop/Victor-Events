@@ -19,6 +19,7 @@
 
 package pl.org.seva.events.comm
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.Observable
@@ -65,25 +66,24 @@ class Comms : LiveRepository() {
         notifyDataSetChanged()
     }
 
-    fun refreshAdminStatuses(): LiveData<Unit> {
+    @SuppressLint("CheckResult")
+    fun refreshAdminStatuses() {
         val commArray = commCache.toTypedArray()
         val commObservable =
                 Observable.defer { Observable.fromArray(*commArray) }
         val adminsObservable =
                 commObservable.flatMap { fsReader.isAdmin(it.lcName) }
         commCache.clear()
-        return MutableLiveData<Unit>().apply {
-            commObservable.zipWith(
-                    adminsObservable,
-                    BiFunction { comm: Comm, isAdmin: Boolean -> comm.copy(isAdmin = isAdmin) }).
-                    doOnComplete {
-                        ioLaunch {
-                            commDao.clear()
-                            commCache.forEach { commDao join it }
-                        }
-                        value = Unit
-                    }.subscribe { commCache.add(it) }
-        }
+        commObservable.zipWith(
+                adminsObservable,
+                BiFunction { comm: Comm, isAdmin: Boolean -> comm.copy(isAdmin = isAdmin) }).
+                doOnComplete {
+                    ioLaunch {
+                        commDao.clear()
+                        commCache.forEach { commDao join it }
+                        notifyDataSetChanged()
+                    }
+                }.subscribe { commCache.add(it) }
     }
 
     infix fun joinNewCommunity(name: String) =

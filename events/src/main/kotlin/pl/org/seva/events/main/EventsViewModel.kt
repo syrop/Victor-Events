@@ -23,10 +23,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class EventsViewModel : ViewModel() {
-    val query by lazy {
-        MutableLiveData<String>()
-    }
-    val commToCreate by lazy {
-        MutableLiveData<String?>()
-    }
+    val query by lazy { MutableLiveData<String>() }
+    val commToCreate by lazy { MutableLiveData<String?>() }
 }

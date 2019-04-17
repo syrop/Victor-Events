@@ -59,7 +59,8 @@ class LoginConfirmationFragment : Fragment() {
             privacy_policy.visibility = View.GONE
             cancel.visibility = View.GONE
             progress.visibility = View.VISIBLE
-            comms.refreshAdminStatuses().observe(this) { back() }
+            comms.refreshAdminStatuses()
+            back()
         }
     }
 
