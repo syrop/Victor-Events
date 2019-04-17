@@ -21,8 +21,24 @@ package pl.org.seva.events.main
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.*
+import pl.org.seva.events.comm.Comm
+import pl.org.seva.events.main.model.fs.fsReader
 
 class EventsViewModel : ViewModel() {
-    val query by lazy { MutableLiveData<String>() }
+    val comm by lazy { MutableLiveData<Comm>() }
+    val workInProgress by lazy { MutableLiveData<Boolean>().apply { value = false } }
     val commToCreate by lazy { MutableLiveData<String?>() }
+    var queryJob: Job? = null
+
+    fun query(name: String) {
+        workInProgress.value = true
+        queryJob = viewModelScope.launch(Dispatchers.IO) {
+            fsReader.findCommunity(name).let {
+                workInProgress.postValue(false)
+                comm.postValue(it)
+            }
+        }
+    }
 }

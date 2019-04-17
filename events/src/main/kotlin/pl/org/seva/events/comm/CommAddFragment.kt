@@ -30,7 +30,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fr_comm_add.*
 import pl.org.seva.events.R
-import pl.org.seva.events.main.model.fs.fsReader
 import pl.org.seva.events.login.LoginActivity
 import pl.org.seva.events.login.isLoggedIn
 import pl.org.seva.events.main.EventsViewModel
@@ -51,9 +50,8 @@ class CommAddFragment : Fragment() {
             inflate(R.layout.fr_comm_add, container)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        fun search(name: String) {
+        fun searchResult(comm: Comm) {
             fun Comm.found() {
-                progress.visibility = View.GONE
                 recycler.visibility = View.VISIBLE
                 adapter = FixedCommAdapter(this) {
                     if (isMemberOf) {
@@ -95,31 +93,32 @@ class CommAddFragment : Fragment() {
                         loginToCreateComm(name)
                     }
                 }
-
-                progress.visibility = View.GONE
                 prompt.visibility = View.VISIBLE
-                prompt.text = getString(R.string.add_comm_not_found).bold(NAME_PLACEHOLDER, name)
+                prompt.text = getString(R.string.add_comm_not_found).bold(NAME_PLACEHOLDER, comm.name)
                 if (isLoggedIn) {
-                    showCreateCommunitySnackbar(name)
+                    showCreateCommunitySnackbar(comm.name)
                 } else {
-                    showLoginToCreateSnackbar(name)
+                    showLoginToCreateSnackbar(comm.name)
                 }
             }
-
-            prompt.visibility = View.GONE
-            progress.visibility = View.VISIBLE
-            fsReader.findCommunity(this, name) {
-                if (isDummy) notFound() else found()
-            }
+            if (comm.isDummy) notFound() else comm.found()
         }
 
         super.onActivityCreated(savedInstanceState)
         prompt.setText(if (comms.isEmpty) R.string.add_comm_please_search_empty else
             R.string.add_comm_please_search)
-        eventsModel.query.observe(this) { name ->
-            if (name.isNotEmpty()) {
-                eventsModel.query.value = ""
-                search(name)
+        eventsModel.comm.observe(this) { comm ->
+            if (comm != null) {
+                searchResult(comm)
+            }
+        }
+        eventsModel.workInProgress.observe(this) { workInProgress ->
+            if (workInProgress) {
+                prompt.visibility = View.GONE
+                progress.visibility = View.VISIBLE
+            }
+            else {
+                progress.visibility = View.GONE
             }
         }
         eventsModel.commToCreate(this) { name ->

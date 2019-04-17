@@ -63,9 +63,17 @@ class MainActivity : AppCompatActivity() {
             return false
         }
 
+        fun resetQuery(): Boolean {
+            model.queryJob?.cancel()
+            model.comm.value = null
+            model.workInProgress.value = false
+            return false
+        }
+
         return when (navController.currentDestination?.id ?: 0) {
             R.id.eventCreateFragment -> showDismissEventDialog()
             R.id.commEditFragment -> resetCommViewModel()
+            R.id.addCommFragment -> resetQuery()
             else -> false
         }
     }
@@ -73,7 +81,7 @@ class MainActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         if (Intent.ACTION_SEARCH == intent.action) {
-            model.query.value = intent.getStringExtra(SearchManager.QUERY)
+            model.query(intent.getStringExtra(SearchManager.QUERY))
         }
     }
 

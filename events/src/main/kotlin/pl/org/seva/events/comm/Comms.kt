@@ -19,12 +19,9 @@
 
 package pl.org.seva.events.comm
 
-import android.annotation.SuppressLint
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import io.reactivex.Observable
-import io.reactivex.functions.BiFunction
-import pl.org.seva.events.main.model.ioLaunch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import pl.org.seva.events.main.model.fs.fsWriter
 import pl.org.seva.events.main.model.fs.fsReader
 import pl.org.seva.events.main.init.instance
@@ -66,24 +63,16 @@ class Comms : LiveRepository() {
         notifyDataSetChanged()
     }
 
-    @SuppressLint("CheckResult")
-    fun refreshAdminStatuses() {
+    fun refreshAdminStatuses() = GlobalScope.launch(Dispatchers.IO) {
         val commArray = commCache.toTypedArray()
-        val commObservable =
-                Observable.defer { Observable.fromArray(*commArray) }
-        val adminsObservable =
-                commObservable.flatMap { fsReader.isAdmin(it.lcName) }
         commCache.clear()
-        commObservable.zipWith(
-                adminsObservable,
-                BiFunction { comm: Comm, isAdmin: Boolean -> comm.copy(isAdmin = isAdmin) }).
-                doOnComplete {
-                    ioLaunch {
-                        commDao.clear()
-                        commCache.forEach { commDao join it }
-                        notifyDataSetChanged()
-                    }
-                }.subscribe { commCache.add(it) }
+        commArray.forEach { comm ->
+            val isAdmin = fsReader.isAdmin(comm.lcName)
+            commCache.add(comm.copy(isAdmin = isAdmin))
+        }
+        commDao.clear()
+        commCache.forEach { commDao join it }
+        notifyDataSetChanged()
     }
 
     infix fun joinNewCommunity(name: String) =

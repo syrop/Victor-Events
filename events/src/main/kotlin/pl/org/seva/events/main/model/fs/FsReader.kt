@@ -19,21 +19,21 @@
 
 package pl.org.seva.events.main.model.fs
 
-import androidx.lifecycle.LifecycleOwner
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.GeoPoint
 import io.reactivex.Observable
-import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.PublishSubject
 import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.event.Event
 import pl.org.seva.events.login.isLoggedIn
 import pl.org.seva.events.login.login
 import pl.org.seva.events.main.init.instance
-import pl.org.seva.events.main.extension.observe
 import java.time.LocalDateTime
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 val fsReader by instance<FsReader>()
 
@@ -45,38 +45,29 @@ class FsReader : FsBase() {
                 .map { it.toEvent() }
     }
 
-    infix fun isAdmin(name: String): Observable<Boolean> = if (login.isLoggedIn)
-            name.admins.document(login.email).doesExist() else Observable.just(false)
+    suspend infix fun isAdmin(name: String): Boolean = if (login.isLoggedIn)
+            name.admins.document(login.email).doesExist() else false
 
-    fun findCommunity(owner: LifecycleOwner, name: String, onResult: Comm.() -> Unit) {
+    suspend fun findCommunity(name: String): Comm {
         val lcName = name.toLowerCase()
-        val found = communities.document(lcName).read().map { it.toCommunity() }
+        val comm = communities.document(lcName).read().toCommunity()
 
-        val isAdminObservable = if (isLoggedIn) isAdmin(lcName)
-            else Observable.just(false)
+        val isAdmin = if (isLoggedIn) isAdmin(lcName) else false
 
-        found.zipWith(
-                isAdminObservable,
-                BiFunction { comm: Comm, isAdmin: Boolean ->
-                    if (comm.isDummy) comm else comm.copy(isAdmin = isAdmin) })
-                .observe(owner, onResult)
+        return if (comm.isDummy) comm else comm.copy(isAdmin = isAdmin)
     }
 
-    private fun DocumentReference.doesExist() = read().map { it.exists() }
+    private suspend fun DocumentReference.doesExist() = read().exists()
 
-    private fun DocumentReference.read(): Observable<DocumentSnapshot> {
-        val resultSubject = PublishSubject.create<DocumentSnapshot>()
-        return resultSubject
-                .doOnSubscribe {
-                    get().addOnCompleteListener { result ->
-                        if (result.isSuccessful) {
-                            resultSubject.onNext(result.result!!)
-                        }
-                        else {
-                            resultSubject.onError(result.exception!!)
-                        }
-                    }
-                }
+    private suspend fun DocumentReference.read(): DocumentSnapshot = suspendCoroutine { continuation ->
+        get().addOnCompleteListener { result ->
+            if (result.isSuccessful) {
+                continuation.resume(result.result!!)
+            }
+            else {
+                continuation.resumeWithException(result.exception!!)
+            }
+        }
     }
 
     private fun CollectionReference.read(): Observable<DocumentSnapshot> {
