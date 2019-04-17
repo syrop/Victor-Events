@@ -26,7 +26,7 @@ import kotlinx.coroutines.*
 import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.main.model.fs.fsReader
 
-class EventsViewModel : ViewModel() {
+class MainViewModel : ViewModel() {
     val comm by lazy { MutableLiveData<Comm>() }
     val workInProgress by lazy { MutableLiveData<Boolean>().apply { value = false } }
     val commToCreate by lazy { MutableLiveData<String?>() }

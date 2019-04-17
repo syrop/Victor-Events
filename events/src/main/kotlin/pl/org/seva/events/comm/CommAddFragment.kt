@@ -32,13 +32,13 @@ import kotlinx.android.synthetic.main.fr_comm_add.*
 import pl.org.seva.events.R
 import pl.org.seva.events.login.LoginActivity
 import pl.org.seva.events.login.isLoggedIn
-import pl.org.seva.events.main.EventsViewModel
+import pl.org.seva.events.main.MainViewModel
 import pl.org.seva.events.main.extension.*
 import pl.org.seva.events.main.view.*
 
 class CommAddFragment : Fragment() {
 
-    private val eventsModel by viewModel<EventsViewModel>()
+    private val eventsModel by viewModel<MainViewModel>()
 
     private val searchManager by lazy {
         activity!!.getSystemService(Context.SEARCH_SERVICE) as SearchManager

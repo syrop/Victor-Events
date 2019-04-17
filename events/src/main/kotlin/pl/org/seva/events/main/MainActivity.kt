@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 
     private val navController by lazy { findNavController(R.id.nav_host_fragment) }
 
-    private val model by viewModel<EventsViewModel>()
+    private val mainModel by viewModel<MainViewModel>()
 
     private val createEventsViewModel by viewModel<EventCreateViewModel>()
 
@@ -64,9 +64,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         fun resetQuery(): Boolean {
-            model.queryJob?.cancel()
-            model.comm.value = null
-            model.workInProgress.value = false
+            mainModel.queryJob?.cancel()
+            mainModel.comm.value = null
+            mainModel.workInProgress.value = false
             return false
         }
 
@@ -81,14 +81,14 @@ class MainActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         if (Intent.ACTION_SEARCH == intent.action) {
-            model.query(intent.getStringExtra(SearchManager.QUERY))
+            mainModel.query(intent.getStringExtra(SearchManager.QUERY))
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CommAddFragment.LOGIN_CREATE_COMM_REQUEST && resultCode == Activity.RESULT_OK) {
-            model.commToCreate.value = data!!.getStringExtra(LoginActivity.COMMUNITY_NAME)
+            mainModel.commToCreate.value = data!!.getStringExtra(LoginActivity.COMMUNITY_NAME)
         }
     }
 
