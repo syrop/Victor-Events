@@ -28,17 +28,27 @@ import pl.org.seva.events.main.model.fs.fsReader
 
 class MainViewModel : ViewModel() {
     val comm by lazy { MutableLiveData<Comm>() }
-    val workInProgress by lazy { MutableLiveData<Boolean>().apply { value = false } }
+    val queryState by lazy { MutableLiveData<QueryState>().apply { value = QueryState.None }}
     val commToCreate by lazy { MutableLiveData<String?>() }
-    var queryJob: Job? = null
+    private var queryJob: Job? = null
 
     fun query(name: String) {
-        workInProgress.value = true
+        queryState.value = QueryState.WorkInProgress
         queryJob = viewModelScope.launch(Dispatchers.IO) {
             fsReader.findCommunity(name).let {
-                workInProgress.postValue(false)
-                comm.postValue(it)
+                queryState.postValue(QueryState.Comm(it))
             }
         }
+    }
+
+    fun resetQuery() {
+        queryJob?.cancel()
+        queryState.value = QueryState.None
+    }
+
+    sealed class QueryState {
+        object None : QueryState()
+        data class Comm(val comm: pl.org.seva.events.comm.Comm) : QueryState()
+        object WorkInProgress : QueryState()
     }
 }

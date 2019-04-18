@@ -64,9 +64,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         fun resetQuery(): Boolean {
-            mainModel.queryJob?.cancel()
-            mainModel.comm.value = null
-            mainModel.workInProgress.value = false
+            mainModel.resetQuery()
             return false
         }
 

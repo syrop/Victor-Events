@@ -52,6 +52,7 @@ class CommAddFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         fun searchResult(comm: Comm) {
             fun Comm.found() {
+                progress.visibility = View.GONE
                 recycler.visibility = View.VISIBLE
                 adapter = FixedCommAdapter(this) {
                     if (isMemberOf) {
@@ -93,6 +94,7 @@ class CommAddFragment : Fragment() {
                         loginToCreateComm(name)
                     }
                 }
+                progress.visibility = View.GONE
                 prompt.visibility = View.VISIBLE
                 prompt.text = getString(R.string.add_comm_not_found).bold(NAME_PLACEHOLDER, comm.name)
                 if (isLoggedIn) {
@@ -107,18 +109,14 @@ class CommAddFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         prompt.setText(if (comms.isEmpty) R.string.add_comm_please_search_empty else
             R.string.add_comm_please_search)
-        eventsModel.comm.observe(this) { comm ->
-            if (comm != null) {
-                searchResult(comm)
-            }
-        }
-        eventsModel.workInProgress.observe(this) { workInProgress ->
-            if (workInProgress) {
-                prompt.visibility = View.GONE
-                progress.visibility = View.VISIBLE
-            }
-            else {
-                progress.visibility = View.GONE
+        eventsModel.queryState.observe(this) { result ->
+            when (result) {
+                is MainViewModel.QueryState.WorkInProgress -> {
+                    recycler.visibility = View.GONE
+                    prompt.visibility = View.GONE
+                    progress.visibility = View.VISIBLE
+                }
+                is MainViewModel.QueryState.Comm -> searchResult(result.comm)
             }
         }
         eventsModel.commToCreate(this) { name ->
