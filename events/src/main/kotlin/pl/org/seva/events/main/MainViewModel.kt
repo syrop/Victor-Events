@@ -32,6 +32,8 @@ class MainViewModel : ViewModel() {
     val commToCreate by lazy { MutableLiveData<String?>() }
     private var queryJob: Job? = null
 
+    var pastDestination = 0
+
     fun query(name: String) {
         queryState.value = QueryState.WorkInProgress
         queryJob = viewModelScope.launch(Dispatchers.IO) {

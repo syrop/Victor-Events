@@ -27,18 +27,16 @@ class MainActivity : AppCompatActivity() {
 
     private val commViewModel by viewModel<CommViewModel>()
 
-    private var pastDestination = 0
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.act_main)
         setSupportActionBar(toolbar)
         NavigationUI.setupActionBarWithNavController(this, navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (pastDestination) {
+            when (mainModel.pastDestination) {
                 R.id.addCommFragment -> mainModel.resetQuery()
             }
-            pastDestination = destination.id
+            mainModel.pastDestination = destination.id
         }
     }
 
