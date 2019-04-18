@@ -27,11 +27,19 @@ class MainActivity : AppCompatActivity() {
 
     private val commViewModel by viewModel<CommViewModel>()
 
+    private var pastDestination = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.act_main)
         setSupportActionBar(toolbar)
         NavigationUI.setupActionBarWithNavController(this, navController)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (pastDestination) {
+                R.id.addCommFragment -> mainModel.resetQuery()
+            }
+            pastDestination = destination.id
+        }
     }
 
     override fun onBackPressed() {
@@ -63,15 +71,9 @@ class MainActivity : AppCompatActivity() {
             return false
         }
 
-        fun resetQuery(): Boolean {
-            mainModel.resetQuery()
-            return false
-        }
-
         return when (navController.currentDestination?.id ?: 0) {
             R.id.eventCreateFragment -> showDismissEventDialog()
             R.id.commEditFragment -> resetCommViewModel()
-            R.id.addCommFragment -> resetQuery()
             else -> false
         }
     }

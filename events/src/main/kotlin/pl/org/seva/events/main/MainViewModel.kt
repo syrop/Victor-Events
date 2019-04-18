@@ -36,7 +36,9 @@ class MainViewModel : ViewModel() {
         queryState.value = QueryState.WorkInProgress
         queryJob = viewModelScope.launch(Dispatchers.IO) {
             fsReader.findCommunity(name).let {
-                queryState.postValue(QueryState.Comm(it))
+                if (isActive) {
+                    queryState.postValue(QueryState.Comm(it))
+                }
             }
         }
     }
