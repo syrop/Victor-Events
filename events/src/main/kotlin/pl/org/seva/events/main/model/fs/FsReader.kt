@@ -25,6 +25,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.GeoPoint
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
+import kotlinx.coroutines.suspendCancellableCoroutine
 import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.event.Event
 import pl.org.seva.events.login.isLoggedIn
@@ -33,7 +34,6 @@ import pl.org.seva.events.main.init.instance
 import java.time.LocalDateTime
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
 
 val fsReader by instance<FsReader>()
 
@@ -59,7 +59,7 @@ class FsReader : FsBase() {
 
     private suspend fun DocumentReference.doesExist() = read().exists()
 
-    private suspend fun DocumentReference.read(): DocumentSnapshot = suspendCoroutine { continuation ->
+    private suspend fun DocumentReference.read(): DocumentSnapshot = suspendCancellableCoroutine { continuation ->
         get().addOnCompleteListener { result ->
             if (result.isSuccessful) {
                 continuation.resume(result.result!!)
