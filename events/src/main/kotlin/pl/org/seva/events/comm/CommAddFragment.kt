@@ -103,6 +103,7 @@ class CommAddFragment : Fragment() {
                     showLoginToCreateSnackbar(comm.name)
                 }
             }
+
             if (comm.isDummy) notFound() else comm.found()
         }
 
