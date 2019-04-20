@@ -23,11 +23,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
-import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.main.model.fs.fsReader
 
 class MainViewModel : ViewModel() {
-    val comm by lazy { MutableLiveData<Comm>() }
     val queryState by lazy { MutableLiveData<QueryState>().apply { value = QueryState.None }}
     val commToCreate by lazy { MutableLiveData<String?>() }
     private var queryJob: Job? = null
