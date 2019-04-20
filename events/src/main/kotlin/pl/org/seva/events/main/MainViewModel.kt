@@ -23,6 +23,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
+import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.main.model.fs.fsReader
 
 class MainViewModel : ViewModel() {
@@ -33,10 +34,10 @@ class MainViewModel : ViewModel() {
     var pastDestination = 0
 
     fun query(name: String) {
-        queryState.value = QueryState.WorkInProgress
+        queryState.value = QueryState.InProgress
         queryJob = viewModelScope.launch(Dispatchers.IO) {
             fsReader.findCommunity(name).let {
-                queryState.postValue(QueryState.Comm(it))
+                queryState.postValue(QueryState.Completed(it))
             }
         }
     }
@@ -48,7 +49,7 @@ class MainViewModel : ViewModel() {
 
     sealed class QueryState {
         object None : QueryState()
-        data class Comm(val comm: pl.org.seva.events.comm.Comm) : QueryState()
-        object WorkInProgress : QueryState()
+        data class Completed(val comm: Comm) : QueryState()
+        object InProgress : QueryState()
     }
 }

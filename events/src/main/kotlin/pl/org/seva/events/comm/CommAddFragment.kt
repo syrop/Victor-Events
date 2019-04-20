@@ -112,12 +112,12 @@ class CommAddFragment : Fragment() {
             R.string.add_comm_please_search)
         eventsModel.queryState(this) { result ->
             when (result) {
-                is MainViewModel.QueryState.WorkInProgress -> {
+                is MainViewModel.QueryState.InProgress -> {
                     recycler.visibility = View.GONE
                     prompt.visibility = View.GONE
                     progress.visibility = View.VISIBLE
                 }
-                is MainViewModel.QueryState.Comm -> searchResult(result.comm)
+                is MainViewModel.QueryState.Completed -> searchResult(result.comm)
             }
         }
         eventsModel.commToCreate(this) { name ->
