@@ -25,6 +25,8 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.GeoPoint
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.suspendCancellableCoroutine
 import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.event.Event
@@ -48,13 +50,17 @@ class FsReader : FsBase() {
     suspend infix fun isAdmin(name: String): Boolean = if (login.isLoggedIn)
             name.admins.document(login.email).doesExist() else false
 
-    suspend fun findCommunity(name: String): Comm {
+    suspend fun findCommunity(name: String) = coroutineScope {
         val lcName = name.toLowerCase()
-        val comm = communities.document(lcName).read().toCommunity()
+        val deferredComm = async {
+            communities.document(lcName).read().toCommunity()
+        }
+        val isAdmin = async {
+            if (isLoggedIn) isAdmin(lcName) else false
+        }
+        val comm = deferredComm.await()
 
-        val isAdmin = if (isLoggedIn) isAdmin(lcName) else false
-
-        return if (comm.isDummy) comm else comm.copy(isAdmin = isAdmin)
+        if (comm.isDummy) comm else comm.copy(isAdmin = isAdmin.await())
     }
 
     private suspend fun DocumentReference.doesExist() = read().exists()
