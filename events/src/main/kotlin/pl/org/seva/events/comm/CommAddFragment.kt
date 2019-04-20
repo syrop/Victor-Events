@@ -110,7 +110,7 @@ class CommAddFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         prompt.setText(if (comms.isEmpty) R.string.add_comm_please_search_empty else
             R.string.add_comm_please_search)
-        eventsModel.queryState(this) { result ->
+        (eventsModel.queryState + this) { result ->
             when (result) {
                 is MainViewModel.QueryState.InProgress -> {
                     recycler.visibility = View.GONE
@@ -120,7 +120,7 @@ class CommAddFragment : Fragment() {
                 is MainViewModel.QueryState.Completed -> searchResult(result.comm)
             }
         }
-        eventsModel.commToCreate(this) { name ->
+        (eventsModel.commToCreate + this) { name ->
             if (!name.isNullOrEmpty()) {
                 eventsModel.commToCreate.value = ""
                 name.createJoinAndFinish()

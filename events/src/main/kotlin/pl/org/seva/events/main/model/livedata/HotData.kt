@@ -17,10 +17,15 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main.extension
+package pl.org.seva.events.main.model.livedata
 
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
-import pl.org.seva.events.main.model.HotData
+import androidx.lifecycle.LiveData
+import pl.org.seva.events.main.extension.invoke
 
-operator fun <T> LifecycleOwner.plus(liveData: MutableLiveData<T>) = HotData(liveData, this)
+interface HotData<T> {
+    val liveData: LiveData<T>
+    val owner: LifecycleOwner
+
+    operator fun invoke(observer: (T) -> Unit) = liveData(owner, observer)
+}

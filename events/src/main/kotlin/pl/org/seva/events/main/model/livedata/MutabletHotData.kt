@@ -17,11 +17,9 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main.extension
+package pl.org.seva.events.main.model.livedata
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
-import pl.org.seva.events.main.model.livedata.MutableHotData
 
-operator fun <T> MutableLiveData<T>.plus(owner: LifecycleOwner) =
-        MutableHotData(this, owner)
+data class MutableHotData<T>(override val liveData: MutableLiveData<T>, override val owner: LifecycleOwner): HotData<T>

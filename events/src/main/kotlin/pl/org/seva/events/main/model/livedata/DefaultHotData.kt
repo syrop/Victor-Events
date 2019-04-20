@@ -17,9 +17,9 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main.model
+package pl.org.seva.events.main.model.livedata
 
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
 
-data class HotData<T>(val liveData: MutableLiveData<T>, val owner: LifecycleOwner)
+data class DefaultHotData<T>(override val liveData: LiveData<T>, override val owner: LifecycleOwner): HotData<T>
