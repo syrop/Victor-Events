@@ -75,8 +75,8 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-rx2:1.2.0'
     implementation 'io.reactivex.rxjava2:rxkotlin:2.3.0'
-    implementation 'org.kodein.di:kodein-di-generic-jvm:6.1.0'
-    implementation 'org.kodein.di:kodein-di-conf-jvm:6.1.0'
+    implementation 'org.kodein.di:kodein-di-generic-jvm:6.2.0'
+    implementation 'org.kodein.di:kodein-di-conf-jvm:6.2.0'
 
     // Play, Firebase
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
