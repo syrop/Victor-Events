@@ -104,7 +104,6 @@ dependencies {
     })
     implementation 'com.google.android.material:material:1.1.0-alpha05'
 
-    implementation 'commons-io:commons-io:20030203.000550'
     androidTestImplementation 'org.mockito:mockito-android:2.27.0'
     testImplementation 'junit:junit:4.13-beta-2'
 }
