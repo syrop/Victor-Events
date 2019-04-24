@@ -36,7 +36,6 @@ import kotlinx.coroutines.Job
 import pl.org.seva.events.event.location.InteractiveMapHolder
 import pl.org.seva.events.event.location.MapHolder
 import pl.org.seva.events.main.model.Permissions
-import pl.org.seva.events.main.model.permissions
 
 fun Fragment.nav(@IdRes resId: Int): Boolean {
     findNavController().navigate(resId)
