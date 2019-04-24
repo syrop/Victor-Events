@@ -24,7 +24,6 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.async
-import kotlinx.coroutines.channels.*
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.suspendCancellableCoroutine
 import pl.org.seva.events.comm.Comm
@@ -40,11 +39,8 @@ val fsReader by instance<FsReader>()
 
 class FsReader : FsBase() {
 
-    suspend fun readEvents(community: String): ReceiveChannel<Event> {
-        return community.events.read()
-                .filter { it.exists() }
-                .map { it.toEvent() }
-    }
+    suspend fun readEvents(community: String) =
+            community.events.read().map { it.toEvent() }
 
     suspend infix fun isAdmin(name: String): Boolean = if (login.isLoggedIn)
             name.admins.document(login.email).doesExist() else false
@@ -75,16 +71,12 @@ class FsReader : FsBase() {
         }
     }
 
-    private suspend fun CollectionReference.read(): ReceiveChannel<DocumentSnapshot> {
-        return Channel<DocumentSnapshot>(Channel.UNLIMITED).apply {
-            coroutineScope {
-                get().addOnCompleteListener { result ->
-                    if (result.isSuccessful) {
-                        result.result!!.forEach { element -> sendBlocking(element) }
-                    } else {
-                        close(result.exception!!)
-                    }
-                }
+    private suspend fun CollectionReference.read(): List<DocumentSnapshot> = suspendCancellableCoroutine { continuation ->
+        get().addOnCompleteListener { result ->
+            if (result.isSuccessful) {
+                continuation.resume(result.result!!.documents)
+            } else {
+                continuation.resumeWithException(result.exception!!)
             }
         }
     }
