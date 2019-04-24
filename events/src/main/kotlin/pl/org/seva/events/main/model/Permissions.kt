@@ -67,24 +67,21 @@ class Permissions {
         val denied by lazy { BroadcastChannel<PermissionResult>(Channel.CONFLATED) }
 
         private fun CoroutineScope.watch(code: Int, request: PermissionRequest) = launch (Dispatchers.IO) {
-            fun PermissionResult.matches() =
-                    requestCode == code && permission == request.permission
+            suspend fun PermissionResult.ifMatching(block: () -> Unit) {
+                if (requestCode == code && permission == request.permission) {
+                    withContext(Dispatchers.Main) {
+                        block()
+                    }
+                }
+            }
 
             while (true) {
                 select<Unit> {
                     granted.openSubscription().onReceive {
-                        if (it.matches()) {
-                            withContext(Dispatchers.Main) {
-                                request.onGranted()
-                            }
-                        }
+                        it.ifMatching { request.onGranted() }
                     }
                     denied.openSubscription().onReceive {
-                        if (it.matches()) {
-                            withContext(Dispatchers.Main) {
-                                request.onDenied()
-                            }
-                        }
+                        it.ifMatching { request.onDenied() }
                     }
                 }
             }
