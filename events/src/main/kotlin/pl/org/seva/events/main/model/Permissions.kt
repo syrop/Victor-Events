@@ -40,12 +40,9 @@ class Permissions {
             fragment: Fragment,
             requestCode: Int,
             requests: Array<PermissionRequest>) {
-        val permissionsToRequest = ArrayList<String>()
-        requests.forEach { permission ->
-            permissionsToRequest.add(permission.permission) }
         val vm = fragment.getViewModel<ViewModel>()
         fragment.untilDestroy { vm.request(requestCode, requests) }
-        fragment.requestPermissions(permissionsToRequest.toTypedArray(), requestCode)
+        fragment.requestPermissions(requests.map { it.permission }.toTypedArray(), requestCode)
     }
 
     fun onRequestPermissionsResult(
@@ -75,7 +72,7 @@ class Permissions {
         }
     }
 
-    private class ViewModel : androidx.lifecycle.ViewModel() {
+    class ViewModel : androidx.lifecycle.ViewModel() {
         val granted by lazy { BroadcastChannel<PermissionResult>(Channel.CONFLATED) }
         val denied by lazy { BroadcastChannel<PermissionResult>(Channel.CONFLATED) }
 
