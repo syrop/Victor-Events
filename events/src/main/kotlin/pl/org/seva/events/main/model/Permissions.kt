@@ -28,22 +28,12 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.selects.select
-import pl.org.seva.events.main.extension.untilDestroy
 import pl.org.seva.events.main.extension.getViewModel
 import pl.org.seva.events.main.init.instance
 
 val permissions by instance<Permissions>()
 
 class Permissions {
-
-    fun request(
-            fragment: Fragment,
-            requestCode: Int,
-            requests: Array<PermissionRequest>) {
-        val vm = fragment.getViewModel<ViewModel>()
-        fragment.untilDestroy { vm.request(requestCode, requests) }
-        fragment.requestPermissions(requests.map { it.permission }.toTypedArray(), requestCode)
-    }
 
     fun onRequestPermissionsResult(
             fragment: Fragment,
@@ -76,7 +66,7 @@ class Permissions {
         val granted by lazy { BroadcastChannel<PermissionResult>(Channel.CONFLATED) }
         val denied by lazy { BroadcastChannel<PermissionResult>(Channel.CONFLATED) }
 
-        private fun CoroutineScope.request(code: Int, request: PermissionRequest) = launch (Dispatchers.IO) {
+        private fun CoroutineScope.watch(code: Int, request: PermissionRequest) = launch (Dispatchers.IO) {
             fun PermissionResult.matches() =
                     requestCode == code && permission == request.permission
 
@@ -100,9 +90,9 @@ class Permissions {
             }
         }
 
-        fun request(code: Int, requests: Array<PermissionRequest>) = viewModelScope.launch {
+        fun watch(code: Int, requests: Array<PermissionRequest>) = viewModelScope.launch {
                 for (req in requests) {
-                    request(code, req)
+                    watch(code, req)
                 }
             }
     }

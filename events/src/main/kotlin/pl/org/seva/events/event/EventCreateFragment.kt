@@ -112,7 +112,7 @@ class EventCreateFragment : Fragment() {
             onGranted.invoke()
         }
         else {
-            requestPermissions(
+            request(
                     Permissions.DEFAULT_PERMISSION_REQUEST_ID,
                     arrayOf(Permissions.PermissionRequest(
                             Manifest.permission.ACCESS_FINE_LOCATION,

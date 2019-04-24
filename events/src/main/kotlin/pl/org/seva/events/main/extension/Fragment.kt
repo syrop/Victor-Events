@@ -49,14 +49,6 @@ inline fun <reified R : ViewModel> Fragment.viewModel() = lazy { getViewModel<R>
 
 inline fun <reified R : ViewModel> Fragment.getViewModel() = activity!!.getViewModel<R>()
 
-fun Fragment.requestPermissions(
-        requestCode: Int,
-        requests: Array<Permissions.PermissionRequest>) =
-        permissions.request(
-                this,
-                requestCode,
-                requests)
-
 fun Fragment.inflate(@LayoutRes resource: Int, root: ViewGroup?): View =
         layoutInflater.inflate(resource, root, false)
 
@@ -77,7 +69,17 @@ fun Fragment.inBrowser(uri: String) {
     startActivity(i)
 }
 
-fun Fragment.untilDestroy(work: () -> Job) = work().apply {
+fun Fragment.request(requestCode: Int, requests: Array<Permissions.PermissionRequest>) {
+    watch(requestCode, requests)
+    requestPermissions(requests.map { it.permission }.toTypedArray(), requestCode)
+}
+
+private fun Fragment.watch(requestCode: Int, requests: Array<Permissions.PermissionRequest>) {
+    val vm = getViewModel<Permissions.ViewModel>()
+    untilDestroy { vm.watch(requestCode, requests) }
+}
+
+private fun Fragment.untilDestroy(work: () -> Job) = work().apply {
     lifecycle.addObserver(object : LifecycleEventObserver {
         override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
             if (event == Lifecycle.Event.ON_DESTROY) {
