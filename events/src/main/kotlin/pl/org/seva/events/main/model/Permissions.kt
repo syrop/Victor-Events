@@ -74,13 +74,15 @@ class Permissions {
                     }
                 }
             }
+            val grantedSubscription = granted.openSubscription()
+            val deniedSubscription = denied.openSubscription()
 
             while (true) {
                 select<Unit> {
-                    granted.openSubscription().onReceive {
+                    grantedSubscription.onReceive {
                         it.ifMatching { request.onGranted() }
                     }
-                    denied.openSubscription().onReceive {
+                    deniedSubscription.onReceive {
                         it.ifMatching { request.onDenied() }
                     }
                 }
