@@ -75,7 +75,7 @@ class Permissions {
         }
     }
 
-    class ViewModel : androidx.lifecycle.ViewModel() {
+    private class ViewModel : androidx.lifecycle.ViewModel() {
         val granted by lazy { BroadcastChannel<PermissionResult>(Channel.CONFLATED) }
         val denied by lazy { BroadcastChannel<PermissionResult>(Channel.CONFLATED) }
 
