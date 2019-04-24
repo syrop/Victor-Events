@@ -26,7 +26,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BroadcastChannel
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.selects.select
 import pl.org.seva.events.main.extension.getViewModel
 import pl.org.seva.events.main.init.instance
@@ -46,10 +46,10 @@ class Permissions {
         val denied = vm.denied
 
         infix fun String.onGranted(requestCode: Int) =
-                granted.offer(PermissionResult(requestCode, this))
+                granted.sendBlocking(PermissionResult(requestCode, this))
 
         infix fun String.onDenied(requestCode: Int) =
-                denied.offer(PermissionResult(requestCode, this))
+                denied.sendBlocking(PermissionResult(requestCode, this))
 
         if (grantResults.isEmpty()) {
             permissions.forEach { it onDenied requestCode }
@@ -63,8 +63,8 @@ class Permissions {
     }
 
     class ViewModel : androidx.lifecycle.ViewModel() {
-        val granted by lazy { BroadcastChannel<PermissionResult>(Channel.CONFLATED) }
-        val denied by lazy { BroadcastChannel<PermissionResult>(Channel.CONFLATED) }
+        val granted by lazy { BroadcastChannel<PermissionResult>(DEFAULT_CAPACITY) }
+        val denied by lazy { BroadcastChannel<PermissionResult>(DEFAULT_CAPACITY) }
 
         private fun CoroutineScope.watch(code: Int, request: PermissionRequest) = launch (Dispatchers.IO) {
             suspend fun PermissionResult.ifMatching(block: () -> Unit) {
@@ -94,6 +94,10 @@ class Permissions {
                     watch(code, req)
                 }
             }
+
+        companion object {
+            private const val DEFAULT_CAPACITY = 10
+        }
     }
 
     companion object {
