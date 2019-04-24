@@ -27,8 +27,12 @@ import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.Job
 import pl.org.seva.events.event.location.InteractiveMapHolder
 import pl.org.seva.events.event.location.MapHolder
 import pl.org.seva.events.main.model.Permissions
@@ -71,4 +75,14 @@ fun Fragment.inBrowser(uri: String) {
     val i = Intent(Intent.ACTION_VIEW)
     i.data = Uri.parse(uri)
     startActivity(i)
+}
+
+fun Fragment.untilDestroy(work: () -> Job) = work().apply {
+    lifecycle.addObserver(object : LifecycleEventObserver {
+        override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+            if (event == Lifecycle.Event.ON_DESTROY) {
+                cancel()
+            }
+        }
+    })
 }

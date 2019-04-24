@@ -28,6 +28,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.selects.select
+import pl.org.seva.events.main.extension.untilDestroy
 import pl.org.seva.events.main.extension.getViewModel
 import pl.org.seva.events.main.init.instance
 
@@ -43,14 +44,7 @@ class Permissions {
         requests.forEach { permission ->
             permissionsToRequest.add(permission.permission) }
         val vm = fragment.getViewModel<ViewModel>()
-        val job = vm.request(requestCode, requests)
-        fragment.lifecycle.addObserver(object : LifecycleEventObserver {
-            override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-                if (event == Lifecycle.Event.ON_DESTROY) {
-                    job.cancel()
-                }
-            }
-        })
+        fragment.untilDestroy { vm.request(requestCode, requests) }
         fragment.requestPermissions(permissionsToRequest.toTypedArray(), requestCode)
     }
 
@@ -60,7 +54,7 @@ class Permissions {
             permissions: Array<String>,
             grantResults: IntArray) {
 
-        val vm = ViewModelProviders.of(fragment).get(ViewModel::class.java)
+        val vm = fragment.getViewModel<ViewModel>()
         val granted = vm.granted
         val denied = vm.denied
 
