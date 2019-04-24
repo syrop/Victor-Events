@@ -27,7 +27,7 @@ import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.main.model.fs.fsReader
 
 class MainViewModel : ViewModel() {
-    val queryState by lazy { MutableLiveData<QueryState>().apply { value = QueryState.None }}
+    val queryState by lazy { MutableLiveData<QueryState>(QueryState.None) }
     val commToCreate by lazy { MutableLiveData<String?>() }
     private var queryJob: Job? = null
 

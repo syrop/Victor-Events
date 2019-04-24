@@ -23,9 +23,8 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.GeoPoint
-import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
 import kotlinx.coroutines.async
+import kotlinx.coroutines.channels.*
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.suspendCancellableCoroutine
 import pl.org.seva.events.comm.Comm
@@ -41,7 +40,7 @@ val fsReader by instance<FsReader>()
 
 class FsReader : FsBase() {
 
-    fun readEvents(community: String): Observable<Event> {
+    suspend fun readEvents(community: String): ReceiveChannel<Event> {
         return community.events.read()
                 .filter { it.exists() }
                 .map { it.toEvent() }
@@ -76,15 +75,15 @@ class FsReader : FsBase() {
         }
     }
 
-    private fun CollectionReference.read(): Observable<DocumentSnapshot> {
-        val resultSubject = PublishSubject.create<DocumentSnapshot>()
-        return resultSubject.doOnSubscribe {
-            get().addOnCompleteListener { result ->
-                if (result.isSuccessful) {
-                    result.result!!.forEach { element -> resultSubject.onNext(element) }
-                }
-                else {
-                    resultSubject.onError(result.exception!!)
+    private suspend fun CollectionReference.read(): ReceiveChannel<DocumentSnapshot> {
+        return Channel<DocumentSnapshot>(Channel.UNLIMITED).apply {
+            coroutineScope {
+                get().addOnCompleteListener { result ->
+                    if (result.isSuccessful) {
+                        result.result!!.forEach { element -> sendBlocking(element) }
+                    } else {
+                        close(result.exception!!)
+                    }
                 }
             }
         }
