@@ -66,7 +66,7 @@ kapt {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0-alpha4', {
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.2.0-alpha04', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
@@ -87,9 +87,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
 
     // Jetpack, AndroidX
-    implementation 'androidx.core:core-ktx:1.0.1'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0'
+    implementation 'androidx.core:core-ktx:1.1.0-alpha05'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha04'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0-alpha04'
     kapt 'androidx.room:room-compiler:2.1.0-alpha06'
     implementation 'androidx.room:room-runtime:2.1.0-alpha06'
     implementation 'androidx.room:room-ktx:2.1.0-alpha06'
@@ -99,14 +99,14 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.1.0-alpha02'
     implementation 'androidx.navigation:navigation-ui-ktx:2.1.0-alpha02'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha4'
-    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.2.0-alpha04', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     implementation 'com.google.android.material:material:1.1.0-alpha05'
 
-    implementation 'commons-io:commons-io:2.5'
-    androidTestImplementation 'org.mockito:mockito-android:2.18.3'
-    testImplementation 'junit:junit:4.12'
+    implementation 'commons-io:commons-io:20030203.000550'
+    androidTestImplementation 'org.mockito:mockito-android:2.27.0'
+    testImplementation 'junit:junit:4.13-beta-2'
 }
 
 apply plugin: 'com.google.gms.google-services'
