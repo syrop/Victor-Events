@@ -124,7 +124,7 @@ class EventCreateFragment : Fragment() {
             requestCode: Int,
             requests: Array<String>,
             grantResults: IntArray) =
-            permissions.onRequestPermissionsResult(requestCode, requests, grantResults)
+            permissions.onRequestPermissionsResult(this, requestCode, requests, grantResults)
 
     companion object {
         const val TIME_PICKER_TAG = "timePicker"

@@ -17,20 +17,23 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
+@file:Suppress("EXPERIMENTAL_API_USAGE")
+
 package pl.org.seva.events.main.model
 
 import android.content.pm.PackageManager
 import androidx.fragment.app.Fragment
-import io.reactivex.subjects.PublishSubject
-import pl.org.seva.events.main.extension.observe
+import androidx.lifecycle.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.BroadcastChannel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.selects.select
+import pl.org.seva.events.main.extension.getViewModel
 import pl.org.seva.events.main.init.instance
 
 val permissions by instance<Permissions>()
 
 class Permissions {
-
-    private val grantedSubject = PublishSubject.create<PermissionResult>()
-    private val deniedSubject = PublishSubject.create<PermissionResult>()
 
     fun request(
             fragment: Fragment,
@@ -38,23 +41,34 @@ class Permissions {
             requests: Array<PermissionRequest>) {
         val permissionsToRequest = ArrayList<String>()
         requests.forEach { permission ->
-            permissionsToRequest.add(permission.permission)
-            grantedSubject
-                    .filter { it.requestCode == requestCode && it.permission == permission.permission }
-                    .observe(fragment) { permission.onGranted() }
-            deniedSubject
-                    .filter { it.requestCode == requestCode && it.permission == permission.permission }
-                    .observe(fragment) { permission.onDenied() }
-        }
+            permissionsToRequest.add(permission.permission) }
+        val vm = fragment.getViewModel<ViewModel>()
+        val job = vm.request(requestCode, requests)
+        fragment.lifecycle.addObserver(object : LifecycleEventObserver {
+            override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+                if (event == Lifecycle.Event.ON_DESTROY) {
+                    job.cancel()
+                }
+            }
+        })
         fragment.requestPermissions(permissionsToRequest.toTypedArray(), requestCode)
     }
 
-    fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    fun onRequestPermissionsResult(
+            fragment: Fragment,
+            requestCode: Int,
+            permissions: Array<String>,
+            grantResults: IntArray) {
+
+        val vm = ViewModelProviders.of(fragment).get(ViewModel::class.java)
+        val granted = vm.granted
+        val denied = vm.denied
+
         infix fun String.onGranted(requestCode: Int) =
-                grantedSubject.onNext(PermissionResult(requestCode, this))
+                granted.offer(PermissionResult(requestCode, this))
 
         infix fun String.onDenied(requestCode: Int) =
-                deniedSubject.onNext(PermissionResult(requestCode, this))
+                denied.offer(PermissionResult(requestCode, this))
 
         if (grantResults.isEmpty()) {
             permissions.forEach { it onDenied requestCode }
@@ -65,6 +79,41 @@ class Permissions {
                 permissions[id] onDenied requestCode
             }
         }
+    }
+
+    class ViewModel : androidx.lifecycle.ViewModel() {
+        val granted by lazy { BroadcastChannel<PermissionResult>(Channel.CONFLATED) }
+        val denied by lazy { BroadcastChannel<PermissionResult>(Channel.CONFLATED) }
+
+        private fun CoroutineScope.request(code: Int, request: PermissionRequest) = launch (Dispatchers.IO) {
+            fun PermissionResult.matches() =
+                    requestCode == code && permission == request.permission
+
+            while (true) {
+                select<Unit> {
+                    granted.openSubscription().onReceive {
+                        if (it.matches()) {
+                            withContext(Dispatchers.Main) {
+                                request.onGranted()
+                            }
+                        }
+                    }
+                    denied.openSubscription().onReceive {
+                        if (it.matches()) {
+                            withContext(Dispatchers.Main) {
+                                request.onDenied()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        fun request(code: Int, requests: Array<PermissionRequest>) = viewModelScope.launch {
+                for (req in requests) {
+                    request(code, req)
+                }
+            }
     }
 
     companion object {
