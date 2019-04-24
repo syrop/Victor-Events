@@ -109,7 +109,7 @@ class EventCreateFragment : Fragment() {
         if (ContextCompat.checkSelfPermission(
                         context!!,
                         Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            onGranted.invoke()
+            onGranted()
         }
         else {
             request(
