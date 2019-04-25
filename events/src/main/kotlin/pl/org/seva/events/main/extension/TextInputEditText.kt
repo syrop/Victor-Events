@@ -32,7 +32,7 @@ fun TextInputEditText.withLiveData(owner: LifecycleOwner, liveData: MutableLiveD
     liveData.observe(owner, observer)
 }
 
-operator fun TextInputEditText.plusAssign(hotData: MutableHotData<String>) =
+infix fun TextInputEditText.backWith(hotData: MutableHotData<String>) =
         withLiveData(hotData.owner, hotData.liveData)
 
 private val TextInputEditText.observer get() = Observer { value: String? ->

@@ -40,8 +40,8 @@ class CommEditFragment : Fragment() {
             nav(R.id.action_commEditFragment_to_commDeleteFragment)
         }
         val vm = getViewModel<CommViewModel>()
-        name += vm.name + this
-        description += vm.desc + this
+        name backWith (vm.name + this)
+        description backWith (vm.desc + this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

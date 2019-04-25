@@ -68,22 +68,22 @@ class EventCreateFragment : Fragment() {
             map_container.visibility = if (l == null) View.INVISIBLE else View.VISIBLE
         }
 
-        name += model.name + this
+        name backWith (model.name + this)
         time.setOnClickListener { showTimePicker() }
         date.setOnClickListener { showDatePicker() }
         address.setOnClickListener { showLocationPicker() }
-        description += model.description + this
+        description backWith (model.description + this)
 
-        model.time(this) { onTimeChanged(it) }
-        model.date(this) { onDateChanged(it) }
-        model.location(this) { onLocationChanged(it) }
+        (model.time + this) { onTimeChanged(it) }
+        (model.date + this) { onDateChanged(it) }
+        (model.location + this) { onLocationChanged(it) }
 
         comms.namesIsAdminOf.apply {
             model.comm.value = get(0)
             if (size > 1) {
                 comm_layout.visibility = View.VISIBLE
                 comm.setText(get(0))
-                comm += model.comm + this@EventCreateFragment
+                comm backWith (model.comm + this@EventCreateFragment)
                 comm.setOnClickListener {
                     AlertDialog.Builder(context!!)
                             .setItems(this) { dialog, which ->

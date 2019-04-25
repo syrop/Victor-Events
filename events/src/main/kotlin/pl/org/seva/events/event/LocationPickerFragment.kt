@@ -43,7 +43,7 @@ class LocationPickerFragment : Fragment() {
 
         val viewModel = getViewModel<EventCreateViewModel>()
         delete_location.setOnClickListener { viewModel.location.value = null }
-        viewModel.location(this) { onLocationChanged(it) }
+        (viewModel.location + this) { onLocationChanged(it) }
 
         createInteractiveMapHolder {
             onMapAvailable = {
