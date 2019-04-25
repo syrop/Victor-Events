@@ -48,9 +48,7 @@ open class CommAdapter(private val onClick: (View) -> Unit) : RecyclerView.Adapt
 
     class ViewHolder(val view: View, onClick: (View) -> Unit) : RecyclerView.ViewHolder(view) {
 
-        init {
-            view onClick onClick
-        }
+        init { view onClick onClick }
 
         val communityName: TextView = view.comm
         val iconProfile: ImageView = view.icon_profile
