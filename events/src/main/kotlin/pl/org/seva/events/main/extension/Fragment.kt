@@ -51,10 +51,10 @@ inline fun <reified R : ViewModel> Fragment.getViewModel() = activity!!.getViewM
 fun Fragment.inflate(@LayoutRes resource: Int, root: ViewGroup?): View =
         layoutInflater.inflate(resource, root, false)
 
-fun Fragment.createMapHolder(f: MapHolder.() -> Unit = {}): MapHolder =
+fun Fragment.createMapHolder(f: MapHolder.() -> Unit = {}) =
         MapHolder().apply(f) withFragment this
 
-fun Fragment.createInteractiveMapHolder(f: InteractiveMapHolder.() -> Unit = {}): InteractiveMapHolder =
+fun Fragment.createInteractiveMapHolder(f: InteractiveMapHolder.() -> Unit = {}) =
         (InteractiveMapHolder().apply(f) withFragment this) as InteractiveMapHolder
 
 var Fragment.title: CharSequence get() = (activity!! as AppCompatActivity).supportActionBar!!.title!!
