@@ -20,10 +20,7 @@
 package pl.org.seva.events.comm
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fr_comm_edit.*
 import pl.org.seva.events.R
@@ -31,15 +28,14 @@ import pl.org.seva.events.main.extension.*
 
 class CommEditFragment : Fragment() {
 
+    private val vm by viewModel<CommViewModel>()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
             inflate(R.layout.fr_comm_edit, container)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        delete_comm_fab.setOnClickListener {
-            nav(R.id.action_commEditFragment_to_commDeleteFragment)
-        }
-        val vm = getViewModel<CommViewModel>()
+        delete_comm_fab.setOnClickListener { nav(R.id.action_commEditFragment_to_commDeleteFragment) }
         name backWith (vm.name + this)
         description backWith (vm.desc + this)
     }
@@ -47,6 +43,17 @@ class CommEditFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        fun saveComm(): Boolean {
+            return false
+        }
+
+        return when (item.itemId) {
+            R.id.action_ok -> saveComm()
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

@@ -50,61 +50,55 @@ class CommAddFragment : Fragment() {
             inflate(R.layout.fr_comm_add, container)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        fun searchResult(comm: Comm) {
-            fun Comm.found() {
-                progress.visibility = View.GONE
-                recycler.visibility = View.VISIBLE
-                adapter = FixedCommAdapter(this) {
-                    if (isMemberOf) {
-                        getString(R.string.add_comm_already_a_member).toast()
-                    }
-                    else {
-                        joinAndFinish()
-                    }
+        fun Comm.found() {
+            progress.visibility = View.GONE
+            recycler.visibility = View.VISIBLE
+            adapter = FixedCommAdapter(this) {
+                if (isMemberOf) {
+                    getString(R.string.add_comm_already_a_member).toast()
                 }
-                recycler.verticalDivider()
-                recycler.adapter = adapter
-                recycler.layoutManager = LinearLayoutManager(context)
+                else { joinAndFinish() }
             }
+            recycler.verticalDivider()
+            recycler.adapter = adapter
+            recycler.layoutManager = LinearLayoutManager(context)
+        }
 
-            fun notFound() {
-                fun showCreateCommunitySnackbar(name: String) {
-                    longSnackbar {
-                        view = layout
-                        message = R.string.add_comm_can_create
-                        action = R.string.add_comm_create
-                    } show {
-                        name.createJoinAndFinish()
-                    }
-                }
-
-                fun showLoginToCreateSnackbar(name: String) {
-                    fun loginToCreateComm(name: String) {
-                        val intent = Intent(activity, LoginActivity::class.java)
-                                .putExtra(LoginActivity.COMMUNITY_NAME, name)
-                                .putExtra(LoginActivity.ACTION, LoginActivity.LOGIN)
-                        startActivityForResult(intent, LOGIN_CREATE_COMM_REQUEST)
-                    }
-
-                    permanentSnackbar {
-                        view = layout
-                        message = R.string.add_comm_login_to_create
-                        action = R.string.add_comm_login
-                    } show {
-                        loginToCreateComm(name)
-                    }
-                }
-                progress.visibility = View.GONE
-                prompt.visibility = View.VISIBLE
-                prompt.text = getString(R.string.add_comm_not_found).bold(NAME_PLACEHOLDER, comm.name)
-                if (isLoggedIn) {
-                    showCreateCommunitySnackbar(comm.name)
-                } else {
-                    showLoginToCreateSnackbar(comm.name)
+        fun notFound(comm: Comm) {
+            fun showCreateCommunitySnackbar(name: String) {
+                longSnackbar {
+                    view = layout
+                    message = R.string.add_comm_can_create
+                    action = R.string.add_comm_create
+                } show {
+                    name.createJoinAndFinish()
                 }
             }
 
-            if (comm.isDummy) notFound() else comm.found()
+            fun showLoginToCreateSnackbar(name: String) {
+                fun loginToCreateComm(name: String) {
+                    val intent = Intent(activity, LoginActivity::class.java)
+                            .putExtra(LoginActivity.COMMUNITY_NAME, name)
+                            .putExtra(LoginActivity.ACTION, LoginActivity.LOGIN)
+                    startActivityForResult(intent, LOGIN_CREATE_COMM_REQUEST)
+                }
+
+                permanentSnackbar {
+                    view = layout
+                    message = R.string.add_comm_login_to_create
+                    action = R.string.add_comm_login
+                } show {
+                    loginToCreateComm(name)
+                }
+            }
+            progress.visibility = View.GONE
+            prompt.visibility = View.VISIBLE
+            prompt.text = getString(R.string.add_comm_not_found).bold(NAME_PLACEHOLDER, comm.name)
+            if (isLoggedIn) {
+                showCreateCommunitySnackbar(comm.name)
+            } else {
+                showLoginToCreateSnackbar(comm.name)
+            }
         }
 
         super.onActivityCreated(savedInstanceState)
@@ -117,7 +111,9 @@ class CommAddFragment : Fragment() {
                     prompt.visibility = View.GONE
                     progress.visibility = View.VISIBLE
                 }
-                is MainViewModel.QueryState.Completed -> searchResult(result.comm)
+                is MainViewModel.QueryState.Completed -> result.comm.let {
+                    if (it.isDummy) notFound(it) else it.found()
+                }
             }
         }
         (eventsModel.commToCreate + this) { name ->
