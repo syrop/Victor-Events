@@ -17,27 +17,10 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.about
+package pl.org.seva.events.main.extension
 
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fr_about.*
-import pl.org.seva.events.R
-import pl.org.seva.events.main.extension.inBrowser
-import pl.org.seva.events.main.extension.inflate
-import pl.org.seva.events.main.extension.invoke
 
-class AboutFragment : Fragment() {
+operator fun View.invoke(l: (View) -> Unit) = onClick(l)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflate(R.layout.fr_about, container)
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        github { inBrowser(getString(R.string.about_github_url)) }
-    }
-}
+infix fun View.onClick(l: (View) -> Unit) = setOnClickListener(l)

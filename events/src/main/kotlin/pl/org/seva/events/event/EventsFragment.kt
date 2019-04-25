@@ -30,6 +30,7 @@ import pl.org.seva.events.comm.comms
 import pl.org.seva.events.main.extension.nav
 import pl.org.seva.events.login.login
 import pl.org.seva.events.main.extension.inflate
+import pl.org.seva.events.main.extension.invoke
 
 class EventsFragment : Fragment() {
 
@@ -45,7 +46,7 @@ class EventsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         if (comms.isAdminOfAny) { add_event.visibility = View.VISIBLE }
-        add_event.setOnClickListener { nav(R.id.action_eventsFragment_to_createEventFragment) }
+        add_event { nav(R.id.action_eventsFragment_to_createEventFragment) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {

@@ -38,7 +38,7 @@ class CommDetailsFragment : Fragment() {
         title = comm.name
         if (comm.isAdmin) { edit_comm_fab.show() }
         else { edit_comm_fab.hide() }
-        edit_comm_fab.setOnClickListener { nav(R.id.action_commDetailsFragment_to_commEditFragment) }
+        edit_comm_fab { nav(R.id.action_commDetailsFragment_to_commEditFragment) }
         name.setText(comm.name)
         description.setText(comm.desc)
     }

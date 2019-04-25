@@ -32,7 +32,7 @@ import pl.org.seva.events.comm.comms
 import pl.org.seva.events.main.extension.back
 import pl.org.seva.events.main.extension.inBrowser
 import pl.org.seva.events.main.extension.inflate
-import pl.org.seva.events.main.extension.observe
+import pl.org.seva.events.main.extension.invoke
 
 class LoginConfirmationFragment : Fragment() {
 
@@ -42,13 +42,13 @@ class LoginConfirmationFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        ok.setOnClickListener {
+        ok {
             val intent = Intent(activity, LoginActivity::class.java)
                     .putExtra(LoginActivity.ACTION, LoginActivity.LOGIN)
             startActivityForResult(intent, LOGIN_REQUEST)
         }
-        cancel.setOnClickListener { back() }
-        privacy_policy.setOnClickListener { inBrowser(getString(R.string.login_confirmation_privacy_uri)) }
+        cancel { back() }
+        privacy_policy { inBrowser(getString(R.string.login_confirmation_privacy_uri)) }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

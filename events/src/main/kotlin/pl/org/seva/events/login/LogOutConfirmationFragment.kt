@@ -31,7 +31,7 @@ import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.main.extension.back
 import pl.org.seva.events.main.extension.inflate
-import pl.org.seva.events.main.extension.observe
+import pl.org.seva.events.main.extension.invoke
 
 class LogOutConfirmationFragment : Fragment() {
 
@@ -41,13 +41,13 @@ class LogOutConfirmationFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        log_out.setOnClickListener {
+        log_out {
             val intent = Intent(activity, LoginActivity::class.java)
                     .putExtra(LoginActivity.ACTION, LoginActivity.LOGOUT)
             startActivityForResult(intent, LOG_OUT_REQUEST)
         }
 
-        cancel.setOnClickListener { back() }
+        cancel { back() }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

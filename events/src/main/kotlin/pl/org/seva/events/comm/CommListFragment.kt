@@ -69,7 +69,7 @@ class CommListFragment : Fragment() {
                     .setAction(R.string.comm_list_undo) { comm.join() }
                     .show()
         }
-        add_comm.setOnClickListener { nav(R.id.action_commListFragment_to_addCommFragment) }
+        add_comm { nav(R.id.action_commListFragment_to_addCommFragment) }
     }
 
     companion object {

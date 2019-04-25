@@ -27,6 +27,7 @@ import android.widget.TextView
 import kotlinx.android.synthetic.main.row_comm.view.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.inflate
+import pl.org.seva.events.main.extension.onClick
 
 open class CommAdapter(private val onClick: (View) -> Unit) : RecyclerView.Adapter<CommAdapter.ViewHolder>() {
 
@@ -48,7 +49,7 @@ open class CommAdapter(private val onClick: (View) -> Unit) : RecyclerView.Adapt
     class ViewHolder(val view: View, onClick: (View) -> Unit) : RecyclerView.ViewHolder(view) {
 
         init {
-            view.setOnClickListener(onClick)
+            view onClick onClick
         }
 
         val communityName: TextView = view.comm

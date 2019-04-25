@@ -69,9 +69,9 @@ class EventCreateFragment : Fragment() {
         }
 
         name backWith (model.name + this)
-        time.setOnClickListener { showTimePicker() }
-        date.setOnClickListener { showDatePicker() }
-        address.setOnClickListener { showLocationPicker() }
+        time { showTimePicker() }
+        date { showDatePicker() }
+        address { showLocationPicker() }
         description backWith (model.description + this)
 
         (model.time + this) { onTimeChanged(it) }
@@ -84,7 +84,7 @@ class EventCreateFragment : Fragment() {
                 comm_layout.visibility = View.VISIBLE
                 comm.setText(get(0))
                 comm backWith (model.comm + this@EventCreateFragment)
-                comm.setOnClickListener {
+                comm {
                     AlertDialog.Builder(context!!)
                             .setItems(this) { dialog, which ->
                                 comm.setText(get(which))
