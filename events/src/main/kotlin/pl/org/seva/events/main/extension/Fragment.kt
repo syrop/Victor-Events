@@ -48,9 +48,6 @@ inline fun <reified R : ViewModel> Fragment.viewModel() = lazy { getViewModel<R>
 
 inline fun <reified R : ViewModel> Fragment.getViewModel() = activity!!.getViewModel<R>()
 
-fun Fragment.inflate(@LayoutRes resource: Int, root: ViewGroup?): View =
-        layoutInflater.inflate(resource, root, false)
-
 fun Fragment.createMapHolder(f: MapHolder.() -> Unit = {}) =
         MapHolder().apply(f) withFragment this
 

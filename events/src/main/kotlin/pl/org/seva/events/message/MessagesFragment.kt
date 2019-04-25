@@ -20,23 +20,17 @@
 package pl.org.seva.events.message
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fr_messages.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.model.db.db
-import pl.org.seva.events.main.extension.inflate
 import pl.org.seva.events.main.extension.swipeListener
 import pl.org.seva.events.main.extension.verticalDivider
 import pl.org.seva.events.main.model.io
 
-class MessagesFragment : Fragment() {
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-            inflate(R.layout.fr_messages, container)
+class MessagesFragment : Fragment(R.layout.fr_messages) {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         fun refreshScreen() {

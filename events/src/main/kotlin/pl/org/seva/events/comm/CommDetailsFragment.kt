@@ -20,17 +20,12 @@
 package pl.org.seva.events.comm
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fr_comm_details.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.*
 
-class CommDetailsFragment : Fragment() {
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-            inflate(R.layout.fr_comm_details, container)
+class CommDetailsFragment : Fragment(R.layout.fr_comm_details) {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

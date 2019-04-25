@@ -29,13 +29,9 @@ import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.main.extension.nav
 import pl.org.seva.events.login.login
-import pl.org.seva.events.main.extension.inflate
 import pl.org.seva.events.main.extension.invoke
 
-class EventsFragment : Fragment() {
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-            inflate(R.layout.fr_events, container)
+class EventsFragment : Fragment(R.layout.fr_events) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

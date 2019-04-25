@@ -36,7 +36,7 @@ import pl.org.seva.events.main.model.permissions
 import java.time.LocalDate
 import java.time.LocalTime
 
-class EventCreateFragment : Fragment() {
+class EventCreateFragment : Fragment(R.layout.fr_event_create) {
 
     private val model by viewModel<EventCreateViewModel>()
 
@@ -48,9 +48,6 @@ class EventCreateFragment : Fragment() {
             }
         }
     }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-            inflate(R.layout.fr_event_create, container)
 
     @SuppressLint("SetTextI18n")
     override fun onActivityCreated(savedInstanceState: Bundle?) {

@@ -20,9 +20,7 @@
 package pl.org.seva.events.comm
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
@@ -30,10 +28,7 @@ import kotlinx.android.synthetic.main.fr_comm_list.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.*
 
-class CommListFragment : Fragment() {
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-            inflate(R.layout.fr_comm_list, container)
+class CommListFragment : Fragment(R.layout.fr_comm_list) {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

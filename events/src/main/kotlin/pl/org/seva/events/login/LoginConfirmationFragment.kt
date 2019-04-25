@@ -22,22 +22,16 @@ package pl.org.seva.events.login
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fr_login_conf.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.main.extension.back
 import pl.org.seva.events.main.extension.inBrowser
-import pl.org.seva.events.main.extension.inflate
 import pl.org.seva.events.main.extension.invoke
 
-class LoginConfirmationFragment : Fragment() {
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-            inflate(R.layout.fr_login_conf, container)
+class LoginConfirmationFragment : Fragment(R.layout.fr_login_conf) {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

@@ -20,18 +20,13 @@
 package pl.org.seva.events.event
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fr_location_picker.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.*
 
-class LocationPickerFragment : Fragment() {
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-            inflate(R.layout.fr_location_picker, container)
+class LocationPickerFragment : Fragment(R.layout.fr_location_picker) {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         fun onLocationChanged(l: EventLocation?) {

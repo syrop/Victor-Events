@@ -36,7 +36,7 @@ import pl.org.seva.events.main.MainViewModel
 import pl.org.seva.events.main.extension.*
 import pl.org.seva.events.main.view.*
 
-class CommAddFragment : Fragment() {
+class CommAddFragment : Fragment(R.layout.fr_comm_add) {
 
     private val eventsModel by viewModel<MainViewModel>()
 
@@ -45,9 +45,6 @@ class CommAddFragment : Fragment() {
     }
 
     private lateinit var adapter: CommAdapter
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?)  =
-            inflate(R.layout.fr_comm_add, container)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         fun Comm.found() {
