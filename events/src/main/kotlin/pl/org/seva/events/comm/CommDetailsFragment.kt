@@ -39,7 +39,7 @@ class CommDetailsFragment : Fragment() {
         if (comm.isAdmin) { edit_comm_fab.show() }
         else { edit_comm_fab.hide() }
         edit_comm_fab { nav(R.id.action_commDetailsFragment_to_commEditFragment) }
-        name.setText(comm.name)
-        description.setText(comm.desc)
+        name(comm.name)
+        description(comm.desc)
     }
 }

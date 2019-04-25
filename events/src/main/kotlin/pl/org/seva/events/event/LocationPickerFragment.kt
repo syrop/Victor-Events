@@ -35,7 +35,7 @@ class LocationPickerFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         fun onLocationChanged(l: EventLocation?) {
-            address.setText(l?.address ?: "")
+            address(l?.address ?: "")
             delete_location.visibility = if (l != null) View.VISIBLE else View.GONE
         }
 

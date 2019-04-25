@@ -59,12 +59,11 @@ class EventCreateFragment : Fragment() {
         fun showDatePicker() = DatePickerFragment().show(fragmentManager!!, DATE_PICKER_TAG)
         fun showLocationPicker() = nav(R.id.action_createEventFragment_to_locationPickerFragment)
 
-        fun onTimeChanged(t: LocalTime?) = time.setText(if (t == null) "" else "${t.hour}:${t.minute}")
-        fun onDateChanged(d: LocalDate?) = date.setText(if (d == null) "" else "${d.year}-${d.monthValue}-${d.dayOfMonth}")
+        fun onTimeChanged(t: LocalTime?) = time(if (t == null) "" else "${t.hour}:${t.minute}")
+        fun onDateChanged(d: LocalDate?) = date(if (d == null) "" else "${d.year}-${d.monthValue}-${d.dayOfMonth}")
 
         fun onLocationChanged(l: EventLocation?) {
-            (l?.address?.apply { mapHolder } ?: "").also { addressLine ->
-                address.setText(addressLine) }
+            (l?.address?.apply { mapHolder } ?: "").also { addressLine -> address(addressLine) }
             map_container.visibility = if (l == null) View.INVISIBLE else View.VISIBLE
         }
 
@@ -82,12 +81,12 @@ class EventCreateFragment : Fragment() {
             model.comm.value = get(0)
             if (size > 1) {
                 comm_layout.visibility = View.VISIBLE
-                comm.setText(get(0))
+                comm(get(0))
                 comm backWith (model.comm + this@EventCreateFragment)
                 comm {
                     AlertDialog.Builder(context!!)
                             .setItems(this) { dialog, which ->
-                                comm.setText(get(which))
+                                comm(get(which))
                                 dialog.dismiss()
                             }
                             .show()

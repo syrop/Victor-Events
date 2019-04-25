@@ -36,7 +36,7 @@ class CommEditFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         delete_comm_fab { nav(R.id.action_commEditFragment_to_commDeleteFragment) }
-        name.setText(vm.comm.name)
+        name(vm.comm.name)
         description backWith (vm.desc + this)
     }
 
