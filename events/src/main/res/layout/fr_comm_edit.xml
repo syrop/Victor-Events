@@ -20,6 +20,8 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:importantForAutofill="noExcludeDescendants"
+                android:focusable="false"
+                android:inputType="none"
                 android:hint="@string/comm_edit_name"/>
 
         </com.google.android.material.textfield.TextInputLayout>

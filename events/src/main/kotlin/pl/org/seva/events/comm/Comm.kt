@@ -53,6 +53,12 @@ data class Comm(
         }
     }
 
+    fun update() {
+        comms update  this
+        io { commDao update this }
+        fsWriter update this
+    }
+
     @androidx.room.Entity(tableName = EventsDb.COMMUNITIES_TABLE_NAME)
     class Entity() {
         @PrimaryKey

@@ -36,7 +36,7 @@ class CommEditFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         delete_comm_fab { nav(R.id.action_commEditFragment_to_commDeleteFragment) }
-        name backWith (vm.name + this)
+        name.setText(vm.comm.name)
         description backWith (vm.desc + this)
     }
 
@@ -46,12 +46,13 @@ class CommEditFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        fun saveComm(): Boolean {
+        fun updateComm(): Boolean {
+
             return false
         }
 
         return when (item.itemId) {
-            R.id.action_ok -> saveComm()
+            R.id.action_ok -> updateComm()
             else -> super.onOptionsItemSelected(item)
         }
     }

@@ -19,10 +19,7 @@
 
 package pl.org.seva.events.comm
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import pl.org.seva.events.main.model.db.EventsDb
 import pl.org.seva.events.main.model.db.db
 
@@ -31,6 +28,8 @@ val commDao by lazy { db.commDao }
 suspend infix fun CommDao.delete(comm: Comm) = delete(Comm.Entity(comm))
 
 suspend infix fun CommDao.join(comm: Comm) = insert(Comm.Entity(comm))
+
+suspend infix fun CommDao.update(comm: Comm) = update(Comm.Entity(comm))
 
 suspend fun CommDao.getAllValues() = getAll().map { it.value() }
 
@@ -48,6 +47,9 @@ interface CommDao {
 
     @Delete
     suspend fun delete(comm: Comm.Entity)
+
+    @Update
+    suspend fun update(comm: Comm.Entity)
 
     @Query("delete from ${EventsDb.COMMUNITIES_TABLE_NAME}")
     suspend fun clear()

@@ -90,5 +90,5 @@ class FsReader : FsBase() {
     }
 
     private fun DocumentSnapshot.toCommunity() =
-            if (exists()) Comm(getString(NAME)!!) else Comm.DUMMY
+            if (exists()) Comm(getString(COMM_NAME)!!) else Comm.DUMMY
 }

@@ -50,7 +50,14 @@ class Comms : LiveRepository() {
 
     operator fun get(index: Int) = commCache[index]
 
+    operator fun get(name: String) = commCache.first { it.name == name }
+
     infix fun contains(comm: Comm) = commCache.any { it.name == comm.name }
+
+    infix fun update(comm: Comm) {
+        delete(get(comm.name))
+        join(comm)
+    }
 
     infix fun delete(comm: Comm) = commCache.remove(comm)
             .also { if (it) notifyDataSetChanged() }

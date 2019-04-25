@@ -31,11 +31,11 @@ abstract class FsBase {
 
     protected val String.admins get() = db collection PRIVATE document this collection COMM_ADMINS
 
-    protected val String.events get() = db collection COMMUNITIES document this collection EVENTS
+    protected val String.events get() = db collection COMMUNITIES document this collection COMM_EVENTS
 
     protected val String.document get() = db collection COMMUNITIES document this
 
-    protected val String.name get() = db collection COMMUNITIES document this collection NAME
+    protected val String.name get() = db collection COMMUNITIES document this collection COMM_NAME
 
     private infix fun CollectionReference.document(ch: String) = this.document(ch)
 
@@ -49,9 +49,11 @@ abstract class FsBase {
         /** Root of user-related data that can be read only by logged in users. */
         const val PRIVATE = "private"
         /** Per community. */
-        const val EVENTS = "events"
+        const val COMM_EVENTS = "events"
         /** Comm name. */
-        const val NAME = "name"
+        const val COMM_NAME = "name"
+        /** Comm description. */
+        const val COMM_DESC = "desc"
         /** May not be null. */
         const val EVENT_NAME = "name"
         /** GeoPoint. */

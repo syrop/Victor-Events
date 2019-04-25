@@ -33,8 +33,13 @@ class FsWriter : FsBase() {
     infix fun login(user: FirebaseUser) = Unit
 
     infix fun create(comm: Comm) {
-        comm writeEvent Event.CREATION_EVENT
+        comm.writeEvent(Event.CREATION_EVENT)
         comm.writeName()
+    }
+
+    infix fun update(comm: Comm) = with(comm) {
+        lcName.document.set(mapOf(COMM_NAME to name))
+        lcName.document.set(mapOf(COMM_DESC to desc))
     }
 
     infix fun delete(comm: Comm) {
@@ -54,6 +59,6 @@ class FsWriter : FsBase() {
     }
 
     private fun Comm.writeName() {
-        lcName.document.set(mapOf(NAME to name))
+        lcName.document.set(mapOf(COMM_NAME to name))
     }
 }
