@@ -23,24 +23,21 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import pl.org.seva.events.main.model.ioLaunch
 import pl.org.seva.events.main.model.db.EventsDb
 
-fun MessageDao.getAllValues() = getAll().map { it.value() }
+suspend fun MessageDao.getAllValues() = getAll().map { it.value() }
 
-infix fun MessageDao.delete(message: Message) = delete(Message.Entity(message))
-
-infix fun MessageDao.deleteAsync(message: Message) = ioLaunch { delete(message) }
+suspend infix fun MessageDao.delete(message: Message) = delete(Message.Entity(message))
 
 @Dao
 interface MessageDao {
 
     @Query("select * from ${EventsDb.MESSAGES_TABLE_NAME}")
-    fun getAll(): List<Message.Entity>
+    suspend fun getAll(): List<Message.Entity>
 
     @Insert
-    fun insert(message: Message.Entity)
+    suspend fun insert(message: Message.Entity)
 
     @Delete
-    fun delete(message: Message.Entity)
+    suspend fun delete(message: Message.Entity)
 }

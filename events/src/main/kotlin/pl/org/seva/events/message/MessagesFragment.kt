@@ -31,6 +31,7 @@ import pl.org.seva.events.main.model.db.db
 import pl.org.seva.events.main.extension.inflate
 import pl.org.seva.events.main.extension.swipeListener
 import pl.org.seva.events.main.extension.verticalDivider
+import pl.org.seva.events.main.model.io
 
 class MessagesFragment : Fragment() {
 
@@ -58,7 +59,7 @@ class MessagesFragment : Fragment() {
         messages_view.verticalDivider()
         messages_view.swipeListener { position ->
             messages delete position
-            db.messageDao deleteAsync messages[position]
+            io { db.messageDao delete messages[position] }
             refreshScreen()
         }
         refreshScreen()

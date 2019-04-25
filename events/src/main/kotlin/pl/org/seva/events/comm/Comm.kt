@@ -23,6 +23,7 @@ import android.graphics.Color
 import androidx.room.PrimaryKey
 import pl.org.seva.events.main.model.db.EventsDb
 import pl.org.seva.events.main.model.fs.fsWriter
+import pl.org.seva.events.main.model.io
 
 data class Comm(
         val name: String,
@@ -38,7 +39,7 @@ data class Comm(
 
     fun leave() {
         comms delete this
-        commDao deleteAsync this
+        io { commDao delete this }
     }
 
     fun delete() {
@@ -48,7 +49,7 @@ data class Comm(
 
     fun join() {
         if (comms join this) {
-            commDao joinAsync this
+            io { commDao join this }
         }
     }
 

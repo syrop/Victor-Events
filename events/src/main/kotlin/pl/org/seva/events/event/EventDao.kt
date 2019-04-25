@@ -29,11 +29,11 @@ import pl.org.seva.events.main.model.db.EventsDb
 interface EventDao {
 
     @Query("select * from ${EventsDb.EVENTS_TABLE_NAME}")
-    fun getAll(): List<Event.Entity>
+    suspend fun getAll(): List<Event.Entity>
 
     @Insert
-    fun insertAll(vararg events: Event.Entity)
+    suspend fun insertAll(vararg events: Event.Entity)
 
     @Delete
-    fun delete(event: Event.Entity)
+    suspend fun delete(event: Event.Entity)
 }

@@ -23,4 +23,4 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-fun ioLaunch(block: () -> Unit) = GlobalScope.launch(Dispatchers.IO) { block() }
+fun io(block: suspend () -> Unit) = GlobalScope.launch(Dispatchers.IO) { block() }

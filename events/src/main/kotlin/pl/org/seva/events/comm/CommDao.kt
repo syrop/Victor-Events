@@ -23,37 +23,32 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import pl.org.seva.events.main.model.ioLaunch
 import pl.org.seva.events.main.model.db.EventsDb
 import pl.org.seva.events.main.model.db.db
 
 val commDao by lazy { db.commDao }
 
-infix fun CommDao.delete(comm: Comm) = delete(Comm.Entity(comm))
+suspend infix fun CommDao.delete(comm: Comm) = delete(Comm.Entity(comm))
 
-infix fun CommDao.deleteAsync(comm: Comm) = ioLaunch { delete(comm) }
+suspend infix fun CommDao.join(comm: Comm) = insert(Comm.Entity(comm))
 
-infix fun CommDao.join(comm: Comm) = insert(Comm.Entity(comm))
-
-infix fun CommDao.joinAsync(comm: Comm) = ioLaunch { join(comm) }
-
-fun CommDao.getAllValues() = getAll().map { it.value() }
+suspend fun CommDao.getAllValues() = getAll().map { it.value() }
 
 @Dao
 interface CommDao {
 
     @Query("select * from ${EventsDb.COMMUNITIES_TABLE_NAME}")
-    fun getAll(): List<Comm.Entity>
+    suspend fun getAll(): List<Comm.Entity>
 
     @Insert
-    fun insertAll(vararg comm: Comm.Entity)
+    suspend fun insertAll(vararg comm: Comm.Entity)
 
     @Insert
-    fun insert(comm: Comm.Entity)
+    suspend fun insert(comm: Comm.Entity)
 
     @Delete
-    fun delete(comm: Comm.Entity)
+    suspend fun delete(comm: Comm.Entity)
 
     @Query("delete from ${EventsDb.COMMUNITIES_TABLE_NAME}")
-    fun clear()
+    suspend fun clear()
 }
