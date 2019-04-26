@@ -20,6 +20,7 @@
 package pl.org.seva.events.main.model.fs
 
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.SetOptions
 import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.event.Event
 import pl.org.seva.events.main.init.instance
@@ -38,8 +39,7 @@ class FsWriter : FsBase() {
     }
 
     infix fun update(comm: Comm) = with(comm) {
-        lcName.document.set(mapOf(COMM_NAME to name))
-        lcName.document.set(mapOf(COMM_DESC to desc))
+        lcName.document.set(mapOf(COMM_NAME to name, COMM_DESC to desc), SetOptions.merge())
     }
 
     infix fun delete(comm: Comm) {
