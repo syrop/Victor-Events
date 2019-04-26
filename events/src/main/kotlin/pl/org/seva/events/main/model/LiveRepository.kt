@@ -22,7 +22,8 @@ package pl.org.seva.events.main.model
 import android.os.Looper
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
-import pl.org.seva.events.main.extension.observe
+import pl.org.seva.events.main.model.livedata.DefaultHotData
+import pl.org.seva.events.main.model.livedata.HotData
 
 abstract class LiveRepository {
 
@@ -32,6 +33,5 @@ abstract class LiveRepository {
             if (Looper.getMainLooper().thread === Thread.currentThread()) liveData.value = Unit
             else liveData.postValue(Unit)
 
-    fun observeDataSetChanges(owner: LifecycleOwner, observer: () -> Unit) =
-            liveData.observe(owner) { observer() }
+    operator fun plus(owner: LifecycleOwner): HotData<Unit> = DefaultHotData(liveData, owner)
 }

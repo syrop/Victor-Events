@@ -33,7 +33,7 @@ class CommListFragment : Fragment(R.layout.fr_comm_list) {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        comms.observeDataSetChanges(this) {
+        (comms + this) {
             if (comms.isEmpty) {
                 comms_view.visibility = View.GONE
                 prompt.visibility = View.VISIBLE
