@@ -20,8 +20,7 @@
 package pl.org.seva.events.comm
 
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.joinAll
-import kotlinx.coroutines.launch
+import pl.org.seva.events.main.extension.concurrent
 import pl.org.seva.events.main.model.fs.fsWriter
 import pl.org.seva.events.main.model.fs.fsReader
 import pl.org.seva.events.main.init.instance
@@ -71,17 +70,14 @@ class Comms : LiveRepository() {
     }
 
     private suspend fun refresh(transform: suspend (Comm) -> Comm): List<Comm> = coroutineScope {
-        val commCopy = commCache.toTypedArray()
+        val commCopy = commCache.toList()
         val transformed = mutableListOf<Comm>()
 
-        val jobs = commCopy.map {
-            launch { transformed.add(transform(it)) }
-        }
-        jobs.joinAll()
+        commCopy.concurrent { transformed.add(transform(it)) }
         commCache.clear()
         commCache.addAll(transformed.filter { !it.isDummy })
         commDao.clear()
-        commCache.forEach { commDao join it }
+        commCache.concurrent { commDao update it }
         notifyDataSetChanged()
         transformed
     }

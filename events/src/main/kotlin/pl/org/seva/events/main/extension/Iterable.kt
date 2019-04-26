@@ -17,26 +17,12 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.comm
+package pl.org.seva.events.main.extension
 
-import android.content.Context
-import androidx.work.CoroutineWorker
-import androidx.work.WorkerParameters
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
-import java.time.Duration
+import kotlinx.coroutines.joinAll
+import kotlinx.coroutines.launch
 
-class CommSyncWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
-
-    override val coroutineContext = Dispatchers.IO
-
-    override suspend fun doWork() = coroutineScope {
-        comms.refresh()
-        Result.success()
-    }
-
-    companion object {
-        val TAG: String = this::class.java.name
-        val FREQUENCY: Duration = Duration.ofHours(2)
-    }
+suspend fun <T> Iterable<T>.concurrent(block: suspend (T) -> Unit) = coroutineScope {
+    map { launch { block(it) } }.joinAll()
 }

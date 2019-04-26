@@ -19,8 +19,13 @@
 
 package pl.org.seva.events.main.init
 
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import pl.org.seva.events.comm.CommSyncWorker
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.comm.getAllValues
 import pl.org.seva.events.login.login
@@ -37,6 +42,12 @@ class Bootstrap {
         login.setCurrentUser(FirebaseAuth.getInstance().currentUser)
         io { comms.addAll(db.commDao.getAllValues()) }
         io { messages.addAll(db.messageDao.getAllValues()) }
+        WorkManager.getInstance().enqueueUniquePeriodicWork(
+                CommSyncWorker.TAG,
+                ExistingPeriodicWorkPolicy.REPLACE,
+                PeriodicWorkRequestBuilder<CommSyncWorker>(CommSyncWorker.FREQUENCY)
+                        .setConstraints(Constraints.Builder().setRequiresBatteryNotLow(true).build())
+                        .build())
     }
 
     fun login(user: FirebaseUser) {
