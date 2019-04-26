@@ -19,6 +19,9 @@
 
 package pl.org.seva.events.comm
 
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.joinAll
+import kotlinx.coroutines.launch
 import pl.org.seva.events.main.model.fs.fsWriter
 import pl.org.seva.events.main.model.fs.fsReader
 import pl.org.seva.events.main.init.instance
@@ -68,16 +71,24 @@ class Comms : LiveRepository() {
         notifyDataSetChanged()
     }
 
-    fun refreshAdminStatuses() = io {
+    private suspend fun refresh(transform: suspend (Comm) -> Comm) = coroutineScope {
         val commArray = commCache.toTypedArray()
         commCache.clear()
-        commArray.forEach { comm ->
-            val isAdmin = fsReader.isAdmin(comm.lcName)
-            commCache.add(comm.copy(isAdmin = isAdmin))
+        val jobs = commArray.map { comm ->
+            launch { commCache.add(transform(comm)) }
         }
+        jobs.joinAll()
         commDao.clear()
         commCache.forEach { commDao join it }
         notifyDataSetChanged()
+    }
+
+    suspend fun refreshAdminStatuses() = coroutineScope {
+        refresh { it.copy(isAdmin = fsReader.isAdmin(it.lcName)) }
+    }
+
+    suspend fun refresh() = coroutineScope {
+
     }
 
     infix fun joinNewCommunity(name: String) =

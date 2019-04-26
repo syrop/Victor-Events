@@ -39,7 +39,7 @@ data class Comm(
 
     fun leave() {
         comms delete this
-        io { commDao delete this }
+        io { commDao delete this@Comm }
     }
 
     fun delete() {
@@ -49,13 +49,13 @@ data class Comm(
 
     fun join() {
         if (comms join this) {
-            io { commDao join this }
+            io { commDao join this@Comm }
         }
     }
 
     fun update() {
         comms update  this
-        io { commDao update this }
+        io { commDao update this@Comm }
         fsWriter update this
     }
 

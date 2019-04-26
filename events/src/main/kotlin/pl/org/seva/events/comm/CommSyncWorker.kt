@@ -17,11 +17,19 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main.model
+package pl.org.seva.events.comm
 
-import kotlinx.coroutines.CoroutineScope
+import android.content.Context
+import androidx.work.CoroutineWorker
+import androidx.work.WorkerParameters
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.coroutineScope
 
-fun io(block: suspend CoroutineScope.() -> Unit) = GlobalScope.launch(Dispatchers.IO) { block() }
+class CommSyncWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
+
+    override val coroutineContext = Dispatchers.IO
+
+    override suspend fun doWork() = coroutineScope {
+        Result.success()
+    }
+}

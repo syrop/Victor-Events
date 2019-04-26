@@ -30,6 +30,7 @@ import pl.org.seva.events.comm.comms
 import pl.org.seva.events.main.extension.back
 import pl.org.seva.events.main.extension.inBrowser
 import pl.org.seva.events.main.extension.invoke
+import pl.org.seva.events.main.model.io
 
 class LoginConfirmationFragment : Fragment(R.layout.fr_login_conf) {
 
@@ -53,7 +54,7 @@ class LoginConfirmationFragment : Fragment(R.layout.fr_login_conf) {
             privacy_policy.visibility = View.GONE
             cancel.visibility = View.GONE
             progress.visibility = View.VISIBLE
-            comms.refreshAdminStatuses()
+            io { comms.refreshAdminStatuses() }
             back()
         }
     }

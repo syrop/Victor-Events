@@ -23,9 +23,7 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.GeoPoint
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.*
 import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.event.Event
 import pl.org.seva.events.login.isLoggedIn
@@ -42,7 +40,7 @@ class FsReader : FsBase() {
     suspend fun readEvents(community: String) =
             community.events.read().map { it.toEvent() }
 
-    suspend infix fun isAdmin(name: String): Boolean = if (login.isLoggedIn)
+    suspend infix fun isAdmin(name: String): Boolean = if (isLoggedIn)
             name.admins.document(login.email).doesExist() else false
 
     suspend fun findCommunity(name: String) = coroutineScope {
@@ -50,9 +48,7 @@ class FsReader : FsBase() {
         val deferredComm = async {
             communities.document(lcName).read().toCommunity()
         }
-        val isAdmin = async {
-            if (isLoggedIn) isAdmin(lcName) else false
-        }
+        val isAdmin = async { isAdmin(lcName) }
         val comm = deferredComm.await()
 
         if (comm.isDummy) comm else comm.copy(isAdmin = isAdmin.await())
