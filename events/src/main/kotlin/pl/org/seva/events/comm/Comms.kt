@@ -26,7 +26,6 @@ import pl.org.seva.events.main.model.fs.fsWriter
 import pl.org.seva.events.main.model.fs.fsReader
 import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.main.model.LiveRepository
-import pl.org.seva.events.main.model.io
 import pl.org.seva.events.main.view.nextColor
 
 val comms by instance<Comms>()
@@ -88,7 +87,7 @@ class Comms : LiveRepository() {
     }
 
     suspend fun refresh() = coroutineScope {
-
+        refresh { fsReader.findCommunity(it.name) }
     }
 
     infix fun joinNewCommunity(name: String) =
