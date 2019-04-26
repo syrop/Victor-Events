@@ -86,9 +86,6 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.1.0-alpha02'
     implementation 'androidx.navigation:navigation-ui-ktx:2.1.0-alpha02'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha4'
-    androidTestImplementation('androidx.test.espresso:espresso-core:3.2.0-alpha04', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
     implementation 'com.google.android.material:material:1.1.0-alpha05'
 
     // Play, Firebase
@@ -100,8 +97,11 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
 
     // Testing
-    androidTestImplementation 'org.mockito:mockito-android:2.27.0'
-    testImplementation 'junit:junit:4.13-beta-2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    implementation 'androidx.test:rules:1.1.1'
+    implementation 'androidx.test:runner:1.1.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
