@@ -43,21 +43,29 @@ class CommEditFragment : Fragment(R.layout.fr_comm_edit) {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        fun updateComm(): Boolean {
+        fun updateAndFinish(): Boolean {
             with(vm.comm.copy(desc = vm.desc.value ?: "")) {
                 vm.comm = this
                 update()
+                getString(R.string.comm_edit_updated)
+                        .bold(NAME_PLACEHOLDER, name)
+                        .toast()
+                back()
             }
             return false
         }
 
         return when (item.itemId) {
-            R.id.action_ok -> updateComm()
+            R.id.action_ok -> updateAndFinish()
             else -> super.onOptionsItemSelected(item)
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.comm_edit, menu)
+    }
+
+    companion object {
+        const val NAME_PLACEHOLDER = "[name]"
     }
 }

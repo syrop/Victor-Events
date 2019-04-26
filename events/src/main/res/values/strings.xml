@@ -42,6 +42,7 @@
     <string name="comm_edit_label">Edit community</string>
     <string name="comm_edit_name">Name</string>
     <string name="comm_edit_description">Description</string>
+    <string name="comm_edit_updated">Updated the community [name]:</string>
 
     <!-- Comm delete fragment -->
     <string name="comm_delete_label" translatable="false"/>
