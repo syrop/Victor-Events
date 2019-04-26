@@ -44,7 +44,9 @@ class CommEditFragment : Fragment(R.layout.fr_comm_edit) {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         fun updateComm(): Boolean {
-
+            with(vm.comm.copy(desc = vm.desc.value ?: "")) {
+                update()
+            }
             return false
         }
 
