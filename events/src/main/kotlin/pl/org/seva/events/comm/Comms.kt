@@ -64,7 +64,7 @@ class Comms : LiveRepository() {
     infix fun join(comm: Comm) = (!commCache.contains(comm) && commCache.add(comm))
             .also { if (it) notifyDataSetChanged() }
 
-    fun addAll(comms: Collection<Comm>) {
+    infix fun add(comms: Collection<Comm>) {
         commCache.addAll(comms)
         notifyDataSetChanged()
     }

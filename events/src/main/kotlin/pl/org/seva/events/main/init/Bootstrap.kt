@@ -40,8 +40,8 @@ class Bootstrap {
 
     fun boot() {
         login.setCurrentUser(FirebaseAuth.getInstance().currentUser)
-        io { comms.addAll(db.commDao.getAllValues()) }
-        io { messages.addAll(db.messageDao.getAllValues()) }
+        io { comms add db.commDao.getAllValues() }
+        io { messages add db.messageDao.getAllValues() }
         WorkManager.getInstance().enqueueUniquePeriodicWork(
                 CommSyncWorker.TAG,
                 ExistingPeriodicWorkPolicy.REPLACE,

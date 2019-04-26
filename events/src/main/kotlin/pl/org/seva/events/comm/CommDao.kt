@@ -40,9 +40,6 @@ interface CommDao {
     suspend fun getAll(): List<Comm.Entity>
 
     @Insert
-    suspend fun insertAll(vararg comm: Comm.Entity)
-
-    @Insert
     suspend fun insert(comm: Comm.Entity)
 
     @Delete

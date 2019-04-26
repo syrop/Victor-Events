@@ -26,6 +26,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import pl.org.seva.events.R
 import pl.org.seva.events.message.Message
+import pl.org.seva.events.message.add
+import pl.org.seva.events.message.messageDao
+import pl.org.seva.events.message.messages
 import java.time.Duration
 import java.time.LocalDateTime
 
@@ -34,12 +37,16 @@ class CommSyncWorker(private val context: Context, params: WorkerParameters) : C
     override val coroutineContext = Dispatchers.IO
 
     override suspend fun doWork() = coroutineScope {
-        val messages = comms.refresh()
+        comms.refresh()
                 .filter { it.isDummy }
                 .map { Message(
                         LocalDateTime.now(),
                         context.getString(R.string.system_message_comm_deleted)
                                 .replace(NAME_PLACEHOLDER, it.name)) }
+                .apply {
+                    messages add this
+                    messageDao add this
+                }
         Result.success()
     }
 

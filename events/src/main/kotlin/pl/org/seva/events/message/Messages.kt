@@ -33,7 +33,7 @@ class Messages {
 
     operator fun get(position: Int) = messageCache[position]
 
-    fun addAll(messages: Collection<Message>) {
+    infix fun add(messages: Collection<Message>) {
         messageCache.addAll(messages)
     }
 
