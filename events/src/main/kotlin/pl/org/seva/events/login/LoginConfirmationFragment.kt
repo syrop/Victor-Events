@@ -54,7 +54,7 @@ class LoginConfirmationFragment : Fragment(R.layout.fr_login_conf) {
             progress.visibility = View.VISIBLE
             io {
                 comms.refreshAdminStatuses()
-                suspendBack()
+                back()
             }
         }
     }

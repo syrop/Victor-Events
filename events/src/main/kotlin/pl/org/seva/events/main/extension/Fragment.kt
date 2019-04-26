@@ -21,10 +21,7 @@ package pl.org.seva.events.main.extension
 
 import android.content.Intent
 import android.net.Uri
-import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.IdRes
-import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -32,9 +29,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.withContext
 import pl.org.seva.events.event.location.InteractiveMapHolder
 import pl.org.seva.events.event.location.MapHolder
 import pl.org.seva.events.main.model.Permissions
@@ -44,9 +39,7 @@ fun Fragment.nav(@IdRes resId: Int): Boolean {
     return true
 }
 
-fun Fragment.back() = findNavController().popBackStack()
-
-suspend fun Fragment.suspendBack() = withContext(Dispatchers.Main) { back() }
+fun Fragment.back() = view!!.post { findNavController().popBackStack() }
 
 inline fun <reified R : ViewModel> Fragment.viewModel() = lazy { getViewModel<R>() }
 

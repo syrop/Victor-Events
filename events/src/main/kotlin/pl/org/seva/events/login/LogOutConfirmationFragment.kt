@@ -29,7 +29,6 @@ import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.main.extension.back
 import pl.org.seva.events.main.extension.invoke
-import pl.org.seva.events.main.extension.suspendBack
 import pl.org.seva.events.main.model.io
 
 class LogOutConfirmationFragment : Fragment(R.layout.fr_log_out_conf) {
@@ -55,7 +54,7 @@ class LogOutConfirmationFragment : Fragment(R.layout.fr_log_out_conf) {
             progress.visibility = View.VISIBLE
             io {
                 comms.refreshAdminStatuses()
-                suspendBack()
+                back()
             }
         }
     }
