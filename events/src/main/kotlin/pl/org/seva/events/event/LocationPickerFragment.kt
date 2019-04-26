@@ -30,7 +30,7 @@ class LocationPickerFragment : Fragment(R.layout.fr_location_picker) {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         fun onLocationChanged(l: EventLocation?) {
-            address(l?.address ?: "")
+            address set (l?.address ?: "")
             delete_location.visibility = if (l != null) View.VISIBLE else View.GONE
         }
 

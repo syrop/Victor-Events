@@ -21,4 +21,4 @@ package pl.org.seva.events.main.extension
 
 import android.widget.TextView
 
-operator fun TextView.invoke(text: CharSequence) = setText(text)
+infix fun TextView.set(text: CharSequence) = setText(text)

@@ -56,11 +56,11 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
         fun showDatePicker() = DatePickerFragment().show(fragmentManager!!, DATE_PICKER_TAG)
         fun showLocationPicker() = nav(R.id.action_createEventFragment_to_locationPickerFragment)
 
-        fun onTimeChanged(t: LocalTime?) = time(if (t == null) "" else "${t.hour}:${t.minute}")
-        fun onDateChanged(d: LocalDate?) = date(if (d == null) "" else "${d.year}-${d.monthValue}-${d.dayOfMonth}")
+        fun onTimeChanged(t: LocalTime?) = time set (if (t == null) "" else "${t.hour}:${t.minute}")
+        fun onDateChanged(d: LocalDate?) = date set (if (d == null) "" else "${d.year}-${d.monthValue}-${d.dayOfMonth}")
 
         fun onLocationChanged(l: EventLocation?) {
-            (l?.address?.apply { mapHolder } ?: "").also { addressLine -> address(addressLine) }
+            (l?.address?.apply { mapHolder } ?: "").also { addressLine -> address set addressLine }
             map_container.visibility = if (l == null) View.INVISIBLE else View.VISIBLE
         }
 
@@ -68,7 +68,7 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
         time { showTimePicker() }
         date { showDatePicker() }
         address { showLocationPicker() }
-        description backWith (model.description + this)
+        desc backWith (model.description + this)
 
         (model.time + this) { onTimeChanged(it) }
         (model.date + this) { onDateChanged(it) }
@@ -78,12 +78,12 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
             model.comm.value = get(0)
             if (size > 1) {
                 comm_layout.visibility = View.VISIBLE
-                comm(get(0))
+                comm set get(0)
                 comm backWith (model.comm + this@EventCreateFragment)
                 comm {
                     AlertDialog.Builder(context!!)
                             .setItems(this) { dialog, which ->
-                                comm(get(which))
+                                comm set get(which)
                                 dialog.dismiss()
                             }
                             .show()

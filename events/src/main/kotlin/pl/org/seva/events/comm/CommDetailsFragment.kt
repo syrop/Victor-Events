@@ -29,12 +29,13 @@ class CommDetailsFragment : Fragment(R.layout.fr_comm_details) {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val comm = getViewModel<CommViewModel>().comm
+        val vm = getViewModel<CommViewModel>()
+        val comm = vm.comm
         title = comm.name
         if (comm.isAdmin) { edit_comm_fab.show() }
         else { edit_comm_fab.hide() }
         edit_comm_fab { nav(R.id.action_commDetailsFragment_to_commEditFragment) }
-        name(comm.name)
-        description(comm.desc)
+        name set comm.name
+        desc backWith (vm.desc + this)
     }
 }

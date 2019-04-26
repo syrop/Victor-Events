@@ -33,7 +33,7 @@
             android:layout_below="@id/name_layout">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/description"
+                android:id="@+id/desc"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:importantForAutofill="noExcludeDescendants"
