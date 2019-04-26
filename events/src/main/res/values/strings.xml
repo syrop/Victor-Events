@@ -53,6 +53,7 @@
     <!-- System messages fragment -->
     <string name="system_messages_label">System Messages</string>
     <string name="system_messages_no_messages">There are currently no System Messages.</string>
+    <string name="system_message_comm_deleted">Community deleted: [name].</string>
 
     <!-- Event create fragment -->
     <string name="create_event_comm">Community</string>

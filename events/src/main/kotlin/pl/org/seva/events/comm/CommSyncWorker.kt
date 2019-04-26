@@ -24,19 +24,28 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
+import pl.org.seva.events.R
+import pl.org.seva.events.message.Message
 import java.time.Duration
+import java.time.LocalDateTime
 
-class CommSyncWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
+class CommSyncWorker(private val context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
 
     override val coroutineContext = Dispatchers.IO
 
     override suspend fun doWork() = coroutineScope {
-        comms.refresh()
+        val messages = comms.refresh()
+                .filter { it.isDummy }
+                .map { Message(
+                        LocalDateTime.now(),
+                        context.getString(R.string.system_message_comm_deleted)
+                                .replace(NAME_PLACEHOLDER, it.name)) }
         Result.success()
     }
 
     companion object {
         val TAG: String = this::class.java.name
         val FREQUENCY: Duration = Duration.ofHours(2)
+        const val NAME_PLACEHOLDER = "[name]"
     }
 }
