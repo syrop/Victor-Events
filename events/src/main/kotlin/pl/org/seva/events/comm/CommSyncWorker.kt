@@ -30,6 +30,7 @@ class CommSyncWorker(context: Context, params: WorkerParameters) : CoroutineWork
     override val coroutineContext = Dispatchers.IO
 
     override suspend fun doWork() = coroutineScope {
+        comms.refresh()
         Result.success()
     }
 }

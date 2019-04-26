@@ -70,20 +70,25 @@ class Comms : LiveRepository() {
         notifyDataSetChanged()
     }
 
-    private suspend fun refresh(transform: suspend (Comm) -> Comm) = coroutineScope {
-        val commArray = commCache.toTypedArray()
-        commCache.clear()
-        val jobs = commArray.map { comm ->
-            launch { commCache.add(transform(comm)) }
+    private suspend fun refresh(transform: suspend (Comm) -> Comm): List<Comm> = coroutineScope {
+        val commCopy = commCache.toTypedArray()
+        val transformed = mutableListOf<Comm>()
+
+        val jobs = commCopy.map {
+            launch { transformed.add(transform(it)) }
         }
         jobs.joinAll()
+        commCache.clear()
+        commCache.addAll(transformed.filter { !it.isDummy })
         commDao.clear()
         commCache.forEach { commDao join it }
         notifyDataSetChanged()
+        transformed
     }
 
     suspend fun refreshAdminStatuses() = coroutineScope {
         refresh { it.copy(isAdmin = fsReader.isAdmin(it.lcName)) }
+        Unit
     }
 
     suspend fun refresh() = coroutineScope {
