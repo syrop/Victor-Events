@@ -46,7 +46,6 @@ class CommEditFragment : Fragment(R.layout.fr_comm_edit) {
         fun updateComm(): Boolean {
             with(vm.comm.copy(desc = vm.desc.value ?: "")) {
                 vm.comm = this
-                vm.reset()
                 update()
             }
             return false
