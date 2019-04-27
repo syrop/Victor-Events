@@ -34,7 +34,7 @@ class CommEditFragment : Fragment(R.layout.fr_comm_edit) {
         super.onActivityCreated(savedInstanceState)
         delete_comm_fab { nav(R.id.action_commEditFragment_to_commDeleteFragment) }
         name set vm.comm.name
-        (vm.name + this) { if (it.isEmpty()) back() }
+        (vm.name + this) { if (it == Comm.DUMMY.name) back() }
         desc backWith (vm.desc + this)
     }
 

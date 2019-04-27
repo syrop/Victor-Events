@@ -19,7 +19,6 @@
 
 package pl.org.seva.events.main.model.fs
 
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.SetOptions
 import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.event.Event
@@ -30,8 +29,6 @@ import java.time.ZoneOffset
 val fsWriter by instance<FsWriter>()
 
 class FsWriter : FsBase() {
-
-    infix fun login(user: FirebaseUser) = Unit
 
     infix fun create(comm: Comm) {
         comm.writeEvent(Event.CREATION_EVENT)
