@@ -36,6 +36,7 @@ class CommDetailsFragment : Fragment(R.layout.fr_comm_details) {
         else { edit_comm_fab.hide() }
         edit_comm_fab { nav(R.id.action_commDetailsFragment_to_commEditFragment) }
         name set comm.name
+        (vm.name + this) { if (it.isEmpty()) back() }
         (vm.desc + this) { desc set it }
     }
 }

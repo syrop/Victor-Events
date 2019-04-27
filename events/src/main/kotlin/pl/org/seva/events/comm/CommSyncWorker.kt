@@ -42,7 +42,7 @@ class CommSyncWorker(private val context: Context, params: WorkerParameters) : C
                 .map { Message(
                         LocalDateTime.now(),
                         context.getString(R.string.system_message_comm_deleted)
-                                .replace(NAME_PLACEHOLDER, it.name)) }
+                                .replace(NAME_PLACEHOLDER, it.originalName)) }
                 .apply {
                     messages add this
                     messageDao add this

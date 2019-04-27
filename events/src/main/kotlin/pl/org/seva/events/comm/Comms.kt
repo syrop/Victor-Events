@@ -72,8 +72,10 @@ class Comms : LiveRepository() {
         }
     }
 
-    infix fun delete(comm: Comm) = leave(comm).also { updated ->
-        if (updated) fsWriter delete comm
+    infix fun delete(comm: Comm): Boolean {
+        return leave(comm).also { updated ->
+            if (updated) fsWriter delete comm
+        }
     }
 
     infix fun join(comm: Comm) = comm.run {

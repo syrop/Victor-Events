@@ -49,12 +49,14 @@ class MessagesFragment : Fragment(R.layout.fr_messages) {
 
         messages_view.setHasFixedSize(true)
         messages_view.layoutManager = LinearLayoutManager(context)
-        messages_view.adapter = MessageAdapter()
+        messages_view.adapter = MessagesAdapter()
         messages_view.verticalDivider()
         messages_view.swipeListener { position ->
-            messages delete position
-            io { db.messageDao delete messages[position] }
-            refreshScreen()
+            messages[position].also { message ->
+                messages delete position
+                io { db.messageDao delete message }
+                refreshScreen()
+            }
         }
         refreshScreen()
     }

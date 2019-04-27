@@ -50,6 +50,7 @@ class FsReader : FsBase() {
         }
         val isAdmin = async { isAdmin(lcName) }
         val comm = deferredComm.await()
+        comm.originalName = name
 
         if (comm.isDummy) comm else comm.copy(isAdmin = isAdmin.await())
     }

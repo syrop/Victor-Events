@@ -26,7 +26,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.row_message.view.*
 import pl.org.seva.events.R
 
-class MessageAdapter : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
+class MessagesAdapter : RecyclerView.Adapter<MessagesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             ViewHolder(parent.inflate())

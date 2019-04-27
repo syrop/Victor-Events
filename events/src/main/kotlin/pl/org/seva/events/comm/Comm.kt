@@ -29,6 +29,11 @@ data class Comm(
         val color: Int = Color.GRAY,
         val isAdmin: Boolean = false) {
 
+    private val attributes = mutableMapOf<String, String>()
+
+    var originalName get() = if (isDummy) attributes[ORIG_NAME]!! else name
+    set(value)  { if (isDummy) attributes[ORIG_NAME] = value }
+
     val lcName: String get() = name.toLowerCase()
 
     val isDummy get() = name == DUMMY_NAME
@@ -63,6 +68,7 @@ data class Comm(
 
     companion object {
         private const val DUMMY_NAME = ""
+        private const val ORIG_NAME = "original_name"
         private const val DUMMY_DESCRIPTION = ""
         val DUMMY = Comm(DUMMY_NAME, DUMMY_DESCRIPTION)
     }
