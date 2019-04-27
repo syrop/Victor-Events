@@ -48,7 +48,7 @@ data class Comm(
 
     fun update() = comms update  this
 
-    @androidx.room.Entity(tableName = EventsDb.COMMUNITIES_TABLE_NAME)
+    @androidx.room.Entity(tableName = EventsDb.COMMS_TABLE_NAME)
     class Entity() {
         @PrimaryKey
         lateinit var name: String

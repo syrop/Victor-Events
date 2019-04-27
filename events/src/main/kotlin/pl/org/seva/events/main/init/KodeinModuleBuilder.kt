@@ -26,6 +26,7 @@ import org.kodein.di.conf.global
 import org.kodein.di.generic.*
 import pl.org.seva.events.BuildConfig
 import pl.org.seva.events.comm.Comms
+import pl.org.seva.events.event.Events
 import pl.org.seva.events.login.Login
 import pl.org.seva.events.main.model.fs.FsReader
 import pl.org.seva.events.main.model.fs.FsWriter
@@ -49,6 +50,7 @@ class KodeinModuleBuilder(private val ctx: Context) {
         bind<Bootstrap>() with singleton { Bootstrap() }
         bind<FsReader>() with singleton { FsReader() }
         bind<Comms>() with singleton { Comms() }
+        bind<Events>() with singleton { Events() }
         bind<Login>() with singleton { Login() }
         bind<FsWriter>() with singleton { FsWriter() }
         bind<EventsDb>() with singleton { EventsDb(ctx) }

@@ -42,10 +42,6 @@ class Comms : LiveRepository() {
 
     val isEmpty get() = commCache.isEmpty()
 
-    fun isNotEmpty() = commCache.isNotEmpty()
-
-    val names get() = commCache.map { it.name }.toTypedArray()
-
     val namesIsAdminOf get() = isAdminOf.map { it.name }.toTypedArray()
 
     operator fun get(index: Int) = commCache[index]

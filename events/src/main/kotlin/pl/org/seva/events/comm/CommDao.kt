@@ -36,7 +36,7 @@ suspend fun CommDao.getAllValues() = getAll().map { it.value() }
 @Dao
 interface CommDao {
 
-    @Query("select * from ${EventsDb.COMMUNITIES_TABLE_NAME}")
+    @Query("select * from ${EventsDb.COMMS_TABLE_NAME}")
     suspend fun getAll(): List<Comm.Entity>
 
     @Insert
@@ -48,6 +48,6 @@ interface CommDao {
     @Update
     suspend fun update(comm: Comm.Entity)
 
-    @Query("delete from ${EventsDb.COMMUNITIES_TABLE_NAME}")
+    @Query("delete from ${EventsDb.COMMS_TABLE_NAME}")
     suspend fun clear()
 }

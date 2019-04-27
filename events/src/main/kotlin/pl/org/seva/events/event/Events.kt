@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Wiktor Nizio
+ * Copyright (C) 2019 Wiktor Nizio
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,31 +17,19 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main.model.db
+package pl.org.seva.events.event
 
-import androidx.room.Room
-import android.content.Context
 import pl.org.seva.events.main.init.instance
+import pl.org.seva.events.main.model.LiveRepository
 
-val db by instance<EventsDb>()
+val events by instance<Events>()
 
-class EventsDb(context: Context) {
+class Events : LiveRepository() {
 
-    private val db=
-            Room.databaseBuilder(context, EventsDbAbstract::class.java, DATABASE_NAME).build()
+    private val eventsCache = mutableListOf<Event>()
 
-    val eventDao by lazy { db.eventDao() }
+    val size get() = eventsCache.size
 
-    val commDao by lazy { db.commDao() }
+    operator fun get(index: Int) = eventsCache[index]
 
-    val messageDao by lazy { db.messageDao() }
-
-    companion object {
-        const val DATABASE_NAME = "events_database"
-        const val DATABASE_VERSION = 1
-
-        const val EVENTS_TABLE_NAME = "events"
-        const val COMMS_TABLE_NAME = "communities"
-        const val MESSAGES_TABLE_NAME = "messages"
-    }
 }

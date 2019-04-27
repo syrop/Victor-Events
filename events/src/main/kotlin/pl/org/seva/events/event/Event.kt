@@ -25,6 +25,7 @@ import pl.org.seva.events.main.model.db.EventsDb
 import java.time.LocalDateTime
 
 data class Event(
+        val comm: String,
         val name: String = CREATION_NAME,
         val time: LocalDateTime = LocalDateTime.now(),
         val location: GeoPoint? = null,
@@ -32,6 +33,7 @@ data class Event(
         val desc: String? = null) {
 
     val fsEvent get() = Fs(
+            comm  = comm,
             name = name,
             time = time.toString(),
             location = location,
@@ -40,12 +42,14 @@ data class Event(
 
     @Suppress("MemberVisibilityCanBePrivate")
     data class Fs(
+            val comm: String,
             val name: String,
             val time: String,
             val location: GeoPoint?,
             val address: String?,
             val desc: String?) {
         fun value() = Event(
+                comm = comm,
                 name = name,
                 time = LocalDateTime.parse(time),
                 location = location,
@@ -54,7 +58,8 @@ data class Event(
     }
 
     @androidx.room.Entity(tableName = EventsDb.EVENTS_TABLE_NAME)
-    class Entity {
+    class Entity() {
+        lateinit var comm: String
         lateinit var name: String
         @PrimaryKey
         var time: String = ""
@@ -63,7 +68,18 @@ data class Event(
         var address: String? = null
         var desc: String? = null
 
+        constructor(event: Event) : this() {
+            comm = event.comm
+            name = event.name
+            time = event.time.toString()
+            lat = event.location?.latitude
+            lon = event.location?.longitude
+            address = event.address
+            desc = event.desc
+        }
+
         fun value() = Event(
+                comm = comm,
                 name = name,
                 time = LocalDateTime.parse(time),
                 location = lat?.let { GeoPoint(it, lon!!) },
