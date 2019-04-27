@@ -25,6 +25,8 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.joinAll
+import kotlinx.coroutines.launch
 import pl.org.seva.events.comm.CommSyncWorker
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.comm.getAllValues
@@ -41,7 +43,10 @@ class Bootstrap {
     fun boot() {
         login.setCurrentUser(FirebaseAuth.getInstance().currentUser)
         io {
-            comms cache db.commDao.getAllValues()
+            listOf(
+                launch { comms cache db.commDao.getAllValues() },
+                launch { messages add db.messageDao.getAllValues() })
+                    .joinAll()
             WorkManager.getInstance().enqueueUniquePeriodicWork(
                     CommSyncWorker.TAG,
                     ExistingPeriodicWorkPolicy.REPLACE,
@@ -49,7 +54,6 @@ class Bootstrap {
                             .setConstraints(Constraints.Builder().setRequiresBatteryNotLow(true).build())
                             .build())
         }
-        io { messages add db.messageDao.getAllValues() }
     }
 
     fun login(user: FirebaseUser) {
