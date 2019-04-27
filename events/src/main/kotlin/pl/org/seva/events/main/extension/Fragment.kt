@@ -30,8 +30,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.Job
-import pl.org.seva.events.event.location.InteractiveMapHolder
-import pl.org.seva.events.event.location.MapHolder
+import pl.org.seva.events.main.view.InteractiveMapHolder
+import pl.org.seva.events.main.view.MapHolder
 import pl.org.seva.events.main.model.Permissions
 
 fun Fragment.nav(@IdRes resId: Int): Boolean {

@@ -17,7 +17,7 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.event.location
+package pl.org.seva.events.main.view
 
 import android.location.Geocoder
 import androidx.fragment.app.Fragment
