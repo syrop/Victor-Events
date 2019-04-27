@@ -22,8 +22,6 @@ package pl.org.seva.events.comm
 import android.graphics.Color
 import androidx.room.PrimaryKey
 import pl.org.seva.events.main.model.db.EventsDb
-import pl.org.seva.events.main.model.fs.fsWriter
-import pl.org.seva.events.main.model.io
 
 data class Comm(
         val name: String,
@@ -37,27 +35,13 @@ data class Comm(
 
     val isMemberOf get () = comms contains this
 
-    fun leave() {
-        comms delete this
-        io { commDao delete this@Comm }
-    }
+    fun leave() = comms leave this
 
-    fun delete() {
-        leave()
-        fsWriter delete this
-    }
+    fun delete() = comms delete this
 
-    fun join() {
-        if (comms join this) {
-            io { commDao join this@Comm }
-        }
-    }
+    fun join() = comms join this
 
-    fun update() {
-        comms update  this
-        io { commDao update this@Comm }
-        fsWriter update this
-    }
+    fun update() = comms update  this
 
     @androidx.room.Entity(tableName = EventsDb.COMMUNITIES_TABLE_NAME)
     class Entity() {

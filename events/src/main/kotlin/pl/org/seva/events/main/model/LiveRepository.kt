@@ -17,6 +17,8 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
+@file:Suppress("EXPERIMENTAL_API_USAGE")
+
 package pl.org.seva.events.main.model
 
 import android.os.Looper
@@ -24,14 +26,31 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import pl.org.seva.events.main.model.livedata.DefaultHotData
 import pl.org.seva.events.main.model.livedata.HotData
+import kotlinx.coroutines.channels.BroadcastChannel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.sendBlocking
 
 abstract class LiveRepository {
 
     private val liveData = MutableLiveData<Unit>()
 
-    protected fun notifyDataSetChanged() =
-            if (Looper.getMainLooper().thread === Thread.currentThread()) liveData.value = Unit
-            else liveData.postValue(Unit)
+    private val channel = BroadcastChannel<Unit>(Channel.CONFLATED)
+
+    protected fun notifyDataSetChanged() {
+        if (Looper.getMainLooper().thread === Thread.currentThread()) liveData.value = Unit
+        else liveData.postValue(Unit)
+        channel.sendBlocking(Unit)
+    }
 
     operator fun plus(owner: LifecycleOwner): HotData<Unit> = DefaultHotData(liveData, owner)
+
+    suspend operator fun invoke(block: () -> Unit) {
+        with (channel.openSubscription()) {
+            if (!isEmpty) receive()
+            while(true) {
+                receive()
+                block()
+            }
+        }
+    }
 }

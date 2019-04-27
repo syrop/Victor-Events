@@ -25,6 +25,7 @@ import pl.org.seva.events.main.model.fs.fsWriter
 import pl.org.seva.events.main.model.fs.fsReader
 import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.main.model.LiveRepository
+import pl.org.seva.events.main.model.io
 import pl.org.seva.events.main.view.nextColor
 
 val comms by instance<Comms>()
@@ -53,18 +54,38 @@ class Comms : LiveRepository() {
 
     infix fun contains(comm: Comm) = commCache.any { it.name == comm.name }
 
-    infix fun update(comm: Comm) {
-        delete(get(comm.name))
-        join(comm)
+    infix fun update(comm: Comm) = with(comm) {
+        commCache.remove(get(name))
+        commCache.add(this)
+        io { commDao update this@with }
+        fsWriter update this
+        notifyDataSetChanged()
+        true
     }
 
-    infix fun delete(comm: Comm) = commCache.remove(comm)
-            .also { if (it) notifyDataSetChanged() }
+    infix fun leave(comm: Comm) = comm.run {
+        commCache.remove(this).also { updated ->
+            if (updated) {
+                io { commDao leave this@run }
+                notifyDataSetChanged()
+            }
+        }
+    }
 
-    infix fun join(comm: Comm) = (!commCache.contains(comm) && commCache.add(comm))
-            .also { if (it) notifyDataSetChanged() }
+    infix fun delete(comm: Comm) = leave(comm).also { updated ->
+        if (updated) fsWriter delete comm
+    }
 
-    infix fun add(comms: Collection<Comm>) {
+    infix fun join(comm: Comm) = comm.run {
+        (!commCache.contains(comm) && commCache.add(comm)).also { updated ->
+            if (updated) {
+                io { commDao join this@run }
+                notifyDataSetChanged()
+            }
+        }
+    }
+
+    infix fun cache(comms: Collection<Comm>) {
         commCache.addAll(comms)
         notifyDataSetChanged()
     }
@@ -92,9 +113,9 @@ class Comms : LiveRepository() {
     }
 
     infix fun joinNewCommunity(name: String) =
-        Comm(name, color = nextColor, isAdmin = true).apply {
-            fsWriter create this
-            fsWriter grantAdmin this
-            join()
-        }
+            Comm(name, color = nextColor, isAdmin = true).apply {
+                fsWriter create this
+                fsWriter grantAdmin this
+                join()
+            }
 }

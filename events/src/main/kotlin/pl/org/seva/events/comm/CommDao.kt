@@ -25,7 +25,7 @@ import pl.org.seva.events.main.model.db.db
 
 val commDao by lazy { db.commDao }
 
-suspend infix fun CommDao.delete(comm: Comm) = delete(Comm.Entity(comm))
+suspend infix fun CommDao.leave(comm: Comm) = delete(Comm.Entity(comm))
 
 suspend infix fun CommDao.join(comm: Comm) = insert(Comm.Entity(comm))
 
