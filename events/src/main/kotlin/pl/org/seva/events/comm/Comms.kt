@@ -50,7 +50,7 @@ class Comms : LiveRepository() {
 
     operator fun get(index: Int) = commCache[index]
 
-    operator fun get(name: String) = commCache.first { it.name == name }
+    operator fun get(name: String) = commCache.firstOrNull { it.name == name } ?: Comm.DUMMY
 
     infix fun contains(comm: Comm) = commCache.any { it.name == comm.name }
 
@@ -66,7 +66,7 @@ class Comms : LiveRepository() {
     infix fun leave(comm: Comm) = comm.run {
         commCache.remove(this).also { updated ->
             if (updated) {
-                io { commDao leave this@run }
+                io { commDao delete this@run }
                 notifyDataSetChanged()
             }
         }
@@ -79,7 +79,7 @@ class Comms : LiveRepository() {
     infix fun join(comm: Comm) = comm.run {
         (!commCache.contains(comm) && commCache.add(comm)).also { updated ->
             if (updated) {
-                io { commDao join this@run }
+                io { commDao add this@run }
                 notifyDataSetChanged()
             }
         }
@@ -98,7 +98,7 @@ class Comms : LiveRepository() {
         commCache.clear()
         commCache.addAll(transformed.filter { !it.isDummy })
         commDao.clear()
-        commCache.concurrent { commDao update it }
+        commCache.concurrent { commDao add it }
         notifyDataSetChanged()
         transformed
     }

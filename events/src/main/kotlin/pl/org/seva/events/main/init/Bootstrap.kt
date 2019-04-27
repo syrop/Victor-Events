@@ -40,14 +40,16 @@ class Bootstrap {
 
     fun boot() {
         login.setCurrentUser(FirebaseAuth.getInstance().currentUser)
-        io { comms cache db.commDao.getAllValues() }
+        io {
+            comms cache db.commDao.getAllValues()
+            WorkManager.getInstance().enqueueUniquePeriodicWork(
+                    CommSyncWorker.TAG,
+                    ExistingPeriodicWorkPolicy.REPLACE,
+                    PeriodicWorkRequestBuilder<CommSyncWorker>(CommSyncWorker.FREQUENCY)
+                            .setConstraints(Constraints.Builder().setRequiresBatteryNotLow(true).build())
+                            .build())
+        }
         io { messages add db.messageDao.getAllValues() }
-        WorkManager.getInstance().enqueueUniquePeriodicWork(
-                CommSyncWorker.TAG,
-                ExistingPeriodicWorkPolicy.REPLACE,
-                PeriodicWorkRequestBuilder<CommSyncWorker>(CommSyncWorker.FREQUENCY)
-                        .setConstraints(Constraints.Builder().setRequiresBatteryNotLow(true).build())
-                        .build())
     }
 
     fun login(user: FirebaseUser) {

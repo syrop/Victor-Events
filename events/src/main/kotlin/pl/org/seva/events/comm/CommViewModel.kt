@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 
 class CommViewModel : ViewModel() {
 
-    init { viewModelScope.launch { comms { reset() } } }
+    init { viewModelScope.launch { comms { comm = comms[comm.name] } } }
 
     var comm = Comm.DUMMY
     set(value) {
