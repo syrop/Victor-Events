@@ -19,10 +19,7 @@
 
 package pl.org.seva.events.main.init
 
-import androidx.work.Constraints
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
+import androidx.work.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.joinAll
@@ -30,15 +27,26 @@ import kotlinx.coroutines.launch
 import pl.org.seva.events.comm.CommSyncWorker
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.comm.getAllValues
+import pl.org.seva.events.event.EventSyncWorker
 import pl.org.seva.events.login.login
 import pl.org.seva.events.main.model.io
 import pl.org.seva.events.main.model.db.db
 import pl.org.seva.events.message.getAllValues
 import pl.org.seva.events.message.messages
+import java.time.Duration
 
 val bootstrap by instance<Bootstrap>()
 
 class Bootstrap {
+
+    private inline fun <reified W : ListenableWorker> scheduleSync(tag: String, frequency: Duration) {
+        WorkManager.getInstance().enqueueUniquePeriodicWork(
+                tag,
+                ExistingPeriodicWorkPolicy.REPLACE,
+                PeriodicWorkRequestBuilder<W>(frequency)
+                        .setConstraints(Constraints.Builder().setRequiresBatteryNotLow(true).build())
+                        .build())
+    }
 
     fun boot() {
         login.setCurrentUser(FirebaseAuth.getInstance().currentUser)
@@ -47,12 +55,8 @@ class Bootstrap {
                 launch { comms cache db.commDao.getAllValues() },
                 launch { messages add db.messageDao.getAllValues() })
                     .joinAll()
-            WorkManager.getInstance().enqueueUniquePeriodicWork(
-                    CommSyncWorker.TAG,
-                    ExistingPeriodicWorkPolicy.REPLACE,
-                    PeriodicWorkRequestBuilder<CommSyncWorker>(CommSyncWorker.FREQUENCY)
-                            .setConstraints(Constraints.Builder().setRequiresBatteryNotLow(true).build())
-                            .build())
+            scheduleSync<CommSyncWorker>(CommSyncWorker.TAG, CommSyncWorker.FREQUENCY)
+            scheduleSync<EventSyncWorker>(EventSyncWorker.TAG, EventSyncWorker.FREQUENCY)
         }
     }
 

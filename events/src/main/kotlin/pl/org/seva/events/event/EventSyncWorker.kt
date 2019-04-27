@@ -17,43 +17,25 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.comm
+package pl.org.seva.events.event
 
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.Dispatchers
-import pl.org.seva.events.R
 import pl.org.seva.events.main.model.SyncWorker
-import pl.org.seva.events.message.Message
-import pl.org.seva.events.message.add
-import pl.org.seva.events.message.messageDao
-import pl.org.seva.events.message.messages
 import java.time.Duration
-import java.time.LocalDateTime
 
-class CommSyncWorker(private val context: Context, params: WorkerParameters) :
+class EventSyncWorker(context: Context, params: WorkerParameters) :
         CoroutineWorker(context, params), SyncWorker {
-
     override val coroutineContext = Dispatchers.IO
 
     override suspend fun doWork() = syncCoroutineScope {
-        comms.refresh()
-                .filter { it.isDummy }
-                .map { Message(
-                        LocalDateTime.now(),
-                        context.getString(R.string.system_message_comm_deleted)
-                                .replace(NAME_PLACEHOLDER, it.originalName)) }
-                .apply {
-                    messages add this
-                    messageDao add this
-                }
         Result.success()
     }
 
     companion object {
         val TAG: String = this::class.java.name
         val FREQUENCY: Duration = Duration.ofHours(2)
-        const val NAME_PLACEHOLDER = "[name]"
     }
 }
