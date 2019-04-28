@@ -70,6 +70,6 @@ data class Comm(
         private const val DUMMY_NAME = ""
         private const val ORIG_NAME = "original_name"
         private const val DUMMY_DESCRIPTION = ""
-        val DUMMY = Comm(DUMMY_NAME, DUMMY_DESCRIPTION)
+        val DUMMY by lazy { Comm(DUMMY_NAME, DUMMY_DESCRIPTION) }
     }
 }
