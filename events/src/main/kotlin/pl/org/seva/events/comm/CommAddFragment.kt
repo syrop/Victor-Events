@@ -90,7 +90,7 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
             }
             progress.visibility = View.GONE
             prompt.visibility = View.VISIBLE
-            prompt.text = getString(R.string.add_comm_not_found).bold(NAME_PLACEHOLDER, comm.name)
+            prompt.text = getString(R.string.add_comm_not_found).bold(NAME_PLACEHOLDER, comm.originalName)
             if (isLoggedIn) {
                 showCreateCommunitySnackbar(comm.name)
             } else {

@@ -21,7 +21,11 @@ package pl.org.seva.events.main.model.fs
 
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 abstract class FsBase {
     private val db = FirebaseFirestore.getInstance()
@@ -43,6 +47,27 @@ abstract class FsBase {
     private infix fun DocumentReference.collection(ch: String) = this.collection(ch)
 
     private infix fun FirebaseFirestore.collection(ref: String) = this.collection(ref)
+
+    protected suspend fun DocumentReference.read(): DocumentSnapshot = suspendCancellableCoroutine { continuation ->
+        get().addOnCompleteListener { result ->
+            if (result.isSuccessful) {
+                continuation.resume(result.result!!)
+            }
+            else {
+                continuation.resumeWithException(result.exception!!)
+            }
+        }
+    }
+
+    protected suspend fun CollectionReference.read(): List<DocumentSnapshot> = suspendCancellableCoroutine { continuation ->
+        get().addOnCompleteListener { result ->
+            if (result.isSuccessful) {
+                continuation.resume(result.result!!.documents)
+            } else {
+                continuation.resumeWithException(result.exception!!)
+            }
+        }
+    }
 
     companion object {
         /** Root of community-related data that can be read by anyone. */

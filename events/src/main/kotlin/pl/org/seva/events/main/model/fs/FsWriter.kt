@@ -20,10 +20,13 @@
 package pl.org.seva.events.main.model.fs
 
 import com.google.firebase.firestore.SetOptions
+import kotlinx.coroutines.joinAll
+import kotlinx.coroutines.launch
 import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.event.Event
 import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.login.login
+import pl.org.seva.events.main.model.io
 import java.time.ZoneOffset
 
 val fsWriter by instance<FsWriter>()
@@ -39,9 +42,21 @@ class FsWriter : FsBase() {
         lcName.comm.set(mapOf(COMM_NAME to name, COMM_DESC to desc), SetOptions.merge())
     }
 
-    infix fun delete(comm: Comm) {
-        comm.lcName.comm.delete()
-        comm.lcName.privateComm.delete()
+    infix fun delete(comm: Comm) = io {
+        launch {
+            comm.lcName.events.read().map { event ->
+                launch { event.reference.delete() }
+            }.joinAll()
+            comm.lcName.comm.delete()
+        }
+        launch {
+            comm.lcName.admins.read().map { admin ->
+                launch {
+                    admin.reference.delete()
+                }
+            }.joinAll()
+            comm.lcName.privateComm.delete()
+        }
     }
 
     infix fun grantAdmin(comm: Comm) {

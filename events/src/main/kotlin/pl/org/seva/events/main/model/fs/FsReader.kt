@@ -57,27 +57,6 @@ class FsReader : FsBase() {
 
     private suspend fun DocumentReference.doesExist() = read().exists()
 
-    private suspend fun DocumentReference.read(): DocumentSnapshot = suspendCancellableCoroutine { continuation ->
-        get().addOnCompleteListener { result ->
-            if (result.isSuccessful) {
-                continuation.resume(result.result!!)
-            }
-            else {
-                continuation.resumeWithException(result.exception!!)
-            }
-        }
-    }
-
-    private suspend fun CollectionReference.read(): List<DocumentSnapshot> = suspendCancellableCoroutine { continuation ->
-        get().addOnCompleteListener { result ->
-            if (result.isSuccessful) {
-                continuation.resume(result.result!!.documents)
-            } else {
-                continuation.resumeWithException(result.exception!!)
-            }
-        }
-    }
-
     private fun DocumentSnapshot.toEvent(): Event {
         val name: String = getString(EVENT_NAME)!!
         val location: GeoPoint? = getGeoPoint(EVENT_LOCATION)
