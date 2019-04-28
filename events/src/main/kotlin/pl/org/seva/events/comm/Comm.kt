@@ -67,7 +67,7 @@ data class Comm(
     }
 
     companion object {
-        private const val DUMMY_NAME = ""
+        const val DUMMY_NAME = ""
         private const val ORIG_NAME = "original_name"
         private const val DUMMY_DESCRIPTION = ""
         val DUMMY by lazy { Comm(DUMMY_NAME, DUMMY_DESCRIPTION) }
