@@ -24,16 +24,17 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 
 abstract class FsBase {
+    private val db = FirebaseFirestore.getInstance()
 
     protected val communities get() = db collection COMMUNITIES
-
-    private val db = FirebaseFirestore.getInstance()
 
     protected val String.admins get() = db collection PRIVATE document this collection COMM_ADMINS
 
     protected val String.events get() = db collection COMMUNITIES document this collection COMM_EVENTS
 
-    protected val String.document get() = db collection COMMUNITIES document this
+    protected val String.comm get() = db collection COMMUNITIES document this
+
+    protected val String.privateComm get() = db collection PRIVATE document this
 
     protected val String.name get() = db collection COMMUNITIES document this collection COMM_NAME
 

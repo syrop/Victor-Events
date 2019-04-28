@@ -25,15 +25,23 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fr_messages.*
 import pl.org.seva.events.R
-import pl.org.seva.events.main.model.db.db
 import pl.org.seva.events.main.extension.swipeListener
 import pl.org.seva.events.main.extension.verticalDivider
-import pl.org.seva.events.main.model.io
 
 class MessagesFragment : Fragment(R.layout.fr_messages) {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        fun refreshScreen() {
+        super.onActivityCreated(savedInstanceState)
+
+        messages_view.setHasFixedSize(true)
+        messages_view.layoutManager = LinearLayoutManager(context)
+        messages_view.adapter = MessagesAdapter()
+        messages_view.verticalDivider()
+        messages_view.swipeListener { position ->
+                messages[position].delete()
+        }
+
+        (messages + this) {
             if (messages.isEmpty()) {
                 messages_view.visibility = View.GONE
                 prompt.visibility = View.VISIBLE
@@ -44,20 +52,5 @@ class MessagesFragment : Fragment(R.layout.fr_messages) {
                 prompt.visibility = View.GONE
             }
         }
-
-        super.onActivityCreated(savedInstanceState)
-
-        messages_view.setHasFixedSize(true)
-        messages_view.layoutManager = LinearLayoutManager(context)
-        messages_view.adapter = MessagesAdapter()
-        messages_view.verticalDivider()
-        messages_view.swipeListener { position ->
-            messages[position].also { message ->
-                messages delete position
-                io { db.messageDao delete message }
-                refreshScreen()
-            }
-        }
-        refreshScreen()
     }
 }

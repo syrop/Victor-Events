@@ -26,22 +26,19 @@ import pl.org.seva.events.main.init.instance
 val db by instance<EventsDb>()
 
 class EventsDb(context: Context) {
-
     private val db=
             Room.databaseBuilder(context, EventsDbAbstract::class.java, DATABASE_NAME).build()
 
     val eventDao by lazy { db.eventDao() }
-
     val commDao by lazy { db.commDao() }
-
     val messageDao by lazy { db.messageDao() }
 
     companion object {
         const val DATABASE_NAME = "events_database"
         const val DATABASE_VERSION = 1
 
-        const val EVENTS_TABLE_NAME = "events"
-        const val COMMS_TABLE_NAME = "communities"
-        const val MESSAGES_TABLE_NAME = "messages"
+        const val EVENT_TABLE = "event"
+        const val COMM_TABLE = "community"
+        const val MESSAGE_TABLE = "message"
     }
 }

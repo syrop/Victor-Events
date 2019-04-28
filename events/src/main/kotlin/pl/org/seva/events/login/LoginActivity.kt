@@ -38,7 +38,6 @@ import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.eventsApplication
 import pl.org.seva.events.main.extension.log
 import pl.org.seva.events.main.extension.toast
-import pl.org.seva.events.main.model.fs.fsWriter
 
 class LoginActivity : AppCompatActivity(),
         GoogleApiClient.OnConnectionFailedListener,
@@ -60,7 +59,6 @@ class LoginActivity : AppCompatActivity(),
         }
 
         fun onUserLoggedIn(user: FirebaseUser) {
-            fsWriter login user
             eventsApplication.login(user)
             if (finishWhenReady) {
                 commToCreate?.setResult() ?: setResult(Activity.RESULT_OK)

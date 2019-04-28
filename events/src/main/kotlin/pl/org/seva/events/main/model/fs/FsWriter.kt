@@ -36,11 +36,12 @@ class FsWriter : FsBase() {
     }
 
     infix fun update(comm: Comm) = with(comm) {
-        lcName.document.set(mapOf(COMM_NAME to name, COMM_DESC to desc), SetOptions.merge())
+        lcName.comm.set(mapOf(COMM_NAME to name, COMM_DESC to desc), SetOptions.merge())
     }
 
     infix fun delete(comm: Comm) {
-        comm.lcName.document.delete()
+        comm.lcName.comm.delete()
+        comm.lcName.privateComm.delete()
     }
 
     infix fun grantAdmin(comm: Comm) {
@@ -56,6 +57,6 @@ class FsWriter : FsBase() {
     }
 
     private fun Comm.writeName() {
-        lcName.document.set(mapOf(COMM_NAME to name))
+        lcName.comm.set(mapOf(COMM_NAME to name))
     }
 }

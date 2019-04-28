@@ -26,12 +26,9 @@ import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import pl.org.seva.events.comm.CommSyncWorker
 import pl.org.seva.events.comm.comms
-import pl.org.seva.events.comm.getAllValues
 import pl.org.seva.events.event.EventSyncWorker
 import pl.org.seva.events.login.login
 import pl.org.seva.events.main.model.io
-import pl.org.seva.events.main.model.db.db
-import pl.org.seva.events.message.getAllValues
 import pl.org.seva.events.message.messages
 import java.time.Duration
 
@@ -52,8 +49,8 @@ class Bootstrap {
         login.setCurrentUser(FirebaseAuth.getInstance().currentUser)
         io {
             listOf(
-                launch { comms cache db.commDao.getAllValues() },
-                launch { messages add db.messageDao.getAllValues() })
+                launch { comms.fromDb() },
+                launch { messages.fromDb() })
                     .joinAll()
             scheduleSync<CommSyncWorker>(CommSyncWorker.TAG, CommSyncWorker.FREQUENCY)
             scheduleSync<EventSyncWorker>(EventSyncWorker.TAG, EventSyncWorker.FREQUENCY)

@@ -33,18 +33,6 @@ class CommListFragment : Fragment(R.layout.fr_comm_list) {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        (comms + this) {
-            if (comms.isEmpty) {
-                comms_view.visibility = View.GONE
-                prompt.visibility = View.VISIBLE
-            }
-            else {
-                comms_view.visibility = View.VISIBLE
-                comms_view.adapter!!.notifyDataSetChanged()
-                prompt.visibility = View.GONE
-            }
-        }
-
         comms_view.setHasFixedSize(true)
         comms_view.layoutManager = LinearLayoutManager(context)
         comms_view.adapter = CommAdapter { view ->
@@ -64,7 +52,19 @@ class CommListFragment : Fragment(R.layout.fr_comm_list) {
                     .setAction(R.string.comm_list_undo) { comm.join() }
                     .show()
         }
-        add_comm { nav(R.id.action_commListFragment_to_addCommFragment) }
+        add_comm_fab { nav(R.id.action_commListFragment_to_addCommFragment) }
+
+        (comms + this) {
+            if (comms.isEmpty) {
+                comms_view.visibility = View.GONE
+                prompt.visibility = View.VISIBLE
+            }
+            else {
+                comms_view.visibility = View.VISIBLE
+                comms_view.adapter!!.notifyDataSetChanged()
+                prompt.visibility = View.GONE
+            }
+        }
     }
 
     companion object {

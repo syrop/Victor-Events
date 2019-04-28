@@ -20,12 +20,15 @@
 package pl.org.seva.events.message
 
 import pl.org.seva.events.main.init.instance
+import pl.org.seva.events.main.model.LiveRepository
+import pl.org.seva.events.main.model.db.db
+import pl.org.seva.events.main.model.io
 
 val messages by instance<Messages>()
 
-class Messages {
-
+class Messages : LiveRepository() {
     private val messageCache = mutableListOf<Message>()
+    private val messageDao by lazy { db.messageDao }
 
     val size get() = messageCache.size
 
@@ -33,11 +36,20 @@ class Messages {
 
     operator fun get(position: Int) = messageCache[position]
 
-    infix fun add(messages: Collection<Message>) {
-        messageCache.addAll(messages)
+    suspend fun fromDb() {
+        messageCache.addAll(db.messageDao.getAllValues())
+        notifyDataSetChanged()
     }
 
-    infix fun delete(position: Int) {
-        messageCache.removeAt(position)
+    infix fun addAll(messages: Collection<Message>) {
+        messageCache.addAll(messages)
+        io { messageDao addAll messages }
+        notifyDataSetChanged()
+    }
+
+    infix fun delete(message: Message) {
+        messageCache.remove(message)
+        io { messageDao delete message }
+        notifyDataSetChanged()
     }
 }

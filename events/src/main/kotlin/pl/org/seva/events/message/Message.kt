@@ -25,7 +25,11 @@ import java.time.LocalDateTime
 
 data class Message(val time: LocalDateTime, val content: String) {
 
-    @androidx.room.Entity(tableName = EventsDb.MESSAGES_TABLE_NAME)
+    fun delete() {
+        messages delete this
+    }
+
+    @androidx.room.Entity(tableName = EventsDb.MESSAGE_TABLE)
     class Entity() {
         @PrimaryKey
         var time: String = ""

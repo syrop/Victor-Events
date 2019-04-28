@@ -28,7 +28,7 @@ import pl.org.seva.events.main.model.db.EventsDb
 @Dao
 interface EventDao {
 
-    @Query("select * from ${EventsDb.EVENTS_TABLE_NAME}")
+    @Query("select * from ${EventsDb.EVENT_TABLE}")
     suspend fun getAll(): List<Event.Entity>
 
     @Insert

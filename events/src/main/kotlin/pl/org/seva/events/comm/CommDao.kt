@@ -21,9 +21,6 @@ package pl.org.seva.events.comm
 
 import androidx.room.*
 import pl.org.seva.events.main.model.db.EventsDb
-import pl.org.seva.events.main.model.db.db
-
-val commDao by lazy { db.commDao }
 
 suspend infix fun CommDao.delete(comm: Comm) = delete(Comm.Entity(comm))
 
@@ -36,7 +33,7 @@ suspend fun CommDao.getAllValues() = getAll().map { it.value() }
 @Dao
 interface CommDao {
 
-    @Query("select * from ${EventsDb.COMMS_TABLE_NAME}")
+    @Query("select * from ${EventsDb.COMM_TABLE}")
     suspend fun getAll(): List<Comm.Entity>
 
     @Insert
@@ -48,6 +45,6 @@ interface CommDao {
     @Update
     suspend fun update(comm: Comm.Entity)
 
-    @Query("delete from ${EventsDb.COMMS_TABLE_NAME}")
+    @Query("delete from ${EventsDb.COMM_TABLE}")
     suspend fun clear()
 }

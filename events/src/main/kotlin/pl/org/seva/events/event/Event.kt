@@ -57,7 +57,7 @@ data class Event(
                 desc = desc)
     }
 
-    @androidx.room.Entity(tableName = EventsDb.EVENTS_TABLE_NAME)
+    @androidx.room.Entity(tableName = EventsDb.EVENT_TABLE)
     class Entity() {
         lateinit var comm: String
         lateinit var name: String

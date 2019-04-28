@@ -25,34 +25,35 @@ import pl.org.seva.events.main.model.fs.fsWriter
 import pl.org.seva.events.main.model.fs.fsReader
 import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.main.model.LiveRepository
+import pl.org.seva.events.main.model.db.db
 import pl.org.seva.events.main.model.io
 import pl.org.seva.events.main.view.nextColor
 
 val comms by instance<Comms>()
 
 class Comms : LiveRepository() {
+    private val commsCache = mutableListOf<Comm>()
+    private val commDao by lazy { db.commDao }
 
-    private val commCache = mutableListOf<Comm>()
+    val size get() = commsCache.size
 
-    val size get() = commCache.size
+    private val isAdminOf get() = commsCache.filter { it.isAdmin }
 
-    private val isAdminOf get() = commCache.filter { it.isAdmin }
+    val isAdminOfAny get() = commsCache.any { it.isAdmin }
 
-    val isAdminOfAny get() = commCache.any { it.isAdmin }
-
-    val isEmpty get() = commCache.isEmpty()
+    val isEmpty get() = commsCache.isEmpty()
 
     val namesIsAdminOf get() = isAdminOf.map { it.name }.toTypedArray()
 
-    operator fun get(index: Int) = commCache[index]
+    operator fun get(index: Int) = commsCache[index]
 
-    operator fun get(name: String) = commCache.firstOrNull { it.name == name } ?: Comm.DUMMY
+    operator fun get(name: String) = commsCache.firstOrNull { it.name == name } ?: Comm.DUMMY
 
-    infix fun contains(comm: Comm) = commCache.any { it.name == comm.name }
+    infix fun contains(comm: Comm) = commsCache.any { it.name == comm.name }
 
     infix fun update(comm: Comm) = with(comm) {
-        commCache.remove(get(name))
-        commCache.add(this)
+        commsCache.remove(get(name))
+        commsCache.add(this)
         io { commDao update this@with }
         fsWriter update this
         notifyDataSetChanged()
@@ -60,7 +61,7 @@ class Comms : LiveRepository() {
     }
 
     infix fun leave(comm: Comm) = comm.run {
-        commCache.remove(this).also { updated ->
+        commsCache.remove(this).also { updated ->
             if (updated) {
                 io { commDao delete this@run }
                 notifyDataSetChanged()
@@ -75,7 +76,7 @@ class Comms : LiveRepository() {
     }
 
     infix fun join(comm: Comm) = comm.run {
-        (!commCache.contains(comm) && commCache.add(comm)).also { updated ->
+        (!commsCache.contains(comm) && commsCache.add(comm)).also { updated ->
             if (updated) {
                 io { commDao add this@run }
                 notifyDataSetChanged()
@@ -83,20 +84,20 @@ class Comms : LiveRepository() {
         }
     }
 
-    infix fun cache(comms: Collection<Comm>) {
-        commCache.addAll(comms)
+    suspend fun fromDb() {
+        commsCache.addAll(commDao.getAllValues())
         notifyDataSetChanged()
     }
 
     private suspend fun refresh(transform: suspend (Comm) -> Comm): List<Comm> = coroutineScope {
-        val commCopy = commCache.toList()
+        val commCopy = commsCache.toList()
         val transformed = mutableListOf<Comm>()
 
         commCopy.concurrent { transformed.add(transform(it)) }
-        commCache.clear()
-        commCache.addAll(transformed.filter { !it.isDummy })
+        commsCache.clear()
+        commsCache.addAll(transformed.filter { !it.isDummy })
         commDao.clear()
-        commCache.concurrent { commDao add it }
+        commsCache.concurrent { commDao add it }
         notifyDataSetChanged()
         transformed
     }

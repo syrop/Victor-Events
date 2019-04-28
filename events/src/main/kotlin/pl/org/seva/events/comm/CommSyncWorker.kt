@@ -26,8 +26,6 @@ import kotlinx.coroutines.Dispatchers
 import pl.org.seva.events.R
 import pl.org.seva.events.main.model.SyncWorker
 import pl.org.seva.events.message.Message
-import pl.org.seva.events.message.add
-import pl.org.seva.events.message.messageDao
 import pl.org.seva.events.message.messages
 import java.time.Duration
 import java.time.LocalDateTime
@@ -45,8 +43,7 @@ class CommSyncWorker(private val context: Context, params: WorkerParameters) :
                         context.getString(R.string.system_message_comm_deleted)
                                 .replace(NAME_PLACEHOLDER, it.originalName)) }
                 .apply {
-                    messages add this
-                    messageDao add this
+                    messages addAll this
                 }
         Result.success()
     }
