@@ -19,7 +19,6 @@
 
 package pl.org.seva.events.main.model.fs
 
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.GeoPoint
@@ -30,8 +29,6 @@ import pl.org.seva.events.login.isLoggedIn
 import pl.org.seva.events.login.login
 import pl.org.seva.events.main.init.instance
 import java.time.LocalDateTime
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 
 val fsReader by instance<FsReader>()
 
