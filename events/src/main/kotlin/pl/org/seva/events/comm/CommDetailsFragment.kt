@@ -30,17 +30,17 @@ import pl.org.seva.events.main.extension.*
 
 class CommDetailsFragment : Fragment(R.layout.fr_comm_details) {
 
+    private val vm by viewModel<CommViewModel>()
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val vm = getViewModel<CommViewModel>()
         val comm = vm.comm
         title = comm.name
-        if (comm.isAdmin) { edit_comm_fab.show() }
-        else { edit_comm_fab.hide() }
         edit_comm_fab { nav(R.id.action_commDetailsFragment_to_commEditFragment) }
         name set comm.name
         (vm.name + this) { if (it == Comm.DUMMY_NAME) back() }
         (vm.desc + this) { desc set it }
+        (vm.isAdmin + this) { if (it) edit_comm_fab.show() else edit_comm_fab.hide() }
         setHasOptionsMenu(true)
     }
 
@@ -58,5 +58,6 @@ class CommDetailsFragment : Fragment(R.layout.fr_comm_details) {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.comm_details, menu)
+        (vm.isAdmin + this) { menu.findItem(R.id.action_add_admin).isVisible = it }
     }
 }
