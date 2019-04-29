@@ -37,6 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:importantForAutofill="noExcludeDescendants"
+                android:inputType="textNoSuggestions"
                 android:hint="@string/comm_edit_description"/>
 
         </com.google.android.material.textfield.TextInputLayout>
