@@ -54,10 +54,12 @@ abstract class LiveRepository {
     suspend operator fun invoke(block: () -> Unit) {
         with (channel.openSubscription()) {
             if (!isEmpty) receive()
-            while(true) {
-                receive()
-                block()
-            }
+            try {
+                while (true) {
+                    receive()
+                    block()
+                }
+            } finally { cancel() }
         }
     }
 }
