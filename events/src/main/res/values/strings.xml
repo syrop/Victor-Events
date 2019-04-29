@@ -37,6 +37,10 @@
     <string name="comm_details_label" translatable="false"/>
     <string name="comm_details_name">Name</string>
     <string name="comm_details_description">Description</string>
+    <string name="comm_details_add_admin">Add an admin</string>
+
+    <!-- Admin add fragment -->
+    <string name="admin_add_label">Add an admin</string>
 
     <!-- Comm edit fragment -->
     <string name="comm_edit_label">Edit community</string>

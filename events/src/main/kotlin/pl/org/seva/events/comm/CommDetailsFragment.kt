@@ -20,6 +20,9 @@
 package pl.org.seva.events.comm
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fr_comm_details.*
 import pl.org.seva.events.R
@@ -38,5 +41,22 @@ class CommDetailsFragment : Fragment(R.layout.fr_comm_details) {
         name set comm.name
         (vm.name + this) { if (it == Comm.DUMMY_NAME) back() }
         (vm.desc + this) { desc set it }
+        setHasOptionsMenu(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        fun addAdmin(): Boolean {
+            nav(R.id.action_commDetailsFragment_to_adminAddFragment)
+            return false
+        }
+
+        return when (item.itemId) {
+            R.id.action_add_admin -> addAdmin()
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.comm_details, menu)
     }
 }

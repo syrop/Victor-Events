@@ -100,6 +100,9 @@
         <action
             android:id="@+id/action_commDetailsFragment_to_commEditFragment"
             app:destination="@id/commEditFragment"/>
+        <action
+            android:id="@+id/action_commDetailsFragment_to_adminAddFragment"
+            app:destination="@id/adminAddFragment"/>
     </fragment>
 
     <fragment
@@ -123,5 +126,11 @@
         android:name="pl.org.seva.events.about.AboutFragment"
         android:label="@string/about_label"
         tools:layout="@layout/fr_about"/>
+
+    <fragment
+        android:id="@+id/adminAddFragment"
+        android:name="pl.org.seva.events.comm.AdminAddFragment"
+        android:label="@string/admin_add_label"
+        tools:layout="@layout/fr_admin_add"/>
 
 </navigation>
