@@ -28,6 +28,7 @@ import pl.org.seva.events.event.Event
 import pl.org.seva.events.login.isLoggedIn
 import pl.org.seva.events.login.login
 import pl.org.seva.events.main.init.instance
+import pl.org.seva.events.main.view.nextColor
 import java.time.LocalDateTime
 
 val fsReader by instance<FsReader>()
@@ -65,5 +66,6 @@ class FsReader : FsBase() {
     private fun DocumentSnapshot.toCommunity() =
             if (exists()) Comm(
                     name = getString(COMM_NAME)!!,
+                    color = nextColor,
                     desc = getString(COMM_DESC) ?: "") else Comm.DUMMY
 }

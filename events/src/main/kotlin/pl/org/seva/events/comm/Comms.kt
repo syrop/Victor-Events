@@ -108,7 +108,7 @@ class Comms : LiveRepository() {
     }
 
     suspend fun refresh() = coroutineScope {
-        refresh { fsReader.findCommunity(it.name) }
+        refresh { fsReader.findCommunity(it.name).copy(color = it.color) }
     }
 
     infix fun joinNewCommunity(name: String) =
