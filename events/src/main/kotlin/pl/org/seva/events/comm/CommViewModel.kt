@@ -21,12 +21,10 @@ package pl.org.seva.events.comm
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
 
 class CommViewModel : ViewModel() {
 
-    init { viewModelScope.launch { comms { comm = comms[comm.name] } } }
+    init { (comms vm this) { comm = comms[comm.name] } }
 
     var comm = Comm.DUMMY
     set(value) {

@@ -24,11 +24,14 @@ package pl.org.seva.events.main.model
 import android.os.Looper
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import pl.org.seva.events.main.model.livedata.DefaultHotData
 import pl.org.seva.events.main.model.livedata.HotData
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.sendBlocking
+import kotlinx.coroutines.launch
 
 abstract class LiveRepository {
 
@@ -40,6 +43,10 @@ abstract class LiveRepository {
         if (Looper.getMainLooper().thread === Thread.currentThread()) liveData.value = Unit
         else liveData.postValue(Unit)
         channel.sendBlocking(Unit)
+    }
+
+    infix fun vm(vm: ViewModel) = { block: () -> Unit ->
+        vm.viewModelScope.launch { this@LiveRepository(block) }
     }
 
     operator fun plus(owner: LifecycleOwner): HotData<Unit> = DefaultHotData(liveData, owner)

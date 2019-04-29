@@ -58,6 +58,6 @@ class CommDetailsFragment : Fragment(R.layout.fr_comm_details) {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.comm_details, menu)
-        (vm.isAdmin + this) { menu.findItem(R.id.action_add_admin).isVisible = it }
+        (vm.isAdmin + this) { menu.findItem(R.id.action_add_admin)?.isVisible = it }
     }
 }
