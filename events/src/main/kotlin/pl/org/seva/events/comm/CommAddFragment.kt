@@ -63,7 +63,7 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
 
         fun notFound(comm: Comm) {
             fun showCreateCommunitySnackbar(name: String) {
-                longSnackbar {
+                permanentSnackbar {
                     view = layout
                     message = R.string.add_comm_can_create
                     action = R.string.add_comm_create
