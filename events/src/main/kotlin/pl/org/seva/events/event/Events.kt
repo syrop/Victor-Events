@@ -22,6 +22,7 @@ package pl.org.seva.events.event
 import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.main.model.LiveRepository
 import pl.org.seva.events.main.model.db.db
+import pl.org.seva.events.main.model.fs.fsWriter
 import pl.org.seva.events.main.model.io
 
 val events by instance<Events>()
@@ -35,6 +36,7 @@ class Events : LiveRepository() {
     infix fun add(event: Event) {
         eventsCache.add(event)
         io { eventDao add event }
+        fsWriter add event
     }
 
     operator fun get(index: Int) = eventsCache[index]

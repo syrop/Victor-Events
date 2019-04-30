@@ -31,9 +31,9 @@ class CommViewModel : ViewModel() {
         field = value
         reset()
     }
-    val name by lazy { MutableLiveData<String>() }
-    val desc by lazy { MutableLiveData<String>() }
-    val isAdmin by lazy { MutableLiveData<Boolean>() }
+    val name by lazy { MutableLiveData<String?>() }
+    val desc by lazy { MutableLiveData<String?>() }
+    val isAdmin by lazy { MutableLiveData<Boolean?>() }
 
     fun reset() {
         name.value = comm.name

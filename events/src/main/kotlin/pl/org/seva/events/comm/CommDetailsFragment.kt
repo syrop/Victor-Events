@@ -40,7 +40,7 @@ class CommDetailsFragment : Fragment(R.layout.fr_comm_details) {
         name set comm.name
         (vm.name + this) { if (it == Comm.DUMMY_NAME) back() }
         (vm.desc + this) { desc set it }
-        (vm.isAdmin + this) { if (it) edit_comm_fab.show() else edit_comm_fab.hide() }
+        (vm.isAdmin + this) { if (it == true) edit_comm_fab.show() else edit_comm_fab.hide() }
         setHasOptionsMenu(true)
     }
 
@@ -58,6 +58,6 @@ class CommDetailsFragment : Fragment(R.layout.fr_comm_details) {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.comm_details, menu)
-        (vm.isAdmin + this) { menu.findItem(R.id.action_add_admin)?.isVisible = it }
+        (vm.isAdmin + this) { menu.findItem(R.id.action_add_admin)?.isVisible = it == true }
     }
 }

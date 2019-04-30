@@ -41,17 +41,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (!backOrHome()) {
+        if (!onBackOrHomePressed()) {
             super.onBackPressed()
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        android.R.id.home -> backOrHome()
+        android.R.id.home -> onBackOrHomePressed()
         else -> false
     } || super.onOptionsItemSelected(item)
 
-    private fun backOrHome(): Boolean {
+    private fun onBackOrHomePressed(): Boolean {
         fun showDismissEventDialog() =
                 if (createEventsViewModel.isFilledIn) {
                     question(

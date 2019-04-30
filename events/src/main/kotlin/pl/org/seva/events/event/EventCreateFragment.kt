@@ -150,7 +150,7 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
             permissions.onRequestPermissionsResult(this, requestCode, requests, grantResults)
 
     companion object {
-        const val TIME_PICKER_TAG = "timePicker"
-        const val DATE_PICKER_TAG = "datePicker"
+        const val TIME_PICKER_TAG = "time_picker"
+        const val DATE_PICKER_TAG = "date_picker"
     }
 }

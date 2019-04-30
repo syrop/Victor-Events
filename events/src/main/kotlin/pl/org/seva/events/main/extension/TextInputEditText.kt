@@ -27,12 +27,12 @@ import androidx.lifecycle.Observer
 import com.google.android.material.textfield.TextInputEditText
 import pl.org.seva.events.main.model.livedata.MutableHotData
 
-fun TextInputEditText.withLiveData(owner: LifecycleOwner, liveData: MutableLiveData<String>) {
+fun TextInputEditText.withLiveData(owner: LifecycleOwner, liveData: MutableLiveData<String?>) {
     watch { liveData.value = text.toString() }
     liveData.observe(owner, observer)
 }
 
-infix fun TextInputEditText.backWith(hotData: MutableHotData<String>) =
+infix fun TextInputEditText.backWith(hotData: MutableHotData<String?>) =
         withLiveData(hotData.owner, hotData.liveData)
 
 private val TextInputEditText.observer get() = Observer { value: String? ->
