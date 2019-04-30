@@ -8,7 +8,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
-import kotlinx.android.synthetic.main.act_main.*
+import kotlinx.android.synthetic.main.ac_main.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.CommAddFragment
 import pl.org.seva.events.comm.CommViewModel
@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.act_main)
+        setContentView(R.layout.ac_main)
         setSupportActionBar(toolbar)
         NavigationUI.setupActionBarWithNavController(this, navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->

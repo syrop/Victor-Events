@@ -60,11 +60,11 @@ class FsWriter : FsBase() {
     }
 
     infix fun grantAdmin(comm: Comm) {
-        grantAdmin(comm.lcName, login.email)
+        grantAdmin(comm, login.email)
     }
 
-    private fun grantAdmin(community: String, email: String) {
-        community.admins.document(email).set(mapOf(ADMIN_GRANTED to true))
+    fun grantAdmin(comm: Comm, email: String) {
+        comm.lcName.admins.document(email).set(mapOf(ADMIN_GRANTED to true))
     }
 
     private infix fun Comm.writeEvent(event: Event) {

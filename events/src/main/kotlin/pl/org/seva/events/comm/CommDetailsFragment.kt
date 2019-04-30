@@ -47,7 +47,7 @@ class CommDetailsFragment : Fragment(R.layout.fr_comm_details) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         fun addAdmin(): Boolean {
             nav(R.id.action_commDetailsFragment_to_adminAddFragment)
-            return false
+            return true
         }
 
         return when (item.itemId) {

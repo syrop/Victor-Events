@@ -53,7 +53,7 @@ class CommEditFragment : Fragment(R.layout.fr_comm_edit) {
                         .toast()
                 back()
             }
-            return false
+            return true
         }
 
         return when (item.itemId) {

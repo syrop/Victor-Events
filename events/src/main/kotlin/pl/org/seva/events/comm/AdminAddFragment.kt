@@ -19,7 +19,38 @@
 
 package pl.org.seva.events.comm
 
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.fr_admin_add.*
 import pl.org.seva.events.R
+import pl.org.seva.events.main.extension.viewModel
+import pl.org.seva.events.main.model.fs.fsWriter
 
-class AdminAddFragment : Fragment(R.layout.fr_admin_add)
+class AdminAddFragment : Fragment(R.layout.fr_admin_add) {
+
+    private val vm by viewModel<CommViewModel>()
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.admin_add, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        fun confirm(): Boolean {
+            fsWriter.grantAdmin(vm.comm, address.text.toString())
+            return true
+        }
+
+        return when (item.itemId) {
+            R.id.action_ok -> confirm()
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+}

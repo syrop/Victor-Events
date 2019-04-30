@@ -41,6 +41,8 @@
 
     <!-- Admin add fragment -->
     <string name="admin_add_label">Add an admin</string>
+    <string name="admin_add_address">Address</string>
+    <string name="admin_add_prompt">Enter e-mail address of the new admin.\n\nThe address entered is not validated. You may enter any string. If someone logs in with this address, they will be recognized as one of the admins of your community.\n\nThe address you enter now cannot be deleted unless you delete your community.</string>
 
     <!-- Comm edit fragment -->
     <string name="comm_edit_label">Edit community</string>
