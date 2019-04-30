@@ -68,7 +68,7 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
         time { showTimePicker() }
         date { showDatePicker() }
         address { showLocationPicker() }
-        desc backWith (model.description + this)
+        desc backWith (model.desc + this)
 
         (model.time + this) { onTimeChanged(it) }
         (model.date + this) { onDateChanged(it) }
