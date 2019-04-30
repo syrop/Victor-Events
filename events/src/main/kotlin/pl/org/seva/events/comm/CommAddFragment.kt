@@ -91,11 +91,8 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
             progress.visibility = View.GONE
             prompt.visibility = View.VISIBLE
             prompt.text = getString(R.string.add_comm_not_found).bold(NAME_PLACEHOLDER, comm.originalName)
-            if (isLoggedIn) {
-                showCreateCommunitySnackbar(comm.name)
-            } else {
-                showLoginToCreateSnackbar(comm.name)
-            }
+            if (isLoggedIn) { showCreateCommunitySnackbar(comm.originalName) }
+            else { showLoginToCreateSnackbar(comm.originalName) }
         }
 
         super.onActivityCreated(savedInstanceState)
