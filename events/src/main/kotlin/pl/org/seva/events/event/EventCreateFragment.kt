@@ -97,8 +97,20 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
         setHasOptionsMenu(true)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        fun confirm(): Boolean {
+            back()
+            return true
+        }
+
+        return when (item.itemId) {
+            R.id.action_ok -> confirm()
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.comm_edit, menu)
+        inflater.inflate(R.menu.event_create, menu)
     }
 
     private fun checkLocationPermission(onGranted: () -> Unit) {
