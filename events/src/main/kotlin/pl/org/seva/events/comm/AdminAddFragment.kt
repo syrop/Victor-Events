@@ -26,6 +26,8 @@ import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fr_admin_add.*
 import pl.org.seva.events.R
+import pl.org.seva.events.main.extension.back
+import pl.org.seva.events.main.extension.toast
 import pl.org.seva.events.main.extension.viewModel
 import pl.org.seva.events.main.model.fs.fsWriter
 
@@ -45,6 +47,8 @@ class AdminAddFragment : Fragment(R.layout.fr_admin_add) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         fun confirm(): Boolean {
             fsWriter.grantAdmin(vm.comm, address.text.toString())
+            getString(R.string.admin_add_toast).toast()
+            back()
             return true
         }
 
