@@ -34,9 +34,11 @@ val fsWriter by instance<FsWriter>()
 class FsWriter : FsBase() {
 
     infix fun create(comm: Comm) {
-        comm.writeEvent(Event.CREATION_EVENT)
+        comm.writeEvent(Event.creationEvent)
         comm.writeName()
     }
+
+    infix fun add(event: Event) = event.comm.toLowerCase().writeEvent(event)
 
     infix fun update(comm: Comm) = with(comm) {
         lcName.comm.set(mapOf(COMM_NAME to name, COMM_DESC to desc), SetOptions.merge())
@@ -59,19 +61,15 @@ class FsWriter : FsBase() {
         }
     }
 
-    infix fun grantAdmin(comm: Comm) {
-        grantAdmin(comm, login.email)
-    }
+    infix fun grantAdmin(comm: Comm) = grantAdmin(comm, login.email)
 
-    fun grantAdmin(comm: Comm, email: String) {
+    fun grantAdmin(comm: Comm, email: String) =
         comm.lcName.admins.document(email).set(mapOf(ADMIN_GRANTED to true))
-    }
 
-    private infix fun Comm.writeEvent(event: Event) {
-        lcName.events.document(event.time.toEpochSecond(ZoneOffset.UTC).toString()).set(event.fsEvent)
-    }
+    private infix fun Comm.writeEvent(event: Event) = lcName writeEvent  event
 
-    private fun Comm.writeName() {
-        lcName.comm.set(mapOf(COMM_NAME to name))
-    }
+    private infix fun String.writeEvent(event: Event) =
+        events.document(event.time.toEpochSecond(ZoneOffset.UTC).toString()).set(event.fsEvent)
+
+    private fun Comm.writeName() = lcName.comm.set(mapOf(COMM_NAME to name))
 }

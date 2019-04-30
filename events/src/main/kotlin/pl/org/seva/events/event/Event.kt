@@ -89,6 +89,6 @@ data class Event(
 
     companion object {
         private const val CREATION_NAME = ""
-        val CREATION_EVENT = Event(CREATION_NAME)
+        val creationEvent get() = Event(CREATION_NAME)
     }
 }
