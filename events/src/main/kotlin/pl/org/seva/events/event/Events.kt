@@ -19,9 +19,14 @@
 
 package pl.org.seva.events.event
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import pl.org.seva.events.comm.comms
+import pl.org.seva.events.main.extension.launchEach
 import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.main.model.LiveRepository
 import pl.org.seva.events.main.model.db.db
+import pl.org.seva.events.main.model.fs.fsReader
 import pl.org.seva.events.main.model.fs.fsWriter
 import pl.org.seva.events.main.model.io
 
@@ -37,6 +42,24 @@ class Events : LiveRepository() {
         eventsCache.add(event)
         io { eventDao add event }
         fsWriter add event
+    }
+
+    suspend fun refresh(): List<Event> = coroutineScope {
+        mutableListOf<Event>().apply {
+            comms.map {
+                async { fsReader.readEvents(it.lcName) }
+            }.map {
+                it.await()
+            }.onEach {
+                addAll(it)
+            }
+        }.apply {
+            eventsCache.clear()
+            eventsCache.addAll(this)
+            notifyDataSetChanged()
+            eventDao.clear()
+            launchEach { eventDao.add(it) }
+        }
     }
 
     operator fun get(index: Int) = eventsCache[index]
