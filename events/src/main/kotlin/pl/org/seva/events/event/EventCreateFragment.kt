@@ -106,7 +106,7 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
                             else null
                         }
                     }.any { it }) return true
-            val event = Event(
+            events add Event(
                     comm = vm.comm.value!!,
                     name = vm.name.value!!,
                     time = LocalDateTime.of(vm.date.value!!, vm.time.value!!),

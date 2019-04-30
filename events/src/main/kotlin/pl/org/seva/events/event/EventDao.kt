@@ -25,6 +25,8 @@ import androidx.room.Delete
 import androidx.room.Insert
 import pl.org.seva.events.main.model.db.EventsDb
 
+suspend infix fun EventDao.add(event: Event) = insert(Event.Entity(event))
+
 @Dao
 interface EventDao {
 
@@ -33,6 +35,9 @@ interface EventDao {
 
     @Insert
     suspend fun insertAll(vararg events: Event.Entity)
+
+    @Insert
+    suspend fun insert(event: Event.Entity)
 
     @Delete
     suspend fun delete(event: Event.Entity)
