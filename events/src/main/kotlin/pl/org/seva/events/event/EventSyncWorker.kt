@@ -31,6 +31,7 @@ class EventSyncWorker(context: Context, params: WorkerParameters) :
     override val coroutineContext = Dispatchers.IO
 
     override suspend fun doWork() = syncCoroutineScope {
+        events.refresh()
         Result.success()
     }
 

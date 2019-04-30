@@ -20,9 +20,8 @@
 package pl.org.seva.events.main.extension
 
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 
-suspend fun <T> Iterable<T>.concurrent(block: suspend (T) -> Unit) = coroutineScope {
-    map { launch { block(it) } }.joinAll()
+suspend fun <T> Iterable<T>.launchEach(block: suspend (T) -> Unit) = coroutineScope {
+    map { launch { block(it) } }
 }

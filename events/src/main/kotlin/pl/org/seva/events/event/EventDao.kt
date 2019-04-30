@@ -41,4 +41,7 @@ interface EventDao {
 
     @Delete
     suspend fun delete(event: Event.Entity)
+
+    @Query("delete from ${EventsDb.EVENT_TABLE}")
+    suspend fun clear()
 }
