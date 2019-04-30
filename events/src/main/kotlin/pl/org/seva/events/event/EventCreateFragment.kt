@@ -91,10 +91,6 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
                 }
             }
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
 
