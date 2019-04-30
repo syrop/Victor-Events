@@ -34,17 +34,18 @@ import pl.org.seva.events.main.extension.*
 import pl.org.seva.events.main.model.Permissions
 import pl.org.seva.events.main.model.permissions
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 
 class EventCreateFragment : Fragment(R.layout.fr_event_create) {
 
-    private val model by viewModel<EventCreateViewModel>()
+    private val vm by viewModel<EventCreateViewModel>()
 
     private val mapHolder by lazy {
         createMapHolder {
             checkLocationPermission = this@EventCreateFragment::checkLocationPermission
             onMapAvailable = {
-                model.informMarker(this@EventCreateFragment, this@createMapHolder)
+                vm.informMarker(this@EventCreateFragment, this@createMapHolder)
             }
         }
     }
@@ -64,22 +65,22 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
             map_container.visibility = if (l == null) View.INVISIBLE else View.VISIBLE
         }
 
-        name backWith (model.name + this)
+        name backWith (vm.name + this)
         time { showTimePicker() }
         date { showDatePicker() }
         address { showLocationPicker() }
-        desc backWith (model.desc + this)
+        desc backWith (vm.desc + this)
 
-        (model.time + this) { onTimeChanged(it) }
-        (model.date + this) { onDateChanged(it) }
-        (model.location + this) { onLocationChanged(it) }
+        (vm.time + this) { onTimeChanged(it) }
+        (vm.date + this) { onDateChanged(it) }
+        (vm.location + this) { onLocationChanged(it) }
 
         comms.namesIsAdminOf.apply {
-            model.comm.value = get(0)
+            vm.comm.value = get(0)
             if (size > 1) {
                 comm_layout.visibility = View.VISIBLE
                 comm set get(0)
-                comm backWith (model.comm + this@EventCreateFragment)
+                comm backWith (vm.comm + this@EventCreateFragment)
                 comm {
                     AlertDialog.Builder(context!!)
                             .setItems(this) { dialog, which ->
@@ -99,6 +100,24 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         fun confirm(): Boolean {
+            if (listOf(vm.comm to comm, vm.name to name, vm.date to date, vm.time to time)
+                    .map {
+                        it.first.value.run {
+                            if (this is String?) isNullOrEmpty()
+                            else this == null
+                        }.apply {
+                            it.second.error = if (this) getString(R.string.create_event_cant_be_empty)
+                            else null
+                        }
+                    }.any { it }) return true
+            val event = Event(
+                    comm = vm.comm.value!!,
+                    name = vm.name.value!!,
+                    time = LocalDateTime.of(vm.date.value!!, vm.time.value!!),
+                    location = vm.location.value?.geoPoint,
+                    address = vm.location.value?.address,
+                    desc = vm.desc.value)
+            vm.clear()
             back()
             return true
         }

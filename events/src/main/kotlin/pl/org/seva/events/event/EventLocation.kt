@@ -20,5 +20,8 @@
 package pl.org.seva.events.event
 
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.firestore.GeoPoint
 
-data class EventLocation(val location: LatLng, val address: String)
+data class EventLocation(val location: LatLng, val address: String) {
+    val geoPoint get() = GeoPoint(location.latitude, location.longitude)
+}
