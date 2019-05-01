@@ -28,6 +28,7 @@ import java.time.Duration
 
 class EventSyncWorker(context: Context, params: WorkerParameters) :
         CoroutineWorker(context, params), SyncWorker {
+
     override val coroutineContext = Dispatchers.IO
 
     override suspend fun doWork() = syncCoroutineScope {
