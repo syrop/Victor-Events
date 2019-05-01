@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Wiktor Nizio
+ * Copyright (C) 2019 Wiktor Nizio
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,33 +17,28 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.comm
+package pl.org.seva.events.event
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
-import kotlinx.android.synthetic.main.row_comm.view.*
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.row_event.view.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.inflate
 import pl.org.seva.events.main.extension.onClick
 
-open class CommAdapter(private val onClick: (View) -> Unit) : RecyclerView.Adapter<CommAdapter.ViewHolder>() {
+class EventAdapter(private val onClick: (View) -> Unit) : RecyclerView.Adapter<EventAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-            ViewHolder(parent.inflate(R.layout.row_comm), onClick)
+            ViewHolder(parent.inflate(R.layout.row_event), onClick)
 
-    override fun getItemCount() = comms.size
-
-    protected open fun getItem(position: Int): Comm = comms[position]
+    override fun getItemCount() = events.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        getItem(position).apply {
-            holder.communityName.text = name
-            holder.iconText.text = name.substring(0, 1)
-            holder.iconProfile.setImageResource(R.drawable.bg_circle)
-            holder.iconProfile.setColorFilter(color)
+        events[position].apply {
+            holder.name.text = name
+            holder.time.text = time.toString()
         }
     }
 
@@ -51,8 +46,7 @@ open class CommAdapter(private val onClick: (View) -> Unit) : RecyclerView.Adapt
 
         init { view onClick onClick }
 
-        val communityName: TextView = view.comm
-        val iconProfile: ImageView = view.icon_profile
-        val iconText: TextView = view.icon_text
+        val name: TextView = view.name
+        val time: TextView = view.time
     }
 }

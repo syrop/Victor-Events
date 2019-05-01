@@ -19,6 +19,13 @@
             android:text="@string/events_list_no_events"
             android:layout_centerInParent="true"/>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/events_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:visibility="visible"
+            android:visibility="gone"/>
+
     </RelativeLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

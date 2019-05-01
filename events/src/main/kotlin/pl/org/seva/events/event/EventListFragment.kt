@@ -23,12 +23,14 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 
 import kotlinx.android.synthetic.main.fr_event_list.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.main.extension.nav
 import pl.org.seva.events.login.login
+import pl.org.seva.events.main.extension.getViewModel
 import pl.org.seva.events.main.extension.invoke
 
 class EventListFragment : Fragment(R.layout.fr_event_list) {
@@ -43,6 +45,14 @@ class EventListFragment : Fragment(R.layout.fr_event_list) {
         super.onActivityCreated(savedInstanceState)
         if (comms.isAdminOfAny) { add_event.visibility = View.VISIBLE }
         add_event { nav(R.id.action_eventsFragment_to_createEventFragment) }
+
+        events_view.setHasFixedSize(true)
+        events_view.layoutManager = LinearLayoutManager(context)
+        events_view.adapter = EventAdapter { view ->
+            val position = events_view.getChildAdapterPosition(view)
+            getViewModel<EventViewModel>().event = events[position]
+            nav(R.id.action_eventsFragment_to_eventDetailsFragment)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
