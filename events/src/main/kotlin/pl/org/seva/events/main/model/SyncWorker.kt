@@ -24,7 +24,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
-private val syncMutex = Mutex()
+private val syncMutex by lazy { Mutex() }
 
 interface SyncWorker {
     suspend fun <R> syncCoroutineScope(block: suspend CoroutineScope.() -> R): R = coroutineScope {
