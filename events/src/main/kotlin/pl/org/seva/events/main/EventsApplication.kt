@@ -23,8 +23,8 @@ import android.app.Application
 import com.google.firebase.auth.FirebaseUser
 import org.kodein.di.Kodein
 import org.kodein.di.conf.global
-import pl.org.seva.events.main.init.bootstrap
-import pl.org.seva.events.main.init.module
+import pl.org.seva.events.main.model.bootstrap
+import pl.org.seva.events.main.model.module
 
 class EventsApplication : Application() {
 

@@ -17,7 +17,7 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main.init
+package pl.org.seva.events.main.model
 
 import androidx.work.*
 import com.google.firebase.auth.FirebaseAuth
@@ -28,7 +28,6 @@ import pl.org.seva.events.comm.CommSyncWorker
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.event.EventSyncWorker
 import pl.org.seva.events.login.login
-import pl.org.seva.events.main.model.io
 import pl.org.seva.events.message.messages
 import java.time.Duration
 

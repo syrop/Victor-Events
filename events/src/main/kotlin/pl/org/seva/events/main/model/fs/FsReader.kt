@@ -27,8 +27,8 @@ import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.event.Event
 import pl.org.seva.events.login.isLoggedIn
 import pl.org.seva.events.login.login
-import pl.org.seva.events.main.init.instance
-import pl.org.seva.events.main.view.nextColor
+import pl.org.seva.events.main.model.instance
+import pl.org.seva.events.main.ui.nextColor
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 

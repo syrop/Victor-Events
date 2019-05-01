@@ -17,12 +17,9 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main.extension
+package pl.org.seva.events.main.viewmodel
 
-import pl.org.seva.events.main.model.instance
-import java.util.logging.Logger
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
 
-val Any.log: Logger get() {
-    val result by instance<String, Logger>(this::class.java.name)
-    return result
-}
+data class MutableHotData<T>(override val liveData: MutableLiveData<T>, override val owner: LifecycleOwner): HotData<T>

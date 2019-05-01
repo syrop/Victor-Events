@@ -26,8 +26,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import pl.org.seva.events.main.model.livedata.DefaultHotData
-import pl.org.seva.events.main.model.livedata.HotData
+import pl.org.seva.events.main.viewmodel.DefaultHotData
+import pl.org.seva.events.main.viewmodel.HotData
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.sendBlocking

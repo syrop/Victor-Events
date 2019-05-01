@@ -21,7 +21,7 @@ package pl.org.seva.events.main.model.db
 
 import androidx.room.Room
 import android.content.Context
-import pl.org.seva.events.main.init.instance
+import pl.org.seva.events.main.model.instance
 
 val db by instance<EventsDb>()
 

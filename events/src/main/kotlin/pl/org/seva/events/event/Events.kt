@@ -24,7 +24,7 @@ import kotlinx.coroutines.coroutineScope
 import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.main.extension.launchEach
-import pl.org.seva.events.main.init.instance
+import pl.org.seva.events.main.model.instance
 import pl.org.seva.events.main.model.LiveRepository
 import pl.org.seva.events.main.model.db.db
 import pl.org.seva.events.main.model.fs.fsReader

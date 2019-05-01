@@ -25,7 +25,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.google.android.material.textfield.TextInputEditText
-import pl.org.seva.events.main.model.livedata.MutableHotData
+import pl.org.seva.events.main.viewmodel.MutableHotData
 
 fun TextInputEditText.withLiveData(owner: LifecycleOwner, liveData: MutableLiveData<String?>) {
     watch { liveData.value = text.toString() }

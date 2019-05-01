@@ -32,9 +32,9 @@ import kotlinx.android.synthetic.main.fr_comm_add.*
 import pl.org.seva.events.R
 import pl.org.seva.events.login.LoginActivity
 import pl.org.seva.events.login.isLoggedIn
-import pl.org.seva.events.main.MainViewModel
+import pl.org.seva.events.main.viewmodel.MainViewModel
 import pl.org.seva.events.main.extension.*
-import pl.org.seva.events.main.view.*
+import pl.org.seva.events.main.ui.*
 
 class CommAddFragment : Fragment(R.layout.fr_comm_add) {
 

@@ -17,7 +17,7 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main.view
+package pl.org.seva.events.main.ui
 
 import android.location.Geocoder
 import androidx.fragment.app.Fragment
@@ -26,7 +26,7 @@ import com.google.android.gms.maps.model.LatLng
 import pl.org.seva.events.event.EventCreateViewModel
 import pl.org.seva.events.event.EventLocation
 import pl.org.seva.events.main.extension.getViewModel
-import pl.org.seva.events.main.init.instance
+import pl.org.seva.events.main.model.instance
 import java.lang.Exception
 
 class InteractiveMapHolder : MapHolder() {
