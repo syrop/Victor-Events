@@ -21,6 +21,7 @@ package pl.org.seva.events.event
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.main.extension.launchEach
 import pl.org.seva.events.main.init.instance
@@ -34,20 +35,36 @@ val events by instance<Events>()
 
 class Events : LiveRepository() {
     private val eventsCache = mutableListOf<Event>()
-    private val eventDao by lazy { db.eventDao }
+    private val eventsDao by lazy { db.eventsDao }
 
     val size get() = eventsCache.size
 
     infix fun add(event: Event) {
         eventsCache.add(event)
-        io { eventDao add event }
+        notifyDataSetChanged()
+        io { eventsDao add event }
         fsWriter add event
+    }
+
+    suspend infix fun addFrom(comm: Comm) {
+        (fsReader readEventsFrom comm.lcName).also { events ->
+            eventsCache.addAll(events)
+            notifyDataSetChanged()
+            eventsDao addAll events
+        }
+    }
+
+    suspend infix fun deleteFrom(comm: Comm) {
+        eventsCache.filter { it.comm == comm.name }
+                .onEach { eventsCache.remove(it) }
+                .launchEach { eventsDao delete it }
+        notifyDataSetChanged()
     }
 
     suspend fun refresh(): List<Event> = coroutineScope {
         mutableListOf<Event>().apply {
             comms.map {
-                async { fsReader.readEvents(it.lcName) }
+                async { fsReader readEventsFrom it.lcName }
             }.map {
                 it.await()
             }.onEach {
@@ -57,8 +74,8 @@ class Events : LiveRepository() {
             eventsCache.clear()
             eventsCache.addAll(this)
             notifyDataSetChanged()
-            eventDao.clear()
-            launchEach { eventDao.add(it) }
+            eventsDao.clear()
+            launchEach { eventsDao.add(it) }
         }
     }
 

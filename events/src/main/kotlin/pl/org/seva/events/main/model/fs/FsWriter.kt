@@ -33,7 +33,7 @@ val fsWriter by instance<FsWriter>()
 class FsWriter : FsBase() {
 
     infix fun create(comm: Comm) {
-        comm.writeEvent(Event.creationEvent)
+        comm.writeEvent(Event.creationEvent.copy(comm = comm.name))
         comm.writeName()
     }
 

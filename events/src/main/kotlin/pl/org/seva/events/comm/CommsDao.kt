@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Wiktor Nizio
+ * Copyright (C) 2017 Wiktor Nizio
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,32 +17,34 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.message
+package pl.org.seva.events.comm
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import pl.org.seva.events.main.model.db.EventsDb
 
-suspend fun MessageDao.getAllValues() = getAll().map { it.value() }
+suspend infix fun CommsDao.delete(comm: Comm) = delete(Comm.Entity(comm))
 
-suspend infix fun MessageDao.delete(message: Message) = delete(Message.Entity(message))
+suspend infix fun CommsDao.add(comm: Comm) = insert(Comm.Entity(comm))
 
-suspend infix fun MessageDao.addAll(messages: Collection<Message>) = insert(messages.map { Message.Entity(it) })
+suspend infix fun CommsDao.update(comm: Comm) = update(Comm.Entity(comm))
+
+suspend fun CommsDao.getAllValues() = getAll().map { it.value() }
 
 @Dao
-interface MessageDao {
+interface CommsDao {
 
-    @Query("select * from ${EventsDb.MESSAGE_TABLE}")
-    suspend fun getAll(): List<Message.Entity>
-
-    @Insert
-    suspend fun insert(messages: Collection<Message.Entity>)
+    @Query("select * from ${EventsDb.COMM_TABLE}")
+    suspend fun getAll(): List<Comm.Entity>
 
     @Insert
-    suspend fun insert(message: Message.Entity)
+    suspend fun insert(comm: Comm.Entity)
 
     @Delete
-    suspend fun delete(message: Message.Entity)
+    suspend fun delete(comm: Comm.Entity)
+
+    @Update
+    suspend fun update(comm: Comm.Entity)
+
+    @Query("delete from ${EventsDb.COMM_TABLE}")
+    suspend fun clear()
 }

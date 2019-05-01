@@ -21,6 +21,7 @@ package pl.org.seva.events.comm
 
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.joinAll
+import pl.org.seva.events.event.events
 import pl.org.seva.events.main.extension.launchEach
 import pl.org.seva.events.main.model.fs.fsWriter
 import pl.org.seva.events.main.model.fs.fsReader
@@ -34,7 +35,7 @@ val comms by instance<Comms>()
 
 class Comms : LiveRepository() {
     private val commsCache = mutableListOf<Comm>()
-    private val commDao by lazy { db.commDao }
+    private val commDao by lazy { db.commsDao }
 
     val size get() = commsCache.size
 
@@ -72,6 +73,7 @@ class Comms : LiveRepository() {
 
     infix fun delete(comm: Comm): Boolean {
         return leave(comm).also { updated ->
+            io { events deleteFrom comm }
             if (updated) fsWriter delete comm
         }
     }
@@ -79,8 +81,9 @@ class Comms : LiveRepository() {
     infix fun join(comm: Comm) = comm.run {
         (!commsCache.contains(comm) && commsCache.add(comm)).also { updated ->
             if (updated) {
-                io { commDao add this@run }
                 notifyDataSetChanged()
+                io { events addFrom comm }
+                io { commDao add this@run }
             }
         }
     }

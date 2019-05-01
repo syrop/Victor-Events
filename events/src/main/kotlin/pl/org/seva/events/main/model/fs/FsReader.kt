@@ -36,7 +36,7 @@ val fsReader by instance<FsReader>()
 
 class FsReader : FsBase() {
 
-    suspend fun readEvents(community: String) =
+    suspend infix fun readEventsFrom(community: String) =
             community.events
                     .whereGreaterThan(Event.Fs.TIMESTAMP, earliestEventTime)
                     .read()

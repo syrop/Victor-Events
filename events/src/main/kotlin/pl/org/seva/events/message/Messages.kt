@@ -28,7 +28,7 @@ val messages by instance<Messages>()
 
 class Messages : LiveRepository() {
     private val messageCache = mutableListOf<Message>()
-    private val messageDao by lazy { db.messageDao }
+    private val messagesDao by lazy { db.messagesDao }
 
     val size get() = messageCache.size
 
@@ -37,19 +37,19 @@ class Messages : LiveRepository() {
     operator fun get(position: Int) = messageCache[position]
 
     suspend fun fromDb() {
-        messageCache.addAll(db.messageDao.getAllValues())
+        messageCache.addAll(db.messagesDao.getAllValues())
         notifyDataSetChanged()
     }
 
     infix fun addAll(messages: Collection<Message>) {
         messageCache.addAll(messages)
-        io { messageDao addAll messages }
+        io { messagesDao addAll messages }
         notifyDataSetChanged()
     }
 
     infix fun delete(message: Message) {
         messageCache.remove(message)
-        io { messageDao delete message }
+        io { messagesDao delete message }
         notifyDataSetChanged()
     }
 }
