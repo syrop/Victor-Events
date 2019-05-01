@@ -1,14 +1,17 @@
 <resources>
     <string name="app_name">Victor Events</string>
 
-    <!-- Events fragment. -->
-    <string name="events_activity_dismiss_event">Do you want to dismiss event data?</string>
-    <string name="events_action_login">Log in</string>
-    <string name="events_action_log_out">Log out</string>
-    <string name="events_action_comms">Communities</string>
-    <string name="events_action_add_comm">Add a community</string>
-    <string name="events_action_system_messages">System Messages</string>
-    <string name="events_action_about">About</string>
+    <!-- Main activity. -->
+    <string name="main_activity_dismiss_event">Do you want to dismiss event data?</string>
+
+    <!-- Event list fragment. -->
+    <string name="events_list_action_login">Log in</string>
+    <string name="events_list_action_log_out">Log out</string>
+    <string name="events_list_action_comms">Communities</string>
+    <string name="events_list_action_add_comm">Add a community</string>
+    <string name="events_list_action_system_messages">System Messages</string>
+    <string name="events_list_action_about">About</string>
+    <string name="events_list_no_events">There are currently no events.</string>
 
     <!-- Add comm fragment -->
     <string name="add_comm_label">Add a community</string>

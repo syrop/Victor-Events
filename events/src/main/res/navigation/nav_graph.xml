@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/eventsFragment"
-        android:name="pl.org.seva.events.event.EventsFragment"
+        android:name="pl.org.seva.events.event.EventListFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fr_events">
+        tools:layout="@layout/fr_event_list">
         <action
             android:id="@+id/action_eventsFragment_to_createEventFragment"
             app:destination="@id/eventCreateFragment"/>

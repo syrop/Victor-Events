@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/layout"
-    tools:context="pl.org.seva.events.event.EventsFragment">
+    tools:context="pl.org.seva.events.event.EventListFragment">
 
     <TextView
         android:id="@+id/prompt"

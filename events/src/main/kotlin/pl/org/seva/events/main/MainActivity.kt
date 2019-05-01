@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         fun showDismissEventDialog() =
                 if (createEventsViewModel.isFilledIn) {
                     question(
-                            message = getString(R.string.events_activity_dismiss_event),
+                            message = getString(R.string.main_activity_dismiss_event),
                             yes = {
                                 createEventsViewModel.clear()
                                 navController.popBackStack()

@@ -24,14 +24,14 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 
-import kotlinx.android.synthetic.main.fr_events.*
+import kotlinx.android.synthetic.main.fr_event_list.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.main.extension.nav
 import pl.org.seva.events.login.login
 import pl.org.seva.events.main.extension.invoke
 
-class EventsFragment : Fragment(R.layout.fr_events) {
+class EventListFragment : Fragment(R.layout.fr_event_list) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +46,7 @@ class EventsFragment : Fragment(R.layout.fr_events) {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
-        menuInflater.inflate(R.menu.events, menu)
+        menuInflater.inflate(R.menu.event_list, menu)
         menu.findItem(R.id.action_login).isVisible = !login.isLoggedIn
         menu.findItem(R.id.action_log_out).isVisible = login.isLoggedIn
     }

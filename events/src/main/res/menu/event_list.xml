@@ -1,27 +1,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
-      tools:context="pl.org.seva.events.event.EventsFragment">
+      tools:context="pl.org.seva.events.event.EventListFragment">
 
     <item
         android:id="@+id/action_comms"
-        android:title="@string/events_action_comms"
+        android:title="@string/events_list_action_comms"
         app:showAsAction="never"/>
    <item
         android:id="@+id/action_system_messages"
-        android:title="@string/events_action_system_messages"
+        android:title="@string/events_list_action_system_messages"
         app:showAsAction="never"/>
     <item
         android:id="@+id/action_login"
-        android:title="@string/events_action_login"
+        android:title="@string/events_list_action_login"
         app:showAsAction="never"/>
     <item
         android:id="@+id/action_log_out"
-        android:title="@string/events_action_log_out"
+        android:title="@string/events_list_action_log_out"
         app:showAsAction="never"/>
     <item
         android:id="@+id/action_about"
-        android:title="@string/events_action_about"
+        android:title="@string/events_list_action_about"
         app:showAsAction="never"/>
 
 </menu>
