@@ -19,10 +19,7 @@
 
 package pl.org.seva.events.main.model.fs
 
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.*
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -59,7 +56,7 @@ abstract class FsBase {
         }
     }
 
-    protected suspend fun CollectionReference.read(): List<DocumentSnapshot> = suspendCancellableCoroutine { continuation ->
+    protected suspend fun Query.read(): List<DocumentSnapshot> = suspendCancellableCoroutine { continuation ->
         get().addOnCompleteListener { result ->
             if (result.isSuccessful) {
                 continuation.resume(result.result!!.documents)

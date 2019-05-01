@@ -23,6 +23,7 @@ import androidx.room.PrimaryKey
 import com.google.firebase.firestore.GeoPoint
 import pl.org.seva.events.main.model.db.EventsDb
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 data class Event(
         val comm: String,
@@ -38,7 +39,8 @@ data class Event(
             time = time.toString(),
             location = location,
             address = address,
-            desc = desc)
+            desc = desc,
+            timestamp = time.toEpochSecond(ZoneOffset.UTC))
 
     @Suppress("MemberVisibilityCanBePrivate")
     data class Fs(
@@ -47,7 +49,8 @@ data class Event(
             val time: String,
             val location: GeoPoint?,
             val address: String?,
-            val desc: String?) {
+            val desc: String?,
+            val timestamp: Long) {
         fun value() = Event(
                 comm = comm,
                 name = name,
@@ -55,6 +58,10 @@ data class Event(
                 location = location,
                 address = address,
                 desc = desc)
+
+        companion object {
+            const val TIMESTAMP = "timestamp"
+        }
     }
 
     @androidx.room.Entity(tableName = EventsDb.EVENT_TABLE)

@@ -30,13 +30,17 @@ import pl.org.seva.events.login.login
 import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.main.view.nextColor
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 val fsReader by instance<FsReader>()
 
 class FsReader : FsBase() {
 
     suspend fun readEvents(community: String) =
-            community.events.read().map { it.toEvent() }
+            community.events
+                    .whereGreaterThan(Event.Fs.TIMESTAMP, earliestEventTime)
+                    .read()
+                    .map { it.toEvent() }
 
     suspend infix fun isAdmin(name: String): Boolean = if (isLoggedIn)
             name.admins.document(login.email).doesExist() else false
@@ -68,4 +72,8 @@ class FsReader : FsBase() {
                     name = getString(COMM_NAME)!!,
                     color = nextColor,
                     desc = getString(COMM_DESC) ?: "") else Comm.DUMMY
+
+    companion object {
+        val earliestEventTime get() = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
+    }
 }
