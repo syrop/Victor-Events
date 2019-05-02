@@ -21,6 +21,7 @@ package pl.org.seva.events.event
 
 import android.content.Context
 import androidx.work.CoroutineWorker
+import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.Dispatchers
 import pl.org.seva.events.main.model.SyncWorker
@@ -39,5 +40,6 @@ class EventSyncWorker(context: Context, params: WorkerParameters) :
     companion object {
         val TAG: String = this::class.java.name
         val FREQUENCY: Duration = Duration.ofHours(3)
+        val POLICY = ExistingPeriodicWorkPolicy.REPLACE
     }
 }

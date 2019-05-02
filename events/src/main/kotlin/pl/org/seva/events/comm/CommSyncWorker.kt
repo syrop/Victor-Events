@@ -21,6 +21,7 @@ package pl.org.seva.events.comm
 
 import android.content.Context
 import androidx.work.CoroutineWorker
+import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.Dispatchers
 import pl.org.seva.events.R
@@ -51,6 +52,7 @@ class CommSyncWorker(private val context: Context, params: WorkerParameters) :
     companion object {
         val TAG: String = this::class.java.name
         val FREQUENCY: Duration = Duration.ofHours(24)
+        val POLICY = ExistingPeriodicWorkPolicy.KEEP
         const val NAME_PLACEHOLDER = "[name]"
     }
 }

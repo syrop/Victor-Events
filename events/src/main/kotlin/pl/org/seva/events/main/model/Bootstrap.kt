@@ -36,10 +36,13 @@ val bootstrap by instance<Bootstrap>()
 
 class Bootstrap {
 
-    private inline fun <reified W : ListenableWorker> scheduleSync(tag: String, frequency: Duration) {
+    private inline fun <reified W : ListenableWorker> scheduleSync(
+            tag: String,
+            frequency: Duration,
+            policy: ExistingPeriodicWorkPolicy) {
         WorkManager.getInstance().enqueueUniquePeriodicWork(
                 tag,
-                ExistingPeriodicWorkPolicy.REPLACE,
+                policy,
                 PeriodicWorkRequestBuilder<W>(frequency)
                         .setConstraints(Constraints.Builder().setRequiresBatteryNotLow(true).build())
                         .build())
@@ -53,8 +56,14 @@ class Bootstrap {
                 launch { messages.fromDb() },
                 launch { events.fromDb() })
                     .joinAll()
-            scheduleSync<CommSyncWorker>(CommSyncWorker.TAG, CommSyncWorker.FREQUENCY)
-            scheduleSync<EventSyncWorker>(EventSyncWorker.TAG, EventSyncWorker.FREQUENCY)
+            scheduleSync<CommSyncWorker>(
+                    tag = CommSyncWorker.TAG,
+                    policy = CommSyncWorker.POLICY,
+                    frequency = CommSyncWorker.FREQUENCY)
+            scheduleSync<EventSyncWorker>(
+                    tag = EventSyncWorker.TAG,
+                    policy = EventSyncWorker.POLICY,
+                    frequency = EventSyncWorker.FREQUENCY)
         }
     }
 
