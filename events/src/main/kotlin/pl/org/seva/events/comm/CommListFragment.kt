@@ -55,13 +55,13 @@ class CommListFragment : Fragment(R.layout.fr_comm_list) {
 
         (comms + this) {
             if (comms.isEmpty) {
-                comms_view.visibility = View.GONE
                 prompt.visibility = View.VISIBLE
+                comms_view.visibility = View.GONE
             }
             else {
+                prompt.visibility = View.GONE
                 comms_view.visibility = View.VISIBLE
                 comms_view.adapter!!.notifyDataSetChanged()
-                prompt.visibility = View.GONE
             }
         }
     }

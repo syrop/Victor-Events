@@ -34,6 +34,7 @@ import pl.org.seva.events.main.model.io
 val events by instance<Events>()
 
 class Events : LiveRepository() {
+
     private val eventsCache = mutableListOf<Event>()
     private val eventsDao by lazy { db.eventsDao }
 
@@ -45,6 +46,8 @@ class Events : LiveRepository() {
         io { eventsDao add event }
         fsWriter add event
     }
+
+    val isEmpty = eventsCache.size == 0
 
     suspend infix fun addFrom(comm: Comm) {
         (fsReader readEventsFrom comm.lcName).also { events ->

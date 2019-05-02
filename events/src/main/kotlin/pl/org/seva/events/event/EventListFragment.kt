@@ -53,6 +53,18 @@ class EventListFragment : Fragment(R.layout.fr_event_list) {
             getViewModel<EventViewModel>().event = events[position]
             nav(R.id.action_eventsFragment_to_eventDetailsFragment)
         }
+
+        (events + this) {
+            if (events.isEmpty) {
+                prompt.visibility = View.VISIBLE
+                events_view.visibility = View.GONE
+            } else {
+                prompt.visibility = View.GONE
+                events_view.visibility = View.VISIBLE
+                events_view.adapter!!.notifyDataSetChanged()
+
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
