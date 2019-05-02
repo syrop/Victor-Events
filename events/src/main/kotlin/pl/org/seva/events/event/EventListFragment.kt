@@ -44,8 +44,7 @@ class EventListFragment : Fragment(R.layout.fr_event_list) {
     @SuppressLint("RestrictedApi")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        if (comms.isAdminOfAny) { add_event.visibility = View.VISIBLE }
-        add_event { nav(R.id.action_eventsFragment_to_createEventFragment) }
+        add_event_fab { nav(R.id.action_eventsFragment_to_createEventFragment) }
 
         events_view.setHasFixedSize(true)
         events_view.layoutManager = LinearLayoutManager(context)
@@ -54,6 +53,11 @@ class EventListFragment : Fragment(R.layout.fr_event_list) {
             val position = events_view.getChildAdapterPosition(view)
             getViewModel<EventViewModel>().event = events[position]
             nav(R.id.action_eventsFragment_to_eventDetailsFragment)
+        }
+
+        (comms + this) {
+            if (comms.isAdminOfAny) { add_event_fab.show() }
+            else { add_event_fab.hide() }
         }
 
         (events + this) {

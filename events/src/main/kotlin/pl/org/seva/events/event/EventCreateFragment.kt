@@ -76,6 +76,7 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
         (vm.location + this) { onLocationChanged(it) }
 
         comms.namesIsAdminOf.apply {
+            if (isEmpty()) { back() }
             vm.comm.value = get(0)
             if (size > 1) {
                 comm_layout.visibility = View.VISIBLE
