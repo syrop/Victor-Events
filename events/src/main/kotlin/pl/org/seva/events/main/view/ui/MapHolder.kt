@@ -32,7 +32,7 @@ import pl.org.seva.events.R
 open class MapHolder {
     private var map: GoogleMap? = null
     var checkLocationPermission: ((onGranted: () -> Unit) -> Unit)? = null
-    var onMapAvailable: (GoogleMap.() -> Unit)? = null
+    var onMapAvailable: ((GoogleMap) -> Unit)? = null
 
     open infix fun withFragment(fragment: Fragment): MapHolder {
         with (fragment) {

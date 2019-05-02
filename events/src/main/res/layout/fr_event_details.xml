@@ -94,9 +94,7 @@
             android:layout_width="match_parent"
             android:focusable="false"
             android:inputType="none"
-            android:hint="@string/event_details_location"
-            android:visibility="gone"
-            tools:visibility="visible"/>
+            android:hint="@string/event_details_location"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <FrameLayout

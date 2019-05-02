@@ -45,7 +45,7 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
         createMapHolder {
             checkLocationPermission = this@EventCreateFragment::checkLocationPermission
             onMapAvailable = {
-                vm.informMarker(this@EventCreateFragment, this@createMapHolder)
+                vm.informMarker(this@EventCreateFragment, this)
             }
         }
     }
@@ -61,8 +61,12 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
         fun onDateChanged(d: LocalDate?) = date set (if (d == null) "" else "${d.year}-${d.monthValue}-${d.dayOfMonth}")
 
         fun onLocationChanged(l: EventLocation?) {
-            (l?.address?.apply { mapHolder } ?: "").also { addressLine -> address set addressLine }
-            map_container.visibility = if (l == null) View.INVISIBLE else View.VISIBLE
+            address set l?.address
+            if (l != null) { map_container.visibility = View.GONE }
+            else {
+                map_container.visibility = View.VISIBLE
+                mapHolder
+            }
         }
 
         name backWith (vm.name + this)

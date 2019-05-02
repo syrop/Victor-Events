@@ -42,5 +42,10 @@ class EventDetailsFragment : Fragment(R.layout.fr_event_details) {
             if (isNullOrEmpty()) { desc_layout.visibility = View.GONE }
             else { desc set this }
         }
+        with (event.address) {
+            if (isNullOrEmpty()) { address_layout.visibility = View.GONE }
+            else { address set this }
+        }
+
     }
 }
