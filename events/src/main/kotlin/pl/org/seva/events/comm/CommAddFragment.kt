@@ -34,7 +34,7 @@ import pl.org.seva.events.login.LoginActivity
 import pl.org.seva.events.login.isLoggedIn
 import pl.org.seva.events.main.viewmodel.MainViewModel
 import pl.org.seva.events.main.extension.*
-import pl.org.seva.events.main.ui.*
+import pl.org.seva.events.main.view.ui.*
 
 class CommAddFragment : Fragment(R.layout.fr_comm_add) {
 

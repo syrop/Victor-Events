@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Wiktor Nizio
+ * Copyright (C) 2017 Wiktor Nizio
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,27 +17,22 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main.ui
+package pl.org.seva.events.main.view.ui
 
-import android.content.Context
-import android.widget.Toast
-import pl.org.seva.events.main.model.instance
+import com.google.android.material.snackbar.Snackbar
+import android.view.View
 
-val toaster by instance<Toaster>()
+fun longSnackbar(f: SnackbarBuilder.() -> Unit): SnackbarBuilder = SnackbarBuilder().apply(f)
 
-class Toaster(private val ctx: Context) {
+fun permanentSnackbar(f: SnackbarBuilder.() -> Unit): SnackbarBuilder =
+        SnackbarBuilder(Snackbar.LENGTH_INDEFINITE).apply(f)
 
-    infix fun toast(message: CharSequence) {
-        toast(message, Toast.LENGTH_SHORT)
-    }
+class SnackbarBuilder(private var length: Int = Snackbar.LENGTH_LONG) {
+    lateinit var view: View
+    var message = 0
+    var action = 0
 
-    infix fun longToast(message: CharSequence) {
-        toast(message, Toast.LENGTH_LONG)
-    }
-
-    private fun toast(message: CharSequence, duration: Int) {
-        if (message.isNotBlank()) {
-            Toast.makeText(ctx, message, duration).show()
-        }
+    infix fun show(f: () -> Unit) {
+        Snackbar.make(view, message, length).setAction(action) { f() }.show()
     }
 }

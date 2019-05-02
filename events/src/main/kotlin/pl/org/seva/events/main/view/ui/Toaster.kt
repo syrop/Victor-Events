@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Wiktor Nizio
+ * Copyright (C) 2018 Wiktor Nizio
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,27 +17,27 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main
+package pl.org.seva.events.main.view.ui
 
-import android.app.Application
-import com.google.firebase.auth.FirebaseUser
-import org.kodein.di.Kodein
-import org.kodein.di.conf.global
-import pl.org.seva.events.main.model.bootstrap
-import pl.org.seva.events.main.model.module
+import android.content.Context
+import android.widget.Toast
+import pl.org.seva.events.main.model.instance
 
-class EventsApplication : Application() {
+val toaster by instance<Toaster>()
 
-    init {
-        Kodein.global.addImport(module)
+class Toaster(private val ctx: Context) {
+
+    infix fun toast(message: CharSequence) {
+        toast(message, Toast.LENGTH_SHORT)
     }
 
-    override fun onCreate() {
-        super.onCreate()
-        bootstrap.boot()
+    infix fun longToast(message: CharSequence) {
+        toast(message, Toast.LENGTH_LONG)
     }
 
-    fun login(user: FirebaseUser) = bootstrap.login(user)
-
-    fun logout() = bootstrap.logout()
+    private fun toast(message: CharSequence, duration: Int) {
+        if (message.isNotBlank()) {
+            Toast.makeText(ctx, message, duration).show()
+        }
+    }
 }

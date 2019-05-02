@@ -31,8 +31,8 @@ import pl.org.seva.events.login.Login
 import pl.org.seva.events.main.model.fs.FsReader
 import pl.org.seva.events.main.model.fs.FsWriter
 import pl.org.seva.events.main.model.db.EventsDb
-import pl.org.seva.events.main.ui.ColorFactory
-import pl.org.seva.events.main.ui.Toaster
+import pl.org.seva.events.main.view.ui.ColorFactory
+import pl.org.seva.events.main.view.ui.Toaster
 import pl.org.seva.events.message.Messages
 import java.util.*
 import java.util.logging.Logger

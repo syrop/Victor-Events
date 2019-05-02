@@ -17,22 +17,33 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main.ui
+package pl.org.seva.events.main.view.ui
 
-import com.google.android.material.snackbar.Snackbar
-import android.view.View
+import android.content.Context
+import android.graphics.Color
+import pl.org.seva.events.main.model.instance
 
-fun longSnackbar(f: SnackbarBuilder.() -> Unit): SnackbarBuilder = SnackbarBuilder().apply(f)
+val nextColor get() = colorFactory.nextColor()
 
-fun permanentSnackbar(f: SnackbarBuilder.() -> Unit): SnackbarBuilder =
-        SnackbarBuilder(Snackbar.LENGTH_INDEFINITE).apply(f)
+val colorFactory by instance<ColorFactory>()
 
-class SnackbarBuilder(private var length: Int = Snackbar.LENGTH_LONG) {
-    lateinit var view: View
-    var message = 0
-    var action = 0
+class ColorFactory(private val appContext: Context ) {
 
-    infix fun show(f: () -> Unit) {
-        Snackbar.make(view, message, length).setAction(action) { f() }.show()
+    private val colors by lazy {
+        with(appContext) {
+            resources.getIdentifier(COLOR_ARRAY_NAME + COLOR_TYPE,"array", packageName).let {
+                resources.obtainTypedArray(it)
+            }
+        }
+    }
+
+    fun nextColor() = with(colors) {
+        val index = (Math.random() * length()).toInt()
+        getColor(index, Color.GRAY)
+    }
+
+    companion object {
+        const val COLOR_ARRAY_NAME = "mdcolor_"
+        const val COLOR_TYPE = "400"
     }
 }

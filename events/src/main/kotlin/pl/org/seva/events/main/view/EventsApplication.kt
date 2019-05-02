@@ -17,33 +17,27 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main.ui
+package pl.org.seva.events.main.view
 
-import android.content.Context
-import android.graphics.Color
-import pl.org.seva.events.main.model.instance
+import android.app.Application
+import com.google.firebase.auth.FirebaseUser
+import org.kodein.di.Kodein
+import org.kodein.di.conf.global
+import pl.org.seva.events.main.model.bootstrap
+import pl.org.seva.events.main.model.module
 
-val nextColor get() = colorFactory.nextColor()
+class EventsApplication : Application() {
 
-val colorFactory by instance<ColorFactory>()
-
-class ColorFactory(private val appContext: Context ) {
-
-    private val colors by lazy {
-        with(appContext) {
-            resources.getIdentifier(COLOR_ARRAY_NAME + COLOR_TYPE,"array", packageName).let {
-                resources.obtainTypedArray(it)
-            }
-        }
+    init {
+        Kodein.global.addImport(module)
     }
 
-    fun nextColor() = with(colors) {
-        val index = (Math.random() * length()).toInt()
-        getColor(index, Color.GRAY)
+    override fun onCreate() {
+        super.onCreate()
+        bootstrap.boot()
     }
 
-    companion object {
-        const val COLOR_ARRAY_NAME = "mdcolor_"
-        const val COLOR_TYPE = "400"
-    }
+    fun login(user: FirebaseUser) = bootstrap.login(user)
+
+    fun logout() = bootstrap.logout()
 }

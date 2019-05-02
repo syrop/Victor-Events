@@ -20,6 +20,6 @@
 package pl.org.seva.events.main.extension
 
 import android.app.Activity
-import pl.org.seva.events.main.EventsApplication
+import pl.org.seva.events.main.view.EventsApplication
 
 val Activity.eventsApplication get() = application as EventsApplication
