@@ -38,6 +38,6 @@ class EventSyncWorker(context: Context, params: WorkerParameters) :
 
     companion object {
         val TAG: String = this::class.java.name
-        val FREQUENCY: Duration = Duration.ofHours(2)
+        val FREQUENCY: Duration = Duration.ofHours(3)
     }
 }
