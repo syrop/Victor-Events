@@ -70,12 +70,18 @@
     <string name="create_event_name">Name</string>
     <string name="create_event_date">Date</string>
     <string name="create_event_time">Time</string>
-    <string name="create_event_description">Description (optional)</string>
+    <string name="create_event_desc">Description (optional)</string>
     <string name="create_event_location">Location (optional)</string>
     <string name="create_event_cant_be_empty">Can\'t be empty</string>
 
     <!-- Event details fragment -->
     <string name="event_details_label" translatable="false"/>
+    <string name="event_details_comm">Community</string>
+    <string name="event_details_name">Name</string>
+    <string name="event_details_date">Date</string>
+    <string name="event_details_time">Time</string>
+    <string name="event_details_desc">Description</string>
+    <string name="event_details_location">Location</string>
 
     <!-- Login activity -->
     <string name="login_label">Login</string>

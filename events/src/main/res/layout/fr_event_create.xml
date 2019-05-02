@@ -69,7 +69,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/description_layout"
+        android:id="@+id/desc_layout"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:layout_below="@+id/date_layout">
@@ -78,14 +78,14 @@
             android:id="@+id/desc"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:hint="@string/create_event_description"/>
+            android:hint="@string/create_event_desc"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/address_layout"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_below="@+id/description_layout">
+        android:layout_below="@+id/desc_layout">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/address"
@@ -101,7 +101,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/address_layout"
-        android:visibility="invisible">
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <fragment
             android:id="@+id/map"
