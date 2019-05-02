@@ -31,6 +31,8 @@ suspend infix fun EventsDao.addAll(events: Collection<Event>) = insertAll(events
 
 suspend infix fun EventsDao.delete(event: Event) = delete(Event.Entity(event))
 
+suspend inline fun EventsDao.getAllValues() = getAll().map { it.value() }
+
 @Dao
 interface EventsDao {
 

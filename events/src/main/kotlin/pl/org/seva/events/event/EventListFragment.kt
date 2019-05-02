@@ -32,6 +32,7 @@ import pl.org.seva.events.main.extension.nav
 import pl.org.seva.events.login.login
 import pl.org.seva.events.main.extension.getViewModel
 import pl.org.seva.events.main.extension.invoke
+import pl.org.seva.events.main.extension.verticalDivider
 
 class EventListFragment : Fragment(R.layout.fr_event_list) {
 
@@ -48,6 +49,7 @@ class EventListFragment : Fragment(R.layout.fr_event_list) {
 
         events_view.setHasFixedSize(true)
         events_view.layoutManager = LinearLayoutManager(context)
+        events_view.verticalDivider()
         events_view.adapter = EventAdapter { view ->
             val position = events_view.getChildAdapterPosition(view)
             getViewModel<EventViewModel>().event = events[position]

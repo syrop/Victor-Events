@@ -27,6 +27,7 @@ import kotlinx.coroutines.launch
 import pl.org.seva.events.comm.CommSyncWorker
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.event.EventSyncWorker
+import pl.org.seva.events.event.events
 import pl.org.seva.events.login.login
 import pl.org.seva.events.message.messages
 import java.time.Duration
@@ -49,7 +50,8 @@ class Bootstrap {
         io {
             listOf(
                 launch { comms.fromDb() },
-                launch { messages.fromDb() })
+                launch { messages.fromDb() },
+                launch { events.fromDb() })
                     .joinAll()
             scheduleSync<CommSyncWorker>(CommSyncWorker.TAG, CommSyncWorker.FREQUENCY)
             scheduleSync<EventSyncWorker>(EventSyncWorker.TAG, EventSyncWorker.FREQUENCY)

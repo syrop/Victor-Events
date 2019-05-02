@@ -61,10 +61,11 @@ class FsReader : FsBase() {
 
     private fun DocumentSnapshot.toEvent(): Event {
         val name: String = getString(EVENT_NAME)!!
+        val comm: String = getString(EVENT_COMM)!!
         val location: GeoPoint? = getGeoPoint(EVENT_LOCATION)
         val time: LocalDateTime = LocalDateTime.parse(getString(EVENT_TIME))
         val desc: String? = getString(EVENT_DESC)
-        return Event(name, time = time, location = location, desc = desc)
+        return Event(comm = comm, name = name, time = time, location = location, desc = desc)
     }
 
     private fun DocumentSnapshot.toCommunity() =

@@ -47,7 +47,7 @@ class Events : LiveRepository() {
         fsWriter add event
     }
 
-    val isEmpty = eventsCache.size == 0
+    val isEmpty get() = eventsCache.size == 0
 
     suspend infix fun addFrom(comm: Comm) {
         (fsReader readEventsFrom comm.lcName).also { events ->
@@ -61,6 +61,11 @@ class Events : LiveRepository() {
         eventsCache.filter { it.comm == comm.name }
                 .onEach { eventsCache.remove(it) }
                 .launchEach { eventsDao delete it }
+        notifyDataSetChanged()
+    }
+
+    suspend fun fromDb() {
+        eventsCache.addAll(eventsDao.getAllValues())
         notifyDataSetChanged()
     }
 

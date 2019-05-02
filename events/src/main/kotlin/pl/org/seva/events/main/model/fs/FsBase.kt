@@ -78,6 +78,8 @@ abstract class FsBase {
         /** Comm description. */
         const val COMM_DESC = "desc"
         /** May not be null. */
+        const val EVENT_COMM = "comm"
+        /** May not be null. */
         const val EVENT_NAME = "name"
         /** GeoPoint. */
         const val EVENT_LOCATION = "location"
