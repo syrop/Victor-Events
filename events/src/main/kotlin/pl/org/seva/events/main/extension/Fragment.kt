@@ -41,7 +41,10 @@ fun Fragment.nav(@IdRes resId: Int): Boolean {
     return true
 }
 
-fun Fragment.back() = view!!.post { findNavController().popBackStack() }
+fun Fragment.back(): Boolean {
+    view!!.post { findNavController().popBackStack() }
+    return true
+}
 
 inline fun <reified R : ViewModel> Fragment.viewModel() = lazy { getViewModel<R>() }
 

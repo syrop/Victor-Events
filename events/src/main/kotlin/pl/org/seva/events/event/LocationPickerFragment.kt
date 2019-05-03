@@ -20,6 +20,9 @@
 package pl.org.seva.events.event
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fr_location_picker.*
 import pl.org.seva.events.R
@@ -34,6 +37,7 @@ class LocationPickerFragment : Fragment(R.layout.fr_location_picker) {
         }
 
         super.onActivityCreated(savedInstanceState)
+        setHasOptionsMenu(true)
 
         val viewModel = getViewModel<EventCreateViewModel>()
         delete_location_fab { viewModel.location.value = null }
@@ -45,5 +49,15 @@ class LocationPickerFragment : Fragment(R.layout.fr_location_picker) {
                 (viewModel.location + this@LocationPickerFragment) { putMarker(it?.location) }
             }
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.action_ok -> back()
+        else -> super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.location_picker, menu)
     }
 }
