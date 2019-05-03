@@ -1,15 +1,11 @@
 # Wiktor-Events (Android)
 
-Project in development.
+Publish information about your scheduled events that are open to the public. Create a community. If people know the name of your community, they can subscribe to receive information about the events, but they will not have to let you know whether they are currently subscribing.
 
-Some of the design patterns used in this project have been described in the blog [syrop.github.io][syrop].
+An alternative to having a newsletter where you have to manage the list of subscribers, or people have to let you know when they are no longer interested.
 
-This project doesn't have a working version yet. If you want to support its development, you may donate some bitcoin by sending it to the address presented below, or go to the [donation page][donate].
+Tell somebody the name of your community. If they want to receive the list of public events, they can manually subscribe to it, or they can cancel the subscription without having to tell you whether they still want to receive this information.
 
-If you want to find out more about my work, or my motivation, you can go to my '[About][about]' section.
+Prevents spam, like having to send invitations to people who might be no longer interested in receiving them. Lets people download the invitations without having to give you their e-mail address or telephone number.
 
 **Donate bitcoin:** bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
-
-[syrop]: https://syrop.github.io
-[donate]: https://syrop.github.io/donate/
-[about]: https://syrop.github.io/about/
