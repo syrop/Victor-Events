@@ -27,16 +27,16 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import pl.org.seva.events.R
 
 open class MapHolder {
     private var map: GoogleMap? = null
     var checkLocationPermission: ((onGranted: () -> Unit) -> Unit)? = null
     var onMapAvailable: ((GoogleMap) -> Unit)? = null
 
-    open infix fun withFragment(fragment: Fragment): MapHolder {
+    open infix fun withFragment(pair: Pair<Fragment, Int>): MapHolder {
+        val (fragment, id) = pair
         with (fragment) {
-            val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+            val mapFragment = childFragmentManager.findFragmentById(id) as SupportMapFragment
             mapFragment.getMapAsync { map -> this@MapHolder withMap map }
         }
         return this

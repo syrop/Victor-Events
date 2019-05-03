@@ -47,11 +47,11 @@ inline fun <reified R : ViewModel> Fragment.viewModel() = lazy { getViewModel<R>
 
 inline fun <reified R : ViewModel> Fragment.getViewModel() = activity!!.getViewModel<R>()
 
-fun Fragment.createMapHolder(f: MapHolder.() -> Unit = {}) =
-        MapHolder().apply(f) withFragment this
+fun Fragment.createMapHolder(@IdRes fragmentId: Int, block: MapHolder.() -> Unit = {}) =
+        MapHolder().apply(block) withFragment (this + fragmentId)
 
-fun Fragment.createInteractiveMapHolder(f: InteractiveMapHolder.() -> Unit = {}) =
-        (InteractiveMapHolder().apply(f) withFragment this) as InteractiveMapHolder
+fun Fragment.createInteractiveMapHolder(@IdRes fragmentId: Int, block: InteractiveMapHolder.() -> Unit = {}) =
+        InteractiveMapHolder().apply(block) withFragment (this + fragmentId)
 
 fun Fragment.hasPermission(permission: String) =
         ContextCompat.checkSelfPermission(context!!, permission) == PackageManager.PERMISSION_GRANTED
@@ -66,6 +66,8 @@ fun Fragment.inBrowser(uri: String) {
     i.data = Uri.parse(uri)
     startActivity(i)
 }
+
+operator fun Fragment.plus(@IdRes id: Int) = this to id
 
 fun Fragment.request(requestCode: Int, requests: Array<Permissions.PermissionRequest>) {
     watch(requestCode, requests)

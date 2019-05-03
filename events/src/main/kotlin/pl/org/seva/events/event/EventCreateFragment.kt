@@ -40,7 +40,7 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
     private val vm by viewModel<EventCreateViewModel>()
 
     private val mapHolder by lazy {
-        createMapHolder {
+        createMapHolder(R.id.map) {
             checkLocationPermission = this@EventCreateFragment::checkLocationPermission
             onMapAvailable = {
                 (vm.location + this@EventCreateFragment) { putMarker(it?.location) }
