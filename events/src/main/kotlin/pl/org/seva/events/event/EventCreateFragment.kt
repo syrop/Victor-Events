@@ -113,7 +113,7 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
                     comm = vm.comm.value!!,
                     name = vm.name.value!!,
                     time = LocalDateTime.of(vm.date.value!!, vm.time.value!!),
-                    location = vm.location.value?.geoPoint,
+                    location = vm.location.value?.location,
                     address = vm.location.value?.address,
                     desc = vm.desc.value)
             vm.clear()
@@ -132,12 +132,12 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
     }
 
     private fun checkLocationPermission(onGranted: () -> Unit) {
-        if (hasPermission(Manifest.permission.ACCESS_FINE_LOCATION)) { onGranted() }
+        if (checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) { onGranted() }
         else {
             request(
                     Permissions.DEFAULT_PERMISSION_REQUEST_ID,
                     arrayOf(Permissions.PermissionRequest(
-                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
                             onGranted = onGranted)))
         }
     }

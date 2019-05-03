@@ -53,7 +53,7 @@ fun Fragment.createMapHolder(@IdRes fragmentId: Int, block: MapHolder.() -> Unit
 fun Fragment.createInteractiveMapHolder(@IdRes fragmentId: Int, block: InteractiveMapHolder.() -> Unit = {}) =
         InteractiveMapHolder().apply(block) withFragment (this + fragmentId)
 
-fun Fragment.hasPermission(permission: String) =
+fun Fragment.checkPermission(permission: String) =
         ContextCompat.checkSelfPermission(context!!, permission) == PackageManager.PERMISSION_GRANTED
 
 var Fragment.title: CharSequence get() = (activity!! as AppCompatActivity).supportActionBar!!.title!!

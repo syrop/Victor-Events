@@ -19,9 +19,9 @@
 
 package pl.org.seva.events.main.model.fs
 
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.*
 import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.event.Event
@@ -62,7 +62,7 @@ class FsReader : FsBase() {
     private fun DocumentSnapshot.toEvent(): Event {
         val name: String = getString(EVENT_NAME)!!
         val comm: String = getString(EVENT_COMM)!!
-        val location: GeoPoint? = getGeoPoint(EVENT_LOCATION)
+        val location: LatLng? = getGeoPoint(EVENT_LOCATION)?.let { LatLng(it.latitude, it.longitude) }
         val time: LocalDateTime = LocalDateTime.parse(getString(EVENT_TIME))
         val desc: String? = getString(EVENT_DESC)
         return Event(comm = comm, name = name, time = time, location = location, desc = desc)

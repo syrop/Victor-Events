@@ -20,6 +20,7 @@
 package pl.org.seva.events.event
 
 import androidx.room.PrimaryKey
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.GeoPoint
 import pl.org.seva.events.main.model.db.EventsDb
 import java.time.LocalDateTime
@@ -29,7 +30,7 @@ data class Event(
         val comm: String,
         val name: String = CREATION_NAME,
         val time: LocalDateTime = LocalDateTime.now(),
-        val location: GeoPoint? = null,
+        val location: LatLng? = null,
         val address: String? = null,
         val desc: String? = null) {
 
@@ -37,7 +38,7 @@ data class Event(
             comm  = comm,
             name = name,
             time = time.toString(),
-            location = location,
+            location = location?.let { GeoPoint(it.latitude, it.longitude) },
             address = address,
             desc = desc,
             timestamp = time.toEpochSecond(ZoneOffset.UTC))
@@ -55,7 +56,7 @@ data class Event(
                 comm = comm,
                 name = name,
                 time = LocalDateTime.parse(time),
-                location = location,
+                location = location?.let { LatLng(it.longitude, it.longitude) },
                 address = address,
                 desc = desc)
 
@@ -89,7 +90,7 @@ data class Event(
                 comm = comm,
                 name = name,
                 time = LocalDateTime.parse(time),
-                location = lat?.let { GeoPoint(it, lon!!) },
+                location = lat?.let { LatLng(it, lon!!) },
                 address = address,
                 desc = desc)
     }
