@@ -49,6 +49,5 @@ class EventDetailsFragment : Fragment(R.layout.fr_event_details) {
         if (event.location != null) {
 
         }
-
     }
 }

@@ -35,7 +35,7 @@ class InteractiveMapHolder : MapHolder() {
     private val geocoder by instance<Geocoder>()
 
     override infix fun withFragment(pair: Pair<Fragment, Int>): InteractiveMapHolder {
-        val (fragment, _) = pair
+        val (fragment) = pair
         super.withFragment(pair)
         viewModel = fragment.getViewModel()
         return this
