@@ -20,9 +20,11 @@
 package pl.org.seva.events.main.extension
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -50,6 +52,9 @@ fun Fragment.createMapHolder(f: MapHolder.() -> Unit = {}) =
 
 fun Fragment.createInteractiveMapHolder(f: InteractiveMapHolder.() -> Unit = {}) =
         (InteractiveMapHolder().apply(f) withFragment this) as InteractiveMapHolder
+
+fun Fragment.hasPermission(permission: String) =
+        ContextCompat.checkSelfPermission(context!!, permission) == PackageManager.PERMISSION_GRANTED
 
 var Fragment.title: CharSequence get() = (activity!! as AppCompatActivity).supportActionBar!!.title!!
 set(value) {

@@ -21,11 +21,9 @@ package pl.org.seva.events.event
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fr_event_create.*
 import pl.org.seva.events.R
@@ -45,7 +43,7 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
         createMapHolder {
             checkLocationPermission = this@EventCreateFragment::checkLocationPermission
             onMapAvailable = {
-                vm.informMarker(this@EventCreateFragment, this)
+                (vm.location + this@EventCreateFragment) { putMarker(it?.location) }
             }
         }
     }
@@ -53,6 +51,7 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
     @SuppressLint("SetTextI18n")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        setHasOptionsMenu(true)
         fun showTimePicker() = TimePickerFragment().show(fragmentManager!!, TIME_PICKER_TAG)
         fun showDatePicker() = DatePickerFragment().show(fragmentManager!!, DATE_PICKER_TAG)
         fun showLocationPicker() = nav(R.id.action_createEventFragment_to_locationPickerFragment)
@@ -96,7 +95,6 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
                 }
             }
         }
-        setHasOptionsMenu(true)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -134,11 +132,7 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
     }
 
     private fun checkLocationPermission(onGranted: () -> Unit) {
-        if (ContextCompat.checkSelfPermission(
-                        context!!,
-                        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            onGranted()
-        }
+        if (hasPermission(Manifest.permission.ACCESS_FINE_LOCATION)) { onGranted() }
         else {
             request(
                     Permissions.DEFAULT_PERMISSION_REQUEST_ID,

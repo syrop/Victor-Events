@@ -42,7 +42,7 @@ class LocationPickerFragment : Fragment(R.layout.fr_location_picker) {
 
         createInteractiveMapHolder {
             onMapAvailable = {
-                viewModel.informMarker(this@LocationPickerFragment, this)
+                (viewModel.location + this@LocationPickerFragment) { putMarker(it?.location) }
             }
         }
     }
