@@ -21,7 +21,7 @@ package pl.org.seva.events.main.model
 
 import androidx.work.*
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import pl.org.seva.events.comm.CommSyncWorker
@@ -50,30 +50,20 @@ class Bootstrap {
                         .build())
     }
 
-    fun boot() {
+    suspend fun boot() = coroutineScope {
         login.setCurrentUser(FirebaseAuth.getInstance().currentUser)
-        io {
-            listOf(
-                launch { comms.fromDb() },
-                launch { messages.fromDb() },
-                launch { events.fromDb() })
-                    .joinAll()
-            scheduleSync<CommSyncWorker>(
-                    tag = CommSyncWorker.TAG,
-                    policy = CommSyncWorker.POLICY,
-                    frequency = CommSyncWorker.FREQUENCY)
-            scheduleSync<EventSyncWorker>(
-                    tag = EventSyncWorker.TAG,
-                    policy = EventSyncWorker.POLICY,
-                    frequency = EventSyncWorker.FREQUENCY)
-        }
-    }
-
-    fun login(user: FirebaseUser) {
-        login.setCurrentUser(user)
-    }
-
-    fun logout() {
-        login.setCurrentUser(null)
+        listOf(
+            launch { comms.fromDb() },
+            launch { messages.fromDb() },
+            launch { events.fromDb() })
+                .joinAll()
+        scheduleSync<CommSyncWorker>(
+                tag = CommSyncWorker.TAG,
+                policy = CommSyncWorker.POLICY,
+                frequency = CommSyncWorker.FREQUENCY)
+        scheduleSync<EventSyncWorker>(
+                tag = EventSyncWorker.TAG,
+                policy = EventSyncWorker.POLICY,
+                frequency = EventSyncWorker.FREQUENCY)
     }
 }

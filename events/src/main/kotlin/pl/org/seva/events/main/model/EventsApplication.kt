@@ -17,15 +17,20 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main.view
+package pl.org.seva.events.main.model
 
 import android.app.Application
-import com.google.firebase.auth.FirebaseUser
+import android.content.Context
 import org.kodein.di.Kodein
 import org.kodein.di.conf.global
-import pl.org.seva.events.main.model.bootstrap
-import pl.org.seva.events.main.model.module
 
+private val appContext by instance<Context>()
+
+val versionName: String by lazy {
+    appContext.packageManager.getPackageInfo(appContext.packageName, 0).versionName
+}
+
+@Suppress("unused")
 class EventsApplication : Application() {
 
     init {
@@ -34,10 +39,6 @@ class EventsApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        bootstrap.boot()
+        io { bootstrap.boot() }
     }
-
-    fun login(user: FirebaseUser) = bootstrap.login(user)
-
-    fun logout() = bootstrap.logout()
 }

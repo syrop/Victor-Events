@@ -35,7 +35,6 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.ac_login.*
 import pl.org.seva.events.R
-import pl.org.seva.events.main.extension.eventsApplication
 import pl.org.seva.events.main.extension.log
 import pl.org.seva.events.main.extension.toast
 
@@ -59,7 +58,7 @@ class LoginActivity : AppCompatActivity(),
         }
 
         fun onUserLoggedIn(user: FirebaseUser) {
-            eventsApplication.login(user)
+            login.setCurrentUser(user)
             if (finishWhenReady) {
                 commToCreate?.setResult() ?: setResult(Activity.RESULT_OK)
                 finish()
@@ -67,7 +66,7 @@ class LoginActivity : AppCompatActivity(),
         }
 
         fun onUserLoggedOut() {
-            eventsApplication.logout()
+            login.setCurrentUser(null)
             if (finishWhenReady) {
                 finish()
             }
@@ -82,7 +81,7 @@ class LoginActivity : AppCompatActivity(),
             finishWhenReady = true
             logoutWhenReady = true
             auth.signOut()
-            eventsApplication.logout()
+            login.setCurrentUser(null)
             googleApiClient.connect()
             setResult(Activity.RESULT_OK)
             finish()

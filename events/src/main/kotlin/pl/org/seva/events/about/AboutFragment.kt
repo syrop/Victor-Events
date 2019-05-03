@@ -25,12 +25,19 @@ import kotlinx.android.synthetic.main.fr_about.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.inBrowser
 import pl.org.seva.events.main.extension.invoke
+import pl.org.seva.events.main.model.versionName
 
 class AboutFragment : Fragment(R.layout.fr_about) {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        version.text = getString(R.string.about_version).replace(VERSION_PLACEHOLDER, versionName)
+
         github { inBrowser(getString(R.string.about_github_url)) }
+    }
+
+    companion object {
+        const val VERSION_PLACEHOLDER = "[ver]"
     }
 }

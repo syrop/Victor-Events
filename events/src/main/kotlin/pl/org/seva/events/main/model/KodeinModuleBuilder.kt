@@ -45,7 +45,8 @@ inline fun <reified A, reified T : Any> instance(arg: A) = Kodein.global.instanc
 
 class KodeinModuleBuilder(private val ctx: Context) {
 
-    fun build() = Kodein.Module("main") {
+    fun build() = Kodein.Module(MODULE_NAME) {
+        bind<Context>() with singleton { ctx }
         bind<Bootstrap>() with singleton { Bootstrap() }
         bind<FsReader>() with singleton { FsReader() }
         bind<Comms>() with singleton { Comms() }
@@ -65,5 +66,9 @@ class KodeinModuleBuilder(private val ctx: Context) {
         bind<Permissions>() with singleton { Permissions() }
         bind<Geocoder>() with singleton { Geocoder(ctx, Locale.getDefault()) }
         bind<Messages>() with singleton { Messages() }
+    }
+
+    companion object {
+        const val MODULE_NAME = "main"
     }
 }
