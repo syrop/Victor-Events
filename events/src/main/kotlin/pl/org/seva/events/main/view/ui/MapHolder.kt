@@ -33,7 +33,7 @@ open class MapHolder {
     var checkLocationPermission: ((onGranted: () -> Unit) -> Unit)? = null
     var onMapAvailable: ((GoogleMap) -> Unit)? = null
 
-    open infix fun withFragment(pair: Pair<Fragment, Int>): MapHolder {
+    infix fun withFragment(pair: Pair<Fragment, Int>): MapHolder {
         val (fragment, id) = pair
         with (fragment) {
             val mapFragment = childFragmentManager.findFragmentById(id) as SupportMapFragment

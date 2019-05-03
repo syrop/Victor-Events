@@ -20,7 +20,6 @@
 package pl.org.seva.events.event
 
 import android.os.Bundle
-import android.view.View
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fr_location_picker.*
 import pl.org.seva.events.R
@@ -31,16 +30,17 @@ class LocationPickerFragment : Fragment(R.layout.fr_location_picker) {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         fun onLocationChanged(l: EventLocation?) {
             address set (l?.address ?: "")
-            delete_location.visibility = if (l != null) View.VISIBLE else View.GONE
+            if (l != null) delete_location_fab.show() else delete_location_fab.hide()
         }
 
         super.onActivityCreated(savedInstanceState)
 
         val viewModel = getViewModel<EventCreateViewModel>()
-        delete_location { viewModel.location.value = null }
+        delete_location_fab { viewModel.location.value = null }
         (viewModel.location + this) { onLocationChanged(it) }
 
         createInteractiveMapHolder(R.id.map) {
+            onLocationSet = { viewModel.location.value = it }
             onMapAvailable = {
                 (viewModel.location + this@LocationPickerFragment) { putMarker(it?.location) }
             }

@@ -61,11 +61,11 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
 
         fun onLocationChanged(l: EventLocation?) {
             address set l?.address
-            if (l != null) { map_container.visibility = View.GONE }
-            else {
+            if (l != null) {
                 map_container.visibility = View.VISIBLE
                 mapHolder
             }
+            else { map_container.visibility = View.GONE }
         }
 
         name backWith (vm.name + this)

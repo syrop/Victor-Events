@@ -20,26 +20,16 @@
 package pl.org.seva.events.main.view.ui
 
 import android.location.Geocoder
-import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
-import pl.org.seva.events.event.EventCreateViewModel
 import pl.org.seva.events.event.EventLocation
-import pl.org.seva.events.main.extension.getViewModel
 import pl.org.seva.events.main.model.instance
 import java.lang.Exception
 
 class InteractiveMapHolder : MapHolder() {
 
-    private lateinit var viewModel: EventCreateViewModel
     private val geocoder by instance<Geocoder>()
-
-    override infix fun withFragment(pair: Pair<Fragment, Int>): InteractiveMapHolder {
-        val (fragment) = pair
-        super.withFragment(pair)
-        viewModel = fragment.getViewModel()
-        return this
-    }
+    lateinit var onLocationSet: (EventLocation) -> Unit
 
     override fun withMap(map: GoogleMap) {
         fun onMapLongClick(latLng: LatLng) {
@@ -53,13 +43,11 @@ class InteractiveMapHolder : MapHolder() {
             } catch (ex: Exception) {
                 DEFAULT_ADDRESS
             }
-            viewModel.location.value = EventLocation(latLng, address)
+            onLocationSet(EventLocation(latLng, address))
         }
 
         super.withMap(map)
-        with (map) {
-            setOnMapLongClickListener { onMapLongClick(it) }
-        }
+        map.setOnMapLongClickListener { onMapLongClick(it) }
     }
 
     companion object {

@@ -25,16 +25,16 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <fragment
-        android:id="@+id/map"
-        android:layout_below="@+id/address_layout"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+            android:id="@+id/map"
+            android:layout_below="@+id/address_layout"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
     </RelativeLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/delete_location"
+        android:id="@+id/delete_location_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

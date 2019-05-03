@@ -24,6 +24,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fr_event_details.*
 import pl.org.seva.events.R
+import pl.org.seva.events.main.extension.createMapHolder
 import pl.org.seva.events.main.extension.getViewModel
 import pl.org.seva.events.main.extension.set
 import pl.org.seva.events.main.extension.title
@@ -47,7 +48,7 @@ class EventDetailsFragment : Fragment(R.layout.fr_event_details) {
             else { address set this }
         }
         if (event.location != null) {
-
+            createMapHolder(R.id.map)
         }
     }
 }
