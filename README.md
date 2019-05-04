@@ -1,6 +1,6 @@
 # Wiktor-Events (Android)
 
-Publish information about your scheduled events that are open to the public. Create a community. If people know the name of your community, they can subscribe to receive information about the events, but they will not have to let you know whether they are currently subscribing.
+Publish information about your scheduled events that are open to the public. Create a community. If people know the name of your community, they can subscribe to it to receive information about the events, but they will not have to let you know whether they are currently subscribing.
 
 An alternative to having a newsletter where you have to manage the list of subscribers, or people have to let you know when they are no longer interested.
 
