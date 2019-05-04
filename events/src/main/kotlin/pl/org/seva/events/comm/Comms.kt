@@ -53,40 +53,33 @@ class Comms : LiveRepository() {
 
     infix fun contains(comm: Comm) = commsCache.any { it.name == comm.name }
 
-    infix fun update(comm: Comm) = with(comm) {
-        commsCache.remove(get(name))
-        commsCache.add(this)
-        io { commDao update this@with }
-        fsWriter update this
+    infix fun update(comm: Comm) {
+        commsCache.remove(get(comm.name))
+        commsCache.add(comm)
         notifyDataSetChanged()
-        true
+        fsWriter update comm
     }
 
-    infix fun leave(comm: Comm) = comm.run {
-        commsCache.remove(this).also { updated ->
-            if (updated) {
-                io { commDao delete this@run }
-                notifyDataSetChanged()
-            }
-        }
-    }
-
-    infix fun delete(comm: Comm): Boolean {
-        return leave(comm).also { updated ->
+    infix fun leave(comm: Comm) = commsCache.remove(comm).also { updated ->
+        if (updated) {
+            notifyDataSetChanged()
+            io { commDao delete comm }
             io { events deleteFrom comm }
-            if (updated) fsWriter delete comm
         }
     }
 
-    infix fun join(comm: Comm) = comm.run {
-        (!commsCache.contains(comm) && commsCache.add(comm)).also { updated ->
-            if (updated) {
-                notifyDataSetChanged()
-                io { events addFrom comm }
-                io { commDao add this@run }
-            }
-        }
+    infix fun delete(comm: Comm) = leave(comm).also { updated ->
+        if (updated) fsWriter delete comm
     }
+
+    infix fun join(comm: Comm) =
+            (!commsCache.contains(comm) && commsCache.add(comm)).also { updated ->
+                if (updated) {
+                    notifyDataSetChanged()
+                    io { events addFrom comm }
+                    io { commDao add comm }
+                }
+            }
 
     suspend fun fromDb() {
         commsCache.addAll(commDao.getAllValues())
