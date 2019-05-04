@@ -56,8 +56,8 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
         fun showDatePicker() = DatePickerFragment().show(fragmentManager!!, DATE_PICKER_TAG)
         fun showLocationPicker() = nav(R.id.action_createEventFragment_to_locationPickerFragment)
 
-        fun onTimeChanged(t: LocalTime?) = time set (if (t == null) "" else "${t.hour}:${t.minute}")
-        fun onDateChanged(d: LocalDate?) = date set (if (d == null) "" else "${d.year}-${d.monthValue}-${d.dayOfMonth}")
+        fun onTimeChanged(t: LocalTime?) = time set (t?.toString() ?: "")
+        fun onDateChanged(d: LocalDate?) = date set (d?.toString() ?: "")
 
         fun onLocationChanged(l: EventLocation?) {
             address set l?.address
