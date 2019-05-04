@@ -28,6 +28,7 @@ import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fr_comm_add.*
 import pl.org.seva.events.R
 import pl.org.seva.events.login.LoginActivity
@@ -43,6 +44,8 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
     private val searchManager by lazy {
         activity!!.getSystemService(Context.SEARCH_SERVICE) as SearchManager
     }
+
+    var snackbar: Snackbar?= null
 
     private lateinit var adapter: CommAdapter
 
@@ -63,7 +66,7 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
 
         fun notFound(comm: Comm) {
             fun showCreateCommunitySnackbar(name: String) {
-                permanentSnackbar {
+                snackbar = permanentSnackbar {
                     view = layout
                     message = R.string.add_comm_can_create
                     action = R.string.add_comm_create
@@ -80,7 +83,7 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
                     startActivityForResult(intent, LOGIN_CREATE_COMM_REQUEST)
                 }
 
-                permanentSnackbar {
+                snackbar = permanentSnackbar {
                     view = layout
                     message = R.string.add_comm_login_to_create
                     action = R.string.add_comm_login
@@ -99,6 +102,7 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
         prompt.setText(if (comms.isEmpty) R.string.add_comm_please_search_empty else
             R.string.add_comm_please_search)
         (eventsModel.queryState + this) { result ->
+            snackbar?.dismiss()
             when (result) {
                 is MainViewModel.QueryState.InProgress -> {
                     recycler.visibility = View.GONE

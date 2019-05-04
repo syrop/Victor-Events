@@ -22,8 +22,6 @@ package pl.org.seva.events.main.view.ui
 import com.google.android.material.snackbar.Snackbar
 import android.view.View
 
-fun longSnackbar(f: SnackbarBuilder.() -> Unit): SnackbarBuilder = SnackbarBuilder().apply(f)
-
 fun permanentSnackbar(f: SnackbarBuilder.() -> Unit): SnackbarBuilder =
         SnackbarBuilder(Snackbar.LENGTH_INDEFINITE).apply(f)
 
@@ -32,7 +30,6 @@ class SnackbarBuilder(private var length: Int = Snackbar.LENGTH_LONG) {
     var message = 0
     var action = 0
 
-    infix fun show(f: () -> Unit) {
-        Snackbar.make(view, message, length).setAction(action) { f() }.show()
-    }
+    infix fun show(f: () -> Unit) =
+            Snackbar.make(view, message, length).setAction(action) { f() }.apply { show() }
 }
