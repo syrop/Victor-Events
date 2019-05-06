@@ -33,10 +33,14 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.SupportMapFragment
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.suspendCancellableCoroutine
 import pl.org.seva.events.main.view.ui.InteractiveMapHolder
 import pl.org.seva.events.main.view.ui.MapHolder
 import pl.org.seva.events.main.model.Permissions
+import kotlin.coroutines.resume
 
 fun Fragment.nav(@IdRes resId: Int): Boolean {
     findNavController().navigate(resId)
@@ -96,3 +100,8 @@ private fun Fragment.untilDestroy(work: () -> Job) = work().apply {
 
 fun Fragment.prefs(name: String): () -> SharedPreferences =
         { context!!.getSharedPreferences(name, Context.MODE_PRIVATE) }
+
+suspend fun Fragment.googleMap(@IdRes id: Int) = suspendCancellableCoroutine<GoogleMap> { continuation ->
+    val mapFragment = childFragmentManager.findFragmentById(id) as SupportMapFragment
+    mapFragment.getMapAsync { map -> continuation.resume(map) }
+}
