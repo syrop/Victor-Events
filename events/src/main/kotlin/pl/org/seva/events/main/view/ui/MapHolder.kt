@@ -29,9 +29,9 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import androidx.core.content.edit
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import pl.org.seva.events.main.extension.googleMap
+import pl.org.seva.events.main.extension.scope
 
 open class MapHolder {
     private var map: GoogleMap? = null
@@ -41,7 +41,7 @@ open class MapHolder {
 
     infix fun withFragment(pair: Pair<Fragment, Int>): MapHolder {
         val (fragment, id) = pair
-        GlobalScope.launch(Dispatchers.Main) {
+        fragment.scope().launch(Dispatchers.Main) {
             val map = fragment.googleMap(id)
             this@MapHolder withMap map
         }
