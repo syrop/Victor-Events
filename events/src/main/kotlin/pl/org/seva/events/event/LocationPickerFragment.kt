@@ -44,6 +44,7 @@ class LocationPickerFragment : Fragment(R.layout.fr_location_picker) {
         (viewModel.location + this) { onLocationChanged(it) }
 
         createInteractiveMapHolder(R.id.map) {
+            prefs = prefs(SHARED_PREFERENCES_TAG)
             onLocationSet = { viewModel.location.value = it }
             onMapAvailable = {
                 (viewModel.location + this@LocationPickerFragment) { putMarker(it?.location) }
@@ -59,5 +60,9 @@ class LocationPickerFragment : Fragment(R.layout.fr_location_picker) {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.location_picker, menu)
+    }
+
+    companion object {
+        private const val SHARED_PREFERENCES_TAG = "fragment_location_picker_preferences"
     }
 }

@@ -19,7 +19,9 @@
 
 package pl.org.seva.events.main.extension
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.annotation.IdRes
@@ -91,3 +93,6 @@ private fun Fragment.untilDestroy(work: () -> Job) = work().apply {
         }
     })
 }
+
+fun Fragment.prefs(name: String): () -> SharedPreferences =
+        { context!!.getSharedPreferences(name, Context.MODE_PRIVATE) }
