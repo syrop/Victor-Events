@@ -41,7 +41,7 @@ open class MapHolder {
 
     infix fun withFragment(pair: Pair<Fragment, Int>): MapHolder {
         val (fragment, id) = pair
-        fragment.scope().launch(Dispatchers.Main) {
+        fragment.scope.launch(Dispatchers.Main) {
             val map = fragment.googleMap(id)
             this@MapHolder withMap map
         }

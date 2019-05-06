@@ -25,7 +25,7 @@ import androidx.lifecycle.LifecycleOwner
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 
-fun LifecycleOwner.scope(): CoroutineScope {
+val LifecycleOwner.scope: CoroutineScope get() {
     val job = Job()
     return CoroutineScope(job).also {
         lifecycle.addObserver(object : LifecycleEventObserver {
