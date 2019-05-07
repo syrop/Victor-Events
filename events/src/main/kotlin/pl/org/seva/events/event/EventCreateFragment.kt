@@ -43,7 +43,7 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
         createMapHolder(R.id.map) {
             checkLocationPermission = this@EventCreateFragment::checkLocationPermission
             onMapAvailable = {
-                (vm.location + this@EventCreateFragment) { putMarker(it?.location) }
+                (vm.location + this@EventCreateFragment) { markPosition(it?.location) }
             }
         }
     }

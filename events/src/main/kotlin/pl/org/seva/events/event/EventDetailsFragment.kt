@@ -54,7 +54,7 @@ class EventDetailsFragment : Fragment(R.layout.fr_event_details) {
                 onMapAvailable = {
                     map = it
                     enableMyLocation()
-                    putMarker(event.location)
+                    markPosition(event.location)
                 }
             }
         }

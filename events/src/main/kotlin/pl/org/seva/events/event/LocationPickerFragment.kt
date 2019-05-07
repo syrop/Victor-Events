@@ -47,7 +47,7 @@ class LocationPickerFragment : Fragment(R.layout.fr_location_picker) {
             prefs = prefs(SHARED_PREFERENCES_TAG)
             onLocationSet = { viewModel.location.value = it }
             onMapAvailable = {
-                (viewModel.location + this@LocationPickerFragment) { putMarker(it?.location) }
+                (viewModel.location + this@LocationPickerFragment) { markPosition(it?.location) }
             }
         }
     }
