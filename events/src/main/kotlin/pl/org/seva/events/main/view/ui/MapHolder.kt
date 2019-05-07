@@ -21,17 +21,12 @@ package pl.org.seva.events.main.view.ui
 
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
-import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import androidx.core.content.edit
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import pl.org.seva.events.main.extension.googleMap
-import pl.org.seva.events.main.extension.scope
 
 open class MapHolder {
     private var map: GoogleMap? = null
@@ -39,39 +34,27 @@ open class MapHolder {
     var onMapAvailable: ((GoogleMap) -> Unit)? = null
     var prefs: () -> SharedPreferences? = { null }
 
-    infix fun withFragment(pair: Pair<Fragment, Int>): MapHolder {
-        val (fragment, id) = pair
-        fragment.scope.launch(Dispatchers.Main) {
-            val map = fragment.googleMap(id)
-            this@MapHolder withMap map
+    open infix fun withMap(map: GoogleMap) {
+        this@MapHolder.map = map
+        val cameraUpdate = prefs()?.let { prefs ->
+            val latLng = LatLng(
+                    prefs.getFloat(LAT_PROPERTY, DEFAULT_LAT.toFloat()).toDouble(),
+                    prefs.getFloat(LON_PROPERTY, DEFAULT_LON.toFloat()).toDouble())
+            val zoom = prefs.getFloat(ZOOM_PROPERTY, DEFAULT_ZOOM)
+            CameraUpdateFactory.newLatLngZoom(latLng, zoom)
+        } ?: CameraUpdateFactory.newLatLngZoom(LatLng(DEFAULT_LAT, DEFAULT_LON), DEFAULT_ZOOM)
+        map.moveCamera(cameraUpdate)
+        map.setOnCameraIdleListener {
+            prefs()?.edit {
+                val position = map.cameraPosition
+                putFloat(ZOOM_PROPERTY, position.zoom)
+                putFloat(LAT_PROPERTY, position.target.latitude.toFloat())
+                putFloat(LON_PROPERTY, position.target.longitude.toFloat())
+            }
         }
-        return this
-    }
-
-    @SuppressLint("MissingPermission")
-    protected open infix fun withMap(map: GoogleMap) {
-        with (map) {
-            this@MapHolder.map = this
-            val cameraUpdate = prefs()?.let { prefs ->
-                val latLng = LatLng(
-                        prefs.getFloat(LAT_PROPERTY, DEFAULT_LAT.toFloat()).toDouble(),
-                        prefs.getFloat(LON_PROPERTY, DEFAULT_LON.toFloat()).toDouble())
-                val zoom = prefs.getFloat(ZOOM_PROPERTY, DEFAULT_ZOOM)
-                CameraUpdateFactory.newLatLngZoom(latLng, zoom)
-            } ?: CameraUpdateFactory.newLatLngZoom(LatLng(DEFAULT_LAT, DEFAULT_LON), DEFAULT_ZOOM)
-            moveCamera(cameraUpdate)
-            setOnCameraIdleListener {
-                prefs()?.edit {
-                    val position = map.cameraPosition
-                    putFloat(ZOOM_PROPERTY, position.zoom)
-                    putFloat(LAT_PROPERTY, position.target.latitude.toFloat())
-                    putFloat(LON_PROPERTY, position.target.longitude.toFloat())
-                }
-            }
-            onMapAvailable?.invoke(this)
-            checkLocationPermission?.invoke {
-                isMyLocationEnabled = true
-            }
+        onMapAvailable?.invoke(map)
+        checkLocationPermission?.invoke {
+            map.isMyLocationEnabled = true
         }
     }
 

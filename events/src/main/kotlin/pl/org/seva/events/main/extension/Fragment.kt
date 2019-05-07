@@ -35,7 +35,9 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import pl.org.seva.events.main.view.ui.InteractiveMapHolder
 import pl.org.seva.events.main.view.ui.MapHolder
@@ -56,11 +58,18 @@ inline fun <reified R : ViewModel> Fragment.viewModel() = lazy { getViewModel<R>
 
 inline fun <reified R : ViewModel> Fragment.getViewModel() = activity!!.getViewModel<R>()
 
-fun Fragment.createMapHolder(@IdRes fragmentId: Int, block: MapHolder.() -> Unit = {}) =
-        MapHolder().apply(block) withFragment (this + fragmentId)
+private fun Fragment.withMapHolder(pair: Pair<MapHolder, Int>) {
+    val (holder, id) = pair
+    scope.launch(Dispatchers.Main) {
+        holder withMap googleMap(id)
+    }
+}
 
-fun Fragment.createInteractiveMapHolder(@IdRes fragmentId: Int, block: InteractiveMapHolder.() -> Unit = {}) =
-        InteractiveMapHolder().apply(block) withFragment (this + fragmentId)
+fun Fragment.createMapHolder(@IdRes map: Int, block: MapHolder.() -> Unit = {}) =
+        withMapHolder(MapHolder().apply(block) to map)
+
+fun Fragment.createInteractiveMapHolder(@IdRes map: Int, block: InteractiveMapHolder.() -> Unit = {}) =
+        withMapHolder(InteractiveMapHolder().apply(block) to map)
 
 fun Fragment.checkPermission(permission: String) =
         ContextCompat.checkSelfPermission(context!!, permission) == PackageManager.PERMISSION_GRANTED
@@ -75,8 +84,6 @@ fun Fragment.inBrowser(uri: String) {
     i.data = Uri.parse(uri)
     startActivity(i)
 }
-
-operator fun Fragment.plus(@IdRes id: Int) = this to id
 
 fun Fragment.request(requestCode: Int, requests: Array<Permissions.PermissionRequest>) {
     watch(requestCode, requests)
