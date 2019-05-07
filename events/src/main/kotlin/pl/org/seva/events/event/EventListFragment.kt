@@ -56,8 +56,8 @@ class EventListFragment : Fragment(R.layout.fr_event_list) {
         }
 
         (comms + this) {
-            if (comms.isAdminOfAny) { add_event_fab.show() }
-            else { add_event_fab.hide() }
+            if (comms.isAdminOfAny) add_event_fab.show()
+            else add_event_fab.hide()
         }
 
         (events + this) {
