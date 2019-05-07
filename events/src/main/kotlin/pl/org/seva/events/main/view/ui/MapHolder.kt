@@ -19,7 +19,6 @@
 
 package pl.org.seva.events.main.view.ui
 
-import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
