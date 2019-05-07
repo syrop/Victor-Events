@@ -28,7 +28,7 @@ import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.inflate
 import pl.org.seva.events.main.extension.onClick
 
-class EventAdapter(private val onClick: (View) -> Unit) : RecyclerView.Adapter<EventAdapter.ViewHolder>() {
+class EventAdapter(private val onClick: (Int) -> Unit) : RecyclerView.Adapter<EventAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             ViewHolder(parent.inflate(R.layout.row_event), onClick)
@@ -42,9 +42,9 @@ class EventAdapter(private val onClick: (View) -> Unit) : RecyclerView.Adapter<E
         }
     }
 
-    class ViewHolder(view: View, onClick: (View) -> Unit) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View, onClick: (Int) -> Unit) : RecyclerView.ViewHolder(view) {
 
-        init { view onClick onClick }
+        init { view onClick { onClick(adapterPosition) } }
 
         val name: TextView = view.name
         val time: TextView = view.time

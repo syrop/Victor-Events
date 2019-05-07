@@ -36,8 +36,7 @@ class CommListFragment : Fragment(R.layout.fr_comm_list) {
         comms_view.setHasFixedSize(true)
         comms_view.layoutManager = LinearLayoutManager(context)
         comms_view.verticalDivider()
-        comms_view.adapter = CommAdapter { view ->
-            val position = comms_view.getChildAdapterPosition(view)
+        comms_view.adapter = CommAdapter { position ->
             getViewModel<CommViewModel>().comm = comms[position]
             nav(R.id.action_commListFragment_to_commDetailsFragment)
         }

@@ -49,8 +49,7 @@ class EventListFragment : Fragment(R.layout.fr_event_list) {
         events_view.setHasFixedSize(true)
         events_view.layoutManager = LinearLayoutManager(context)
         events_view.verticalDivider()
-        events_view.adapter = EventAdapter { view ->
-            val position = events_view.getChildAdapterPosition(view)
+        events_view.adapter = EventAdapter { position ->
             getViewModel<EventViewModel>().event = events[position]
             nav(R.id.action_eventsFragment_to_eventDetailsFragment)
         }

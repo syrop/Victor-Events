@@ -29,7 +29,7 @@ import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.inflate
 import pl.org.seva.events.main.extension.onClick
 
-open class CommAdapter(private val onClick: (View) -> Unit) : RecyclerView.Adapter<CommAdapter.ViewHolder>() {
+open class CommAdapter(private val onClick: (Int) -> Unit) : RecyclerView.Adapter<CommAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             ViewHolder(parent.inflate(R.layout.row_comm), onClick)
@@ -47,9 +47,9 @@ open class CommAdapter(private val onClick: (View) -> Unit) : RecyclerView.Adapt
         }
     }
 
-    class ViewHolder(view: View, onClick: (View) -> Unit) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View, onClick: (Int) -> Unit) : RecyclerView.ViewHolder(view) {
 
-        init { view onClick onClick }
+        init { view onClick { onClick(adapterPosition) } }
 
         val communityName: TextView = view.comm
         val iconProfile: ImageView = view.icon_profile

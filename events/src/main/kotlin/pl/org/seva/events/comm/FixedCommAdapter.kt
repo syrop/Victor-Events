@@ -19,11 +19,9 @@
 
 package pl.org.seva.events.comm
 
-import android.view.View
-
 class FixedCommAdapter(
         private vararg val comms: Comm,
-        onClick: (View) -> Unit) : CommAdapter(onClick) {
+        onClick: (Int) -> Unit) : CommAdapter(onClick) {
 
     override fun getItemCount() = comms.size
 
