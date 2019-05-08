@@ -19,7 +19,6 @@
 
 package pl.org.seva.events.event
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
@@ -29,7 +28,6 @@ import kotlinx.android.synthetic.main.fr_event_create.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.main.extension.*
-import pl.org.seva.events.main.model.Permissions
 import pl.org.seva.events.main.model.permissions
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -40,10 +38,13 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
     private val vm by viewModel<EventCreateViewModel>()
 
     private val mapHolder by lazy {
+        @Suppress("ReplaceSingleLineLet")
         createMapHolder(R.id.map) {
-            checkLocationPermission = this@EventCreateFragment::checkLocationPermission
-            onMapAvailable = {
-                (vm.location + this@EventCreateFragment) { markPosition(it?.location) }
+            requestLocationPermission = this@EventCreateFragment::requestLocationPermission
+        }.let { holder ->
+            (holder.liveMap + this) { map ->
+                enableMyLocationOnResume(map)
+                (vm.location + this) { holder.markPosition(it?.location) }
             }
         }
     }
@@ -129,17 +130,6 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.event_create, menu)
-    }
-
-    private fun checkLocationPermission(onGranted: () -> Unit) {
-        if (checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) { onGranted() }
-        else {
-            request(
-                    Permissions.DEFAULT_PERMISSION_REQUEST_ID,
-                    arrayOf(Permissions.PermissionRequest(
-                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                            onGranted = onGranted)))
-        }
     }
 
     override fun onRequestPermissionsResult(

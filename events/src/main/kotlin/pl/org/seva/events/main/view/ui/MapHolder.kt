@@ -26,12 +26,15 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import androidx.core.content.edit
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 
 open class MapHolder {
     private var map: GoogleMap? = null
-    var checkLocationPermission: ((onGranted: () -> Unit) -> Unit)? = null
-    var onMapAvailable: ((GoogleMap) -> Unit)? = null
+    var requestLocationPermission: ((onGranted: () -> Unit) -> Unit)? = null
     var prefs: () -> SharedPreferences? = { null }
+    private val mutableMap = MutableLiveData<GoogleMap>()
+    val liveMap: LiveData<GoogleMap> = mutableMap
 
     open infix fun withMap(map: GoogleMap) {
         this@MapHolder.map = map
@@ -51,8 +54,8 @@ open class MapHolder {
                 putFloat(LON_PROPERTY, position.target.longitude.toFloat())
             }
         }
-        onMapAvailable?.invoke(map)
-        checkLocationPermission?.invoke {
+        mutableMap.value = map
+        requestLocationPermission?.invoke {
             map.isMyLocationEnabled = true
         }
     }

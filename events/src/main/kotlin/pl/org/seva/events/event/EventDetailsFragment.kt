@@ -19,18 +19,15 @@
 
 package pl.org.seva.events.event
 
-import android.Manifest
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import com.google.android.gms.maps.GoogleMap
 import kotlinx.android.synthetic.main.fr_event_details.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.*
+import pl.org.seva.events.main.model.permissions
 
 class EventDetailsFragment : Fragment(R.layout.fr_event_details) {
-
-    var map: GoogleMap? = null
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -50,24 +47,21 @@ class EventDetailsFragment : Fragment(R.layout.fr_event_details) {
         }
         if (event.location != null) {
             map_container.visibility = View.VISIBLE
+            @Suppress("ReplaceSingleLineLet")
             createMapHolder(R.id.map) {
-                onMapAvailable = {
-                    map = it
-                    enableMyLocation()
-                    markPosition(event.location)
+                requestLocationPermission = this@EventDetailsFragment::requestLocationPermission
+            }.let { holder ->
+                (holder.liveMap + this) {
+                    holder.markPosition(event.location)
+                    enableMyLocationOnResume(it)
                 }
             }
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        enableMyLocation()
-    }
-
-    private fun enableMyLocation() {
-        if (checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
-            map?.isMyLocationEnabled = true
-        }
-    }
+    override fun onRequestPermissionsResult(
+            requestCode: Int,
+            requests: Array<String>,
+            grantResults: IntArray) =
+            permissions.onRequestPermissionsResult(this, requestCode, requests, grantResults)
 }

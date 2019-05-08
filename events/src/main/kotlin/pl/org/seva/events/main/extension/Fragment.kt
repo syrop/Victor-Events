@@ -19,6 +19,7 @@
 
 package pl.org.seva.events.main.extension
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -66,10 +67,14 @@ private fun Fragment.withMapHolder(pair: Pair<MapHolder, Int>) {
 }
 
 fun Fragment.createMapHolder(@IdRes map: Int, block: MapHolder.() -> Unit = {}) =
-        withMapHolder(MapHolder().apply(block) to map)
+        MapHolder().apply(block).also {
+            withMapHolder(it to map)
+        }
 
 fun Fragment.createInteractiveMapHolder(@IdRes map: Int, block: InteractiveMapHolder.() -> Unit = {}) =
-        withMapHolder(InteractiveMapHolder().apply(block) to map)
+        InteractiveMapHolder().apply(block).also {
+            withMapHolder(it to map)
+        }
 
 fun Fragment.checkPermission(permission: String) =
         ContextCompat.checkSelfPermission(context!!, permission) == PackageManager.PERMISSION_GRANTED
@@ -111,4 +116,23 @@ fun Fragment.prefs(name: String): () -> SharedPreferences =
 suspend fun Fragment.googleMap(@IdRes id: Int) = suspendCancellableCoroutine<GoogleMap> { continuation ->
     val mapFragment = childFragmentManager.findFragmentById(id) as SupportMapFragment
     mapFragment.getMapAsync { map -> continuation.resume(map) }
+}
+
+fun Fragment.requestLocationPermission(onGranted: () -> Unit) {
+    if (checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) onGranted()
+    else request(
+            Permissions.DEFAULT_PERMISSION_REQUEST_ID,
+            arrayOf(Permissions.PermissionRequest(
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    onGranted = onGranted)))
+}
+
+fun Fragment.enableMyLocationOnResume(map: GoogleMap) {
+    lifecycle.addObserver(object : LifecycleEventObserver{
+        override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+            if (event == Lifecycle.Event.ON_RESUME && checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                map.isMyLocationEnabled = true
+            }
+        }
+    })
 }
