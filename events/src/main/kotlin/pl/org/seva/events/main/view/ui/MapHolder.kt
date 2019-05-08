@@ -32,13 +32,13 @@ import androidx.lifecycle.MutableLiveData
 open class MapHolder {
     private var map: GoogleMap? = null
     var requestLocationPermission: ((onGranted: () -> Unit) -> Unit)? = null
-    var prefs: () -> SharedPreferences? = { null }
+    var prefs: SharedPreferences? = null
     private val mutableMap = MutableLiveData<GoogleMap>()
     val liveMap: LiveData<GoogleMap> = mutableMap
 
     open infix fun withMap(map: GoogleMap) {
         this@MapHolder.map = map
-        val cameraUpdate = prefs()?.let { prefs ->
+        val cameraUpdate = prefs?.let { prefs ->
             val latLng = LatLng(
                     prefs.getFloat(LAT_PROPERTY, DEFAULT_LAT.toFloat()).toDouble(),
                     prefs.getFloat(LON_PROPERTY, DEFAULT_LON.toFloat()).toDouble())
@@ -47,7 +47,7 @@ open class MapHolder {
         } ?: CameraUpdateFactory.newLatLngZoom(LatLng(DEFAULT_LAT, DEFAULT_LON), DEFAULT_ZOOM)
         map.moveCamera(cameraUpdate)
         map.setOnCameraIdleListener {
-            prefs()?.edit {
+            prefs?.edit {
                 val position = map.cameraPosition
                 putFloat(ZOOM_PROPERTY, position.zoom)
                 putFloat(LAT_PROPERTY, position.target.latitude.toFloat())

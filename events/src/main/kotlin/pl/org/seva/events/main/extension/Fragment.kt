@@ -110,8 +110,8 @@ private fun Fragment.untilDestroy(work: () -> Job) = work().apply {
     })
 }
 
-fun Fragment.prefs(name: String): () -> SharedPreferences =
-        { context!!.getSharedPreferences(name, Context.MODE_PRIVATE) }
+fun Fragment.prefs(name: String): SharedPreferences =
+        context!!.getSharedPreferences(name, Context.MODE_PRIVATE)
 
 suspend fun Fragment.googleMap(@IdRes id: Int) = suspendCancellableCoroutine<GoogleMap> { continuation ->
     val mapFragment = childFragmentManager.findFragmentById(id) as SupportMapFragment
