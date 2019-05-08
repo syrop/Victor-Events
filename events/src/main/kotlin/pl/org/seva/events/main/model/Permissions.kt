@@ -23,7 +23,6 @@ package pl.org.seva.events.main.model
 
 import android.content.pm.PackageManager
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.sendBlocking
@@ -93,11 +92,11 @@ class Permissions {
             }
         }
 
-        fun watch(code: Int, requests: Array<PermissionRequest>) = viewModelScope.launch {
-                for (req in requests) {
-                    watch(code, req)
-                }
+        suspend fun watch(code: Int, requests: Array<PermissionRequest>) = coroutineScope {
+            for (req in requests) {
+                watch(code, req)
             }
+        }
 
         companion object {
             private const val DEFAULT_CAPACITY = 10

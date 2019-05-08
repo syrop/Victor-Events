@@ -37,7 +37,6 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import pl.org.seva.events.main.view.ui.InteractiveMapHolder
@@ -96,18 +95,7 @@ fun Fragment.request(requestCode: Int, requests: Array<Permissions.PermissionReq
 }
 
 private fun Fragment.watch(requestCode: Int, requests: Array<Permissions.PermissionRequest>) {
-    val vm = getViewModel<Permissions.ViewModel>()
-    untilDestroy { vm.watch(requestCode, requests) }
-}
-
-private fun Fragment.untilDestroy(work: () -> Job) = work().apply {
-    lifecycle.addObserver(object : LifecycleEventObserver {
-        override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-            if (event == Lifecycle.Event.ON_DESTROY) {
-                cancel()
-            }
-        }
-    })
+    scope.launch { getViewModel<Permissions.ViewModel>().watch(requestCode, requests) }
 }
 
 fun Fragment.prefs(name: String): SharedPreferences =
