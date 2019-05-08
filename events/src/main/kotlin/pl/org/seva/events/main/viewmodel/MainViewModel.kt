@@ -19,37 +19,8 @@
 
 package pl.org.seva.events.main.viewmodel
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.*
-import pl.org.seva.events.comm.Comm
-import pl.org.seva.events.main.model.fs.fsReader
 
 class MainViewModel : ViewModel() {
-    val queryState by lazy { MutableLiveData<QueryState>(QueryState.None) }
-    val commToCreate by lazy { MutableLiveData<String?>() }
-    private var queryJob: Job? = null
-
     var pastDestination = 0
-
-    fun query(name: String) {
-        queryState.value = QueryState.InProgress
-        queryJob = viewModelScope.launch(Dispatchers.IO) {
-            fsReader.findCommunity(name).let {
-                queryState.postValue(QueryState.Completed(it))
-            }
-        }
-    }
-
-    fun resetQuery() {
-        queryJob?.cancel()
-        queryState.value = QueryState.None
-    }
-
-    sealed class QueryState {
-        object None : QueryState()
-        data class Completed(val comm: Comm) : QueryState()
-        object InProgress : QueryState()
-    }
 }

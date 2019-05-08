@@ -31,6 +31,7 @@ import pl.org.seva.events.main.model.instance
 import pl.org.seva.events.main.view.ui.nextColor
 import java.time.LocalDateTime
 import java.time.ZoneOffset
+import java.util.*
 
 val fsReader by instance<FsReader>()
 
@@ -46,7 +47,7 @@ class FsReader : FsBase() {
             name.admins.document(login.email).doesExist() else false
 
     suspend fun findCommunity(name: String) = coroutineScope {
-        val lcName = name.toLowerCase()
+        val lcName = name.toLowerCase(Locale.getDefault())
         val deferredComm = async {
             communities.document(lcName).read().toCommunity()
         }

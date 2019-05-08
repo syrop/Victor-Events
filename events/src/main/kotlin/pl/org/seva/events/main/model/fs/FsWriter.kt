@@ -27,6 +27,7 @@ import pl.org.seva.events.event.Event
 import pl.org.seva.events.main.model.instance
 import pl.org.seva.events.login.login
 import pl.org.seva.events.main.model.io
+import java.util.*
 
 val fsWriter by instance<FsWriter>()
 
@@ -37,7 +38,7 @@ class FsWriter : FsBase() {
         comm.writeName()
     }
 
-    infix fun add(event: Event) = event.comm.toLowerCase().writeEvent(event)
+    infix fun add(event: Event) = event.comm.toLowerCase(Locale.getDefault()).writeEvent(event)
 
     infix fun update(comm: Comm) = with(comm) {
         lcName.comm.set(mapOf(COMM_NAME to name, COMM_DESC to desc), SetOptions.merge())
@@ -70,8 +71,6 @@ class FsWriter : FsBase() {
     private infix fun String.writeEvent(event: Event) = with (event.fsEvent) {
         events.document(timestamp.toString()).set(this)
     }
-
-
 
     private fun Comm.writeName() = lcName.comm.set(mapOf(COMM_NAME to name))
 }

@@ -11,6 +11,7 @@ import androidx.navigation.ui.NavigationUI
 import kotlinx.android.synthetic.main.ac_main.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.CommAddFragment
+import pl.org.seva.events.comm.CommAddViewModel
 import pl.org.seva.events.comm.CommViewModel
 import pl.org.seva.events.event.EventCreateViewModel
 import pl.org.seva.events.main.extension.viewModel
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     private val navController by lazy { findNavController(R.id.nav_host_fragment) }
 
     private val mainModel by viewModel<MainViewModel>()
+    private val commAddViewModel by viewModel<CommAddViewModel>()
 
     private val createEventsViewModel by viewModel<EventCreateViewModel>()
 
@@ -35,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupActionBarWithNavController(this, navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (mainModel.pastDestination) {
-                R.id.addCommFragment -> mainModel.resetQuery()
+                R.id.addCommFragment -> commAddViewModel.resetQuery()
             }
             mainModel.pastDestination = destination.id
         }
@@ -80,14 +82,14 @@ class MainActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         if (Intent.ACTION_SEARCH == intent.action) {
-            mainModel.query(intent.getStringExtra(SearchManager.QUERY))
+            commAddViewModel.query(intent.getStringExtra(SearchManager.QUERY))
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CommAddFragment.LOGIN_CREATE_COMM_REQUEST && resultCode == Activity.RESULT_OK) {
-            mainModel.commToCreate.value = data!!.getStringExtra(LoginActivity.COMMUNITY_NAME)
+            commAddViewModel.commToCreate.value = data!!.getStringExtra(LoginActivity.COMMUNITY_NAME)
         }
     }
 

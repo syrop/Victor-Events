@@ -33,19 +33,18 @@ import kotlinx.android.synthetic.main.fr_comm_add.*
 import pl.org.seva.events.R
 import pl.org.seva.events.login.LoginActivity
 import pl.org.seva.events.login.isLoggedIn
-import pl.org.seva.events.main.viewmodel.MainViewModel
 import pl.org.seva.events.main.extension.*
 import pl.org.seva.events.main.view.ui.*
 
 class CommAddFragment : Fragment(R.layout.fr_comm_add) {
 
-    private val eventsModel by viewModel<MainViewModel>()
+    private val commAddViewModel by viewModel<CommAddViewModel>()
 
     private val searchManager by lazy {
         activity!!.getSystemService(Context.SEARCH_SERVICE) as SearchManager
     }
 
-    var snackbar: Snackbar?= null
+    private var snackbar: Snackbar? = null
 
     private lateinit var adapter: CommAdapter
 
@@ -94,29 +93,35 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
             progress.visibility = View.GONE
             prompt.visibility = View.VISIBLE
             prompt.text = getString(R.string.add_comm_not_found).bold(NAME_PLACEHOLDER, comm.originalName)
-            if (isLoggedIn) { showCreateCommunitySnackbar(comm.originalName) }
-            else { showLoginToCreateSnackbar(comm.originalName) }
+            if (isLoggedIn) showCreateCommunitySnackbar(comm.originalName)
+            else showLoginToCreateSnackbar(comm.originalName)
         }
 
         super.onActivityCreated(savedInstanceState)
         prompt.setText(if (comms.isEmpty) R.string.add_comm_please_search_empty else
             R.string.add_comm_please_search)
-        (eventsModel.queryState + this) { result ->
+        (commAddViewModel.queryState + this) { result ->
             snackbar?.dismiss()
             when (result) {
-                is MainViewModel.QueryState.InProgress -> {
+                is CommAddViewModel.QueryState.InProgress -> {
                     recycler.visibility = View.GONE
                     prompt.visibility = View.GONE
                     progress.visibility = View.VISIBLE
                 }
-                is MainViewModel.QueryState.Completed -> result.comm.let {
+                is CommAddViewModel.QueryState.Completed -> result.comm.let {
                     if (it.isDummy) notFound(it) else it.found()
+                }
+                is CommAddViewModel.QueryState.Error -> {
+                    recycler.visibility = View.GONE
+                    prompt.visibility = View.VISIBLE
+                    progress.visibility = View.GONE
+                    result.errorMessage.longToast()
                 }
             }
         }
-        (eventsModel.commToCreate + this) { name ->
+        (commAddViewModel.commToCreate + this) { name ->
             if (!name.isNullOrEmpty()) {
-                eventsModel.commToCreate.value = ""
+                commAddViewModel.commToCreate.value = ""
                 name.createJoinAndFinish()
             }
         }

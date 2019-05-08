@@ -7,7 +7,7 @@
         android:id="@+id/action_ok"
         android:orderInCategory="100"
         android:icon="@drawable/baseline_done_24"
-        android:title="@string/action_search"
+        android:title="@string/add_comm_action_search"
         app:showAsAction="always"/>
 
 </menu>
