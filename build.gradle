@@ -12,6 +12,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'io.fabric.tools:gradle:1.28.0'
         classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.1.0-alpha03"
     }
 }
 

@@ -30,6 +30,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
@@ -46,6 +47,11 @@ fun Fragment.nav(@IdRes resId: Int): Boolean {
     return true
 }
 
+fun Fragment.nav(directions: NavDirections): Boolean {
+    findNavController().navigate(directions)
+    return true
+}
+
 fun Fragment.back(): Boolean {
     view!!.post { findNavController().popBackStack() }
     return true
@@ -54,10 +60,6 @@ fun Fragment.back(): Boolean {
 inline fun <reified R : ViewModel> Fragment.viewModel() = lazy { getViewModel<R>() }
 
 inline fun <reified R : ViewModel> Fragment.getViewModel() = activity!!.getViewModel<R>()
-
-inline fun <reified R : ViewModel> Fragment.viewModel(factory: SavedStateVMFactory) = lazy { getViewModel<R>(factory) }
-
-inline fun <reified R : ViewModel> Fragment.getViewModel(factory: SavedStateVMFactory) = activity!!.getViewModel<R>(factory)
 
 private fun Fragment.withMapHolder(pair: Pair<MapHolder, Int>) {
     val (holder, id) = pair
