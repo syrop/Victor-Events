@@ -38,12 +38,12 @@ class EventDetailsFragment : Fragment(R.layout.fr_event_details) {
         time set event.time.toLocalTime().toString()
         date set event.time.toLocalDate().toString()
         with(event.desc) {
-            if (isNullOrEmpty()) { desc_layout.visibility = View.GONE }
-            else { desc set this }
+            if (isNullOrEmpty()) desc_layout.visibility = View.GONE
+            else desc set this
         }
         with (event.address) {
-            if (isNullOrEmpty()) { address_layout.visibility = View.GONE }
-            else { address set this }
+            if (isNullOrEmpty()) address_layout.visibility = View.GONE
+            else address set this
         }
         if (event.location != null) {
             map_container.visibility = View.VISIBLE
