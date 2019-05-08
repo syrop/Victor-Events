@@ -42,7 +42,7 @@ class CommAddViewModel(val app: Application) : AndroidViewModel(app) {
                 fsReader.findCommunity(name).let {
                     queryState.postValue(QueryState.Completed(it))
                 }
-            } catch (ex: FirebaseFirestoreException) {
+            } catch (e: FirebaseFirestoreException) {
                 queryState.postValue(QueryState.Error(app.getString(R.string.add_comm_connection_problem)))
             }
         }

@@ -23,6 +23,7 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.WorkerParameters
+import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.Dispatchers
 import pl.org.seva.events.R
 import pl.org.seva.events.main.model.SyncWorker
@@ -37,15 +38,20 @@ class CommSyncWorker(private val context: Context, params: WorkerParameters) :
     override val coroutineContext = Dispatchers.IO
 
     override suspend fun doWork() = syncCoroutineScope {
-        comms.refresh()
-                .filter { it.isDummy }
-                .map { Message(
-                        LocalDateTime.now(),
-                        context.getString(R.string.system_message_comm_deleted)
-                                .replace(NAME_PLACEHOLDER, it.originalName)) }
-                .apply {
-                    messages addAll this
-                }
+        try {
+            comms.refresh()
+                    .filter { it.isDummy }
+                    .map {
+                        Message(
+                                LocalDateTime.now(),
+                                context.getString(R.string.system_message_comm_deleted)
+                                        .replace(NAME_PLACEHOLDER, it.originalName))
+                    }
+                    .apply {
+                        messages addAll this
+                    }
+        }
+        catch (e: FirebaseFirestoreException) {}
         Result.success()
     }
 
