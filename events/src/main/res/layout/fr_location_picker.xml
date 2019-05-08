@@ -20,7 +20,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:focusable="false"
-                android:inputType="none"
+                android:inputType="none|textNoSuggestions"
                 android:hint="@string/pick_location_select_location"/>
         </com.google.android.material.textfield.TextInputLayout>
 
