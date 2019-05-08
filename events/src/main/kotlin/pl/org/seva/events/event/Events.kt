@@ -65,7 +65,7 @@ class Events : LiveRepository() {
     }
 
     suspend fun fromDb() {
-        eventsCache.addAll(eventsDao.getAllValues())
+        eventsCache.addAll(eventsDao.getAllValues().sortedBy { it.time })
         notifyDataSetChanged()
     }
 
@@ -86,6 +86,8 @@ class Events : LiveRepository() {
             launchEach { eventsDao.add(it) }
         }
     }
+
+    override fun toString(): String = eventsCache.toString()
 
     operator fun get(index: Int) = eventsCache[index]
 }

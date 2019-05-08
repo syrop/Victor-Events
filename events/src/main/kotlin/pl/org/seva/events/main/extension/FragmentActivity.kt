@@ -20,6 +20,7 @@
 package pl.org.seva.events.main.extension
 
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.SavedStateVMFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 
@@ -27,3 +28,6 @@ inline fun <reified R : ViewModel> FragmentActivity.viewModel() = lazy { getView
 
 inline fun <reified R : ViewModel> FragmentActivity.getViewModel() =
         ViewModelProviders.of(this).get(R::class.java)
+
+inline fun <reified R : ViewModel> FragmentActivity.getViewModel(factory: SavedStateVMFactory) =
+        ViewModelProviders.of(this, factory).get(R::class.java)

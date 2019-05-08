@@ -23,6 +23,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.SavedStateVMFactory
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import kotlinx.android.synthetic.main.fr_event_list.*
@@ -50,7 +51,7 @@ class EventListFragment : Fragment(R.layout.fr_event_list) {
         events_view.layoutManager = LinearLayoutManager(context)
         events_view.verticalDivider()
         events_view.adapter = EventAdapter { position ->
-            getViewModel<EventViewModel>().event = events[position]
+            getViewModel<EventViewModel>(SavedStateVMFactory(activity!!)).position = position
             nav(R.id.action_eventsFragment_to_eventDetailsFragment)
         }
 
@@ -67,7 +68,6 @@ class EventListFragment : Fragment(R.layout.fr_event_list) {
                 prompt.visibility = View.GONE
                 events_view.visibility = View.VISIBLE
                 events_view.adapter!!.notifyDataSetChanged()
-
             }
         }
     }

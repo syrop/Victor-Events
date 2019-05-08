@@ -19,8 +19,18 @@
 
 package pl.org.seva.events.event
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 
-class EventViewModel : ViewModel() {
-    lateinit var event: Event
+class EventViewModel(private val state: SavedStateHandle) : ViewModel() {
+
+    var position: Int
+        set(value) = state.set(EVENT_POSITION, value)
+        get() = state.get<Int>(EVENT_POSITION)!!
+
+    val event get() = events[position]
+
+    companion object {
+        const val EVENT_POSITION = "event_position"
+    }
 }
