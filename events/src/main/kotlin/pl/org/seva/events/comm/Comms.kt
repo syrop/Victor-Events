@@ -82,7 +82,7 @@ class Comms : LiveRepository() {
             }
 
     suspend fun fromDb() {
-        commsCache.addAll(commDao.getAllValues())
+        commsCache.addAll(commDao.getAllValues().sortedBy { it.lcName })
         notifyDataSetChanged()
     }
 

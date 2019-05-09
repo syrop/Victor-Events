@@ -22,7 +22,7 @@ package pl.org.seva.events.event
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.navArgs
+import androidx.lifecycle.SavedStateVMFactory
 import kotlinx.android.synthetic.main.fr_event_details.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.*
@@ -30,11 +30,9 @@ import pl.org.seva.events.main.model.permissions
 
 class EventDetailsFragment : Fragment(R.layout.fr_event_details) {
 
-    private val args: EventDetailsFragmentArgs by navArgs()
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val event = events[args.position]
+        val event = getViewModel<EventViewModel>(SavedStateVMFactory(activity!!)).event
         title = event.name
         comm set event.comm
         name set event.name

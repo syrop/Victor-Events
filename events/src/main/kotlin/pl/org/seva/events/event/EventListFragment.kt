@@ -23,6 +23,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.SavedStateVMFactory
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import kotlinx.android.synthetic.main.fr_event_list.*
@@ -30,6 +31,7 @@ import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.main.extension.nav
 import pl.org.seva.events.login.login
+import pl.org.seva.events.main.extension.getViewModel
 import pl.org.seva.events.main.extension.invoke
 import pl.org.seva.events.main.extension.verticalDivider
 
@@ -48,7 +50,8 @@ class EventListFragment : Fragment(R.layout.fr_event_list) {
         events_view.layoutManager = LinearLayoutManager(context)
         events_view.verticalDivider()
         events_view.adapter = EventAdapter { position ->
-            nav(EventListFragmentDirections.actionEventsFragmentToEventDetailsFragment(position))
+            getViewModel<EventViewModel>(SavedStateVMFactory(activity!!)).withPosition(position)
+            nav(R.id.action_eventsFragment_to_eventDetailsFragment)
         }
 
         (comms + this) {

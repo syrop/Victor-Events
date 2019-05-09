@@ -30,12 +30,7 @@
             app:destination="@id/aboutFragment"/>
         <action
             android:id="@+id/action_eventsFragment_to_eventDetailsFragment"
-            app:destination="@id/eventDetailsFragment">
-            <argument
-                android:name="position"
-                app:argType="integer"
-                android:defaultValue="-1" />
-        </action>
+            app:destination="@id/eventDetailsFragment"/>
     </fragment>
 
     <fragment
@@ -52,12 +47,7 @@
         android:id="@+id/eventDetailsFragment"
         android:name="pl.org.seva.events.event.EventDetailsFragment"
         android:label="@string/event_details_label"
-        tools:layout="@layout/fr_event_details">
-        <argument
-            android:name="position"
-            app:argType="integer"
-            android:defaultValue="-1" />
-    </fragment>
+        tools:layout="@layout/fr_event_details"/>
 
     <fragment
         android:id="@+id/addCommFragment"

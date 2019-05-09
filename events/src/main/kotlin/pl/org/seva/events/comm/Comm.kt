@@ -22,6 +22,7 @@ package pl.org.seva.events.comm
 import android.graphics.Color
 import androidx.room.PrimaryKey
 import pl.org.seva.events.main.model.db.EventsDb
+import java.util.*
 
 data class Comm(
         val name: String,
@@ -34,7 +35,7 @@ data class Comm(
     var originalName get() = if (isDummy) attributes[ORIG_NAME]!! else name
     set(value)  { if (isDummy) attributes[ORIG_NAME] = value }
 
-    val lcName: String get() = name.toLowerCase()
+    val lcName: String get() = name.toLowerCase(Locale.getDefault())
 
     val isDummy get() = name == DUMMY_NAME
 

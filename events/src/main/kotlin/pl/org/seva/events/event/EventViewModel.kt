@@ -17,17 +17,28 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main.extension
+package pl.org.seva.events.event
 
-import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.SavedStateVMFactory
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProviders
 
-inline fun <reified R : ViewModel> FragmentActivity.viewModel() = lazy { getViewModel<R>() }
+class EventViewModel(private val state: SavedStateHandle) : ViewModel() {
 
-inline fun <reified R : ViewModel> FragmentActivity.getViewModel() =
-        ViewModelProviders.of(this).get(R::class.java)
+    lateinit var event: Event
 
-inline fun <reified R : ViewModel> FragmentActivity.getViewModel(factory: SavedStateVMFactory) =
-        ViewModelProviders.of(this, factory).get(R::class.java)
+    init {
+        val position = state.get<Int>(EVENT_POSITION) ?: -1
+        if (position >= 0) {
+            event = events[position]
+        }
+    }
+
+    fun withPosition(position: Int) {
+        event = events[position]
+        state.set(EVENT_POSITION, position)
+    }
+
+    companion object {
+        const val EVENT_POSITION = "event_position"
+    }
+}
