@@ -29,7 +29,7 @@ class CommDeleteFragment : Fragment(R.layout.fr_comm_delete) {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val comm = getViewModel<CommViewModel>().comm
+        val comm = getSavedStateViewModel<CommViewModel>().comm
         title = getString(R.string.comm_delete_title).replace(NAME_PLACEHOLDER, comm.name)
         prompt.text = getString(R.string.comm_delete_prompt).bold(NAME_PLACEHOLDER, comm.name)
         ok {

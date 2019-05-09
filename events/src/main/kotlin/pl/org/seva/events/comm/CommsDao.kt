@@ -26,8 +26,6 @@ suspend infix fun CommsDao.delete(comm: Comm) = delete(Comm.Entity(comm))
 
 suspend infix fun CommsDao.add(comm: Comm) = insert(Comm.Entity(comm))
 
-suspend infix fun CommsDao.update(comm: Comm) = update(Comm.Entity(comm))
-
 suspend fun CommsDao.getAllValues() = getAll().map { it.value() }
 
 @Dao

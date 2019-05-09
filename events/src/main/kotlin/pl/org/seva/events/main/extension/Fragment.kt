@@ -56,7 +56,9 @@ inline fun <reified R : ViewModel> Fragment.viewModel() = lazy { getViewModel<R>
 
 inline fun <reified R : ViewModel> Fragment.getViewModel() = activity!!.getViewModel<R>()
 
-inline fun <reified R : ViewModel> Fragment.getViewModel(factory: SavedStateVMFactory) = activity!!.getViewModel<R>(factory)
+inline fun <reified R : ViewModel> Fragment.savedStateViewModel() = lazy { getSavedStateViewModel<R>() }
+
+inline fun <reified R : ViewModel> Fragment.getSavedStateViewModel() = activity!!.getViewModel<R>(SavedStateVMFactory(activity!!))
 
 private fun Fragment.withMapHolder(pair: Pair<MapHolder, Int>) {
     val (holder, id) = pair

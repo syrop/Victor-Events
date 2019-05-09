@@ -25,6 +25,7 @@ import androidx.lifecycle.ViewModel
 class EventViewModel(private val state: SavedStateHandle) : ViewModel() {
 
     lateinit var event: Event
+        private set
 
     init {
         val position = state.get<Int>(EVENT_POSITION) ?: -1

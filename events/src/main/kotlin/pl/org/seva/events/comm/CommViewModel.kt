@@ -20,24 +20,46 @@
 package pl.org.seva.events.comm
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 
-class CommViewModel : ViewModel() {
-
-    init { (comms vm this) { comm = comms[comm.name] } }
+class CommViewModel(private val state: SavedStateHandle) : ViewModel() {
 
     var comm = Comm.DUMMY
-    set(value) {
+    private set(value) {
         field = value
         reset()
     }
+
     val name by lazy { MutableLiveData<String?>() }
     val desc by lazy { MutableLiveData<String?>() }
     val isAdmin by lazy { MutableLiveData<Boolean?>() }
 
-    fun reset() {
+    init {
+        (comms vm this) { comm = comms[comm.name] }
+        val position = state.get<Int>(COMM_POSITION) ?: -1
+        if (position >= 0) {
+            comm = comms[position]
+        }
+    }
+
+    fun withPosition(position: Int) {
+        comm = comms[position]
+        state.set(COMM_POSITION, position)
+    }
+
+    fun refresh() {
+        comm = comms[comm.name]
+        reset()
+    }
+
+    private fun reset() {
         name.value = comm.name
         desc.value = comm.desc
         isAdmin.value = comm.isAdmin
+    }
+
+    companion object {
+        const val COMM_POSITION = "comm_position"
     }
 }

@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity() {
                 else false
 
         fun resetCommViewModel(): Boolean {
-            commViewModel.reset()
+            commViewModel.refresh()
             return false
         }
 

@@ -27,13 +27,13 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fr_admin_add.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.back
+import pl.org.seva.events.main.extension.savedStateViewModel
 import pl.org.seva.events.main.extension.toast
-import pl.org.seva.events.main.extension.viewModel
 import pl.org.seva.events.main.model.fs.fsWriter
 
 class AdminAddFragment : Fragment(R.layout.fr_admin_add) {
 
-    private val vm by viewModel<CommViewModel>()
+    private val vm by savedStateViewModel<CommViewModel>()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

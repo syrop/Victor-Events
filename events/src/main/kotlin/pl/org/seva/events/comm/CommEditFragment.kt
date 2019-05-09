@@ -28,7 +28,7 @@ import pl.org.seva.events.main.extension.*
 
 class CommEditFragment : Fragment(R.layout.fr_comm_edit) {
 
-    private val vm by viewModel<CommViewModel>()
+    private val vm by savedStateViewModel<CommViewModel>()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -42,8 +42,8 @@ class CommEditFragment : Fragment(R.layout.fr_comm_edit) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         fun updateAndFinish(): Boolean {
             with(vm.comm.copy(desc = vm.desc.value ?: "")) {
-                vm.comm = this
                 update()
+                vm.refresh()
                 getString(R.string.comm_edit_updated)
                         .bold(NAME_PLACEHOLDER, name)
                         .toast()
