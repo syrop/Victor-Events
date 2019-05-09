@@ -44,7 +44,6 @@ class EventListFragment : Fragment(R.layout.fr_event_list) {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         add_event_fab { nav(R.id.action_eventsFragment_to_createEventFragment) }
-
         events_view.setHasFixedSize(true)
         events_view.layoutManager = LinearLayoutManager(context)
         events_view.verticalDivider()
