@@ -36,7 +36,7 @@ class CommViewModel(private val state: SavedStateHandle) : ViewModel() {
     val isAdmin by lazy { MutableLiveData<Boolean?>() }
 
     init {
-        (comms vm this) { comm = comms[comm.name] }
+        (comms vm this) { refresh() }
         val position = state.get<Int>(COMM_POSITION) ?: -1
         if (position >= 0) {
             comm = comms[position]
