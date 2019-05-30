@@ -24,12 +24,12 @@ import kotlinx.coroutines.coroutineScope
 import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.main.extension.launchEach
-import pl.org.seva.events.main.model.instance
-import pl.org.seva.events.main.model.LiveRepository
-import pl.org.seva.events.main.model.db.db
-import pl.org.seva.events.main.model.fs.fsReader
-import pl.org.seva.events.main.model.fs.fsWriter
-import pl.org.seva.events.main.model.io
+import pl.org.seva.events.main.init.instance
+import pl.org.seva.events.main.data.LiveRepository
+import pl.org.seva.events.main.data.db.db
+import pl.org.seva.events.main.data.firestore.fsReader
+import pl.org.seva.events.main.data.firestore.fsWriter
+import pl.org.seva.events.main.io
 
 val events by instance<Events>()
 

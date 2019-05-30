@@ -25,7 +25,7 @@ import kotlinx.android.synthetic.main.fr_about.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.inBrowser
 import pl.org.seva.events.main.extension.invoke
-import pl.org.seva.events.main.model.versionName
+import pl.org.seva.events.main.versionName
 
 class AboutFragment : Fragment(R.layout.fr_about) {
 

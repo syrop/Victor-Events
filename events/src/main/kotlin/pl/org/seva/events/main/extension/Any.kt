@@ -19,7 +19,7 @@
 
 package pl.org.seva.events.main.extension
 
-import pl.org.seva.events.main.model.instance
+import pl.org.seva.events.main.init.instance
 import java.util.logging.Logger
 
 val Any.log: Logger get() {

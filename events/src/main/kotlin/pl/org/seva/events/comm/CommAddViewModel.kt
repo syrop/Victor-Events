@@ -28,7 +28,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import pl.org.seva.events.R
-import pl.org.seva.events.main.model.fs.fsReader
+import pl.org.seva.events.main.data.firestore.fsReader
 
 class CommAddViewModel(val app: Application) : AndroidViewModel(app) {
     val queryState by lazy { MutableLiveData<QueryState>(QueryState.None) }

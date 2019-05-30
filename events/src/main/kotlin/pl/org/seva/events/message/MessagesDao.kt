@@ -23,7 +23,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import pl.org.seva.events.main.model.db.EventsDb
+import pl.org.seva.events.main.data.db.EventsDb
 
 suspend fun MessagesDao.getAllValues() = getAll().map { it.value() }
 

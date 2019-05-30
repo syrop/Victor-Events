@@ -17,12 +17,15 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main.model
+package pl.org.seva.events.main
 
 import android.app.Application
 import android.content.Context
 import org.kodein.di.Kodein
 import org.kodein.di.conf.global
+import pl.org.seva.events.main.init.bootstrap
+import pl.org.seva.events.main.init.instance
+import pl.org.seva.events.main.init.module
 
 private val appContext by instance<Context>()
 

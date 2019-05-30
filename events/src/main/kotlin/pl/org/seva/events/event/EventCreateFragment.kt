@@ -28,7 +28,7 @@ import kotlinx.android.synthetic.main.fr_event_create.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.main.extension.*
-import pl.org.seva.events.main.model.permissions
+import pl.org.seva.events.main.data.permissions
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime

@@ -25,7 +25,7 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fr_event_details.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.*
-import pl.org.seva.events.main.model.permissions
+import pl.org.seva.events.main.data.permissions
 
 class EventDetailsFragment : Fragment(R.layout.fr_event_details) {
 

@@ -25,7 +25,7 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.WorkerParameters
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.Dispatchers
-import pl.org.seva.events.main.model.SyncWorker
+import pl.org.seva.events.main.data.SyncWorker
 import java.time.Duration
 
 class EventSyncWorker(context: Context, params: WorkerParameters) :

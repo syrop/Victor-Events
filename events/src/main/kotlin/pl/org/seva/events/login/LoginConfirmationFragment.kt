@@ -28,7 +28,7 @@ import kotlinx.android.synthetic.main.fr_login_conf.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.main.extension.*
-import pl.org.seva.events.main.model.io
+import pl.org.seva.events.main.io
 
 class LoginConfirmationFragment : Fragment(R.layout.fr_login_conf) {
 

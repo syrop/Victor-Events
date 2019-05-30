@@ -20,7 +20,7 @@
 package pl.org.seva.events.comm
 
 import androidx.room.*
-import pl.org.seva.events.main.model.db.EventsDb
+import pl.org.seva.events.main.data.db.EventsDb
 
 suspend infix fun CommsDao.delete(comm: Comm) = delete(Comm.Entity(comm))
 

@@ -30,16 +30,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
-import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
-import pl.org.seva.events.main.view.ui.InteractiveMapHolder
-import pl.org.seva.events.main.view.ui.MapHolder
-import pl.org.seva.events.main.model.Permissions
+import pl.org.seva.events.main.ui.InteractiveMapHolder
+import pl.org.seva.events.main.ui.MapHolder
+import pl.org.seva.events.main.data.Permissions
 import kotlin.coroutines.resume
 
 fun Fragment.nav(@IdRes resId: Int): Boolean {

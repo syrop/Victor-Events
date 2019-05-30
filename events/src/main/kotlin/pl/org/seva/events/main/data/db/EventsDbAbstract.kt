@@ -19,7 +19,7 @@
 
 @file:Suppress("unused")
 
-package pl.org.seva.events.main.model.db
+package pl.org.seva.events.main.data.db
 
 import androidx.room.RoomDatabase
 import androidx.room.Database

@@ -1,4 +1,4 @@
-package pl.org.seva.events.main.view
+package pl.org.seva.events.main
 
 import android.app.Activity
 import android.app.SearchManager

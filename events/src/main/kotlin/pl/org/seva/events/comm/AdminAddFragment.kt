@@ -29,7 +29,7 @@ import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.back
 import pl.org.seva.events.main.extension.savedStateViewModel
 import pl.org.seva.events.main.extension.toast
-import pl.org.seva.events.main.model.fs.fsWriter
+import pl.org.seva.events.main.data.firestore.fsWriter
 
 class AdminAddFragment : Fragment(R.layout.fr_admin_add) {
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Wiktor Nizio
+ * Copyright (C) 2018 Wiktor Nizio
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,33 +17,27 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-package pl.org.seva.events.main.view.ui
+package pl.org.seva.events.main.ui
 
 import android.content.Context
-import android.graphics.Color
-import pl.org.seva.events.main.model.instance
+import android.widget.Toast
+import pl.org.seva.events.main.init.instance
 
-val nextColor get() = colorFactory.nextColor()
+val toaster by instance<Toaster>()
 
-val colorFactory by instance<ColorFactory>()
+class Toaster(private val ctx: Context) {
 
-class ColorFactory(private val appContext: Context ) {
+    infix fun toast(message: CharSequence) {
+        toast(message, Toast.LENGTH_SHORT)
+    }
 
-    private val colors by lazy {
-        with(appContext) {
-            resources.getIdentifier(COLOR_ARRAY_NAME + COLOR_TYPE,"array", packageName).let {
-                resources.obtainTypedArray(it)
-            }
+    infix fun longToast(message: CharSequence) {
+        toast(message, Toast.LENGTH_LONG)
+    }
+
+    private fun toast(message: CharSequence, duration: Int) {
+        if (message.isNotBlank()) {
+            Toast.makeText(ctx, message, duration).show()
         }
-    }
-
-    fun nextColor() = with(colors) {
-        val index = (Math.random() * length()).toInt()
-        getColor(index, Color.GRAY)
-    }
-
-    companion object {
-        const val COLOR_ARRAY_NAME = "mdcolor_"
-        const val COLOR_TYPE = "400"
     }
 }

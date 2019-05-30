@@ -19,10 +19,10 @@
 
 package pl.org.seva.events.message
 
-import pl.org.seva.events.main.model.instance
-import pl.org.seva.events.main.model.LiveRepository
-import pl.org.seva.events.main.model.db.db
-import pl.org.seva.events.main.model.io
+import pl.org.seva.events.main.init.instance
+import pl.org.seva.events.main.data.LiveRepository
+import pl.org.seva.events.main.data.db.db
+import pl.org.seva.events.main.io
 
 val messages by instance<Messages>()
 

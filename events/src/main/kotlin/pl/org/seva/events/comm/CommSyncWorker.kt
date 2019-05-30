@@ -26,7 +26,7 @@ import androidx.work.WorkerParameters
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.Dispatchers
 import pl.org.seva.events.R
-import pl.org.seva.events.main.model.SyncWorker
+import pl.org.seva.events.main.data.SyncWorker
 import pl.org.seva.events.message.Message
 import pl.org.seva.events.message.messages
 import java.time.Duration

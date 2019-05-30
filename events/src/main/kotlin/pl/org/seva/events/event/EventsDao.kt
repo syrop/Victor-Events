@@ -23,7 +23,7 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Delete
 import androidx.room.Insert
-import pl.org.seva.events.main.model.db.EventsDb
+import pl.org.seva.events.main.data.db.EventsDb
 
 suspend infix fun EventsDao.add(event: Event) = insert(Event.Entity(event))
 

@@ -22,7 +22,7 @@ package pl.org.seva.events.event
 import androidx.room.PrimaryKey
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.GeoPoint
-import pl.org.seva.events.main.model.db.EventsDb
+import pl.org.seva.events.main.data.db.EventsDb
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 

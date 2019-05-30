@@ -19,7 +19,7 @@
 
 package pl.org.seva.events.main.extension
 
-import pl.org.seva.events.main.view.ui.toaster
+import pl.org.seva.events.main.ui.toaster
 
 fun CharSequence.toast() = toaster toast this
 

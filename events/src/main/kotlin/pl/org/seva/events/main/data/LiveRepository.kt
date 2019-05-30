@@ -19,7 +19,7 @@
 
 @file:Suppress("EXPERIMENTAL_API_USAGE")
 
-package pl.org.seva.events.main.model
+package pl.org.seva.events.main.data
 
 import android.os.Looper
 import androidx.lifecycle.LifecycleOwner
