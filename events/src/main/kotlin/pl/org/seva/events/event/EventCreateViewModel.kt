@@ -41,7 +41,7 @@ class EventCreateViewModel : ViewModel() {
     val isFilledIn
         get() = eventData.any { !it.value?.toString().isNullOrEmpty() }
 
-    fun clear() = eventData.onEach { it.value = null }
+    fun clear() = eventData.onEach { it.setValue(null) }
 
     private val eventData by lazy {
         listOf(name, time, date, location, desc)
