@@ -61,7 +61,7 @@ inline fun <reified R : ViewModel> Fragment.getSavedStateViewModel() = activity!
 
 private fun Fragment.withMapHolder(pair: Pair<MapHolder, Int>) {
     val (holder, id) = pair
-    scope.launch(Dispatchers.Main) {
+    lifecycleScope.launch(Dispatchers.Main) {
         holder withMap googleMap(id)
     }
 }
@@ -96,7 +96,7 @@ fun Fragment.request(requestCode: Int, requests: Array<Permissions.PermissionReq
 }
 
 private fun Fragment.watch(requestCode: Int, requests: Array<Permissions.PermissionRequest>) {
-    scope.launch { getViewModel<Permissions.ViewModel>().watch(requestCode, requests) }
+    lifecycleScope.launch { getViewModel<Permissions.ViewModel>().watch(requestCode, requests) }
 }
 
 fun Fragment.prefs(name: String): SharedPreferences =

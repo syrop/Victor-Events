@@ -75,8 +75,11 @@ dependencies {
     implementation 'org.kodein.di:kodein-di-conf-jvm:6.2.0'
 
     // Jetpack, AndroidX
+    // For a suggestion of lifecycle dependencies see:
+    // https://medium.com/corouteam/exploring-kotlin-coroutines-and-lifecycle-architectural-components-integration-on-android-c63bb8a9156f?sk=591d3d7c1abbf9bb6dfec0ba1973e48e
     implementation 'androidx.core:core-ktx:1.2.0-alpha01'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0-alpha01'
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0-alpha01"
     kapt 'androidx.room:room-compiler:2.1.0-rc01'
     implementation 'androidx.room:room-runtime:2.1.0-rc01'
     implementation 'androidx.room:room-ktx:2.1.0-rc01'
