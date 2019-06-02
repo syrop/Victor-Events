@@ -27,6 +27,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fr_comm_add.*
@@ -38,7 +39,7 @@ import pl.org.seva.events.main.ui.*
 
 class CommAddFragment : Fragment(R.layout.fr_comm_add) {
 
-    private val viewModel by commAddViewModel
+    private val commAddViewModel by activityViewModels<CommAddViewModel>()
 
     private val searchManager by lazy {
         activity!!.getSystemService(Context.SEARCH_SERVICE) as SearchManager
@@ -100,7 +101,7 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
         super.onActivityCreated(savedInstanceState)
         prompt.setText(if (comms.isEmpty) R.string.add_comm_please_search_empty else
             R.string.add_comm_please_search)
-        (viewModel.queryState + this) { result ->
+        (commAddViewModel.queryState + this) { result ->
             snackbar?.dismiss()
             when (result) {
                 is CommAddViewModel.QueryState.InProgress -> {
@@ -119,9 +120,9 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
                 }
             }
         }
-        (viewModel.commToCreate + this) { name ->
+        (commAddViewModel.commToCreate + this) { name ->
             if (!name.isNullOrEmpty()) {
-                viewModel.commToCreate.value = ""
+                commAddViewModel.commToCreate.value = ""
                 name.createJoinAndFinish()
             }
         }
@@ -167,7 +168,7 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
     }
 
     private fun resetAndBack(): Boolean {
-        viewModel.resetQuery()
+        commAddViewModel.resetQuery()
         back()
         return true
     }
