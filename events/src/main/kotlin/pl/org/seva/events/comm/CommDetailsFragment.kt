@@ -30,7 +30,7 @@ import pl.org.seva.events.main.extension.*
 
 class CommDetailsFragment : Fragment(R.layout.fr_comm_details) {
 
-    private val vm by savedStateViewModel<CommViewModel>()
+    private val vm by commViewModel
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

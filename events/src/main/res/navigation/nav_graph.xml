@@ -21,7 +21,7 @@
             app:destination="@id/systemMessagesFragment"/>
         <action
             android:id="@+id/action_eventsFragment_to_commListFragment"
-            app:destination="@id/commListFragment"/>
+            app:destination="@id/comms_graph"/>
         <action
             android:id="@+id/action_eventsFragment_to_logOutConfirmationFragment"
             app:destination="@id/logOutConfirmationFragment"/>
@@ -38,12 +38,6 @@
         android:name="pl.org.seva.events.event.EventDetailsFragment"
         android:label="@string/event_details_label"
         tools:layout="@layout/fr_event_details"/>
-
-    <fragment
-        android:id="@+id/addCommFragment"
-        android:name="pl.org.seva.events.comm.CommAddFragment"
-        android:label="@string/add_comm_label"
-        tools:layout="@layout/fr_comm_add"/>
 
     <fragment
         android:id="@+id/loginConfirmationFragment"
@@ -64,58 +58,11 @@
         tools:layout="@layout/fr_messages"/>
 
     <fragment
-        android:id="@+id/commListFragment"
-        android:name="pl.org.seva.events.comm.CommListFragment"
-        android:label="@string/comm_list_label"
-        tools:layout="@layout/fr_comm_list">
-        <action
-            android:id="@+id/action_commListFragment_to_addCommFragment"
-            app:destination="@id/addCommFragment"/>
-        <action
-            android:id="@+id/action_commListFragment_to_commDetailsFragment"
-            app:destination="@id/commDetailsFragment"/>
-    </fragment>
-
-    <fragment
-        android:id="@+id/commDetailsFragment"
-        android:name="pl.org.seva.events.comm.CommDetailsFragment"
-        android:label="@string/comm_details_label"
-        tools:layout="@layout/fr_comm_edit">
-        <action
-            android:id="@+id/action_commDetailsFragment_to_commEditFragment"
-            app:destination="@id/commEditFragment"/>
-        <action
-            android:id="@+id/action_commDetailsFragment_to_adminAddFragment"
-            app:destination="@id/adminAddFragment"/>
-    </fragment>
-
-    <fragment
-        android:id="@+id/commEditFragment"
-        android:name="pl.org.seva.events.comm.CommEditFragment"
-        android:label="@string/comm_edit_label"
-        tools:layout="@layout/fr_comm_edit">
-        <action
-            android:id="@+id/action_commEditFragment_to_commDeleteFragment"
-            app:destination="@id/commDeleteFragment"/>
-    </fragment>
-
-    <fragment
-        android:id="@+id/commDeleteFragment"
-        android:name="pl.org.seva.events.comm.CommDeleteFragment"
-        android:label="@string/comm_delete_label"
-        tools:layout="@layout/fr_comm_delete"/>
-
-    <fragment
         android:id="@+id/aboutFragment"
         android:name="pl.org.seva.events.about.AboutFragment"
         android:label="@string/about_label"
         tools:layout="@layout/fr_about"/>
 
-    <fragment
-        android:id="@+id/adminAddFragment"
-        android:name="pl.org.seva.events.comm.AdminAddFragment"
-        android:label="@string/admin_add_label"
-        tools:layout="@layout/fr_admin_add"/>
     <navigation
         android:id="@+id/event_create_graph"
         app:startDestination="@id/eventCreateFragment">
@@ -145,6 +92,58 @@
         <dialog
             android:id="@+id/datePicker"
             android:name="pl.org.seva.events.event.DatePickerFragment"/>
+    </navigation>
+    <navigation
+        android:id="@+id/comms_graph"
+        app:startDestination="@id/commListFragment">
+        <fragment
+            android:id="@+id/commEditFragment"
+            android:name="pl.org.seva.events.comm.CommEditFragment"
+            android:label="@string/comm_edit_label"
+            tools:layout="@layout/fr_comm_edit">
+            <action
+                android:id="@+id/action_commEditFragment_to_commDeleteFragment"
+                app:destination="@id/commDeleteFragment"/>
+        </fragment>
+        <fragment
+            android:id="@+id/addCommFragment"
+            android:name="pl.org.seva.events.comm.CommAddFragment"
+            android:label="@string/add_comm_label"
+            tools:layout="@layout/fr_comm_add"/>
+        <fragment
+            android:id="@+id/adminAddFragment"
+            android:name="pl.org.seva.events.comm.AdminAddFragment"
+            android:label="@string/admin_add_label"
+            tools:layout="@layout/fr_admin_add"/>
+        <fragment
+            android:id="@+id/commListFragment"
+            android:name="pl.org.seva.events.comm.CommListFragment"
+            android:label="@string/comm_list_label"
+            tools:layout="@layout/fr_comm_list">
+            <action
+                android:id="@+id/action_commListFragment_to_addCommFragment"
+                app:destination="@id/addCommFragment"/>
+            <action
+                android:id="@+id/action_commListFragment_to_commDetailsFragment"
+                app:destination="@id/commDetailsFragment"/>
+        </fragment>
+        <fragment
+            android:id="@+id/commDetailsFragment"
+            android:name="pl.org.seva.events.comm.CommDetailsFragment"
+            android:label="@string/comm_details_label"
+            tools:layout="@layout/fr_comm_edit">
+            <action
+                android:id="@+id/action_commDetailsFragment_to_commEditFragment"
+                app:destination="@id/commEditFragment"/>
+            <action
+                android:id="@+id/action_commDetailsFragment_to_adminAddFragment"
+                app:destination="@id/adminAddFragment"/>
+        </fragment>
+        <fragment
+            android:id="@+id/commDeleteFragment"
+            android:name="pl.org.seva.events.comm.CommDeleteFragment"
+            android:label="@string/comm_delete_label"
+            tools:layout="@layout/fr_comm_delete"/>
     </navigation>
 
 </navigation>

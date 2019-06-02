@@ -28,7 +28,7 @@ import pl.org.seva.events.main.extension.*
 
 class CommEditFragment : Fragment(R.layout.fr_comm_edit) {
 
-    private val vm by savedStateViewModel<CommViewModel>()
+    private val vm by commViewModel
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -37,6 +37,7 @@ class CommEditFragment : Fragment(R.layout.fr_comm_edit) {
         name set vm.comm.name
         (vm.name + this) { if (it == Comm.DUMMY_NAME) back() }
         desc backWith (vm.desc + this)
+        onBack { onBackOrHomePressed() }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -54,9 +55,17 @@ class CommEditFragment : Fragment(R.layout.fr_comm_edit) {
 
         return when (item.itemId) {
             R.id.action_ok -> updateAndFinish()
+            android.R.id.home -> onBackOrHomePressed()
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    private fun onBackOrHomePressed(): Boolean {
+        vm.reset()
+        back()
+        return true
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.comm_edit, menu)

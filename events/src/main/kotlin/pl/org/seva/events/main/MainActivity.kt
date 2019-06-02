@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.SearchManager
 import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
@@ -12,7 +11,6 @@ import kotlinx.android.synthetic.main.ac_main.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.CommAddFragment
 import pl.org.seva.events.comm.CommAddViewModel
-import pl.org.seva.events.comm.CommViewModel
 import pl.org.seva.events.main.extension.viewModel
 import pl.org.seva.events.login.LoginActivity
 import pl.org.seva.events.main.viewmodel.MainViewModel
@@ -23,7 +21,6 @@ class MainActivity : AppCompatActivity() {
 
     private val mainModel by viewModel<MainViewModel>()
     private val commAddViewModel by viewModel<CommAddViewModel>()
-    private val commViewModel by viewModel<CommViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,29 +32,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.addCommFragment -> commAddViewModel.resetQuery()
             }
             mainModel.pastDestination = destination.id
-        }
-    }
-
-    override fun onBackPressed() {
-        if (!onBackOrHomePressed()) {
-            super.onBackPressed()
-        }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        android.R.id.home -> onBackOrHomePressed()
-        else -> false
-    } || super.onOptionsItemSelected(item)
-
-    private fun onBackOrHomePressed(): Boolean {
-        fun resetCommViewModel(): Boolean {
-            commViewModel.reset()
-            return false
-        }
-
-        return when (navController.currentDestination?.id ?: 0) {
-            R.id.commEditFragment -> resetCommViewModel()
-            else -> false
         }
     }
 

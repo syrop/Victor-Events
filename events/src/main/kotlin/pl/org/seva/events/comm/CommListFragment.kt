@@ -37,7 +37,7 @@ class CommListFragment : Fragment(R.layout.fr_comm_list) {
         comms_view.layoutManager = LinearLayoutManager(context)
         comms_view.verticalDivider()
         comms_view.adapter = CommAdapter { position ->
-            getSavedStateViewModel<CommViewModel>().withPosition(position)
+            commViewModel.value.withPosition(position)
             nav(R.id.action_commListFragment_to_commDetailsFragment)
         }
         comms_view.swipeListener { position ->

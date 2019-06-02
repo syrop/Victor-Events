@@ -33,7 +33,7 @@ import pl.org.seva.events.main.data.firestore.fsWriter
 
 class AdminAddFragment : Fragment(R.layout.fr_admin_add) {
 
-    private val vm by savedStateViewModel<CommViewModel>()
+    private val vm by commViewModel
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
