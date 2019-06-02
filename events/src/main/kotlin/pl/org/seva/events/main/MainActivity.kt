@@ -13,13 +13,11 @@ import pl.org.seva.events.comm.CommAddFragment
 import pl.org.seva.events.comm.CommAddViewModel
 import pl.org.seva.events.main.extension.viewModel
 import pl.org.seva.events.login.LoginActivity
-import pl.org.seva.events.main.viewmodel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private val navController by lazy { findNavController(R.id.nav_host_fragment) }
 
-    private val mainModel by viewModel<MainViewModel>()
     private val commAddViewModel by viewModel<CommAddViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,12 +25,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.ac_main)
         setSupportActionBar(toolbar)
         NavigationUI.setupActionBarWithNavController(this, navController)
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (mainModel.pastDestination) {
-                R.id.addCommFragment -> commAddViewModel.resetQuery()
-            }
-            mainModel.pastDestination = destination.id
-        }
     }
 
     override fun onNewIntent(intent: Intent) {

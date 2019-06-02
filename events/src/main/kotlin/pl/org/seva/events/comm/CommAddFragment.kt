@@ -38,7 +38,7 @@ import pl.org.seva.events.main.ui.*
 
 class CommAddFragment : Fragment(R.layout.fr_comm_add) {
 
-    private val commAddViewModel by viewModel<CommAddViewModel>()
+    private val viewModel by commAddViewModel
 
     private val searchManager by lazy {
         activity!!.getSystemService(Context.SEARCH_SERVICE) as SearchManager
@@ -100,7 +100,7 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
         super.onActivityCreated(savedInstanceState)
         prompt.setText(if (comms.isEmpty) R.string.add_comm_please_search_empty else
             R.string.add_comm_please_search)
-        (commAddViewModel.queryState + this) { result ->
+        (viewModel.queryState + this) { result ->
             snackbar?.dismiss()
             when (result) {
                 is CommAddViewModel.QueryState.InProgress -> {
@@ -119,12 +119,14 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
                 }
             }
         }
-        (commAddViewModel.commToCreate + this) { name ->
+        (viewModel.commToCreate + this) { name ->
             if (!name.isNullOrEmpty()) {
-                commAddViewModel.commToCreate.value = ""
+                viewModel.commToCreate.value = ""
                 name.createJoinAndFinish()
             }
         }
+
+        onBack { resetAndBack() }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -143,12 +145,17 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
         searchMenuItem.prepareSearchView()
     }
 
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        android.R.id.home -> resetAndBack()
+        else -> super.onOptionsItemSelected(item)
+    }
+
     private fun String.createJoinAndFinish() {
         comms joinNewCommunity this
         getString(R.string.add_comm_created)
                 .bold(NAME_PLACEHOLDER, this)
                 .toast()
-        back()
+        resetAndBack()
     }
 
     private fun Comm.joinAndFinish() {
@@ -156,7 +163,13 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
         getString(R.string.add_comm_joined)
                 .bold(NAME_PLACEHOLDER, name)
                 .toast()
+        resetAndBack()
+    }
+
+    private fun resetAndBack(): Boolean {
+        viewModel.resetQuery()
         back()
+        return true
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

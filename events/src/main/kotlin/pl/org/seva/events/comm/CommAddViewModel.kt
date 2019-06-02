@@ -20,6 +20,7 @@
 package pl.org.seva.events.comm
 
 import android.app.Application
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -29,6 +30,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import pl.org.seva.events.R
 import pl.org.seva.events.main.data.firestore.fsReader
+import pl.org.seva.events.main.extension.viewModel
+
+val Fragment.commAddViewModel get() = viewModel<CommAddViewModel>()
 
 class CommAddViewModel(val app: Application) : AndroidViewModel(app) {
     val queryState by lazy { MutableLiveData<QueryState>(QueryState.None) }
