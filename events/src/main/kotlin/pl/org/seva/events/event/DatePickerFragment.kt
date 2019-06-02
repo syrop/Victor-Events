@@ -24,7 +24,6 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
-import pl.org.seva.events.main.extension.viewModel
 import java.time.LocalDate
 import java.util.*
 

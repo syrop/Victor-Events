@@ -52,11 +52,10 @@ fun Fragment.back(): Boolean {
     return true
 }
 
-inline fun <reified R : ViewModel> Fragment.viewModel() = lazy { getViewModel<R>() }
+inline fun <reified R : ViewModel> Fragment.fragmentViewModel() = lazy { getFragmentViewModel<R>() }
 
-inline fun <reified R : ViewModel> Fragment.getViewModel() = activity!!.getViewModel<R>()
-
-inline fun <reified R : ViewModel> Fragment.getSavedStateViewModel() = activity!!.getViewModel<R>(SavedStateVMFactory(activity!!))
+inline fun <reified R : ViewModel> Fragment.getFragmentViewModel() =
+        ViewModelProviders.of(this).get(R::class.java)
 
 private fun Fragment.withMapHolder(pair: Pair<MapHolder, Int>) {
     val (holder, id) = pair
@@ -95,7 +94,7 @@ fun Fragment.request(requestCode: Int, requests: Array<Permissions.PermissionReq
 }
 
 private fun Fragment.watch(requestCode: Int, requests: Array<Permissions.PermissionRequest>) {
-    lifecycleScope.launch { getViewModel<Permissions.ViewModel>().watch(requestCode, requests) }
+    lifecycleScope.launch { getFragmentViewModel<Permissions.ViewModel>().watch(requestCode, requests) }
 }
 
 fun Fragment.prefs(name: String): SharedPreferences =

@@ -19,8 +19,15 @@
 
 package pl.org.seva.events.event
 
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.SavedStateVMFactory
 import androidx.lifecycle.ViewModel
+import androidx.navigation.navGraphViewModels
+import pl.org.seva.events.R
+
+val Fragment.eventViewModel get() =
+    navGraphViewModels<EventViewModel>(R.id.nav_graph) { SavedStateVMFactory(activity!!) }
 
 class EventViewModel(private val state: SavedStateHandle) : ViewModel() {
 

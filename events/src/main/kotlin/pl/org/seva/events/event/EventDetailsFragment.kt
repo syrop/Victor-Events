@@ -31,7 +31,7 @@ class EventDetailsFragment : Fragment(R.layout.fr_event_details) {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val event = getSavedStateViewModel<EventViewModel>().event
+        val event = eventViewModel.value.event
         title = event.name
         comm set event.comm
         name set event.name

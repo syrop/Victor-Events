@@ -27,7 +27,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.selects.select
-import pl.org.seva.events.main.extension.getViewModel
+import pl.org.seva.events.main.extension.getFragmentViewModel
 import pl.org.seva.events.main.init.instance
 
 val permissions by instance<Permissions>()
@@ -40,7 +40,7 @@ class Permissions {
             permissions: Array<String>,
             grantResults: IntArray) {
 
-        val vm = fragment.getViewModel<ViewModel>()
+        val vm = fragment.getFragmentViewModel<ViewModel>()
         val granted = vm.granted
         val denied = vm.denied
 

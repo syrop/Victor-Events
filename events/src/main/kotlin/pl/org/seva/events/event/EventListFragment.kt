@@ -46,7 +46,7 @@ class EventListFragment : Fragment(R.layout.fr_event_list) {
         events_view.layoutManager = LinearLayoutManager(context)
         events_view.verticalDivider()
         events_view.adapter = EventAdapter { position ->
-            getSavedStateViewModel<EventViewModel>().withPosition(position)
+            eventViewModel.value.withPosition(position)
             nav(R.id.action_eventsFragment_to_eventDetailsFragment)
         }
 
