@@ -39,7 +39,7 @@ class LocationPickerFragment : Fragment(R.layout.fr_location_picker) {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
 
-        val viewModel = getViewModel<EventCreateViewModel>()
+        val viewModel = eventCreateViewModel.value
         delete_location_fab { viewModel.location.value = null }
         (viewModel.location + this) { onLocationChanged(it) }
 
