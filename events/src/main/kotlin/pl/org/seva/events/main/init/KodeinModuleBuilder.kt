@@ -46,7 +46,7 @@ inline fun <reified R : Any> instance() = Kodein.global.instance<R>()
 inline fun <reified A, reified T : Any> instance(arg: A) = Kodein.global.instance<A, T>(arg = arg)
 
 private val unit = Unit
-inline val <reified T> KodeinProperty<T>.value get() = provideDelegate(null, ::unit).value
+val <T> KodeinProperty<T>.value get() = provideDelegate(null, ::unit).value
 
 class KodeinModuleBuilder(private val ctx: Context) {
 
