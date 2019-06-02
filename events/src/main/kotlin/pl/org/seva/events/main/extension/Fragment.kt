@@ -54,14 +54,6 @@ fun Fragment.back(): Boolean {
 
 inline fun <reified R : ViewModel> Fragment.getFragmentViewModel() =
         ViewModelProviders.of(this).get(R::class.java)
-
-private fun Fragment.withMapHolder(pair: Pair<MapHolder, Int>) {
-    val (holder, id) = pair
-    lifecycleScope.launch(Dispatchers.Main) {
-        holder withMap googleMap(id)
-    }
-}
-
 fun Fragment.createMapHolder(@IdRes map: Int, block: MapHolder.() -> Unit = {}) =
         MapHolder().apply(block).also {
             withMapHolder(it to map)
@@ -71,6 +63,13 @@ fun Fragment.createInteractiveMapHolder(@IdRes map: Int, block: InteractiveMapHo
         InteractiveMapHolder().apply(block).also {
             withMapHolder(it to map)
         }
+
+private fun Fragment.withMapHolder(pair: Pair<MapHolder, Int>) {
+    val (holder, id) = pair
+    lifecycleScope.launch(Dispatchers.Main) {
+        holder withMap googleMap(id)
+    }
+}
 
 fun Fragment.checkPermission(permission: String) =
         ContextCompat.checkSelfPermission(context!!, permission) == PackageManager.PERMISSION_GRANTED
