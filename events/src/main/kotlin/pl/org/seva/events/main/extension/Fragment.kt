@@ -52,8 +52,6 @@ fun Fragment.back(): Boolean {
     return true
 }
 
-inline fun <reified R : ViewModel> Fragment.fragmentViewModel() = lazy { getFragmentViewModel<R>() }
-
 inline fun <reified R : ViewModel> Fragment.getFragmentViewModel() =
         ViewModelProviders.of(this).get(R::class.java)
 
