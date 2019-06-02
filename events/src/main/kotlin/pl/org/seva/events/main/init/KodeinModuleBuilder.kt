@@ -21,6 +21,7 @@ package pl.org.seva.events.main.init
 
 import android.content.Context
 import android.location.Geocoder
+import android.os.Build
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinProperty
 import org.kodein.di.conf.global
@@ -45,8 +46,7 @@ inline fun <reified R : Any> instance() = Kodein.global.instance<R>()
 
 inline fun <reified A, reified T : Any> instance(arg: A) = Kodein.global.instance<A, T>(arg = arg)
 
-private val unit = Unit
-val <T> KodeinProperty<T>.value get() = provideDelegate(null, ::unit).value
+inline val <T> KodeinProperty<T>.value get() = provideDelegate(null, Build::ID).value
 
 class KodeinModuleBuilder(private val ctx: Context) {
 
