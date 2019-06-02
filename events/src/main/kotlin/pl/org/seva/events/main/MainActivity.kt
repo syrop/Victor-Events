@@ -13,10 +13,8 @@ import pl.org.seva.events.R
 import pl.org.seva.events.comm.CommAddFragment
 import pl.org.seva.events.comm.CommAddViewModel
 import pl.org.seva.events.comm.CommViewModel
-import pl.org.seva.events.event.EventCreateViewModel
 import pl.org.seva.events.main.extension.viewModel
 import pl.org.seva.events.login.LoginActivity
-import pl.org.seva.events.main.extension.question
 import pl.org.seva.events.main.viewmodel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -25,9 +23,6 @@ class MainActivity : AppCompatActivity() {
 
     private val mainModel by viewModel<MainViewModel>()
     private val commAddViewModel by viewModel<CommAddViewModel>()
-
-    private val createEventsViewModel by viewModel<EventCreateViewModel>()
-
     private val commViewModel by viewModel<CommViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,25 +50,12 @@ class MainActivity : AppCompatActivity() {
     } || super.onOptionsItemSelected(item)
 
     private fun onBackOrHomePressed(): Boolean {
-        fun showDismissEventDialog() =
-                if (createEventsViewModel.isFilledIn) {
-                    question(
-                            message = getString(R.string.main_activity_dismiss_event),
-                            yes = {
-                                createEventsViewModel.clear()
-                                navController.popBackStack()
-                            })
-                    true
-                }
-                else false
-
         fun resetCommViewModel(): Boolean {
             commViewModel.reset()
             return false
         }
 
         return when (navController.currentDestination?.id ?: 0) {
-            R.id.eventCreateFragment -> showDismissEventDialog()
             R.id.commEditFragment -> resetCommViewModel()
             else -> false
         }

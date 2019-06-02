@@ -35,7 +35,7 @@ import java.time.LocalTime
 
 class EventCreateFragment : Fragment(R.layout.fr_event_create) {
 
-    private val vm by viewModel<EventCreateViewModel>()
+    private val vm by eventCreateViewModel
 
     private val mapHolder by lazy {
         @Suppress("ReplaceSingleLineLet")
@@ -53,8 +53,8 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
-        fun showTimePicker() = TimePickerFragment().show(fragmentManager!!, TIME_PICKER_TAG)
-        fun showDatePicker() = DatePickerFragment().show(fragmentManager!!, DATE_PICKER_TAG)
+        fun showTimePicker() = nav(R.id.action_eventCreateFragment_to_timePicker)
+        fun showDatePicker() = nav(R.id.action_eventCreateFragment_to_datePicker)
         fun showLocationPicker() = nav(R.id.action_createEventFragment_to_locationPickerFragment)
 
         fun onTimeChanged(t: LocalTime?) = time set (t?.toString() ?: "")
@@ -96,6 +96,20 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
                 }
             }
         }
+
+        onBack { onBackOrHomePressed() }
+    }
+
+    private fun onBackOrHomePressed(): Boolean {
+        if (vm.isFilledIn) {
+            question(
+                    message = getString(R.string.main_activity_dismiss_event),
+                    yes = {
+                        vm.clear()
+                        back()
+                    })
+        } else back()
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -124,6 +138,7 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
 
         return when (item.itemId) {
             R.id.action_ok -> confirm()
+            android.R.id.home -> onBackOrHomePressed()
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -137,9 +152,4 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
             requests: Array<String>,
             grantResults: IntArray) =
             permissions.onRequestPermissionsResult(this, requestCode, requests, grantResults)
-
-    companion object {
-        private const val TIME_PICKER_TAG = "time_picker"
-        private const val DATE_PICKER_TAG = "date_picker"
-    }
 }

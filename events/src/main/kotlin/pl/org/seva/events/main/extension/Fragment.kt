@@ -25,6 +25,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -125,3 +126,14 @@ fun Fragment.enableMyLocationOnResume(map: GoogleMap) {
         }
     })
 }
+
+fun Fragment.onBack(block: () -> Unit) {
+
+    val callback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() = block()
+    }
+    activity!!.onBackPressedDispatcher.addCallback(this, callback)
+}
+
+fun Fragment.question(message: String, yes: () -> Unit = {}, no: () -> Unit = {}) =
+        context!!.question(message, yes, no)

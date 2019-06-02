@@ -19,10 +19,16 @@
 
 package pl.org.seva.events.event
 
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.navigation.navGraphViewModels
+import pl.org.seva.events.R
 import java.time.LocalDate
 import java.time.LocalTime
+
+val Fragment.eventCreateViewModel get() =
+    navGraphViewModels<EventCreateViewModel>(R.id.event_create_graph)
 
 class EventCreateViewModel : ViewModel() {
 
