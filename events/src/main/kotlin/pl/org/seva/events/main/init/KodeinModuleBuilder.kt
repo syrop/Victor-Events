@@ -60,6 +60,7 @@ class KodeinModuleBuilder(private val ctx: Context) {
         bind<Logger>() with multiton { tag: String ->
             Logger.getLogger(tag)!!.apply {
                 if (!BuildConfig.DEBUG) {
+                    @Suppress("UsePropertyAccessSyntax")
                     setFilter { false }
                 }
             }
