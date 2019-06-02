@@ -20,9 +20,7 @@
 package pl.org.seva.events.main.extension
 
 import pl.org.seva.events.main.init.instance
+import pl.org.seva.events.main.init.value
 import java.util.logging.Logger
 
-val Any.log: Logger get() {
-    val result by instance<String, Logger>(this::class.java.name)
-    return result
-}
+val Any.log: Logger get() = instance<String, Logger>(this::class.java.name).value
