@@ -20,6 +20,7 @@
 package pl.org.seva.events.main.data.firestore
 
 import com.google.firebase.firestore.*
+import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
@@ -47,8 +48,8 @@ abstract class FsBase {
 
     private infix fun FirebaseFirestore.collection(ref: String) = this.collection(ref)
 
-    protected suspend fun DocumentReference.read(): DocumentSnapshot = withContext(Dispatchers.IO) {
-        suspendCancellableCoroutine { continuation ->
+    protected suspend fun DocumentReference.read() = withContext(Dispatchers.IO) {
+        suspendCancellableCoroutine { continuation: CancellableContinuation<DocumentSnapshot> ->
             get().addOnCompleteListener { result ->
                 if (result.isSuccessful) {
                     continuation.resume(result.result!!)
@@ -59,8 +60,8 @@ abstract class FsBase {
         }
     }
 
-    protected suspend fun Query.read(): List<DocumentSnapshot> = withContext(Dispatchers.IO) {
-        suspendCancellableCoroutine { continuation ->
+    protected suspend fun Query.read() = withContext(Dispatchers.IO) {
+        suspendCancellableCoroutine { continuation: CancellableContinuation<List<DocumentSnapshot>> ->
             get().addOnCompleteListener { result ->
                 if (result.isSuccessful) {
                     continuation.resume(result.result!!.documents)
