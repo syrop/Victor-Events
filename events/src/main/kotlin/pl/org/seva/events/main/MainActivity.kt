@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.SearchManager
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
@@ -11,14 +12,13 @@ import kotlinx.android.synthetic.main.ac_main.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.CommAddFragment
 import pl.org.seva.events.comm.CommAddViewModel
-import pl.org.seva.events.main.extension.viewModel
 import pl.org.seva.events.login.LoginActivity
 
 class MainActivity : AppCompatActivity() {
 
     private val navController by lazy { findNavController(R.id.nav_host_fragment) }
 
-    private val commAddViewModel by viewModel<CommAddViewModel>()
+    private val commAddViewModel by viewModels<CommAddViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

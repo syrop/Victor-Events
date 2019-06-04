@@ -30,6 +30,7 @@ import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.GoogleMap
@@ -53,7 +54,8 @@ fun Fragment.back(): Boolean {
 }
 
 inline fun <reified R : ViewModel> Fragment.getFragmentViewModel() =
-        ViewModelProviders.of(this).get(R::class.java)
+        viewModels<R>().value
+
 fun Fragment.createMapHolder(@IdRes map: Int, block: MapHolder.() -> Unit = {}) =
         MapHolder().apply(block).also {
             withMapHolder(it to map)
