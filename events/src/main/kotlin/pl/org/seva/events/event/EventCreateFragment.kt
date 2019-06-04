@@ -87,7 +87,7 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
                 comm set get(0)
                 comm backWith (vm.comm + this@EventCreateFragment)
                 comm {
-                    AlertDialog.Builder(context!!)
+                    AlertDialog.Builder(requireContext())
                             .setItems(this) { dialog, which ->
                                 comm set get(which)
                                 dialog.dismiss()

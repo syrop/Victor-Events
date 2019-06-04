@@ -51,8 +51,7 @@ inline val <T> KodeinProperty<T>.value get() = provideDelegate(null, Build::ID).
 class KodeinModuleBuilder(private val ctx: Context) {
 
     fun build() = Kodein.Module(MODULE_NAME) {
-        bind<Context>() with singleton { ctx }
-        bind<Bootstrap>() with singleton { Bootstrap() }
+        bind<Bootstrap>() with factory { ctx: Context -> Bootstrap(ctx) }
         bind<FsReader>() with singleton { FsReader() }
         bind<Comms>() with singleton { Comms() }
         bind<Events>() with singleton { Events() }

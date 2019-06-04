@@ -20,18 +20,10 @@
 package pl.org.seva.events.main
 
 import android.app.Application
-import android.content.Context
 import org.kodein.di.Kodein
 import org.kodein.di.conf.global
 import pl.org.seva.events.main.init.bootstrap
-import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.main.init.module
-
-private val appContext by instance<Context>()
-
-val versionName: String by lazy {
-    appContext.packageManager.getPackageInfo(appContext.packageName, 0).versionName
-}
 
 @Suppress("unused")
 class EventsApplication : Application() {

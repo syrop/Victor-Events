@@ -74,11 +74,11 @@ private fun Fragment.withMapHolder(pair: Pair<MapHolder, Int>) {
 }
 
 fun Fragment.checkPermission(permission: String) =
-        ContextCompat.checkSelfPermission(context!!, permission) == PackageManager.PERMISSION_GRANTED
+        ContextCompat.checkSelfPermission(requireContext(), permission) == PackageManager.PERMISSION_GRANTED
 
-var Fragment.title: CharSequence get() = (activity!! as AppCompatActivity).supportActionBar!!.title!!
+var Fragment.title: CharSequence get() = (requireActivity() as AppCompatActivity).supportActionBar!!.title!!
 set(value) {
-    (activity!! as AppCompatActivity).supportActionBar!!.title = value
+    (requireActivity() as AppCompatActivity).supportActionBar!!.title = value
 }
 
 fun Fragment.inBrowser(uri: String) {
@@ -97,7 +97,7 @@ private fun Fragment.watch(requestCode: Int, requests: Array<Permissions.Permiss
 }
 
 fun Fragment.prefs(name: String): SharedPreferences =
-        context!!.getSharedPreferences(name, Context.MODE_PRIVATE)
+        requireContext().getSharedPreferences(name, Context.MODE_PRIVATE)
 
 suspend fun Fragment.googleMap(@IdRes id: Int) = suspendCancellableCoroutine<GoogleMap> { continuation ->
     val mapFragment = childFragmentManager.findFragmentById(id) as SupportMapFragment
@@ -128,8 +128,10 @@ fun Fragment.onBack(block: () -> Unit) {
     val callback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() = block()
     }
-    activity!!.onBackPressedDispatcher.addCallback(this, callback)
+    requireActivity().onBackPressedDispatcher.addCallback(this, callback)
 }
 
 fun Fragment.question(message: String, yes: () -> Unit = {}, no: () -> Unit = {}) =
-        context!!.question(message, yes, no)
+        requireContext().question(message, yes, no)
+
+val Fragment.versionName get() = requireContext().versionName

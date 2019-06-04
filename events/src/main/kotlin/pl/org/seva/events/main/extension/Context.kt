@@ -32,6 +32,8 @@ fun Context.question(message: String, yes: () -> Unit = {}, no: () -> Unit = {})
             .setNegativeButton(android.R.string.no, listener).show()
 }
 
+val Context.versionName: String get() = packageManager.getPackageInfo(packageName, 0).versionName
+
 private class YesNoListener(
         private val yes: () -> Unit = {},
         private val no: () -> Unit = {}): DialogInterface.OnClickListener {

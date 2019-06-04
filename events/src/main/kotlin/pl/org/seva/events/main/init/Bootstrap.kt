@@ -19,6 +19,7 @@
 
 package pl.org.seva.events.main.init
 
+import android.content.Context
 import androidx.work.*
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.coroutineScope
@@ -32,15 +33,15 @@ import pl.org.seva.events.login.login
 import pl.org.seva.events.message.messages
 import java.time.Duration
 
-val bootstrap by instance<Bootstrap>()
+val Context.bootstrap get() = instance<Context, Bootstrap>(this).value
 
-class Bootstrap {
+class Bootstrap(private val ctx : Context) {
 
     private inline fun <reified W : ListenableWorker> scheduleSync(
             tag: String,
             frequency: Duration,
             policy: ExistingPeriodicWorkPolicy) {
-        WorkManager.getInstance().enqueueUniquePeriodicWork(
+        WorkManager.getInstance(ctx).enqueueUniquePeriodicWork(
                 tag,
                 policy,
                 PeriodicWorkRequestBuilder<W>(frequency)

@@ -42,7 +42,7 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
     private val commAddViewModel by activityViewModels<CommAddViewModel>()
 
     private val searchManager by lazy {
-        activity!!.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
     }
 
     private var snackbar: Snackbar? = null
@@ -137,7 +137,7 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
         fun MenuItem.prepareSearchView() = with (actionView as SearchView) {
-            setSearchableInfo(searchManager.getSearchableInfo(activity!!.componentName))
+            setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
         }
 
         menuInflater.inflate(R.menu.comm_add, menu)

@@ -28,7 +28,7 @@ import androidx.navigation.navGraphViewModels
 import pl.org.seva.events.R
 
 val Fragment.commViewModel get() =
-    navGraphViewModels<CommViewModel>(R.id.comms_graph) { SavedStateVMFactory(activity!!) }
+    navGraphViewModels<CommViewModel>(R.id.comms_graph) { SavedStateVMFactory(requireActivity()) }
 
 class CommViewModel(private val state: SavedStateHandle) : ViewModel() {
 
