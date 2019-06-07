@@ -7,4 +7,5 @@ app/libs/
 *.apk
 events/release/
 events/libs/
+events/captures/
 
