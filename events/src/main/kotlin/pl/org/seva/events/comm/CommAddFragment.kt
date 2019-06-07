@@ -28,9 +28,11 @@ import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fr_comm_add.*
+import kotlinx.coroutines.launch
 import pl.org.seva.events.R
 import pl.org.seva.events.login.LoginActivity
 import pl.org.seva.events.login.isLoggedIn
@@ -152,19 +154,23 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
     }
 
     private fun String.createJoinAndFinish() {
-        comms joinNewCommunity this
-        getString(R.string.add_comm_created)
-                .bold(NAME_PLACEHOLDER, this)
-                .toast()
-        resetAndBack()
+        this@CommAddFragment.lifecycleScope.launch {
+            comms joinNewCommunity this@createJoinAndFinish
+            getString(R.string.add_comm_created)
+                    .bold(NAME_PLACEHOLDER, this@createJoinAndFinish)
+                    .toast()
+            resetAndBack()
+        }
     }
 
     private fun Comm.joinAndFinish() {
-        join()
-        getString(R.string.add_comm_joined)
-                .bold(NAME_PLACEHOLDER, name)
-                .toast()
-        resetAndBack()
+        lifecycleScope.launch {
+            join()
+            getString(R.string.add_comm_joined)
+                    .bold(NAME_PLACEHOLDER, name)
+                    .toast()
+            resetAndBack()
+        }
     }
 
     private fun resetAndBack(): Boolean {

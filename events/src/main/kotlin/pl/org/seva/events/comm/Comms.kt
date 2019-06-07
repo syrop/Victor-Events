@@ -19,8 +19,7 @@
 
 package pl.org.seva.events.comm
 
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.joinAll
+import kotlinx.coroutines.*
 import pl.org.seva.events.event.events
 import pl.org.seva.events.main.extension.launchEach
 import pl.org.seva.events.main.data.firestore.fsWriter
@@ -28,7 +27,6 @@ import pl.org.seva.events.main.data.firestore.fsReader
 import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.main.data.LiveRepository
 import pl.org.seva.events.main.data.db.db
-import pl.org.seva.events.main.io
 import pl.org.seva.events.main.ui.nextColor
 
 val comms by instance<Comms>()
@@ -60,26 +58,31 @@ class Comms : LiveRepository() {
         fsWriter update comm
     }
 
-    infix fun leave(comm: Comm) = commsCache.remove(comm).also { updated ->
+    suspend infix fun leave(comm: Comm): Boolean = withContext(NonCancellable) {
+        val updated = commsCache.remove(comm)
         if (updated) {
             notifyDataSetChanged()
-            io { commDao delete comm }
-            io { events deleteFrom comm }
+            launch { commDao delete comm }
+            launch { events deleteFrom comm }
+        }
+        updated
+    }
+
+    suspend infix fun delete(comm: Comm) {
+        if (leave(comm)) {
+            fsWriter delete comm
         }
     }
 
-    infix fun delete(comm: Comm) = leave(comm).also { updated ->
-        if (updated) fsWriter delete comm
+    suspend infix fun join(comm: Comm): Boolean = withContext(NonCancellable) {
+        val updated = !commsCache.contains(comm) && commsCache.add(comm)
+        if (updated) {
+            notifyDataSetChanged()
+            launch { events addFrom comm }
+            launch { commDao add comm }
+        }
+        updated
     }
-
-    infix fun join(comm: Comm) =
-            (!commsCache.contains(comm) && commsCache.add(comm)).also { updated ->
-                if (updated) {
-                    notifyDataSetChanged()
-                    io { events addFrom comm }
-                    io { commDao add comm }
-                }
-            }
 
     suspend fun fromDb() {
         commsCache.addAll(commDao.getAllValues().sortedBy { it.lcName })
@@ -102,19 +105,19 @@ class Comms : LiveRepository() {
         transformed
     }
 
-    suspend fun refreshAdminStatuses() = coroutineScope {
+    suspend fun refreshAdminStatuses() = withContext<Unit>(NonCancellable) {
         refresh { it.copy(isAdmin = fsReader.isAdmin(it.lcName)) }
-        Unit
     }
 
     suspend fun refresh() = coroutineScope {
         refresh { fsReader.findCommunity(it.name).copy(color = it.color) }
     }
 
-    infix fun joinNewCommunity(name: String) =
-            Comm(name, color = nextColor, isAdmin = true).apply {
-                fsWriter create this
-                fsWriter grantAdmin this
-                join()
-            }
+    suspend infix fun joinNewCommunity(name: String) = withContext(NonCancellable) {
+        Comm(name, color = nextColor, isAdmin = true).apply {
+            fsWriter create this
+            fsWriter grantAdmin this
+            join()
+        }
+    }
 }

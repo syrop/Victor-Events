@@ -19,8 +19,7 @@
 
 package pl.org.seva.events.event
 
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.*
 import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.main.extension.launchEach
@@ -29,7 +28,6 @@ import pl.org.seva.events.main.data.LiveRepository
 import pl.org.seva.events.main.data.db.db
 import pl.org.seva.events.main.data.firestore.fsReader
 import pl.org.seva.events.main.data.firestore.fsWriter
-import pl.org.seva.events.main.io
 
 val events by instance<Events>()
 
@@ -40,10 +38,10 @@ class Events : LiveRepository() {
 
     val size get() = eventsCache.size
 
-    infix fun add(event: Event) {
+    suspend infix fun add(event: Event) = withContext(NonCancellable) {
         eventsCache.add(event)
         notifyDataSetChanged()
-        io { eventsDao add event }
+        launch { eventsDao add event }
         fsWriter add event
     }
 

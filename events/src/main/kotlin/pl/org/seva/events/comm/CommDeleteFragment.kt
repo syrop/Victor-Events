@@ -22,6 +22,8 @@ package pl.org.seva.events.comm
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fr_comm_delete.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.*
 
@@ -33,7 +35,9 @@ class CommDeleteFragment : Fragment(R.layout.fr_comm_delete) {
         title = getString(R.string.comm_delete_title).replace(NAME_PLACEHOLDER, comm.name)
         prompt.text = getString(R.string.comm_delete_prompt).bold(NAME_PLACEHOLDER, comm.name)
         ok {
-            comm.delete()
+            GlobalScope.launch {
+                comm.delete()
+            }
             getString(R.string.comm_delete_toast).bold(NAME_PLACEHOLDER, comm.name).longToast()
             back()
         }

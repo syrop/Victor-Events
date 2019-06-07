@@ -41,11 +41,11 @@ data class Comm(
 
     val isMemberOf get () = comms contains this
 
-    fun leave() = comms leave this
+    suspend fun leave() = comms leave this
 
-    fun delete() = comms delete this
+    suspend fun delete() = comms delete this
 
-    fun join() = comms join this
+    suspend fun join() = comms join this
 
     fun update() = comms update  this
 

@@ -20,13 +20,13 @@
 package pl.org.seva.events.main.data.firestore
 
 import com.google.firebase.firestore.SetOptions
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.event.Event
 import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.login.login
-import pl.org.seva.events.main.io
 import java.util.*
 
 val fsWriter by instance<FsWriter>()
@@ -44,7 +44,7 @@ class FsWriter : FsBase() {
         lcName.comm.set(mapOf(COMM_NAME to name, COMM_DESC to desc), SetOptions.merge())
     }
 
-    infix fun delete(comm: Comm) = io {
+    suspend infix fun delete(comm: Comm) = coroutineScope {
         launch {
             comm.lcName.events.read().map { event ->
                 launch { event.reference.delete() }

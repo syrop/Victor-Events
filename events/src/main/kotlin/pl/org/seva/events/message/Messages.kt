@@ -19,10 +19,11 @@
 
 package pl.org.seva.events.message
 
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.main.data.LiveRepository
 import pl.org.seva.events.main.data.db.db
-import pl.org.seva.events.main.io
 
 val messages by instance<Messages>()
 
@@ -41,15 +42,15 @@ class Messages : LiveRepository() {
         notifyDataSetChanged()
     }
 
-    infix fun addAll(messages: Collection<Message>) {
+    suspend infix fun addAll(messages: Collection<Message>) = coroutineScope {
         messageCache.addAll(messages)
-        io { messagesDao addAll messages }
+        launch { messagesDao addAll messages }
         notifyDataSetChanged()
     }
 
-    infix fun delete(message: Message) {
+    suspend infix fun delete(message: Message) = coroutineScope {
         messageCache.remove(message)
-        io { messagesDao delete message }
+        launch { messagesDao delete message }
         notifyDataSetChanged()
     }
 }

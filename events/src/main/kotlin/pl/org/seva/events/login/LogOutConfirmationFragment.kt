@@ -24,12 +24,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import kotlinx.android.synthetic.main.fr_log_out_conf.*
+import kotlinx.coroutines.launch
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.main.extension.back
 import pl.org.seva.events.main.extension.invoke
-import pl.org.seva.events.main.io
 
 class LogOutConfirmationFragment : Fragment(R.layout.fr_log_out_conf) {
 
@@ -41,8 +42,9 @@ class LogOutConfirmationFragment : Fragment(R.layout.fr_log_out_conf) {
                     .putExtra(LoginActivity.ACTION, LoginActivity.LOGOUT)
             startActivityForResult(intent, LOG_OUT_REQUEST)
         }
-
-        cancel { back() }
+        cancel {
+            back()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -52,7 +54,7 @@ class LogOutConfirmationFragment : Fragment(R.layout.fr_log_out_conf) {
             log_out.visibility = View.GONE
             cancel.visibility = View.GONE
             progress.visibility = View.VISIBLE
-            io {
+            lifecycleScope.launch {
                 comms.refreshAdminStatuses()
                 back()
             }

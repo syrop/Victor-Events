@@ -22,9 +22,12 @@ package pl.org.seva.events.comm
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fr_comm_list.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.*
 
@@ -42,15 +45,19 @@ class CommListFragment : Fragment(R.layout.fr_comm_list) {
         }
         comms_view.swipeListener { position ->
             val comm = comms[position]
-            comm.leave()
-            Snackbar.make(
-                    comms_view,
-                    getString(R.string.comm_list_leave).bold(NAME_PLACEHOLDER, comm.name),
-                    Snackbar.LENGTH_LONG)
-                    .setAction(R.string.comm_list_undo) { comm.join() }
-                    .show()
+            lifecycleScope.launch {
+                comm.leave()
+                Snackbar.make(
+                        comms_view,
+                        getString(R.string.comm_list_leave).bold(NAME_PLACEHOLDER, comm.name),
+                        Snackbar.LENGTH_LONG)
+                        .setAction(R.string.comm_list_undo) { GlobalScope.launch { comm.join() } }
+                        .show()
+            }
         }
-        add_comm_fab { nav(R.id.action_commListFragment_to_addCommFragment) }
+        add_comm_fab {
+            nav(R.id.action_commListFragment_to_addCommFragment)
+        }
 
         (comms + this) {
             if (comms.isEmpty) {

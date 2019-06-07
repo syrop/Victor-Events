@@ -25,7 +25,7 @@ import java.time.LocalDateTime
 
 data class Message(val time: LocalDateTime, val content: String) {
 
-    fun delete() {
+    suspend fun delete() {
         messages delete this
     }
 

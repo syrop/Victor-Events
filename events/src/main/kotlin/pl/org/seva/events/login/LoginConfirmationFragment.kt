@@ -24,11 +24,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import kotlinx.android.synthetic.main.fr_login_conf.*
+import kotlinx.coroutines.launch
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.main.extension.*
-import pl.org.seva.events.main.io
 
 class LoginConfirmationFragment : Fragment(R.layout.fr_login_conf) {
 
@@ -40,8 +41,12 @@ class LoginConfirmationFragment : Fragment(R.layout.fr_login_conf) {
                     .putExtra(LoginActivity.ACTION, LoginActivity.LOGIN)
             startActivityForResult(intent, LOGIN_REQUEST)
         }
-        cancel { back() }
-        privacy_policy { inBrowser(getString(R.string.login_confirmation_privacy_uri)) }
+        cancel {
+            back()
+        }
+        privacy_policy {
+            inBrowser(getString(R.string.login_confirmation_privacy_uri))
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -52,7 +57,7 @@ class LoginConfirmationFragment : Fragment(R.layout.fr_login_conf) {
             privacy_policy.visibility = View.GONE
             cancel.visibility = View.GONE
             progress.visibility = View.VISIBLE
-            io {
+            lifecycleScope.launch {
                 comms.refreshAdminStatuses()
                 back()
             }

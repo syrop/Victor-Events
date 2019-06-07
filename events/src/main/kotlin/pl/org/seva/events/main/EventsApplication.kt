@@ -20,6 +20,8 @@
 package pl.org.seva.events.main
 
 import android.app.Application
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.kodein.di.Kodein
 import org.kodein.di.conf.global
 import pl.org.seva.events.main.init.bootstrap
@@ -34,6 +36,8 @@ class EventsApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        io { bootstrap.boot() }
+        GlobalScope.launch {
+            bootstrap.boot()
+        }
     }
 }
