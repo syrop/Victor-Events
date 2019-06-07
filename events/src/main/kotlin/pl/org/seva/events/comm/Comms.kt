@@ -91,7 +91,7 @@ class Comms : LiveRepository() {
 
     suspend fun <R> map(block: suspend (Comm) -> R) = commsCache.toList().map { block(it) }
 
-    private suspend fun refresh(transform: suspend (Comm) -> Comm): List<Comm> = coroutineScope {
+    private suspend fun refresh(transform: suspend (Comm) -> Comm): List<Comm> = withContext(NonCancellable) {
         val commCopy = commsCache.toList()
         val transformed = mutableListOf<Comm>()
 
@@ -105,13 +105,11 @@ class Comms : LiveRepository() {
         transformed
     }
 
-    suspend fun refreshAdminStatuses() = withContext<Unit>(NonCancellable) {
+    suspend fun refreshAdminStatuses() =
         refresh { it.copy(isAdmin = fsReader.isAdmin(it.lcName)) }
-    }
 
-    suspend fun refresh() = coroutineScope {
+    suspend fun refresh() =
         refresh { fsReader.findCommunity(it.name).copy(color = it.color) }
-    }
 
     suspend infix fun joinNewCommunity(name: String) = withContext(NonCancellable) {
         Comm(name, color = nextColor, isAdmin = true).apply {
