@@ -22,9 +22,9 @@ package pl.org.seva.events.message
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fr_messages.*
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.swipeListener
@@ -40,7 +40,7 @@ class MessagesFragment : Fragment(R.layout.fr_messages) {
         messages_view.adapter = MessagesAdapter()
         messages_view.verticalDivider()
         messages_view.swipeListener { position ->
-                GlobalScope.launch { messages[position].delete() }
+                lifecycleScope.launch { messages[position].delete() }
         }
 
         (messages + this) {
