@@ -93,10 +93,10 @@ class Comms : LiveRepository() {
 
     private suspend fun refresh(transform: suspend (Comm) -> Comm): List<Comm> =
             withContext(NonCancellable + Dispatchers.Default) {
-                val commCopy = commsCache.toList()
+                val commsCopy = commsCache.toList()
                 val transformed = mutableListOf<Comm>()
 
-                commCopy.launchEach { transformed.add(transform(it)) }
+                commsCopy.launchEach { transformed.add(transform(it)) }
                         .joinAll()
                 commsCache.clear()
                 commsCache.addAll(transformed.filter { !it.isDummy })
