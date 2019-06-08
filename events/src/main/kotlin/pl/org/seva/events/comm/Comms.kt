@@ -100,8 +100,8 @@ class Comms : LiveRepository() {
                         .joinAll()
                 commsCache.clear()
                 commsCache.addAll(transformed.filter { !it.isDummy })
-                commDao.clear()
                 notifyDataSetChanged()
+                commDao.clear()
                 commsCache.launchEach { commDao add it }
                 transformed
             }
