@@ -103,10 +103,9 @@ class Comms : LiveRepository() {
                         .toList()
                         .asyncMap { transform(it) }
                         .awaitAll()
-                        .filter { !it.isDummy }
                 withContext(NonCancellable) {
                     commsCache.clear()
-                    commsCache.addAll(transformed)
+                    commsCache.addAll(transformed.filter { !it.isDummy })
                     commDao.clear()
                     commDao add commsCache
                     notifyDataSetChanged()
