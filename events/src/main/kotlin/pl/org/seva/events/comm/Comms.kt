@@ -91,19 +91,20 @@ class Comms : LiveRepository() {
 
     suspend fun <R> map(block: suspend (Comm) -> R) = commsCache.toList().map { block(it) }
 
-    private suspend fun refresh(transform: suspend (Comm) -> Comm): List<Comm> = withContext(NonCancellable) {
-        val commCopy = commsCache.toList()
-        val transformed = mutableListOf<Comm>()
+    private suspend fun refresh(transform: suspend (Comm) -> Comm): List<Comm> =
+            withContext(NonCancellable + Dispatchers.Default) {
+                val commCopy = commsCache.toList()
+                val transformed = mutableListOf<Comm>()
 
-        commCopy.launchEach { transformed.add(transform(it)) }
-                .joinAll()
-        commsCache.clear()
-        commsCache.addAll(transformed.filter { !it.isDummy })
-        commDao.clear()
-        notifyDataSetChanged()
-        commsCache.launchEach { commDao add it }
-        transformed
-    }
+                commCopy.launchEach { transformed.add(transform(it)) }
+                        .joinAll()
+                commsCache.clear()
+                commsCache.addAll(transformed.filter { !it.isDummy })
+                commDao.clear()
+                notifyDataSetChanged()
+                commsCache.launchEach { commDao add it }
+                transformed
+            }
 
     suspend fun refreshAdminStatuses() =
         refresh { it.copy(isAdmin = fsReader.isAdmin(it.lcName)) }
