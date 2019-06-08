@@ -28,6 +28,8 @@ suspend infix fun CommsDao.add(comm: Comm) = insert(Comm.Entity(comm))
 
 suspend fun CommsDao.getAllValues() = getAll().map { it.value() }
 
+suspend infix fun CommsDao.add(comms: Collection<Comm>) = insert(comms.map { Comm.Entity(it) })
+
 @Dao
 interface CommsDao {
 
@@ -36,6 +38,9 @@ interface CommsDao {
 
     @Insert
     suspend fun insert(comm: Comm.Entity)
+
+    @Insert
+    suspend fun insert(comms: Collection<Comm.Entity>)
 
     @Delete
     suspend fun delete(comm: Comm.Entity)

@@ -19,9 +19,14 @@
 
 package pl.org.seva.events.main.extension
 
+import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 suspend fun <T> Iterable<T>.launchEach(block: suspend (T) -> Unit) = coroutineScope {
     map { launch { block(it) } }
+}
+
+suspend fun <T, R> Iterable<T>.asyncMap(block: suspend (T) -> R) = coroutineScope {
+    map { async { block(it) } }
 }

@@ -21,12 +21,12 @@ package pl.org.seva.events.comm
 
 import kotlinx.coroutines.*
 import pl.org.seva.events.event.events
-import pl.org.seva.events.main.extension.launchEach
 import pl.org.seva.events.main.data.firestore.fsWriter
 import pl.org.seva.events.main.data.firestore.fsReader
 import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.main.data.LiveRepository
 import pl.org.seva.events.main.data.db.db
+import pl.org.seva.events.main.extension.asyncMap
 import pl.org.seva.events.main.ui.nextColor
 
 val comms by instance<Comms>()
@@ -98,17 +98,19 @@ class Comms : LiveRepository() {
         refresh { fsReader.findCommunity(it.name).copy(color = it.color) }
 
     private suspend fun refresh(transform: suspend (Comm) -> Comm): List<Comm> =
-            withContext(NonCancellable + Dispatchers.Default) {
-                val commsCopy = commsCache.toList()
-                val transformed = mutableListOf<Comm>()
-
-                commsCopy.launchEach { transformed.add(transform(it)) }
-                        .joinAll()
-                commsCache.clear()
-                commsCache.addAll(transformed.filter { !it.isDummy })
-                notifyDataSetChanged()
-                commDao.clear()
-                commsCache.launchEach { commDao add it }
+            withContext(Dispatchers.Default) {
+                val transformed = commsCache
+                        .toList()
+                        .asyncMap { transform(it) }
+                        .awaitAll()
+                        .filter { !it.isDummy }
+                withContext(NonCancellable) {
+                    commsCache.clear()
+                    commsCache.addAll(transformed)
+                    commDao.clear()
+                    commDao add commsCache
+                    notifyDataSetChanged()
+                }
                 transformed
             }
 
