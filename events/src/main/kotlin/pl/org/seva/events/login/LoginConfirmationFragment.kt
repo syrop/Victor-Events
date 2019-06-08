@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import kotlinx.android.synthetic.main.fr_login_conf.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.yield
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.comms
 import pl.org.seva.events.main.extension.*
@@ -59,6 +60,7 @@ class LoginConfirmationFragment : Fragment(R.layout.fr_login_conf) {
             progress.visibility = View.VISIBLE
             lifecycleScope.launch {
                 comms.refreshAdminStatuses()
+                yield()
                 back()
             }
         }
