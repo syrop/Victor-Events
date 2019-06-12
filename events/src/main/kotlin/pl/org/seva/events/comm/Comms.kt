@@ -21,12 +21,12 @@ package pl.org.seva.events.comm
 
 import kotlinx.coroutines.*
 import pl.org.seva.events.event.events
-import pl.org.seva.events.main.extension.launchEach
 import pl.org.seva.events.main.data.firestore.fsWriter
 import pl.org.seva.events.main.data.firestore.fsReader
 import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.main.data.LiveRepository
 import pl.org.seva.events.main.data.db.db
+import pl.org.seva.events.main.extension.asyncMap
 import pl.org.seva.events.main.ui.nextColor
 
 val comms by instance<Comms>()
@@ -91,27 +91,27 @@ class Comms : LiveRepository() {
 
     suspend fun <R> map(block: suspend (Comm) -> R) = commsCache.toList().map { block(it) }
 
-    private suspend fun refresh(transform: suspend (Comm) -> Comm): List<Comm> = coroutineScope {
-        val commCopy = commsCache.toList()
-        val transformed = mutableListOf<Comm>()
-
-        commCopy.launchEach { transformed.add(transform(it)) }
-                .joinAll()
-        commsCache.clear()
-        commsCache.addAll(transformed.filter { !it.isDummy })
-        commDao.clear()
-        notifyDataSetChanged()
-        commsCache.launchEach { commDao add it }
-        transformed
-    }
-
-    suspend fun refreshAdminStatuses() = withContext<Unit>(NonCancellable) {
+    suspend fun refreshAdminStatuses() =
         refresh { it.copy(isAdmin = fsReader.isAdmin(it.lcName)) }
-    }
 
-    suspend fun refresh() = coroutineScope {
+    suspend fun refresh() =
         refresh { fsReader.findCommunity(it.name).copy(color = it.color) }
-    }
+
+    private suspend fun refresh(transform: suspend (Comm) -> Comm): List<Comm> =
+            withContext(Dispatchers.Default) {
+                val transformed = commsCache
+                        .toList()
+                        .asyncMap { transform(it) }
+                        .awaitAll()
+                withContext(NonCancellable) {
+                    commsCache.clear()
+                    commsCache.addAll(transformed.filter { !it.isDummy })
+                    commDao.clear()
+                    commDao add commsCache
+                    notifyDataSetChanged()
+                }
+                transformed
+            }
 
     suspend infix fun joinNewCommunity(name: String) = withContext(NonCancellable) {
         Comm(name, color = nextColor, isAdmin = true).apply {

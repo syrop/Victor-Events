@@ -19,8 +19,9 @@
 
 package pl.org.seva.events.message
 
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.main.data.LiveRepository
 import pl.org.seva.events.main.data.db.db
@@ -37,18 +38,18 @@ class Messages : LiveRepository() {
 
     operator fun get(position: Int) = messageCache[position]
 
-    suspend fun fromDb() {
+    suspend fun readFromDb() = withContext(NonCancellable) {
         messageCache.addAll(db.messagesDao.getAllValues())
         notifyDataSetChanged()
     }
 
-    suspend infix fun addAll(messages: Collection<Message>) = coroutineScope {
+    suspend infix fun addAll(messages: Collection<Message>) = withContext(NonCancellable) {
         messageCache.addAll(messages)
         launch { messagesDao addAll messages }
         notifyDataSetChanged()
     }
 
-    suspend infix fun delete(message: Message) = coroutineScope {
+    suspend infix fun delete(message: Message) = withContext(NonCancellable) {
         messageCache.remove(message)
         launch { messagesDao delete message }
         notifyDataSetChanged()

@@ -49,12 +49,9 @@ fun Fragment.nav(@IdRes resId: Int): Boolean {
 }
 
 fun Fragment.back(): Boolean {
-    view!!.post { findNavController().popBackStack() }
+    findNavController().popBackStack()
     return true
 }
-
-inline fun <reified R : ViewModel> Fragment.getFragmentViewModel() =
-        viewModels<R>().value
 
 fun Fragment.createMapHolder(@IdRes map: Int, block: MapHolder.() -> Unit = {}) =
         MapHolder().apply(block).also {
@@ -93,7 +90,7 @@ fun Fragment.request(requestCode: Int, requests: Array<Permissions.PermissionReq
 }
 
 private fun Fragment.watch(requestCode: Int, requests: Array<Permissions.PermissionRequest>) {
-    lifecycleScope.launch { getFragmentViewModel<Permissions.ViewModel>().watch(requestCode, requests) }
+    lifecycleScope.launch { viewModels<Permissions.ViewModel>().value.watch(requestCode, requests) }
 }
 
 fun Fragment.prefs(name: String): SharedPreferences =

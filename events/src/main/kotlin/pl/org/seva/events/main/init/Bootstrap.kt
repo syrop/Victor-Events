@@ -55,7 +55,7 @@ class Bootstrap(private val ctx : Context) {
         login.setCurrentUser(FirebaseAuth.getInstance().currentUser)
         listOf(
             launch { comms.fromDb() },
-            launch { messages.fromDb() },
+            launch { messages.readFromDb() },
             launch { events.fromDb() })
                 .joinAll()
         scheduleSync<CommSyncWorker>(
