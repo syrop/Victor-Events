@@ -40,10 +40,9 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
     private val vm by eventCreateViewModel
 
     private val mapHolder by lazy {
-        @Suppress("ReplaceSingleLineLet")
         createMapHolder(R.id.map) {
             requestLocationPermission = this@EventCreateFragment::requestLocationPermission
-        }.let { holder ->
+        }.also { holder ->
             (holder.liveMap + this) { map ->
                 enableMyLocationOnResume(map)
                 (vm.location + this) { holder.markPosition(it?.location) }

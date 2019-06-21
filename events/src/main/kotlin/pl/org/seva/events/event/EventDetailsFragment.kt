@@ -47,10 +47,9 @@ class EventDetailsFragment : Fragment(R.layout.fr_event_details) {
         }
         if (event.location != null) {
             map_container.visibility = View.VISIBLE
-            @Suppress("ReplaceSingleLineLet")
             createMapHolder(R.id.map) {
                 requestLocationPermission = this@EventDetailsFragment::requestLocationPermission
-            }.let { holder ->
+            }.also { holder ->
                 (holder.liveMap + this) {
                     holder.markPosition(event.location)
                     enableMyLocationOnResume(it)
