@@ -7,7 +7,8 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
 import kotlinx.android.synthetic.main.ac_main.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.CommAddFragment
@@ -24,7 +25,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_main)
         setSupportActionBar(toolbar)
-        NavigationUI.setupActionBarWithNavController(this, navController)
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
+        setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
     override fun onNewIntent(intent: Intent) {
