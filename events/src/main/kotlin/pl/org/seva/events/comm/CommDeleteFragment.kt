@@ -37,7 +37,7 @@ class CommDeleteFragment : Fragment(R.layout.fr_comm_delete) {
         ok {
             lifecycleScope.launch {
                 comm.delete()
-                getString(R.string.comm_delete_toast).bold(NAME_PLACEHOLDER, comm.name).longToast()
+                longToast(getString(R.string.comm_delete_toast).bold(NAME_PLACEHOLDER, comm.name))
                 back()
             }
         }

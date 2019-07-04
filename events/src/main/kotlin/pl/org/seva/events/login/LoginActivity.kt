@@ -146,7 +146,7 @@ class LoginActivity : AppCompatActivity(),
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         fun signInFailed() {
-            getString(R.string.login_authentication_failed).toast()
+            toast(R.string.login_authentication_failed)
             finish()
         }
 
@@ -187,7 +187,7 @@ class LoginActivity : AppCompatActivity(),
 
     override fun onConnectionFailed(connectionResult: ConnectionResult) {
         log.warning("onConnectionFailed:$connectionResult")
-        "Google Play Services error.".toast()
+        toast(R.string.login_google_play_services_error)
     }
 
     override fun onConnected(bundle: Bundle?) {

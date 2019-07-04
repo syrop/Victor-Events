@@ -89,6 +89,7 @@
     <string name="login_authentication_failed">Authentication failed.</string>
     <string name="login_loading">Loading…</string>
     <string name="login_please_log_in">Please log in.</string>
+    <string name="login_google_play_services_error">Google Play Services error.</string>
 
     <!-- Login confirmation fragment -->
     <string name="login_confirmation_label">Login</string>

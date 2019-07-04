@@ -25,8 +25,10 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -132,3 +134,13 @@ fun Fragment.question(message: String, yes: () -> Unit = {}, no: () -> Unit = {}
         requireContext().question(message, yes, no)
 
 val Fragment.versionName get() = requireContext().versionName
+
+fun Fragment.longToast(message: CharSequence) =
+        toast(message, Toast.LENGTH_LONG)
+
+fun Fragment.toast(@StringRes id: Int, duration: Int = Toast.LENGTH_SHORT) =
+        toast(getString(id), duration)
+
+fun Fragment.toast(message: CharSequence, duration: Int = Toast.LENGTH_SHORT) {
+    requireContext().toast(message, duration)
+}

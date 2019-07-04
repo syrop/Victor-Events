@@ -27,12 +27,12 @@ import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.event.Event
 import pl.org.seva.events.login.Login
 import pl.org.seva.events.main.init.instance
-import pl.org.seva.events.main.ui.nextColor
+import pl.org.seva.events.main.ui.ColorFactory
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.*
 
-class FsReader : FsBase() {
+class FsReader(private val colorFactory: ColorFactory) : FsBase() {
 
     private val login by instance<Login>()
 
@@ -71,7 +71,7 @@ class FsReader : FsBase() {
     private fun DocumentSnapshot.toCommunity() =
             if (exists()) Comm(
                     name = getString(COMM_NAME)!!,
-                    color = nextColor,
+                    color = colorFactory.nextColor,
                     desc = getString(COMM_DESC) ?: "") else Comm.DUMMY
 
     companion object {

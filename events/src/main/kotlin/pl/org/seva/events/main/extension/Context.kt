@@ -22,6 +22,8 @@ package pl.org.seva.events.main.extension
 import androidx.appcompat.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.widget.Toast
+import androidx.annotation.StringRes
 import pl.org.seva.events.main.init.KodeinModuleBuilder
 
 fun Context.question(message: String, yes: () -> Unit = {}, no: () -> Unit = {}) {
@@ -52,3 +54,12 @@ private class YesNoListener(
 }
 
 val Context.module get() = KodeinModuleBuilder(this).build()
+
+fun Context.toast(@StringRes id: Int, duration: Int = Toast.LENGTH_SHORT) =
+        toast(getString(id), duration)
+
+fun Context.toast(message: CharSequence, duration: Int = Toast.LENGTH_SHORT) {
+    if (message.isNotBlank()) {
+        Toast.makeText(this, message, duration).show()
+    }
+}

@@ -25,13 +25,14 @@ import pl.org.seva.events.main.data.LiveRepository
 import pl.org.seva.events.main.data.firestore.FsReader
 import pl.org.seva.events.main.data.firestore.FsWriter
 import pl.org.seva.events.main.extension.asyncMap
-import pl.org.seva.events.main.ui.nextColor
+import pl.org.seva.events.main.ui.ColorFactory
 
 class Comms(
         private val fsReader: FsReader,
         private val fsWriter: FsWriter,
         private val commsDao: CommsDao,
-        private val events: Events) : LiveRepository() {
+        private val events: Events,
+        private val colorFactory: ColorFactory) : LiveRepository() {
 
     private val commsCache = mutableListOf<Comm>()
 
@@ -114,7 +115,7 @@ class Comms(
             }
 
     suspend infix fun joinNewCommunity(name: String) = withContext(NonCancellable) {
-        Comm(name, color = nextColor, isAdmin = true).apply {
+        Comm(name, color = colorFactory.nextColor, isAdmin = true).apply {
             fsWriter create this
             fsWriter grantAdmin this
             join()

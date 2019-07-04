@@ -61,7 +61,7 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
             recycler.visibility = View.VISIBLE
             adapter = FixedCommAdapter(this) {
                 if (isMemberOf) {
-                    getString(R.string.add_comm_already_a_member).toast()
+                    toast(R.string.add_comm_already_a_member)
                 }
                 else { joinAndFinish() }
             }
@@ -122,7 +122,7 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
                     recycler.visibility = View.GONE
                     prompt.visibility = View.VISIBLE
                     progress.visibility = View.GONE
-                    result.errorMessage.longToast()
+                    longToast(result.errorMessage)
                 }
             }
         }
@@ -160,9 +160,8 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
     private fun String.createJoinAndFinish() {
         this@CommAddFragment.lifecycleScope.launch {
             comms joinNewCommunity this@createJoinAndFinish
-            getString(R.string.add_comm_created)
-                    .bold(NAME_PLACEHOLDER, this@createJoinAndFinish)
-                    .toast()
+            toast(getString(R.string.add_comm_created)
+                    .bold(NAME_PLACEHOLDER, this@createJoinAndFinish))
             resetAndBack()
         }
     }
@@ -170,9 +169,8 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
     private fun Comm.joinAndFinish() {
         lifecycleScope.launch {
             join()
-            getString(R.string.add_comm_joined)
-                    .bold(NAME_PLACEHOLDER, name)
-                    .toast()
+            toast(getString(R.string.add_comm_joined)
+                    .bold(NAME_PLACEHOLDER, name))
             resetAndBack()
         }
     }

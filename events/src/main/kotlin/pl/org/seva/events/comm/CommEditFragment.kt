@@ -45,9 +45,8 @@ class CommEditFragment : Fragment(R.layout.fr_comm_edit) {
             with(vm.comm.copy(desc = vm.desc.value ?: "")) {
                 update()
                 vm.update()
-                getString(R.string.comm_edit_updated)
-                        .bold(NAME_PLACEHOLDER, name)
-                        .toast()
+                toast(getString(R.string.comm_edit_updated)
+                        .bold(NAME_PLACEHOLDER, name))
                 back()
             }
             return true

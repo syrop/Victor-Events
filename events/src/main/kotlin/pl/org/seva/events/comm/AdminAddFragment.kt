@@ -49,7 +49,7 @@ class AdminAddFragment : Fragment(R.layout.fr_admin_add) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         fun confirm(): Boolean {
             fsWriter.grantAdmin(vm.comm, address.text.toString())
-            getString(R.string.admin_add_toast).toast()
+            toast(R.string.admin_add_toast)
             back()
             return true
         }

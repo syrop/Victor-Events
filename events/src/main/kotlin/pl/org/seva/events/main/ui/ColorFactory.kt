@@ -21,11 +21,6 @@ package pl.org.seva.events.main.ui
 
 import android.content.Context
 import android.graphics.Color
-import pl.org.seva.events.main.init.instance
-
-val nextColor get() = colorFactory.nextColor()
-
-val colorFactory by instance<ColorFactory>()
 
 class ColorFactory(private val appContext: Context ) {
 
@@ -37,7 +32,7 @@ class ColorFactory(private val appContext: Context ) {
         }
     }
 
-    fun nextColor() = with(colors) {
+    val nextColor get() = with(colors) {
         val index = (Math.random() * length()).toInt()
         getColor(index, Color.GRAY)
     }

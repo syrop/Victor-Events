@@ -37,7 +37,6 @@ import pl.org.seva.events.main.data.firestore.FsReader
 import pl.org.seva.events.main.data.firestore.FsWriter
 import pl.org.seva.events.main.data.db.EventsDb
 import pl.org.seva.events.main.ui.ColorFactory
-import pl.org.seva.events.main.ui.Toaster
 import pl.org.seva.events.message.Messages
 import pl.org.seva.events.message.MessagesDao
 import java.util.*
@@ -56,17 +55,18 @@ class KodeinModuleBuilder(private val ctx: Context) {
         bind<Bootstrap>() with factory { ctx: Context -> Bootstrap(ctx) }
 
         bind<Events>() with singleton { Events(instance(), instance(), instance(), instance()) }
-        bind<Comms>() with singleton { Comms(instance(), instance(), instance(), instance()) }
+        bind<Comms>() with singleton {
+            Comms(instance(), instance(), instance(), instance(), instance())
+        }
         bind<Messages>() with singleton { Messages(instance()) }
         bind<EventsDao>() with singleton { instance<EventsDb>().eventsDao }
         bind<CommsDao>() with singleton { instance<EventsDb>().commsDao }
         bind<MessagesDao>() with singleton { instance<EventsDb>().messagesDao }
         bind<EventsDb>() with singleton { EventsDb(ctx) }
-        bind<FsReader>() with singleton { FsReader() }
+        bind<FsReader>() with singleton { FsReader(instance()) }
         bind<FsWriter>() with singleton { FsWriter() }
         bind<Login>() with singleton { Login() }
         bind<ColorFactory>() with singleton { ColorFactory(ctx) }
-        bind<Toaster>() with singleton { Toaster(ctx) }
         bind<Logger>() with multiton { tag: String ->
             Logger.getLogger(tag)!!.apply {
                 if (!BuildConfig.DEBUG) {
