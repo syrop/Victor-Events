@@ -25,8 +25,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.coroutines.*
 import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.event.Event
-import pl.org.seva.events.login.isLoggedIn
-import pl.org.seva.events.login.login
+import pl.org.seva.events.login.Login
 import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.main.ui.nextColor
 import java.time.LocalDateTime
@@ -35,13 +34,15 @@ import java.util.*
 
 class FsReader : FsBase() {
 
+    private val login by instance<Login>()
+
     suspend infix fun readEventsFrom(community: String) =
             community.events
                     .whereGreaterThan(Event.Fs.TIMESTAMP, earliestEventTime)
                     .read()
                     .map { it.toEvent() }
 
-    suspend infix fun isAdmin(name: String): Boolean = if (isLoggedIn)
+    suspend infix fun isAdmin(name: String): Boolean = if (login.isLoggedIn)
             name.admins.document(login.email).doesExist() else false
 
     suspend fun findCommunity(name: String) = coroutineScope {

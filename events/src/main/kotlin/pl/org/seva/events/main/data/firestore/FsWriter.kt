@@ -25,11 +25,13 @@ import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.event.Event
+import pl.org.seva.events.login.Login
 import pl.org.seva.events.main.init.instance
-import pl.org.seva.events.login.login
 import java.util.*
 
 class FsWriter : FsBase() {
+
+    private val login by instance<Login>()
 
     infix fun create(comm: Comm) {
         comm.writeEvent(Event.creationEvent.copy(comm = comm.name))

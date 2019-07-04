@@ -29,7 +29,7 @@ import pl.org.seva.events.comm.CommSyncWorker
 import pl.org.seva.events.comm.Comms
 import pl.org.seva.events.event.EventSyncWorker
 import pl.org.seva.events.event.Events
-import pl.org.seva.events.login.login
+import pl.org.seva.events.login.Login
 import pl.org.seva.events.message.Messages
 import java.time.Duration
 
@@ -40,6 +40,7 @@ class Bootstrap(private val ctx : Context) {
     private val comms by instance<Comms>()
     private val messages by instance<Messages>()
     private val events by instance<Events>()
+    private val login by instance<Login>()
 
     private inline fun <reified W : ListenableWorker> scheduleSync(
             tag: String,

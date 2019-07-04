@@ -37,10 +37,13 @@ import kotlinx.android.synthetic.main.ac_login.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.log
 import pl.org.seva.events.main.extension.toast
+import pl.org.seva.events.main.init.instance
 
 class LoginActivity : AppCompatActivity(),
         GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks {
+
+    private val login by instance<Login>()
 
     private lateinit var auth: FirebaseAuth
     private lateinit var authStateListener: (firebaseAuth : FirebaseAuth) -> Unit

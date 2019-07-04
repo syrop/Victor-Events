@@ -34,8 +34,8 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fr_comm_add.*
 import kotlinx.coroutines.launch
 import pl.org.seva.events.R
+import pl.org.seva.events.login.Login
 import pl.org.seva.events.login.LoginActivity
-import pl.org.seva.events.login.isLoggedIn
 import pl.org.seva.events.main.extension.*
 import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.main.ui.*
@@ -43,6 +43,7 @@ import pl.org.seva.events.main.ui.*
 class CommAddFragment : Fragment(R.layout.fr_comm_add) {
 
     private val comms by instance<Comms>()
+    private val login by instance<Login>()
 
     private val commAddViewModel by activityViewModels<CommAddViewModel>()
 
@@ -99,7 +100,7 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
             progress.visibility = View.GONE
             prompt.visibility = View.VISIBLE
             prompt.text = getString(R.string.add_comm_not_found).bold(NAME_PLACEHOLDER, comm.originalName)
-            if (isLoggedIn) showCreateCommunitySnackbar(comm.originalName)
+            if (login.isLoggedIn) showCreateCommunitySnackbar(comm.originalName)
             else showLoginToCreateSnackbar(comm.originalName)
         }
 
