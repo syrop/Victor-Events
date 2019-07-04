@@ -30,9 +30,7 @@ import pl.org.seva.events.main.extension.module
 @Suppress("unused")
 class EventsApplication : Application() {
 
-    init {
-        Kodein.global.addImport(module)
-    }
+    init { Kodein.global.addImport(module) }
 
     override fun onCreate() {
         super.onCreate()
