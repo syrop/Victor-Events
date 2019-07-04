@@ -54,12 +54,17 @@ class KodeinModuleBuilder(private val ctx: Context) {
 
     fun build() = Kodein.Module(MAIN_MODULE_NAME) {
         bind<Bootstrap>() with factory { ctx: Context -> Bootstrap(ctx) }
-        bind<FsReader>() with singleton { FsReader() }
-        bind<Comms>() with singleton { Comms() }
-        bind<Events>() with singleton { Events() }
-        bind<Login>() with singleton { Login() }
-        bind<FsWriter>() with singleton { FsWriter() }
+
+        bind<Events>() with singleton { Events(instance(), instance(), instance(), instance()) }
+        bind<Comms>() with singleton { Comms(instance(), instance(), instance(), instance()) }
+        bind<Messages>() with singleton { Messages(instance()) }
+        bind<EventsDao>() with singleton { instance<EventsDb>().eventsDao }
+        bind<CommsDao>() with singleton { instance<EventsDb>().commsDao }
+        bind<MessagesDao>() with singleton { instance<EventsDb>().messagesDao }
         bind<EventsDb>() with singleton { EventsDb(ctx) }
+        bind<FsReader>() with singleton { FsReader() }
+        bind<FsWriter>() with singleton { FsWriter() }
+        bind<Login>() with singleton { Login() }
         bind<ColorFactory>() with singleton { ColorFactory(ctx) }
         bind<Toaster>() with singleton { Toaster(ctx) }
         bind<Logger>() with multiton { tag: String ->
@@ -72,10 +77,6 @@ class KodeinModuleBuilder(private val ctx: Context) {
         }
         bind<Permissions>() with singleton { Permissions() }
         bind<Geocoder>() with singleton { Geocoder(ctx, Locale.getDefault()) }
-        bind<Messages>() with singleton { Messages() }
-        bind<EventsDao>() with singleton { instance<EventsDb>().eventsDao }
-        bind<CommsDao>() with singleton { instance<EventsDb>().commsDao }
-        bind<MessagesDao>() with singleton { instance<EventsDb>().messagesDao }
     }
 
     companion object {

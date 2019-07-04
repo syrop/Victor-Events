@@ -22,12 +22,9 @@ package pl.org.seva.events.message
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.main.data.LiveRepository
 
-class Messages : LiveRepository() {
-
-    private val messagesDao by instance<MessagesDao>()
+class Messages(private val messagesDao: MessagesDao) : LiveRepository() {
 
     private val messageCache = mutableListOf<Message>()
 

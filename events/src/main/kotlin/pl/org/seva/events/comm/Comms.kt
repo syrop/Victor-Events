@@ -21,19 +21,17 @@ package pl.org.seva.events.comm
 
 import kotlinx.coroutines.*
 import pl.org.seva.events.event.Events
-import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.main.data.LiveRepository
 import pl.org.seva.events.main.data.firestore.FsReader
 import pl.org.seva.events.main.data.firestore.FsWriter
 import pl.org.seva.events.main.extension.asyncMap
 import pl.org.seva.events.main.ui.nextColor
 
-class Comms : LiveRepository() {
-
-    private val fsWriter by instance<FsWriter>()
-    private val fsReader by instance<FsReader>()
-    private val commsDao by instance<CommsDao>()
-    private val events by instance<Events>()
+class Comms(
+        private val fsReader: FsReader,
+        private val fsWriter: FsWriter,
+        private val commsDao: CommsDao,
+        private val events: Events) : LiveRepository() {
 
     private val commsCache = mutableListOf<Comm>()
 

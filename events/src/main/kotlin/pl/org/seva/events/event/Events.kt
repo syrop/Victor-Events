@@ -23,18 +23,15 @@ import kotlinx.coroutines.*
 import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.comm.Comms
 import pl.org.seva.events.main.extension.launchEach
-import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.main.data.LiveRepository
 import pl.org.seva.events.main.data.firestore.FsReader
 import pl.org.seva.events.main.data.firestore.FsWriter
 
-class Events : LiveRepository() {
-
-    private val comms by instance<Comms>()
-
-    private val fsReader by instance<FsReader>()
-    private val fsWriter by instance<FsWriter>()
-    private val eventsDao by instance<EventsDao>()
+class Events(
+        private val fsReader: FsReader,
+        private val fsWriter: FsWriter,
+        private val eventsDao: EventsDao,
+        private val comms: Comms) : LiveRepository() {
 
     private val eventsCache = mutableListOf<Event>()
 
