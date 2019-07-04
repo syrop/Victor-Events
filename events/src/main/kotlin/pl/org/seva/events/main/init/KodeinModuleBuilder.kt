@@ -45,9 +45,10 @@ import java.util.logging.Logger
 
 val Context.module get() = KodeinModuleBuilder(this).build()
 
-inline fun <reified R : Any> instance() = Kodein.global.instance<R>()
+inline fun <reified R : Any> instance(tag: Any? = null) = Kodein.global.instance<R>(tag)
 
-inline fun <reified A, reified T : Any> instance(arg: A) = Kodein.global.instance<A, T>(arg = arg)
+inline fun <reified A, reified T : Any> instance(tag: Any? = null, arg: A) =
+        Kodein.global.instance<A, T>(tag, arg = arg)
 
 inline val <T> KodeinProperty<T>.value get() = provideDelegate(null, Build::ID).value
 

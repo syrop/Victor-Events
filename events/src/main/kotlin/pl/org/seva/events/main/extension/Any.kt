@@ -23,4 +23,4 @@ import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.main.init.value
 import java.util.logging.Logger
 
-val Any.log: Logger get() = instance<String, Logger>(this::class.java.name).value
+val Any.log: Logger get() = instance<String, Logger>(arg = this::class.java.name).value
