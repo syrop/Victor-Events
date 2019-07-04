@@ -19,7 +19,10 @@
 
 package pl.org.seva.events.main.extension
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.observe
 import pl.org.seva.events.main.viewmodel.DefaultHotData
 import pl.org.seva.events.main.viewmodel.MutableHotData
 
