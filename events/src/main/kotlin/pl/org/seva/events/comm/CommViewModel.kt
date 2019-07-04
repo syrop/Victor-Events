@@ -26,11 +26,14 @@ import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.ViewModel
 import androidx.navigation.navGraphViewModels
 import pl.org.seva.events.R
+import pl.org.seva.events.main.init.instance
 
 val Fragment.commViewModel get() =
     navGraphViewModels<CommViewModel>(R.id.comms_graph) { SavedStateViewModelFactory(requireActivity()) }
 
 class CommViewModel(private val state: SavedStateHandle) : ViewModel() {
+
+    private val comms by instance<Comms>()
 
     var comm = Comm.DUMMY
     private set(value) {

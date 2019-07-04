@@ -26,13 +26,17 @@ import androidx.work.WorkerParameters
 import com.google.firebase.firestore.FirebaseFirestoreException
 import pl.org.seva.events.R
 import pl.org.seva.events.main.data.SyncWorker
+import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.message.Message
-import pl.org.seva.events.message.messages
+import pl.org.seva.events.message.Messages
 import java.time.Duration
 import java.time.LocalDateTime
 
 class CommSyncWorker(private val context: Context, params: WorkerParameters) :
         CoroutineWorker(context, params), SyncWorker {
+
+    private val comms by instance<Comms>()
+    private val messages by instance<Messages>()
 
     override suspend fun doWork() = syncCoroutineScope {
         try {

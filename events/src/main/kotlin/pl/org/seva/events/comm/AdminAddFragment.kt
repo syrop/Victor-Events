@@ -26,11 +26,14 @@ import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fr_admin_add.*
 import pl.org.seva.events.R
+import pl.org.seva.events.main.data.firestore.FsWriter
 import pl.org.seva.events.main.extension.back
 import pl.org.seva.events.main.extension.toast
-import pl.org.seva.events.main.data.firestore.fsWriter
+import pl.org.seva.events.main.init.instance
 
 class AdminAddFragment : Fragment(R.layout.fr_admin_add) {
+
+    private val fsWriter by instance<FsWriter>()
 
     private val vm by commViewModel
 

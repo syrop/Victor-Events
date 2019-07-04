@@ -27,11 +27,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import kotlinx.android.synthetic.main.fr_event_list.*
 import pl.org.seva.events.R
-import pl.org.seva.events.comm.comms
+import pl.org.seva.events.comm.Comms
 import pl.org.seva.events.login.login
 import pl.org.seva.events.main.extension.*
+import pl.org.seva.events.main.init.instance
 
 class EventListFragment : Fragment(R.layout.fr_event_list) {
+
+    private val comms by instance<Comms>()
+    private val events by instance<Events>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -33,8 +33,6 @@ import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.*
 
-val fsReader by instance<FsReader>()
-
 class FsReader : FsBase() {
 
     suspend infix fun readEventsFrom(community: String) =

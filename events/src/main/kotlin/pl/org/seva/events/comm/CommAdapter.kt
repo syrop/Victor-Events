@@ -28,8 +28,12 @@ import kotlinx.android.synthetic.main.row_comm.view.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.inflate
 import pl.org.seva.events.main.extension.onClick
+import pl.org.seva.events.main.init.instance
 
-open class CommAdapter(private val onClick: (Int) -> Unit) : RecyclerView.Adapter<CommAdapter.ViewHolder>() {
+open class CommAdapter(private val onClick: (Int) -> Unit) :
+        RecyclerView.Adapter<CommAdapter.ViewHolder>() {
+
+    private val comms by instance<Comms>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             ViewHolder(parent.inflate(R.layout.row_comm), onClick)

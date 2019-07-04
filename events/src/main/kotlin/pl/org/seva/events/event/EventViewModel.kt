@@ -25,11 +25,14 @@ import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.ViewModel
 import androidx.navigation.navGraphViewModels
 import pl.org.seva.events.R
+import pl.org.seva.events.main.init.instance
 
 val Fragment.eventViewModel get() =
     navGraphViewModels<EventViewModel>(R.id.nav_graph) { SavedStateViewModelFactory(requireActivity()) }
 
 class EventViewModel(private val state: SavedStateHandle) : ViewModel() {
+
+    private val events by instance<Events>()
 
     lateinit var event: Event
         private set

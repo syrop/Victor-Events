@@ -28,9 +28,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import pl.org.seva.events.R
-import pl.org.seva.events.main.data.firestore.fsReader
+import pl.org.seva.events.main.data.firestore.FsReader
+import pl.org.seva.events.main.init.instance
 
 class CommAddViewModel(val app: Application) : AndroidViewModel(app) {
+
+    private val fsReader by instance<FsReader>()
+
     val queryState by lazy { MutableLiveData<QueryState>(QueryState.None) }
     val commToCreate by lazy { MutableLiveData<String?>() }
     private var queryJob: Job? = null

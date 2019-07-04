@@ -20,20 +20,22 @@
 package pl.org.seva.events.comm
 
 import kotlinx.coroutines.*
-import pl.org.seva.events.event.events
-import pl.org.seva.events.main.data.firestore.fsWriter
-import pl.org.seva.events.main.data.firestore.fsReader
+import pl.org.seva.events.event.Events
 import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.main.data.LiveRepository
-import pl.org.seva.events.main.data.db.db
+import pl.org.seva.events.main.data.firestore.FsReader
+import pl.org.seva.events.main.data.firestore.FsWriter
 import pl.org.seva.events.main.extension.asyncMap
 import pl.org.seva.events.main.ui.nextColor
 
-val comms by instance<Comms>()
-
 class Comms : LiveRepository() {
+
+    private val fsWriter by instance<FsWriter>()
+    private val fsReader by instance<FsReader>()
+    private val commsDao by instance<CommsDao>()
+    private val events by instance<Events>()
+
     private val commsCache = mutableListOf<Comm>()
-    private val commDao by lazy { db.commsDao }
 
     val size get() = commsCache.size
 
@@ -62,7 +64,7 @@ class Comms : LiveRepository() {
         val updated = commsCache.remove(comm)
         if (updated) {
             notifyDataSetChanged()
-            launch { commDao delete comm }
+            launch { commsDao delete comm }
             launch { events deleteFrom comm }
         }
         updated
@@ -79,13 +81,13 @@ class Comms : LiveRepository() {
         if (updated) {
             notifyDataSetChanged()
             launch { events addFrom comm }
-            launch { commDao add comm }
+            launch { commsDao add comm }
         }
         updated
     }
 
     suspend fun fromDb() {
-        commsCache.addAll(commDao.getAllValues().sortedBy { it.lcName })
+        commsCache.addAll(commsDao.getAllValues().sortedBy { it.lcName })
         notifyDataSetChanged()
     }
 
@@ -106,8 +108,8 @@ class Comms : LiveRepository() {
                 withContext(NonCancellable) {
                     commsCache.clear()
                     commsCache.addAll(transformed.filter { !it.isDummy })
-                    commDao.clear()
-                    commDao add commsCache
+                    commsDao.clear()
+                    commsDao add commsCache
                     notifyDataSetChanged()
                 }
                 transformed

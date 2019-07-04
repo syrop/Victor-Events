@@ -21,20 +21,22 @@ package pl.org.seva.events.event
 
 import kotlinx.coroutines.*
 import pl.org.seva.events.comm.Comm
-import pl.org.seva.events.comm.comms
+import pl.org.seva.events.comm.Comms
 import pl.org.seva.events.main.extension.launchEach
 import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.main.data.LiveRepository
-import pl.org.seva.events.main.data.db.db
-import pl.org.seva.events.main.data.firestore.fsReader
-import pl.org.seva.events.main.data.firestore.fsWriter
-
-val events by instance<Events>()
+import pl.org.seva.events.main.data.firestore.FsReader
+import pl.org.seva.events.main.data.firestore.FsWriter
 
 class Events : LiveRepository() {
 
+    private val comms by instance<Comms>()
+
+    private val fsReader by instance<FsReader>()
+    private val fsWriter by instance<FsWriter>()
+    private val eventsDao by instance<EventsDao>()
+
     private val eventsCache = mutableListOf<Event>()
-    private val eventsDao by lazy { db.eventsDao }
 
     val size get() = eventsCache.size
 

@@ -28,6 +28,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 abstract class FsBase {
+
     private val db = FirebaseFirestore.getInstance()
 
     protected val communities get() = db collection COMMUNITIES

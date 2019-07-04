@@ -26,16 +26,20 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import pl.org.seva.events.comm.CommSyncWorker
-import pl.org.seva.events.comm.comms
+import pl.org.seva.events.comm.Comms
 import pl.org.seva.events.event.EventSyncWorker
-import pl.org.seva.events.event.events
+import pl.org.seva.events.event.Events
 import pl.org.seva.events.login.login
-import pl.org.seva.events.message.messages
+import pl.org.seva.events.message.Messages
 import java.time.Duration
 
 val Context.bootstrap get() = instance<Context, Bootstrap>(this).value
 
 class Bootstrap(private val ctx : Context) {
+
+    private val comms by instance<Comms>()
+    private val messages by instance<Messages>()
+    private val events by instance<Events>()
 
     private inline fun <reified W : ListenableWorker> scheduleSync(
             tag: String,

@@ -22,6 +22,7 @@ package pl.org.seva.events.comm
 import android.graphics.Color
 import androidx.room.PrimaryKey
 import pl.org.seva.events.main.data.db.EventsDb
+import pl.org.seva.events.main.init.instance
 import java.util.*
 
 data class Comm(
@@ -29,6 +30,8 @@ data class Comm(
         val desc: String = "",
         val color: Int = Color.GRAY,
         val isAdmin: Boolean = false) {
+
+    private val comms by instance<Comms>()
 
     private val attributes = mutableMapOf<String, String>()
 

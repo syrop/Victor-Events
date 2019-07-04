@@ -23,8 +23,6 @@ import androidx.room.Room
 import android.content.Context
 import pl.org.seva.events.main.init.instance
 
-val db by instance<EventsDb>()
-
 class EventsDb(context: Context) {
     private val db=
             Room.databaseBuilder(context, EventsDbAbstract::class.java, DATABASE_NAME).build()

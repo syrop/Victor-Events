@@ -25,10 +25,13 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.WorkerParameters
 import com.google.firebase.firestore.FirebaseFirestoreException
 import pl.org.seva.events.main.data.SyncWorker
+import pl.org.seva.events.main.init.instance
 import java.time.Duration
 
 class EventSyncWorker(context: Context, params: WorkerParameters) :
         CoroutineWorker(context, params), SyncWorker {
+
+    private val events by instance<Events>()
 
     override suspend fun doWork() = syncCoroutineScope {
         try {

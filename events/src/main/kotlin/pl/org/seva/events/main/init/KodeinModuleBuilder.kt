@@ -28,7 +28,9 @@ import org.kodein.di.conf.global
 import org.kodein.di.generic.*
 import pl.org.seva.events.BuildConfig
 import pl.org.seva.events.comm.Comms
+import pl.org.seva.events.comm.CommsDao
 import pl.org.seva.events.event.Events
+import pl.org.seva.events.event.EventsDao
 import pl.org.seva.events.login.Login
 import pl.org.seva.events.main.data.Permissions
 import pl.org.seva.events.main.data.firestore.FsReader
@@ -37,6 +39,7 @@ import pl.org.seva.events.main.data.db.EventsDb
 import pl.org.seva.events.main.ui.ColorFactory
 import pl.org.seva.events.main.ui.Toaster
 import pl.org.seva.events.message.Messages
+import pl.org.seva.events.message.MessagesDao
 import java.util.*
 import java.util.logging.Logger
 
@@ -71,6 +74,9 @@ class KodeinModuleBuilder(private val ctx: Context) {
         bind<Permissions>() with singleton { Permissions() }
         bind<Geocoder>() with singleton { Geocoder(ctx, Locale.getDefault()) }
         bind<Messages>() with singleton { Messages() }
+        bind<EventsDao>() with singleton { instance<EventsDb>().eventsDao }
+        bind<CommsDao>() with singleton { instance<EventsDb>().commsDao }
+        bind<MessagesDao>() with singleton { instance<EventsDb>().messagesDao }
     }
 
     companion object {

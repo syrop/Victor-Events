@@ -29,8 +29,6 @@ import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.login.login
 import java.util.*
 
-val fsWriter by instance<FsWriter>()
-
 class FsWriter : FsBase() {
 
     infix fun create(comm: Comm) {

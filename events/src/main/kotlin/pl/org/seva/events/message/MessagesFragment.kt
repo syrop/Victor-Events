@@ -29,8 +29,11 @@ import kotlinx.coroutines.launch
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.swipeListener
 import pl.org.seva.events.main.extension.verticalDivider
+import pl.org.seva.events.main.init.instance
 
 class MessagesFragment : Fragment(R.layout.fr_messages) {
+
+    private val messages by instance<Messages>()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

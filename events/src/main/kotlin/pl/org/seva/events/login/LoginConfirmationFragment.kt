@@ -28,10 +28,13 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.android.synthetic.main.fr_login_conf.*
 import kotlinx.coroutines.launch
 import pl.org.seva.events.R
-import pl.org.seva.events.comm.comms
+import pl.org.seva.events.comm.Comms
 import pl.org.seva.events.main.extension.*
+import pl.org.seva.events.main.init.instance
 
 class LoginConfirmationFragment : Fragment(R.layout.fr_login_conf) {
+
+    private val comms by instance<Comms>()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

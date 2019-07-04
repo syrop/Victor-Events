@@ -29,8 +29,11 @@ import kotlinx.android.synthetic.main.fr_comm_list.*
 import kotlinx.coroutines.launch
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.*
+import pl.org.seva.events.main.init.instance
 
 class CommListFragment : Fragment(R.layout.fr_comm_list) {
+
+    private val comms by instance<Comms>()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

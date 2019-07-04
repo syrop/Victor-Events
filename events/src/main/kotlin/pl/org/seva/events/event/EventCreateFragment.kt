@@ -28,14 +28,18 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.android.synthetic.main.fr_event_create.*
 import kotlinx.coroutines.launch
 import pl.org.seva.events.R
-import pl.org.seva.events.comm.comms
+import pl.org.seva.events.comm.Comms
 import pl.org.seva.events.main.extension.*
 import pl.org.seva.events.main.data.permissions
+import pl.org.seva.events.main.init.instance
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 
 class EventCreateFragment : Fragment(R.layout.fr_event_create) {
+
+    private val events by instance<Events>()
+    private val comms by instance<Comms>()
 
     private val vm by eventCreateViewModel
 
