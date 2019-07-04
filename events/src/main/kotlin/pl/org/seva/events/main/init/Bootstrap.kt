@@ -35,7 +35,7 @@ import java.time.Duration
 
 val Context.bootstrap get() = instance<Context, Bootstrap>(this).value
 
-class Bootstrap(private val ctx : Context) {
+class Bootstrap(private val ctx: Context) {
 
     private val comms by instance<Comms>()
     private val messages by instance<Messages>()
