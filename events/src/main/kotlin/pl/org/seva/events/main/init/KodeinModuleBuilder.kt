@@ -43,8 +43,6 @@ import pl.org.seva.events.message.MessagesDao
 import java.util.*
 import java.util.logging.Logger
 
-val Context.module get() = KodeinModuleBuilder(this).build()
-
 inline fun <reified R : Any> instance(tag: Any? = null) = Kodein.global.instance<R>(tag)
 
 inline fun <reified A, reified T : Any> instance(tag: Any? = null, arg: A) =

@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 import org.kodein.di.Kodein
 import org.kodein.di.conf.global
 import pl.org.seva.events.main.init.bootstrap
-import pl.org.seva.events.main.init.module
+import pl.org.seva.events.main.extension.module
 
 @Suppress("unused")
 class EventsApplication : Application() {

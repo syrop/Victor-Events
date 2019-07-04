@@ -22,6 +22,7 @@ package pl.org.seva.events.main.extension
 import androidx.appcompat.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import pl.org.seva.events.main.init.KodeinModuleBuilder
 
 fun Context.question(message: String, yes: () -> Unit = {}, no: () -> Unit = {}) {
     val listener = YesNoListener(yes, no)
@@ -49,3 +50,5 @@ private class YesNoListener(
         else -> Unit
     }
 }
+
+val Context.module get() = KodeinModuleBuilder(this).build()
