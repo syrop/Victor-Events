@@ -33,8 +33,6 @@ import pl.org.seva.events.login.Login
 import pl.org.seva.events.message.Messages
 import java.time.Duration
 
-val Context.bootstrap get() = instance<Context, Bootstrap>(arg =this).value
-
 class Bootstrap(private val ctx: Context) {
 
     private val comms by instance<Comms>()
