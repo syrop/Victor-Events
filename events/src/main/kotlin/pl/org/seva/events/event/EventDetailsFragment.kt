@@ -24,10 +24,13 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fr_event_details.*
 import pl.org.seva.events.R
+import pl.org.seva.events.main.data.Permissions
 import pl.org.seva.events.main.extension.*
-import pl.org.seva.events.main.data.permissions
+import pl.org.seva.events.main.init.instance
 
 class EventDetailsFragment : Fragment(R.layout.fr_event_details) {
+
+    private val permissions by instance<Permissions>()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
