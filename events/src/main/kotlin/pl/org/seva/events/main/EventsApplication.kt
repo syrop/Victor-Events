@@ -34,8 +34,7 @@ class EventsApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        GlobalScope.launch {
-            bootstrap.boot()
-        }
+
+        GlobalScope.launch { bootstrap.boot() }
     }
 }
