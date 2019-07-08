@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import pl.org.seva.events.main.ui.ItemSwipeListener
 
-fun RecyclerView.swipeListener(listener: (Int) -> Unit) {
+fun RecyclerView.onSwipe(listener: (Int) -> Unit) {
     ItemTouchHelper(ItemSwipeListener(listener)).attachToRecyclerView(this)
 }
 

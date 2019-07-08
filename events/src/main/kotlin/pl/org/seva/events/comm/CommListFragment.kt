@@ -45,7 +45,7 @@ class CommListFragment : Fragment(R.layout.fr_comm_list) {
             commViewModel.value.withPosition(position)
             nav(R.id.action_commListFragment_to_commDetailsFragment)
         }
-        comms_view.swipeListener { position ->
+        comms_view.onSwipe { position ->
             val comm = comms[position]
             lifecycleScope.launch {
                 comm.leave()

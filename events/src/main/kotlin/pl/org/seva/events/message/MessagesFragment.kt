@@ -27,7 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fr_messages.*
 import kotlinx.coroutines.launch
 import pl.org.seva.events.R
-import pl.org.seva.events.main.extension.swipeListener
+import pl.org.seva.events.main.extension.onSwipe
 import pl.org.seva.events.main.extension.verticalDivider
 import pl.org.seva.events.main.init.instance
 
@@ -42,7 +42,7 @@ class MessagesFragment : Fragment(R.layout.fr_messages) {
         messages_view.layoutManager = LinearLayoutManager(context)
         messages_view.adapter = MessagesAdapter()
         messages_view.verticalDivider()
-        messages_view.swipeListener { position ->
+        messages_view.onSwipe { position ->
                 lifecycleScope.launch { messages[position].delete() }
         }
 
