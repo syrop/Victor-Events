@@ -29,7 +29,7 @@ import pl.org.seva.events.login.Login
 import pl.org.seva.events.main.init.instance
 import java.util.*
 
-class FsWriter : FsBase() {
+open class FsWriter : FsBase() {
 
     private val login by instance<Login>()
 
@@ -38,7 +38,7 @@ class FsWriter : FsBase() {
         comm.writeName()
     }
 
-    infix fun add(event: Event) = event.comm.toLowerCase(Locale.getDefault()).writeEvent(event)
+    open infix fun add(event: Event) = event.comm.toLowerCase(Locale.getDefault()).writeEvent(event)
 
     infix fun update(comm: Comm) = with(comm) {
         lcName.comm.set(mapOf(COMM_NAME to name, COMM_DESC to desc), SetOptions.merge())

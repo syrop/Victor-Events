@@ -30,8 +30,7 @@ import pl.org.seva.events.main.data.firestore.FsWriter
 class Events(
         private val fsReader: FsReader,
         private val fsWriter: FsWriter,
-        private val eventsDao: EventsDao,
-        private val comms: Comms) : LiveRepository() {
+        private val eventsDao: EventsDao) : LiveRepository() {
 
     private val eventsCache = mutableListOf<Event>()
 
@@ -66,7 +65,7 @@ class Events(
         notifyDataSetChanged()
     }
 
-    suspend fun refresh(): List<Event> = coroutineScope {
+    suspend infix fun fromComms(comms: Comms): List<Event> = coroutineScope {
         mutableListOf<Event>().apply {
             comms.map {
                 async { fsReader readEventsFrom it.lcName }

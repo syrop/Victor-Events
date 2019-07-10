@@ -32,7 +32,7 @@ import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.*
 
-class FsReader(private val colorFactory: ColorFactory) : FsBase() {
+open class FsReader(private val colorFactory: ColorFactory) : FsBase() {
 
     private val login by instance<Login>()
 

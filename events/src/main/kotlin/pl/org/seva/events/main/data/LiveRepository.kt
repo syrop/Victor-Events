@@ -21,7 +21,6 @@
 
 package pl.org.seva.events.main.data
 
-import android.os.Looper
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -40,8 +39,7 @@ abstract class LiveRepository {
     private val channel = BroadcastChannel<Unit>(Channel.CONFLATED)
 
     protected fun notifyDataSetChanged() {
-        if (Looper.getMainLooper().thread === Thread.currentThread()) liveData.value = Unit
-        else liveData.postValue(Unit)
+        liveData.postValue(Unit)
         channel.sendBlocking(Unit)
     }
 

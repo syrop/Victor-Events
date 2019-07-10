@@ -54,7 +54,7 @@ class KodeinModuleBuilder(private val ctx: Context) {
     fun build() = Kodein.Module(MAIN_MODULE_NAME) {
         bind<Bootstrap>() with factory { ctx: Context -> Bootstrap(ctx) }
 
-        bind<Events>() with singleton { Events(instance(), instance(), instance(), instance()) }
+        bind<Events>() with singleton { Events(instance(), instance(), instance()) }
         bind<Comms>() with singleton {
             Comms(instance(), instance(), instance(), instance(), instance())
         }

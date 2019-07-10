@@ -25,29 +25,26 @@ import androidx.room.Delete
 import androidx.room.Insert
 import pl.org.seva.events.main.data.db.EventsDb
 
-suspend infix fun EventsDao.add(event: Event) = insert(Event.Entity(event))
-
-suspend infix fun EventsDao.addAll(events: Collection<Event>) = insertAll(events.map { Event.Entity(it) })
-
-suspend infix fun EventsDao.delete(event: Event) = delete(Event.Entity(event))
-
-suspend inline fun EventsDao.getAllValues() = getAll().map { it.value() }
-
 @Dao
-interface EventsDao {
+abstract class EventsDao {
+
+    open suspend infix fun add(event: Event) = insert(Event.Entity(event))
+    suspend infix fun addAll(events: Collection<Event>) = insertAll(events.map { Event.Entity(it) })
+    suspend infix fun delete(event: Event) = delete(Event.Entity(event))
+    suspend inline fun getAllValues() = getAll().map { it.value() }
 
     @Query("select * from ${EventsDb.EVENT_TABLE}")
-    suspend fun getAll(): List<Event.Entity>
+    abstract suspend fun getAll(): List<Event.Entity>
 
     @Insert
-    suspend fun insertAll(events: Collection<Event.Entity>)
+    abstract suspend fun insertAll(events: Collection<Event.Entity>)
 
     @Insert
-    suspend fun insert(event: Event.Entity)
+    abstract suspend fun insert(event: Event.Entity)
 
     @Delete
-    suspend fun delete(event: Event.Entity)
+    abstract suspend fun delete(event: Event.Entity)
 
     @Query("delete from ${EventsDb.EVENT_TABLE}")
-    suspend fun clear()
+    abstract suspend fun clear()
 }

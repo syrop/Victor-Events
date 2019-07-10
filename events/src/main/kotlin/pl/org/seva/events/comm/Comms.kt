@@ -27,7 +27,7 @@ import pl.org.seva.events.main.data.firestore.FsWriter
 import pl.org.seva.events.main.extension.asyncMap
 import pl.org.seva.events.main.ui.ColorFactory
 
-class Comms(
+open class Comms(
         private val fsReader: FsReader,
         private val fsWriter: FsWriter,
         private val commsDao: CommsDao,
