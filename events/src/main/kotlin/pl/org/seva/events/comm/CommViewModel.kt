@@ -20,10 +20,7 @@
 package pl.org.seva.events.comm
 
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.SavedStateViewModelFactory
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import androidx.navigation.navGraphViewModels
 import pl.org.seva.events.R
 import pl.org.seva.events.main.init.instance
@@ -46,7 +43,7 @@ class CommViewModel(private val state: SavedStateHandle) : ViewModel() {
     val isAdmin by lazy { MutableLiveData<Boolean?>() }
 
     init {
-        (comms vm this) { update() }
+        comms.updatedLiveData(viewModelScope).observeForever { update() }
         val position = state.get<Int>(COMM_POSITION) ?: -1
         if (position >= 0) {
             comm = comms[position]

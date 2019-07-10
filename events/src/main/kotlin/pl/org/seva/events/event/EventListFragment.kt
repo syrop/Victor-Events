@@ -55,12 +55,12 @@ class EventListFragment : Fragment(R.layout.fr_event_list) {
             nav(R.id.action_eventsFragment_to_eventDetailsFragment)
         }
 
-        (comms + this) {
+        (comms.updatedLiveData() + this) {
             if (comms.isAdminOfAny) add_event_fab.show()
             else add_event_fab.hide()
         }
 
-        (events + this) {
+        (events.updatedLiveData() + this) {
             if (events.isEmpty) {
                 prompt.visibility = View.VISIBLE
                 events_view.visibility = View.GONE

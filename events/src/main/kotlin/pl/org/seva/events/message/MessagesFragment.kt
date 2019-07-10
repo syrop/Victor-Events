@@ -28,6 +28,7 @@ import kotlinx.android.synthetic.main.fr_messages.*
 import kotlinx.coroutines.launch
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.onSwipe
+import pl.org.seva.events.main.extension.plus
 import pl.org.seva.events.main.extension.verticalDivider
 import pl.org.seva.events.main.init.instance
 
@@ -46,7 +47,7 @@ class MessagesFragment : Fragment(R.layout.fr_messages) {
                 lifecycleScope.launch { messages[position].delete() }
         }
 
-        (messages + this) {
+        (messages.updatedLiveData() + this) {
             if (messages.isEmpty()) {
                 messages_view.visibility = View.GONE
                 prompt.visibility = View.VISIBLE

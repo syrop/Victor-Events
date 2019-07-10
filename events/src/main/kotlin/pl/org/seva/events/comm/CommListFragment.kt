@@ -61,7 +61,7 @@ class CommListFragment : Fragment(R.layout.fr_comm_list) {
             nav(R.id.action_commListFragment_to_addCommFragment)
         }
 
-        (comms + this) {
+        (comms.updatedLiveData() + this) {
             if (comms.isEmpty) {
                 prompt.visibility = View.VISIBLE
                 comms_view.visibility = View.GONE
