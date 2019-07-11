@@ -19,6 +19,9 @@
 
 package pl.org.seva.events.about
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fr_about.*
@@ -30,11 +33,19 @@ import pl.org.seva.events.main.extension.versionName
 class AboutFragment : Fragment(R.layout.fr_about) {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+
+        fun String.toClipboard() {
+            val clipboard = activity!!.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            clipboard.primaryClip = ClipData.newPlainText("", this)
+        }
+
         super.onActivityCreated(savedInstanceState)
 
         version.text = getString(R.string.about_version).replace(VERSION_PLACEHOLDER, versionName)
 
         github { inBrowser(getString(R.string.about_github_url)) }
+
+        donate_btc_address { getString(R.string.about_btc_address).toClipboard() }
     }
 
     companion object {

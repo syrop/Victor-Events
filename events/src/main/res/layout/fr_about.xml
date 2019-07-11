@@ -7,14 +7,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
-        android:id="@+id/version"
+        android:id="@+id/app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/developer"
+        app:layout_constraintBottom_toTopOf="@+id/version"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
+        android:text="@string/app_name"
+        android:textSize="48sp"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/app_name"
+        app:layout_constraintBottom_toTopOf="@+id/developer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="8dp"
         tools:text="ver. 1.0.0"/>
 
@@ -33,10 +45,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/developer"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/donate_btc_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:text="@string/about_github"/>
+
+    <TextView
+        android:id="@+id/donate_btc_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/about_donate_btc"
+        app:layout_constraintTop_toBottomOf="@+id/github"
+        app:layout_constraintBottom_toTopOf="@id/donate_btc_address"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/donate_btc_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/about_btc_address"
+        app:layout_constraintTop_toBottomOf="@id/donate_btc_label"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="TextViewEdits" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

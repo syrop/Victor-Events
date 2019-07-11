@@ -113,4 +113,6 @@
     <string name="about_developer">Developer: Wiktor Nizio</string>
     <string name="about_github">View on GitHub</string>
     <string name="about_github_url" translatable="false">https://github.com/syrop/Victor-Events</string>
+    <string name="about_donate_btc">Donate BTC:</string>
+    <string name="about_btc_address" translatable="false">bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp</string>
 </resources>
