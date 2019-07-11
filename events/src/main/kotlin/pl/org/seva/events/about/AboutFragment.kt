@@ -35,7 +35,7 @@ class AboutFragment : Fragment(R.layout.fr_about) {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
 
         fun String.toClipboard() {
-            val clipboard = activity!!.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clipboard = requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             clipboard.primaryClip = ClipData.newPlainText("", this)
         }
 
