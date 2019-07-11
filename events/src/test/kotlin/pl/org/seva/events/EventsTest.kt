@@ -20,10 +20,8 @@
 package pl.org.seva.events
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.ObsoleteCoroutinesApi
-import kotlinx.coroutines.newSingleThreadContext
+import androidx.lifecycle.Observer
+import kotlinx.coroutines.*
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
@@ -74,8 +72,12 @@ class EventsTest {
     fun testAdd() = runBlockingTest {
         val events = Events(fsReader, fsWriter, eventsDao)
         val event = Event.creationEvent
+        @Suppress("UNCHECKED_CAST")
+        val observer = mock(Observer::class.java) as Observer<Unit>
+        events.updatedLiveData().observeForever(observer)
         events.add(event)
         verify(fsWriter).add(event)
         verify(eventsDao).add(event)
+        verify(observer).onChanged(Unit)
     }
 }
