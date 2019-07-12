@@ -74,7 +74,7 @@ class EventsTest {
         val event = Event.creationEvent
         @Suppress("UNCHECKED_CAST")
         val observer = mock(Observer::class.java) as Observer<Unit>
-        events.updatedLiveData().observeForever(observer)
+        events.updatedLiveData(this).observeForever(observer)
         events.add(event)
         verify(fsWriter).add(event)
         verify(eventsDao).add(event)
