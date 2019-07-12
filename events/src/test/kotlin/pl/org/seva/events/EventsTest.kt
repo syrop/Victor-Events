@@ -36,7 +36,6 @@ import pl.org.seva.events.event.Events
 import pl.org.seva.events.event.EventsDao
 import pl.org.seva.events.main.data.firestore.FsReader
 import pl.org.seva.events.main.data.firestore.FsWriter
-import kotlin.coroutines.EmptyCoroutineContext
 
 @ExperimentalCoroutinesApi
 @ObsoleteCoroutinesApi
