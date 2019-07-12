@@ -48,7 +48,6 @@ abstract class LiveRepository {
             }
             finally {
                 cancel()
-                Thread.dumpStack()
             }
         }
     }
