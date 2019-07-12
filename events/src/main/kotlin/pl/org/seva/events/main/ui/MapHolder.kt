@@ -61,7 +61,7 @@ open class MapHolder {
     }
 
     fun markPosition(latLng: LatLng?) {
-        with (map!!) {
+        with (checkNotNull(map)) {
             clear()
             latLng ?: return
             addMarker(MarkerOptions().position(latLng))

@@ -184,7 +184,7 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == LOGIN_CREATE_COMM_REQUEST && resultCode == Activity.RESULT_OK) {
-            data!!.getStringExtra(LoginActivity.COMMUNITY_NAME)?.createJoinAndFinish()
+            checkNotNull(data).getStringExtra(LoginActivity.COMMUNITY_NAME)?.createJoinAndFinish()
         }
     }
 

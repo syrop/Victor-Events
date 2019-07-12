@@ -54,7 +54,7 @@ class MessagesFragment : Fragment(R.layout.fr_messages) {
             }
             else {
                 messages_view.visibility = View.VISIBLE
-                messages_view.adapter!!.notifyDataSetChanged()
+                checkNotNull(messages_view.adapter).notifyDataSetChanged()
                 prompt.visibility = View.GONE
             }
         }

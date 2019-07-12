@@ -69,7 +69,7 @@ class CommListFragment : Fragment(R.layout.fr_comm_list) {
             else {
                 prompt.visibility = View.GONE
                 comms_view.visibility = View.VISIBLE
-                comms_view.adapter!!.notifyDataSetChanged()
+                checkNotNull(comms_view.adapter).notifyDataSetChanged()
             }
         }
     }

@@ -90,7 +90,7 @@ data class Event(
                 comm = comm,
                 name = name,
                 time = LocalDateTime.parse(time),
-                location = lat?.let { LatLng(it, lon!!) },
+                location = lat?.let { LatLng(it, checkNotNull(lon)) },
                 address = address,
                 desc = desc)
     }

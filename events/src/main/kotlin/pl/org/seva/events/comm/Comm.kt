@@ -35,7 +35,7 @@ data class Comm(
 
     private val attributes = mutableMapOf<String, String>()
 
-    var originalName get() = if (isDummy) attributes[ORIG_NAME]!! else name
+    var originalName get() = if (isDummy) checkNotNull(attributes[ORIG_NAME]) else name
     set(value)  { if (isDummy) attributes[ORIG_NAME] = value }
 
     val lcName: String get() = name.toLowerCase(Locale.getDefault())

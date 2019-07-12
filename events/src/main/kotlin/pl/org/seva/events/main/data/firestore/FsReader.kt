@@ -60,8 +60,8 @@ open class FsReader(private val colorFactory: ColorFactory) : FsBase() {
     private suspend fun DocumentReference.doesExist() = read().exists()
 
     private fun DocumentSnapshot.toEvent(): Event {
-        val name: String = getString(EVENT_NAME)!!
-        val comm: String = getString(EVENT_COMM)!!
+        val name: String = checkNotNull(getString(EVENT_NAME))
+        val comm: String = checkNotNull(getString(EVENT_COMM))
         val location: LatLng? = getGeoPoint(EVENT_LOCATION)?.let { LatLng(it.latitude, it.longitude) }
         val time: LocalDateTime = LocalDateTime.parse(getString(EVENT_TIME))
         val desc: String? = getString(EVENT_DESC)
@@ -70,7 +70,7 @@ open class FsReader(private val colorFactory: ColorFactory) : FsBase() {
 
     private fun DocumentSnapshot.toCommunity() =
             if (exists()) Comm(
-                    name = getString(COMM_NAME)!!,
+                    name = checkNotNull(getString(COMM_NAME)),
                     color = colorFactory.nextColor,
                     desc = getString(COMM_DESC) ?: "") else Comm.DUMMY
 

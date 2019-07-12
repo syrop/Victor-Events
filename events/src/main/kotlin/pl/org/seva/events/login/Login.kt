@@ -29,8 +29,8 @@ class Login {
 
     fun setCurrentUser(user: FirebaseUser?) = if (user != null) {
         isLoggedIn = true
-        email = user.email!!
-        displayName = user.displayName!!
+        email = checkNotNull(user.email)
+        displayName = checkNotNull(user.displayName)
     } else {
         isLoggedIn = false
         email = ""

@@ -151,7 +151,7 @@ class LoginActivity : AppCompatActivity(),
         }
 
         fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-            log.info("firebaseAuthWithGoogle:" + acct.id!!)
+            log.info("firebaseAuthWithGoogle:" + checkNotNull(acct.id))
             progress.visibility = View.VISIBLE
 
             val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
@@ -177,7 +177,7 @@ class LoginActivity : AppCompatActivity(),
             val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
             if (result.isSuccess) {
                 // Google Sign In was successful, authenticate with Firebase
-                val account = result.signInAccount!!
+                val account = checkNotNull(result.signInAccount)
                 firebaseAuthWithGoogle(account)
             } else {
                 signInFailed()

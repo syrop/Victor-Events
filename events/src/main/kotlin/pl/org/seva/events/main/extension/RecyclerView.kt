@@ -29,5 +29,5 @@ fun RecyclerView.onSwipe(listener: (Int) -> Unit) {
 }
 
 fun RecyclerView.verticalDivider() {
-    addItemDecoration(DividerItemDecoration(context!!, DividerItemDecoration.VERTICAL))
+    addItemDecoration(DividerItemDecoration(checkNotNull(context), DividerItemDecoration.VERTICAL))
 }

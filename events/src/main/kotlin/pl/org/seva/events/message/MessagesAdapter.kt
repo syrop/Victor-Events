@@ -47,7 +47,7 @@ class MessagesAdapter : RecyclerView.Adapter<MessagesAdapter.ViewHolder>() {
     }
 
     class ViewHolder internal constructor(view: View) : RecyclerView.ViewHolder(view) {
-        val time = view.time!!
-        val content = view.content!!
+        val time = checkNotNull(view.time)
+        val content = checkNotNull(view.content)
     }
 }

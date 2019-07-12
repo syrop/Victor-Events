@@ -67,7 +67,7 @@ class EventListFragment : Fragment(R.layout.fr_event_list) {
             } else {
                 prompt.visibility = View.GONE
                 events_view.visibility = View.VISIBLE
-                events_view.adapter!!.notifyDataSetChanged()
+                checkNotNull(events_view.adapter).notifyDataSetChanged()
             }
         }
     }

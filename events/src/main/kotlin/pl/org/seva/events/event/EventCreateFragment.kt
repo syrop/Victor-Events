@@ -132,9 +132,9 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
                     }.any { it }) return true
             lifecycleScope.launch {
                 events add Event(
-                        comm = vm.comm.value!!,
-                        name = vm.name.value!!,
-                        time = LocalDateTime.of(vm.date.value!!, vm.time.value!!),
+                        comm = checkNotNull(vm.comm.value),
+                        name = checkNotNull(vm.name.value),
+                        time = LocalDateTime.of(checkNotNull(vm.date.value), checkNotNull(vm.time.value)),
                         location = vm.location.value?.location,
                         address = vm.location.value?.address,
                         desc = vm.desc.value)

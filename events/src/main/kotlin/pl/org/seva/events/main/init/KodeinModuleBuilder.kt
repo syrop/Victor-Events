@@ -68,7 +68,7 @@ class KodeinModuleBuilder(private val ctx: Context) {
         bind<Login>() with singleton { Login() }
         bind<ColorFactory>() with singleton { ColorFactory(ctx) }
         bind<Logger>() with multiton { tag: String ->
-            Logger.getLogger(tag)!!.apply {
+            checkNotNull(Logger.getLogger(tag)).apply {
                 if (!BuildConfig.DEBUG) {
                     @Suppress("UsePropertyAccessSyntax")
                     setFilter { false }

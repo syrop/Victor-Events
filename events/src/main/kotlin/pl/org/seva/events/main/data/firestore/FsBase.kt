@@ -53,9 +53,9 @@ abstract class FsBase {
         suspendCancellableCoroutine { continuation: CancellableContinuation<DocumentSnapshot> ->
             get().addOnCompleteListener { result ->
                 if (result.isSuccessful) {
-                    continuation.resume(result.result!!)
+                    continuation.resume(checkNotNull(result.result))
                 } else {
-                    continuation.resumeWithException(result.exception!!)
+                    continuation.resumeWithException(checkNotNull(result.exception))
                 }
             }
         }
@@ -65,9 +65,9 @@ abstract class FsBase {
         suspendCancellableCoroutine { continuation: CancellableContinuation<List<DocumentSnapshot>> ->
             get().addOnCompleteListener { result ->
                 if (result.isSuccessful) {
-                    continuation.resume(result.result!!.documents)
+                    continuation.resume(checkNotNull(result.result).documents)
                 } else {
-                    continuation.resumeWithException(result.exception!!)
+                    continuation.resumeWithException(checkNotNull(result.exception))
                 }
             }
         }
