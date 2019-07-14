@@ -22,7 +22,7 @@ package pl.org.seva.events.main.ui
 import android.content.Context
 import android.graphics.Color
 
-class ColorFactory(private val appContext: Context ) {
+open class ColorFactory(private val appContext: Context ) {
 
     private val colors by lazy {
         with(appContext) {

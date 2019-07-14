@@ -27,7 +27,7 @@ import pl.org.seva.events.main.data.LiveRepository
 import pl.org.seva.events.main.data.firestore.FsReader
 import pl.org.seva.events.main.data.firestore.FsWriter
 
-class Events(
+open class Events(
         private val fsReader: FsReader,
         private val fsWriter: FsWriter,
         private val eventsDao: EventsDao) : LiveRepository() {
@@ -45,7 +45,7 @@ class Events(
 
     val isEmpty get() = eventsCache.size == 0
 
-    suspend infix fun addFrom(comm: Comm) {
+    open suspend infix fun addFrom(comm: Comm) {
         (fsReader readEventsFrom comm.lcName).also { events ->
             eventsCache.addAll(events)
             notifyDataSetChanged()

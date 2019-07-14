@@ -22,32 +22,29 @@ package pl.org.seva.events.comm
 import androidx.room.*
 import pl.org.seva.events.main.data.db.EventsDb
 
-suspend infix fun CommsDao.delete(comm: Comm) = delete(Comm.Entity(comm))
-
-suspend infix fun CommsDao.add(comm: Comm) = insert(Comm.Entity(comm))
-
-suspend fun CommsDao.getAllValues() = getAll().map { it.value() }
-
-suspend infix fun CommsDao.add(comms: Collection<Comm>) = insert(comms.map { Comm.Entity(it) })
-
 @Dao
-interface CommsDao {
+abstract class CommsDao {
+
+    suspend infix fun delete(comm: Comm) = delete(Comm.Entity(comm))
+    open suspend infix fun add(comm: Comm) = insert(Comm.Entity(comm))
+    suspend fun getAllValues() = getAll().map { it.value() }
+    suspend infix fun add(comms: Collection<Comm>) = insert(comms.map { Comm.Entity(it) })
 
     @Query("select * from ${EventsDb.COMM_TABLE}")
-    suspend fun getAll(): List<Comm.Entity>
+    abstract suspend fun getAll(): List<Comm.Entity>
 
     @Insert
-    suspend fun insert(comm: Comm.Entity)
+    abstract suspend fun insert(comm: Comm.Entity)
 
     @Insert
-    suspend fun insert(comms: Collection<Comm.Entity>)
+    abstract suspend fun insert(comms: Collection<Comm.Entity>)
 
     @Delete
-    suspend fun delete(comm: Comm.Entity)
+    abstract suspend fun delete(comm: Comm.Entity)
 
     @Update
-    suspend fun update(comm: Comm.Entity)
+    abstract suspend fun update(comm: Comm.Entity)
 
     @Query("delete from ${EventsDb.COMM_TABLE}")
-    suspend fun clear()
+    abstract suspend fun clear()
 }

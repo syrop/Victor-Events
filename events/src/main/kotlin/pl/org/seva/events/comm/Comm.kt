@@ -25,13 +25,14 @@ import pl.org.seva.events.main.data.db.EventsDb
 import pl.org.seva.events.main.init.instance
 import java.util.*
 
+private val defaultComms by instance<Comms>()
+
 data class Comm(
         val name: String,
         val desc: String = "",
         val color: Int = Color.GRAY,
-        val isAdmin: Boolean = false) {
-
-    private val comms by instance<Comms>()
+        val isAdmin: Boolean = false,
+        val comms: Comms = defaultComms) {
 
     private val attributes = mutableMapOf<String, String>()
 

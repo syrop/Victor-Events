@@ -29,21 +29,25 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.Mockito
 import org.mockito.Mockito.mock
-import org.mockito.Mockito.verify
-import pl.org.seva.events.event.Event
+import pl.org.seva.events.comm.Comm
+import pl.org.seva.events.comm.Comms
+import pl.org.seva.events.comm.CommsDao
 import pl.org.seva.events.event.Events
-import pl.org.seva.events.event.EventsDao
 import pl.org.seva.events.main.data.firestore.FsReader
 import pl.org.seva.events.main.data.firestore.FsWriter
+import pl.org.seva.events.main.ui.ColorFactory
 
 @ExperimentalCoroutinesApi
 @ObsoleteCoroutinesApi
-class EventsTest {
+class CommsTest {
 
     private lateinit var fsReader: FsReader
     private lateinit var fsWriter: FsWriter
-    private lateinit var eventsDao: EventsDao
+    private lateinit var commsDao: CommsDao
+    private lateinit var events: Events
+    private lateinit var colorFactory: ColorFactory
 
     private val mainThreadSurrogate = newSingleThreadContext("UI thread")
 
@@ -65,21 +69,23 @@ class EventsTest {
     fun mockDependencies() {
         fsReader = mock(FsReader::class.java)
         fsWriter = mock(FsWriter::class.java)
-        eventsDao = mock(EventsDao::class.java)
+        commsDao = mock(CommsDao::class.java)
+        events = mock(Events::class.java)
+        colorFactory = mock(ColorFactory::class.java)
     }
 
     @Test
-    fun testAdd() = runBlockingTest {
-        val events = Events(fsReader, fsWriter, eventsDao)
-        val event = Event.creationEvent
+    fun testJoin() = runBlockingTest {
+        val comms = Comms(fsReader, fsWriter, commsDao, events, colorFactory)
+        val comm = Comm("", "", comms = comms)
         val job = Job()
         @Suppress("UNCHECKED_CAST")
         val observer = mock(Observer::class.java) as Observer<Unit>
-        events.updatedLiveData(job).observeForever(observer)
-        events.add(event)
-        verify(fsWriter).add(event)
-        verify(eventsDao).add(event)
-        verify(observer).onChanged(Unit)
+        comms.updatedLiveData(job).observeForever(observer)
+        comms join comm
+        Mockito.verify(events) addFrom comm
+        Mockito.verify(commsDao) add comm
+        Mockito.verify(observer).onChanged(Unit)
         job.cancel()
     }
 }

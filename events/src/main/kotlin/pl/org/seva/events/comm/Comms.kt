@@ -78,9 +78,9 @@ open class Comms(
     suspend infix fun join(comm: Comm): Boolean = withContext(NonCancellable) {
         val updated = !commsCache.contains(comm) && commsCache.add(comm)
         if (updated) {
-            notifyDataSetChanged()
             launch { events addFrom comm }
             launch { commsDao add comm }
+            notifyDataSetChanged()
         }
         updated
     }
