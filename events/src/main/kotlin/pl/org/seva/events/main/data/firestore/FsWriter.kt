@@ -40,6 +40,8 @@ open class FsWriter : FsBase() {
 
     open infix fun add(event: Event) = event.comm.toLowerCase(Locale.getDefault()).writeEvent(event)
 
+    open fun addAll(vararg events: Event) = events.forEach { add(it) }
+
     infix fun update(comm: Comm) = with(comm) {
         lcName.comm.set(mapOf(COMM_NAME to name, COMM_DESC to desc), SetOptions.merge())
     }

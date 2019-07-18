@@ -64,7 +64,7 @@ open class Comms(
         if (updated) {
             notifyDataSetChanged()
             launch { commsDao delete comm }
-            launch { events deleteFrom comm }
+            launch { events deleteLocallyFrom comm }
         }
         updated
     }

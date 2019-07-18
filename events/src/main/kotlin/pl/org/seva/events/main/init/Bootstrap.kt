@@ -59,7 +59,7 @@ class Bootstrap(private val ctx: Context) {
         listOf(
             launch { comms.fromDb() },
             launch { messages.readFromDb() },
-            launch { events.fromDb() })
+            launch { events.loadFromDb() })
                 .joinAll()
         scheduleSync<CommSyncWorker>(
                 tag = CommSyncWorker.TAG,

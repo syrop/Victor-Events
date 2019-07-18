@@ -36,31 +36,30 @@ open class Events(
 
     val size get() = eventsCache.size
 
-    suspend infix fun add(event: Event) = withContext(NonCancellable) {
-        eventsCache.add(event)
+    suspend fun add(vararg events: Event) = withContext(NonCancellable) {
+        eventsCache.addAll(events)
+        launch { eventsDao addAll events.toList() }
+        fsWriter.addAll(*events)
         notifyDataSetChanged()
-        launch { eventsDao add event }
-        fsWriter add event
     }
 
     val isEmpty get() = eventsCache.size == 0
 
     open suspend infix fun addFrom(comm: Comm) {
-        (fsReader readEventsFrom comm.lcName).also { events ->
-            eventsCache.addAll(events)
-            notifyDataSetChanged()
-            eventsDao addAll events
-        }
+        val events = fsReader readEventsFrom comm.lcName
+        add(*events.toTypedArray())
     }
 
-    suspend infix fun deleteFrom(comm: Comm) {
-        eventsCache.filter { it.comm == comm.name }
-                .onEach { eventsCache.remove(it) }
-                .launchEach { eventsDao delete it }
+    suspend infix fun deleteLocallyFrom(comm: Comm) = coroutineScope {
+        val events = eventsCache.filter { it.comm == comm.name }
+        events.onEach { event ->
+            eventsCache.remove(event)
+            launch { eventsDao delete event }
+        }
         notifyDataSetChanged()
     }
 
-    suspend fun fromDb() {
+    suspend fun loadFromDb() {
         eventsCache.addAll(eventsDao.getAllValues().sortedBy { it.time })
         notifyDataSetChanged()
     }
