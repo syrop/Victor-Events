@@ -70,7 +70,7 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
             recycler.layoutManager = LinearLayoutManager(context)
         }
 
-        fun notFound(comm: Comm) {
+        fun Comm.notFound() {
             fun showCreateCommunitySnackbar(name: String) {
                 snackbar = permanentSnackbar {
                     view = layout
@@ -99,9 +99,9 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
             }
             progress.visibility = View.GONE
             prompt.visibility = View.VISIBLE
-            prompt.text = getString(R.string.add_comm_not_found).bold(NAME_PLACEHOLDER, comm.originalName)
-            if (login.isLoggedIn) showCreateCommunitySnackbar(comm.originalName)
-            else showLoginToCreateSnackbar(comm.originalName)
+            prompt.text = getString(R.string.add_comm_not_found).bold(NAME_PLACEHOLDER, originalName)
+            if (login.isLoggedIn) showCreateCommunitySnackbar(originalName)
+            else showLoginToCreateSnackbar(originalName)
         }
 
         super.onActivityCreated(savedInstanceState)
@@ -115,8 +115,8 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
                     prompt.visibility = View.GONE
                     progress.visibility = View.VISIBLE
                 }
-                is CommAddViewModel.QueryState.Completed -> result.comm.let {
-                    if (it.isDummy) notFound(it) else it.found()
+                is CommAddViewModel.QueryState.Completed -> result.comm.apply {
+                    if (isDummy) notFound() else found()
                 }
                 is CommAddViewModel.QueryState.Error -> {
                     recycler.visibility = View.GONE
