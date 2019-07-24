@@ -77,8 +77,8 @@ class EventsTest {
         val observer = mock(Observer::class.java) as Observer<Unit>
         events.updatedLiveData(job).observeForever(observer)
         events.add(event)
-        verify(fsWriter).add(event)
-        verify(eventsDao).add(event)
+        verify(fsWriter) add event
+        verify(eventsDao) add event
         verify(observer).onChanged(Unit)
         job.cancel()
     }
