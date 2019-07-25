@@ -43,7 +43,7 @@ data class Comm(
 
     val isDummy get() = name == DUMMY_NAME
 
-    val isMemberOf get () = comms contains this
+    val isMemberOf get () = this in comms
 
     suspend fun leave() = comms leave this
 

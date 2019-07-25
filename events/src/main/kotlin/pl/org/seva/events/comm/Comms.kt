@@ -50,7 +50,7 @@ open class Comms(
 
     operator fun get(name: String) = commsCache.firstOrNull { it.name == name } ?: Comm.DUMMY
 
-    infix fun contains(comm: Comm) = commsCache.any { it.name == comm.name }
+    infix operator fun contains(comm: Comm) = commsCache.any { it.name == comm.name }
 
     infix fun update(comm: Comm) {
         commsCache.remove(get(comm.name))
@@ -76,7 +76,7 @@ open class Comms(
     }
 
     suspend infix fun join(comm: Comm): Boolean = withContext(NonCancellable) {
-        val updated = !commsCache.contains(comm) && commsCache.add(comm)
+        val updated = comm !in commsCache && commsCache.add(comm)
         if (updated) {
             launch { events addFrom comm }
             launch { commsDao add comm }
