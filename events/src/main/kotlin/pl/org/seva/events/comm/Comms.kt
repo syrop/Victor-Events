@@ -24,7 +24,7 @@ import pl.org.seva.events.event.Events
 import pl.org.seva.events.main.data.LiveRepository
 import pl.org.seva.events.main.data.firestore.FsReader
 import pl.org.seva.events.main.data.firestore.FsWriter
-import pl.org.seva.events.main.extension.asyncMap
+import pl.org.seva.events.main.extension.async
 import pl.org.seva.events.main.ui.ColorFactory
 
 open class Comms(
@@ -102,7 +102,7 @@ open class Comms(
             withContext(Dispatchers.Default) {
                 val transformed = commsCache
                         .toList()
-                        .asyncMap { transform(it) }
+                        .async { transform(it) }
                         .awaitAll()
                 withContext(NonCancellable) {
                     commsCache.clear()

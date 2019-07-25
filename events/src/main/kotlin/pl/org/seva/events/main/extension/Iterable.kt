@@ -27,6 +27,6 @@ suspend fun <T> Iterable<T>.launchEach(block: suspend (T) -> Unit) = coroutineSc
     map { launch { block(it) } }
 }
 
-suspend fun <T, R> Iterable<T>.asyncMap(block: suspend (T) -> R) = coroutineScope {
+suspend fun <T, R> Iterable<T>.async(block: suspend (T) -> R) = coroutineScope {
     map { async { block(it) } }
 }
