@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution"
+    xmlns:tools="http://schemas.android.com/tools"
     package="pl.org.seva.events">
 
     <dist:module dist:instant="true" />
@@ -18,10 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDRtrC48UddOyVlNyH4cj4Pgc-bTs9FN4I"/>
+            android:value="AIzaSyDRtrC48UddOyVlNyH4cj4Pgc-bTs9FN4I" />
 
         <activity
             android:name=".main.MainActivity"
@@ -29,18 +27,21 @@
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-            <meta-data android:name="android.app.searchable"
-                       android:resource="@xml/searchable_community"/>
-        </activity>
 
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable_community" />
+        </activity>
         <activity
             android:name=".login.LoginActivity"
             android:label="@string/login_label" />
     </application>
+
 </manifest>

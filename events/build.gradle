@@ -57,6 +57,9 @@ android {
     lintOptions {
         check 'Interoperability'
     }
+    dynamicFeatures = [":instant"]
+
+
 }
 
 kapt {

@@ -38,7 +38,7 @@
     <string name="comm_list_undo">Undo</string>
 
     <!-- Comm details fragment -->
-    <string name="comm_details_label" translatable="false"/>
+    <string name="comm_details_label" translatable="false" />
     <string name="comm_details_name">Name</string>
     <string name="comm_details_description">Description</string>
     <string name="comm_details_add_admin">Add an admin</string>
@@ -56,7 +56,7 @@
     <string name="comm_edit_updated">Updated: [name]</string>
 
     <!-- Comm delete fragment -->
-    <string name="comm_delete_label" translatable="false"/>
+    <string name="comm_delete_label" translatable="false" />
     <string name="comm_delete_title">Delete: [name]</string>
     <string name="comm_delete_prompt">Delete the community: [name].\n (This action cannot be undone).</string>
     <string name="comm_delete_toast">Deleted: [name]</string>
@@ -76,7 +76,7 @@
     <string name="create_event_cant_be_empty">Can\'t be empty</string>
 
     <!-- Event details fragment -->
-    <string name="event_details_label" translatable="false"/>
+    <string name="event_details_label" translatable="false" />
     <string name="event_details_comm">Community</string>
     <string name="event_details_name">Name</string>
     <string name="event_details_date">Date</string>
@@ -115,4 +115,5 @@
     <string name="about_github_url" translatable="false">https://github.com/syrop/Victor-Events</string>
     <string name="about_donate_btc">Donate BTC:</string>
     <string name="about_btc_address" translatable="false">bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp</string>
+    <string name="title_instant">Module Title</string>
 </resources>

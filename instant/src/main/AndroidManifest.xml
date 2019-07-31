@@ -1,0 +1,20 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dist="http://schemas.android.com/apk/distribution"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="pl.org.seva.events.instant">
+
+    <dist:module
+        dist:instant="true"
+        dist:title="@string/title_instant">
+        <dist:delivery>
+            <dist:install-time />
+        </dist:delivery>
+        <dist:fusing dist:include="false" />
+    </dist:module>
+    <application tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".InstantActivity" >
+
+        </activity>
+    </application>
+</manifest>
+
