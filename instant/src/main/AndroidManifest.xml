@@ -12,9 +12,30 @@
         <dist:fusing dist:include="false" />
     </dist:module>
     <application tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".InstantActivity" >
+        <activity android:name=".InstantActivity">
 
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="http"
+                    android:host="events.seva.org.pl"
+                    android:pathPattern="/list" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="events.seva.org.pl"
+                    android:pathPattern="/list" />
+            </intent-filter>
         </activity>
     </application>
 </manifest>
-
