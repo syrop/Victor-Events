@@ -20,21 +20,24 @@
 package pl.org.seva.events.main
 
 import android.app.Application
+import android.content.Context
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.kodein.di.Kodein
 import org.kodein.di.conf.global
-import pl.org.seva.events.main.extension.bootstrap
-import pl.org.seva.events.main.extension.module
+import pl.org.seva.events.main.init.Bootstrap
+import pl.org.seva.events.main.init.KodeinModuleBuilder
+import pl.org.seva.events.main.init.instance
 
 @Suppress("unused")
 class EventsApplication : Application() {
 
-    init { Kodein.global.addImport(module) }
+    private val bootstrap by instance<Context, Bootstrap>(arg = this)
 
     override fun onCreate() {
         super.onCreate()
 
+        Kodein.global.addImport(KodeinModuleBuilder(this).build())
         GlobalScope.launch { bootstrap.boot() }
     }
 }
