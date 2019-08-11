@@ -28,7 +28,9 @@ import pl.org.seva.events.R
 import pl.org.seva.events.main.init.instance
 
 val Fragment.eventViewModel get() =
-    navGraphViewModels<EventViewModel>(R.id.nav_graph) { SavedStateViewModelFactory(requireActivity()) }
+    navGraphViewModels<EventViewModel>(R.id.nav_graph) {
+        SavedStateViewModelFactory(requireActivity().application, this)
+    }
 
 class EventViewModel(private val state: SavedStateHandle) : ViewModel() {
 

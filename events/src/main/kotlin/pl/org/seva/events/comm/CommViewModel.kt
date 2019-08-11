@@ -26,7 +26,9 @@ import pl.org.seva.events.R
 import pl.org.seva.events.main.init.instance
 
 val Fragment.commViewModel get() =
-    navGraphViewModels<CommViewModel>(R.id.comms_graph) { SavedStateViewModelFactory(requireActivity()) }
+    navGraphViewModels<CommViewModel>(R.id.comms_graph) {
+        SavedStateViewModelFactory(requireActivity().application, this)
+    }
 
 class CommViewModel(private val state: SavedStateHandle) : ViewModel() {
 
