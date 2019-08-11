@@ -21,7 +21,6 @@ package pl.org.seva.events.event
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.ViewModel
 import androidx.navigation.navGraphViewModels
 import pl.org.seva.events.R
