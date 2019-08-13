@@ -39,7 +39,7 @@ class CommListFragment : Fragment(R.layout.fr_comm_list) {
         super.onActivityCreated(savedInstanceState)
 
         comms_view.setHasFixedSize(true)
-        comms_view.layoutManager = LinearLayoutManager(context)
+        comms_view.layoutManager = LinearLayoutManager(requireContext())
         comms_view.verticalDivider()
         comms_view.adapter = CommAdapter { position ->
             commViewModel.value.withPosition(position)
