@@ -42,8 +42,8 @@ open class FsReader(private val colorFactory: ColorFactory) : FsBase() {
                     .read()
                     .map { it.toEvent() }
 
-    suspend infix fun isAdmin(name: String): Boolean = if (login.isLoggedIn)
-            name.admins.document(login.email).doesExist() else false
+    suspend infix fun isAdmin(name: String): Boolean = login.isLoggedIn &&
+            name.admins.document(login.email).doesExist()
 
     suspend fun findCommunity(name: String) = coroutineScope {
         val lcName = name.toLowerCase(Locale.getDefault())

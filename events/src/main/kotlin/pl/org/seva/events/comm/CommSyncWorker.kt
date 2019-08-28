@@ -52,7 +52,9 @@ class CommSyncWorker(private val context: Context, params: WorkerParameters) :
                         messages addAll this
                     }
         }
-        catch (e: FirebaseFirestoreException) {}
+        catch (e: FirebaseFirestoreException) {
+            // blank
+        }
         Result.success()
     }
 
