@@ -67,7 +67,7 @@ fun Fragment.createInteractiveMapHolder(@IdRes map: Int, block: InteractiveMapHo
 
 private fun Fragment.withMapHolder(pair: Pair<MapHolder, Int>) {
     val (holder, id) = pair
-    lifecycleScope.launch(Dispatchers.Main) {
+    lifecycleScope.launch {
         holder withMap googleMap(id)
     }
 }
