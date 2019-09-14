@@ -106,14 +106,16 @@ open class Comms(
                         .awaitAll()
             }
 
-    private suspend fun List<Comm>.commit() = withContext(NonCancellable) {
-        commsCache.clear()
-        commsCache.addAll(filter { !it.isDummy })
-        commsDao.clear()
-        commsDao add commsCache
-        notifyDataSetChanged()
+    private suspend fun List<Comm>.commit() = coroutineScope {
+        launch(NonCancellable) {
+            commsCache.clear()
+            commsCache.addAll(filter { !it.isDummy })
+            commsDao.clear()
+            commsDao add commsCache
+            notifyDataSetChanged()
+        }
 
-        this@commit
+        this
     }
 
     suspend infix fun joinNewCommunity(name: String) = withContext(NonCancellable) {
