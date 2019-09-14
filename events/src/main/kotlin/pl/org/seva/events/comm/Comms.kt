@@ -93,36 +93,26 @@ open class Comms(
     suspend fun <R> map(block: suspend (Comm) -> R) = commsCache.toList().map { block(it) }
 
     suspend fun refreshAdminStatuses() =
-        transformCache { it.copy(isAdmin = fsReader.isAdmin(it.lcName)) }
+        mapCache { it.copy(isAdmin = fsReader.isAdmin(it.lcName)) }.commit()
 
-    /**
-     * Replaces every community in the cache with its version from FS.
-     *
-     * Does not modify the cache.
-     */
     suspend fun refresh() =
-        transformCache { fsReader.findCommunity(it.name).copy(color = it.color) }
+        mapCache { fsReader.findCommunity(it.name).copy(color = it.color) }.commit()
 
-    /**
-     * For every community in the cache applies a given [transform]. Returns the resulting [List].
-     *
-     * Does not modify the cache.
-     */
-    private suspend fun transformCache(transform: suspend (Comm) -> Comm): List<Comm> =
+    private suspend fun mapCache(transform: suspend (Comm) -> Comm) =
             withContext(Dispatchers.Default) {
-                val transformed = commsCache
+                commsCache
                         .toList()
                         .async { transform(it) }
                         .awaitAll()
-                withContext(NonCancellable) {
-                    commsCache.clear()
-                    commsCache.addAll(transformed.filter { !it.isDummy })
-                    commsDao.clear()
-                    commsDao add commsCache
-                    notifyDataSetChanged()
-                }
-                transformed
             }
+
+    private suspend fun List<Comm>.commit() = withContext(NonCancellable) {
+        commsCache.clear()
+        commsCache.addAll(filter { !it.isDummy })
+        commsDao.clear()
+        commsDao add commsCache
+        notifyDataSetChanged()
+    }
 
     suspend infix fun joinNewCommunity(name: String) = withContext(NonCancellable) {
         Comm(name, color = colorFactory.nextColor, isAdmin = true).apply {
