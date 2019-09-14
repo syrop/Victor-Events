@@ -112,6 +112,8 @@ open class Comms(
         commsDao.clear()
         commsDao add commsCache
         notifyDataSetChanged()
+
+        this@commit
     }
 
     suspend infix fun joinNewCommunity(name: String) = withContext(NonCancellable) {
