@@ -115,7 +115,7 @@ open class Comms(
             notifyDataSetChanged()
         }
 
-        this
+        this@commit
     }
 
     suspend infix fun joinNewCommunity(name: String) = withContext(NonCancellable) {
