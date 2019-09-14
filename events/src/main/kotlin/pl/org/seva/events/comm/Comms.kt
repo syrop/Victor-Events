@@ -93,12 +93,22 @@ open class Comms(
     suspend fun <R> map(block: suspend (Comm) -> R) = commsCache.toList().map { block(it) }
 
     suspend fun refreshAdminStatuses() =
-        refresh { it.copy(isAdmin = fsReader.isAdmin(it.lcName)) }
+        transformCache { it.copy(isAdmin = fsReader.isAdmin(it.lcName)) }
 
+    /**
+     * Replaces every community in the cache with its version from FS.
+     *
+     * Does not modify the cache.
+     */
     suspend fun refresh() =
-        refresh { fsReader.findCommunity(it.name).copy(color = it.color) }
+        transformCache { fsReader.findCommunity(it.name).copy(color = it.color) }
 
-    private suspend fun refresh(transform: suspend (Comm) -> Comm): List<Comm> =
+    /**
+     * For every community in the cache applies a given [transform]. Returns the resulting [List].
+     *
+     * Does not modify the cache.
+     */
+    private suspend fun transformCache(transform: suspend (Comm) -> Comm): List<Comm> =
             withContext(Dispatchers.Default) {
                 val transformed = commsCache
                         .toList()
