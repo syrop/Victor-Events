@@ -39,9 +39,7 @@ class EventSyncWorker(context: Context, params: WorkerParameters) :
         try {
             events fromComms comms
         }
-        catch (e: FirebaseFirestoreException) {
-            // blank
-        }
+        catch (e: FirebaseFirestoreException) {}
         Result.success()
     }
 
