@@ -37,7 +37,6 @@ import androidx.lifecycle.*
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import pl.org.seva.events.main.ui.InteractiveMapHolder
@@ -72,11 +71,11 @@ private fun Fragment.withMapHolder(pair: Pair<MapHolder, Int>) {
     }
 }
 
-fun Fragment.checkPermission(permission: String) =
+fun Fragment.check(permission: String) =
         ContextCompat.checkSelfPermission(requireContext(), permission) == PackageManager.PERMISSION_GRANTED
 
 var Fragment.title: CharSequence
-    get() = checkNotNull(checkNotNull((requireActivity() as AppCompatActivity).supportActionBar).title)
+    get() = checkNotNull(checkNotNull((requireActivity()).actionBar).title)
     set(value) {
         checkNotNull((requireActivity() as AppCompatActivity).supportActionBar).title = value
     }
@@ -88,24 +87,26 @@ fun Fragment.inBrowser(uri: String) {
 }
 
 fun Fragment.request(requestCode: Int, requests: Array<Permissions.PermissionRequest>) {
-    watch(requestCode, requests)
+    watchPermissions(requestCode, requests)
     requestPermissions(requests.map { it.permission }.toTypedArray(), requestCode)
 }
 
-private fun Fragment.watch(requestCode: Int, requests: Array<Permissions.PermissionRequest>) {
+private fun Fragment.watchPermissions(requestCode: Int, requests: Array<Permissions.PermissionRequest>) {
     lifecycleScope.launch { viewModels<Permissions.ViewModel>().value.watch(requestCode, requests) }
 }
 
 fun Fragment.prefs(name: String): SharedPreferences =
         requireContext().getSharedPreferences(name, Context.MODE_PRIVATE)
 
-suspend fun Fragment.googleMap(@IdRes id: Int) = suspendCancellableCoroutine<GoogleMap> { continuation ->
-    val mapFragment = childFragmentManager.findFragmentById(id) as SupportMapFragment
-    mapFragment.getMapAsync { map -> continuation.resume(map) }
-}
+suspend fun Fragment.googleMap(@IdRes id: Int) =
+        suspendCancellableCoroutine<GoogleMap> { continuation ->
+            val mapFragment =
+                    childFragmentManager.findFragmentById(id) as SupportMapFragment
+            mapFragment.getMapAsync { map -> continuation.resume(map) }
+        }
 
 fun Fragment.requestLocationPermission(onGranted: () -> Unit) {
-    if (checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) onGranted()
+    if (check(Manifest.permission.ACCESS_COARSE_LOCATION)) onGranted()
     else request(
             Permissions.DEFAULT_PERMISSION_REQUEST_ID,
             arrayOf(Permissions.PermissionRequest(
@@ -116,7 +117,7 @@ fun Fragment.requestLocationPermission(onGranted: () -> Unit) {
 fun Fragment.enableMyLocationOnResume(map: GoogleMap) {
     lifecycle.addObserver(object : LifecycleEventObserver{
         override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-            if (event == Lifecycle.Event.ON_RESUME && checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            if (event == Lifecycle.Event.ON_RESUME && check(Manifest.permission.ACCESS_COARSE_LOCATION)) {
                 map.isMyLocationEnabled = true
             }
         }
