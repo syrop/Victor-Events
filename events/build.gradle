@@ -94,7 +94,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta4'
     implementation 'com.google.android.material:material:1.2.0-alpha04'
-    implementation 'androidx.work:work-runtime-ktx:2.2.0'
+    implementation 'androidx.work:work-runtime-ktx:2.3.0'
 
     // Play, Firebase
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
