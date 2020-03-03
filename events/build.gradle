@@ -101,7 +101,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.firebase:firebase-core:17.2.3'
     implementation 'com.google.firebase:firebase-auth:19.2.0'
-    implementation 'com.google.firebase:firebase-firestore:21.4.1'
+    // firestore 21.4.1 causes a problem:
+    // https://stackoverflow.com/questions/60472354/duplicate-class-com-google-common-util-concurrent-listenablefuture-found-in-modu
+    implementation 'com.google.firebase:firebase-firestore:21.4.0'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
 
     // Testing
