@@ -32,7 +32,8 @@ data class Comm(
         val desc: String = "",
         val color: Int = Color.GRAY,
         val isAdmin: Boolean = false,
-        val comms: Comms = defaultComms) {
+        val comms: Comms = defaultComms,
+) {
 
     private val attributes = mutableMapOf<String, String>()
 

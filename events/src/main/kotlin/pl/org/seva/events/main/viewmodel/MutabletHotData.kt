@@ -22,4 +22,7 @@ package pl.org.seva.events.main.viewmodel
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 
-data class MutableHotData<T>(override val liveData: MutableLiveData<T>, override val owner: LifecycleOwner): HotData<T>
+data class MutableHotData<T>(
+        override val liveData: MutableLiveData<T>,
+        override val owner: LifecycleOwner,
+): HotData<T>

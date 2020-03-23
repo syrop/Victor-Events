@@ -29,7 +29,8 @@ suspend fun MessagesDao.getAllValues() = getAll().map { it.value() }
 
 suspend infix fun MessagesDao.delete(message: Message) = delete(Message.Entity(message))
 
-suspend infix fun MessagesDao.addAll(messages: Collection<Message>) = insert(messages.map { Message.Entity(it) })
+suspend infix fun MessagesDao.addAll(messages: Collection<Message>) =
+        insert(messages.map { Message.Entity(it) })
 
 @Dao
 interface MessagesDao {

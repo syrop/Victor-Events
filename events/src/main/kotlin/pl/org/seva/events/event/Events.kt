@@ -30,7 +30,8 @@ import pl.org.seva.events.main.data.firestore.FsWriter
 open class Events(
         private val fsReader: FsReader,
         private val fsWriter: FsWriter,
-        private val eventsDao: EventsDao) : LiveRepository() {
+        private val eventsDao: EventsDao,
+) : LiveRepository() {
 
     private val eventsCache = mutableListOf<Event>()
 

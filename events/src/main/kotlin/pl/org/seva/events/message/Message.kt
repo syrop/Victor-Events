@@ -45,6 +45,7 @@ data class Message(val time: LocalDateTime, val content: String) {
 
         fun value() = Message(
                 time = LocalDateTime.parse(time),
-                content = content)
+                content = content,
+        )
     }
 }

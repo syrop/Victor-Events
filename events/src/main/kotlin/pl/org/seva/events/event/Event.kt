@@ -32,7 +32,8 @@ data class Event(
         val time: LocalDateTime = LocalDateTime.now(),
         val location: LatLng? = null,
         val address: String? = null,
-        val desc: String? = null) {
+        val desc: String? = null,
+) {
 
     val fsEvent get() = Fs(
             comm  = comm,
@@ -41,7 +42,8 @@ data class Event(
             location = location?.let { GeoPoint(it.latitude, it.longitude) },
             address = address,
             desc = desc,
-            timestamp = time.toEpochSecond(ZoneOffset.UTC))
+            timestamp = time.toEpochSecond(ZoneOffset.UTC),
+    )
 
     @Suppress("MemberVisibilityCanBePrivate")
     data class Fs(
@@ -51,7 +53,8 @@ data class Event(
             val location: GeoPoint?,
             val address: String?,
             val desc: String?,
-            val timestamp: Long) {
+            val timestamp: Long,
+    ) {
         fun value() = Event(
                 comm = comm,
                 name = name,
@@ -92,7 +95,8 @@ data class Event(
                 time = LocalDateTime.parse(time),
                 location = lat?.let { LatLng(it, checkNotNull(lon)) },
                 address = address,
-                desc = desc)
+                desc = desc,
+        )
     }
 
     companion object {

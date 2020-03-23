@@ -35,7 +35,8 @@ class Permissions {
             fragment: Fragment,
             requestCode: Int,
             permissions: Array<String>,
-            grantResults: IntArray) {
+            grantResults: IntArray,
+    ) {
 
         val vm = fragment.viewModels<ViewModel>().value
         val granted = vm.granted

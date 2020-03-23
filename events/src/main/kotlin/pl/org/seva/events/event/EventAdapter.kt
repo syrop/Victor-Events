@@ -29,7 +29,8 @@ import pl.org.seva.events.main.extension.inflate
 import pl.org.seva.events.main.extension.onClick
 import pl.org.seva.events.main.init.instance
 
-class EventAdapter(private val onClick: (Int) -> Unit) : RecyclerView.Adapter<EventAdapter.ViewHolder>() {
+class EventAdapter(private val onClick: (Int) -> Unit) :
+        RecyclerView.Adapter<EventAdapter.ViewHolder>() {
 
     private val events by instance<Events>()
 

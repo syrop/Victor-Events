@@ -21,7 +21,8 @@ package pl.org.seva.events.comm
 
 class FixedCommAdapter(
         private vararg val comms: Comm,
-        onClick: (Int) -> Unit) : CommAdapter(onClick) {
+        onClick: (Int) -> Unit,
+) : CommAdapter(onClick) {
 
     override fun getItemCount() = comms.size
 

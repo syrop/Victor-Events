@@ -32,7 +32,8 @@ open class Comms(
         private val fsWriter: FsWriter,
         private val commsDao: CommsDao,
         private val events: Events,
-        private val colorFactory: ColorFactory) : LiveRepository() {
+        private val colorFactory: ColorFactory,
+) : LiveRepository() {
 
     private val commsCache = mutableListOf<Comm>()
 

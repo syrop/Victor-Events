@@ -22,4 +22,7 @@ package pl.org.seva.events.main.viewmodel
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 
-data class DefaultHotData<T>(override val liveData: LiveData<T>, override val owner: LifecycleOwner): HotData<T>
+data class DefaultHotData<T>(
+        override val liveData: LiveData<T>,
+        override val owner: LifecycleOwner,
+): HotData<T>

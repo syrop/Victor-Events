@@ -158,6 +158,7 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
     override fun onRequestPermissionsResult(
             requestCode: Int,
             requests: Array<String>,
-            grantResults: IntArray) =
+            grantResults: IntArray,
+    ) =
             permissions.onRequestPermissionsResult(this, requestCode, requests, grantResults)
 }

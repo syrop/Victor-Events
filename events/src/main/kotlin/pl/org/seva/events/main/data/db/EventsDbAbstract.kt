@@ -30,7 +30,10 @@ import pl.org.seva.events.event.EventsDao
 import pl.org.seva.events.message.Message
 import pl.org.seva.events.message.MessagesDao
 
-@Database(entities = [Event.Entity::class, Comm.Entity::class, Message.Entity::class], version = EventsDb.DATABASE_VERSION)
+@Database(
+        entities = [Event.Entity::class, Comm.Entity::class, Message.Entity::class],
+        version = EventsDb.DATABASE_VERSION,
+)
 abstract class EventsDbAbstract : RoomDatabase() {
     abstract fun eventsDao(): EventsDao
     abstract fun commsDao(): CommsDao
