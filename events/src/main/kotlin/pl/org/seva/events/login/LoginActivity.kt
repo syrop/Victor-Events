@@ -22,14 +22,12 @@ package pl.org.seva.events.login
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.view.View
-
-import com.google.android.gms.auth.api.Auth
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
@@ -39,16 +37,12 @@ import pl.org.seva.events.main.extension.log
 import pl.org.seva.events.main.extension.toast
 import pl.org.seva.events.main.init.instance
 
-class LoginActivity : AppCompatActivity(),
-        GoogleApiClient.OnConnectionFailedListener,
-        GoogleApiClient.ConnectionCallbacks {
+class LoginActivity : AppCompatActivity() {
 
     private val login by instance<Login>()
 
     private lateinit var auth: FirebaseAuth
-    private lateinit var authStateListener: (firebaseAuth : FirebaseAuth) -> Unit
-
-    private lateinit var googleApiClient: GoogleApiClient
+    private lateinit var authStateListener: (firebaseAuth: FirebaseAuth) -> Unit
 
     private var finishWhenReady: Boolean = false
     private var logoutWhenReady: Boolean = false
@@ -76,7 +70,12 @@ class LoginActivity : AppCompatActivity(),
         }
 
         fun login() {
-            val signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient)
+            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(DEFAULT_WEB_CLIENT_ID)
+                    .requestEmail()
+                    .build()
+            val client = GoogleSignIn.getClient(this, gso)
+            val signInIntent = client.signInIntent
             startActivityForResult(signInIntent, SIGN_IN_REQUEST_ID)
         }
 
@@ -85,28 +84,14 @@ class LoginActivity : AppCompatActivity(),
             logoutWhenReady = true
             auth.signOut()
             login.setCurrentUser(null)
-            googleApiClient.connect()
             setResult(Activity.RESULT_OK)
             finish()
         }
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_login)
-
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(DEFAULT_WEB_CLIENT_ID)
-                .requestEmail()
-                .build()
-
         commToCreate = intent.getStringExtra(COMMUNITY_NAME)
-
-        googleApiClient = GoogleApiClient.Builder(this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .addConnectionCallbacks(this)
-                .build()
-
         auth = FirebaseAuth.getInstance()
-
         authStateListener = {
             val user = it.currentUser
             if (user != null) {
@@ -174,29 +159,16 @@ class LoginActivity : AppCompatActivity(),
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...)
         if (requestCode == SIGN_IN_REQUEST_ID) {
             finishWhenReady = true
-            val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
-            if (result.isSuccess) {
-                // Google Sign In was successful, authenticate with Firebase
-                val account = checkNotNull(result.signInAccount)
+            try {
+                val account = checkNotNull(GoogleSignIn.getSignedInAccountFromIntent(data)
+                        .getResult(ApiException::class.java))
                 firebaseAuthWithGoogle(account)
-            } else {
+            }
+            catch (e: ApiException) {
                 signInFailed()
             }
         }
     }
-
-    override fun onConnectionFailed(connectionResult: ConnectionResult) {
-        log.warning("onConnectionFailed:$connectionResult")
-        toast(R.string.login_google_play_services_error)
-    }
-
-    override fun onConnected(bundle: Bundle?) {
-        if (logoutWhenReady) {
-            Auth.GoogleSignInApi.signOut(googleApiClient)
-        }
-    }
-
-    override fun onConnectionSuspended(i: Int) = Unit
 
     companion object {
 
