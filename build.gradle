@@ -1,13 +1,15 @@
 buildscript {
-    ext.kotlin_version = '1.4-M1'
+    ext.kotlin_version = '1.4-M2'
+
     repositories {
         google()
         jcenter()
         maven { url 'https://maven.fabric.io/public' }
         maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
     }
+
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.3'
+        classpath 'com.android.tools.build:gradle:4.0.0'
         classpath 'com.google.gms:google-services:4.3.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'io.fabric.tools:gradle:1.31.2'
