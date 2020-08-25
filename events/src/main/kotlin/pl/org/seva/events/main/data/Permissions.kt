@@ -111,5 +111,6 @@ class Permissions {
     class PermissionRequest(
             val permission: String,
             val onGranted: () -> Unit = {},
-            val onDenied: () -> Unit = {})
+            val onDenied: () -> Unit = {},
+    )
 }

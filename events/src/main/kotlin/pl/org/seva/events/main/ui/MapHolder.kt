@@ -19,6 +19,7 @@
 
 package pl.org.seva.events.main.ui
 
+import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -36,6 +37,7 @@ open class MapHolder {
     private val mutableMap = MutableLiveData<GoogleMap>()
     val liveMap: LiveData<GoogleMap> = mutableMap
 
+    @SuppressLint("MissingPermission")
     open infix fun withMap(map: GoogleMap) {
         this@MapHolder.map = map
         val cameraUpdate = prefs?.let { prefs ->

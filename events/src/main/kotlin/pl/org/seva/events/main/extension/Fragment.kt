@@ -20,6 +20,7 @@
 package pl.org.seva.events.main.extension
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -115,7 +116,8 @@ fun Fragment.requestLocationPermission(onGranted: () -> Unit) {
 }
 
 fun Fragment.enableMyLocationOnResume(map: GoogleMap) {
-    lifecycle.addObserver(object : LifecycleEventObserver{
+    lifecycle.addObserver(object : LifecycleEventObserver {
+        @SuppressLint("MissingPermission")
         override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
             if (event == Lifecycle.Event.ON_RESUME && check(Manifest.permission.ACCESS_COARSE_LOCATION)) {
                 map.isMyLocationEnabled = true

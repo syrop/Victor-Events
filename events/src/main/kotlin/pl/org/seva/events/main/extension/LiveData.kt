@@ -26,6 +26,7 @@ import androidx.lifecycle.observe
 import pl.org.seva.events.main.viewmodel.DefaultHotData
 import pl.org.seva.events.main.viewmodel.MutableHotData
 
+@Suppress("COMPATIBILITY_WARNING")
 operator fun <T> LiveData<T>.invoke(owner: LifecycleOwner, observer: (T) -> Unit) =
         observe(owner) { observer(it) }
 

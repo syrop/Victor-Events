@@ -18,7 +18,6 @@ import pl.org.seva.events.login.LoginActivity
 class MainActivity : AppCompatActivity() {
 
     private val navController by lazy { findNavController(R.id.nav_host_fragment) }
-
     private val commAddViewModel by viewModels<CommAddViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -137,7 +137,7 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
                         time = LocalDateTime.of(checkNotNull(vm.date.value), checkNotNull(vm.time.value)),
                         location = vm.location.value?.location,
                         address = vm.location.value?.address,
-                        desc = vm.desc.value))
+                        desc = vm.desc.value, ))
                 vm.clear()
                 back()
             }
