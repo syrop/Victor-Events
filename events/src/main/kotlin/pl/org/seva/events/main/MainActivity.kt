@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         if (Intent.ACTION_SEARCH == intent.action) {
-            commAddViewModel.query(intent.getStringExtra(SearchManager.QUERY))
+            commAddViewModel.query(intent.getStringExtra(SearchManager.QUERY)!!)
         }
     }
 
