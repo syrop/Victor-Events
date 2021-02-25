@@ -22,10 +22,7 @@ package pl.org.seva.events.main.init
 import android.content.Context
 import android.location.Geocoder
 import android.os.Build
-import org.kodein.di.Kodein
-import org.kodein.di.KodeinProperty
-import org.kodein.di.conf.global
-import org.kodein.di.generic.*
+import org.kodein.di.*
 import pl.org.seva.events.BuildConfig
 import pl.org.seva.events.comm.Comms
 import pl.org.seva.events.comm.CommsDao
@@ -42,16 +39,17 @@ import pl.org.seva.events.message.MessagesDao
 import java.util.*
 import java.util.logging.Logger
 
-inline fun <reified R : Any> instance(tag: Any? = null) = Kodein.global.instance<R>(tag)
+inline fun <reified R : Any> instance(tag: Any? = null) = kodein.instance<R>(tag)
 
-inline fun <reified A, reified T : Any> instance(tag: Any? = null, arg: A) =
-        Kodein.global.instance<A, T>(tag, arg = arg)
+inline fun <reified A : Any, reified T : Any> instance(tag: Any? = null, arg: A) =
+        kodein.instance<A, T>(tag, arg = arg)
 
-inline val <T> KodeinProperty<T>.value get() = provideDelegate(null, Build::ID).value
+inline val <T> DIProperty<T>.value get() = provideDelegate(null, Build::ID).value
 
-class KodeinModuleBuilder(private val ctx: Context) {
+lateinit var kodein: DI
 
-    fun build() = Kodein.Module(MAIN_MODULE_NAME) {
+fun createKodein(ctx: Context) {
+    kodein = DI {
         bind<Bootstrap>() with factory { ctx: Context -> Bootstrap(ctx) }
 
         bind<Events>() with singleton { Events(instance(), instance(), instance()) }
@@ -77,9 +75,5 @@ class KodeinModuleBuilder(private val ctx: Context) {
         }
         bind<Permissions>() with singleton { Permissions() }
         bind<Geocoder>() with singleton { Geocoder(ctx, Locale.getDefault()) }
-    }
-
-    companion object {
-        const val MAIN_MODULE_NAME = "main"
     }
 }
