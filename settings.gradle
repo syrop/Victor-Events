@@ -1,1 +1,1 @@
-include ':events', ':instant'
+include ':events'
