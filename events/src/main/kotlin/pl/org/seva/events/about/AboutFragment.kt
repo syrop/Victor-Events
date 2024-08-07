@@ -23,8 +23,9 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
+import android.view.View
+import android.widget.TextView
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fr_about.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.inBrowser
 import pl.org.seva.events.main.extension.invoke
@@ -41,11 +42,11 @@ class AboutFragment : Fragment(R.layout.fr_about) {
 
         super.onActivityCreated(savedInstanceState)
 
-        version.text = getString(R.string.about_version).replace(VERSION_PLACEHOLDER, versionName)
+        requireActivity().findViewById<TextView>(R.id.version).text = getString(R.string.about_version).replace(VERSION_PLACEHOLDER, versionName)
 
-        github { inBrowser(getString(R.string.about_github_url)) }
+        (requireActivity().findViewById<View>(R.id.github)) { inBrowser(getString(R.string.about_github_url)) }
 
-        donate_btc_address { getString(R.string.about_btc_address).toClipboard() }
+        (requireActivity().findViewById<View>(R.id.donate_btc_address)) { getString(R.string.about_btc_address).toClipboard() }
     }
 
     companion object {

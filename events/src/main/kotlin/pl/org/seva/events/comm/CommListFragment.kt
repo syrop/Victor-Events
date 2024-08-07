@@ -24,8 +24,8 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fr_comm_list.*
 import kotlinx.coroutines.launch
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.*
@@ -38,38 +38,39 @@ class CommListFragment : Fragment(R.layout.fr_comm_list) {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        comms_view.setHasFixedSize(true)
-        comms_view.layoutManager = LinearLayoutManager(requireContext())
-        comms_view.verticalDivider()
-        comms_view.adapter = CommAdapter { position ->
+        val commsView = requireActivity().findViewById<RecyclerView>(R.id.comms_view)
+        commsView.setHasFixedSize(true)
+        commsView.layoutManager = LinearLayoutManager(requireContext())
+        commsView.verticalDivider()
+        commsView.adapter = CommAdapter { position ->
             commViewModel.value.withPosition(position)
             nav(R.id.action_commListFragment_to_commDetailsFragment)
         }
-        comms_view.onSwipe { position ->
+        commsView.onSwipe { position ->
             val comm = comms[position]
             lifecycleScope.launch {
                 comm.leave()
                 Snackbar.make(
-                        comms_view,
+                        commsView,
                         getString(R.string.comm_list_leave).bold(NAME_PLACEHOLDER, comm.name),
                         Snackbar.LENGTH_LONG)
                         .setAction(R.string.comm_list_undo) { launch { comm.join() } }
                         .show()
             }
         }
-        add_comm_fab {
+        (requireActivity().findViewById<View>(R.id.add_comm_fab)) {
             nav(R.id.action_commListFragment_to_addCommFragment)
         }
 
         (comms.updatedLiveData() + this) {
             if (comms.isEmpty) {
-                prompt.visibility = View.VISIBLE
-                comms_view.visibility = View.GONE
+                requireActivity().findViewById<View>(R.id.prompt).visibility = View.VISIBLE
+                commsView.visibility = View.GONE
             }
             else {
-                prompt.visibility = View.GONE
-                comms_view.visibility = View.VISIBLE
-                checkNotNull(comms_view.adapter).notifyDataSetChanged()
+                requireActivity().findViewById<View>(R.id.prompt).visibility = View.GONE
+                commsView.visibility = View.VISIBLE
+                checkNotNull(commsView.adapter).notifyDataSetChanged()
             }
         }
     }

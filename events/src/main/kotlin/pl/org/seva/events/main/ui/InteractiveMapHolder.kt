@@ -34,10 +34,11 @@ class InteractiveMapHolder : MapHolder() {
     override fun withMap(map: GoogleMap) {
         fun onMapLongClick(latLng: LatLng) {
             val address = try {
-                with(geocoder.getFromLocation(
+                with(
+                    requireNotNull( geocoder.getFromLocation(
                         latLng.latitude,
                         latLng.longitude,
-                        1)[0]) {
+                        1))[0]) {
                         getAddressLine(maxAddressLineIndex)
                 }
             } catch (e: Exception) {

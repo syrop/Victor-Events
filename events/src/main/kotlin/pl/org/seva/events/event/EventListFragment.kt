@@ -24,8 +24,9 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-import kotlinx.android.synthetic.main.fr_event_list.*
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.Comms
 import pl.org.seva.events.login.Login
@@ -46,28 +47,33 @@ class EventListFragment : Fragment(R.layout.fr_event_list) {
     @SuppressLint("RestrictedApi")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        add_event_fab { nav(R.id.action_eventsFragment_to_createEventFragment) }
-        events_view.setHasFixedSize(true)
-        events_view.layoutManager = LinearLayoutManager(context)
-        events_view.verticalDivider()
-        events_view.adapter = EventAdapter { position ->
+
+        val addEventFab = requireActivity().findViewById<FloatingActionButton>(R.id.add_event_fab)
+        val eventsView = requireActivity().findViewById<RecyclerView>(R.id.events_view)
+        val prompt = requireActivity().findViewById<View>(R.id.prompt)
+
+        addEventFab { nav(R.id.action_eventsFragment_to_createEventFragment) }
+        eventsView.setHasFixedSize(true)
+        eventsView.layoutManager = LinearLayoutManager(context)
+        eventsView.verticalDivider()
+        eventsView.adapter = EventAdapter { position ->
             eventViewModel.value.withPosition(position)
             nav(R.id.action_eventsFragment_to_eventDetailsFragment)
         }
 
         (comms.updatedLiveData() + this) {
-            if (comms.isAdminOfAny) add_event_fab.show()
-            else add_event_fab.hide()
+            if (comms.isAdminOfAny) addEventFab.show()
+            else addEventFab.hide()
         }
 
         (events.updatedLiveData() + this) {
             if (events.isEmpty) {
                 prompt.visibility = View.VISIBLE
-                events_view.visibility = View.GONE
+                eventsView.visibility = View.GONE
             } else {
                 prompt.visibility = View.GONE
-                events_view.visibility = View.VISIBLE
-                checkNotNull(events_view.adapter).notifyDataSetChanged()
+                eventsView.visibility = View.VISIBLE
+                checkNotNull(eventsView.adapter).notifyDataSetChanged()
             }
         }
     }

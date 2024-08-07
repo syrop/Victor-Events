@@ -24,7 +24,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import kotlinx.android.synthetic.main.row_comm.view.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.inflate
 import pl.org.seva.events.main.extension.onClick
@@ -55,8 +54,8 @@ open class CommAdapter(private val onClick: (Int) -> Unit) :
 
         init { view onClick { onClick(adapterPosition) } }
 
-        val communityName: TextView = view.comm
-        val iconProfile: ImageView = view.icon_profile
-        val iconText: TextView = view.icon_text
+        val communityName: TextView = view.findViewById(R.id.comm)
+        val iconProfile: ImageView = view.findViewById(R.id.icon_profile)
+        val iconText: TextView = view.findViewById(R.id.icon_text)
     }
 }

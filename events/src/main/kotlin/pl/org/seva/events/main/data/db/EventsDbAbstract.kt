@@ -33,6 +33,8 @@ import pl.org.seva.events.message.MessagesDao
 @Database(
         entities = [Event.Entity::class, Comm.Entity::class, Message.Entity::class],
         version = EventsDb.DATABASE_VERSION,
+        autoMigrations = [
+        ],
 )
 abstract class EventsDbAbstract : RoomDatabase() {
     abstract fun eventsDao(): EventsDao

@@ -25,13 +25,14 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fr_comm_add.*
 import kotlinx.coroutines.launch
 import pl.org.seva.events.R
 import pl.org.seva.events.login.Login
@@ -56,6 +57,11 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
     private lateinit var adapter: CommAdapter
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+
+        val progress = requireActivity().findViewById<View>(R.id.progress)
+        val recycler = requireActivity().findViewById<RecyclerView>(R.id.recycler)
+        val prompt = requireActivity().findViewById<TextView>(R.id.prompt)
+
         fun Comm.found() {
             progress.visibility = View.GONE
             recycler.visibility = View.VISIBLE
@@ -73,7 +79,7 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
         fun Comm.notFound() {
             fun showCreateCommunitySnackbar(name: String) {
                 snackbar = permanentSnackbar {
-                    view = layout
+                    view = requireActivity().findViewById(R.id.layout)
                     message = R.string.add_comm_can_create
                     action = R.string.add_comm_create
                 } show {
@@ -90,7 +96,7 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
                 }
 
                 snackbar = permanentSnackbar {
-                    view = layout
+                    view = requireActivity().findViewById(R.id.layout)
                     message = R.string.add_comm_login_to_create
                     action = R.string.add_comm_login
                 } show {
@@ -124,6 +130,7 @@ class CommAddFragment : Fragment(R.layout.fr_comm_add) {
                     progress.visibility = View.GONE
                     longToast(result.errorMessage)
                 }
+                else -> throw IllegalStateException("")
             }
         }
         (commAddViewModel.commToCreate + this) { name ->

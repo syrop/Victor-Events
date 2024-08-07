@@ -20,9 +20,10 @@
 package pl.org.seva.events.comm
 
 import android.os.Bundle
+import android.view.View
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import kotlinx.android.synthetic.main.fr_comm_delete.*
 import kotlinx.coroutines.launch
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.*
@@ -33,15 +34,15 @@ class CommDeleteFragment : Fragment(R.layout.fr_comm_delete) {
         super.onActivityCreated(savedInstanceState)
         val comm = commViewModel.value.comm
         title = getString(R.string.comm_delete_title).replace(NAME_PLACEHOLDER, comm.name)
-        prompt.text = getString(R.string.comm_delete_prompt).bold(NAME_PLACEHOLDER, comm.name)
-        ok {
+        requireActivity().findViewById<TextView>(R.id.prompt).text = getString(R.string.comm_delete_prompt).bold(NAME_PLACEHOLDER, comm.name)
+        (requireActivity().findViewById<View>(R.id.ok)) {
             lifecycleScope.launch {
                 comm.delete()
                 longToast(getString(R.string.comm_delete_toast).bold(NAME_PLACEHOLDER, comm.name))
                 back()
             }
         }
-        cancel {
+        (requireActivity().findViewById<View>(R.id.cancel)) {
             back()
         }
     }

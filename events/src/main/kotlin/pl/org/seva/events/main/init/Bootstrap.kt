@@ -21,6 +21,7 @@ package pl.org.seva.events.main.init
 
 import android.content.Context
 import androidx.work.*
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.joinAll

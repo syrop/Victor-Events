@@ -21,8 +21,9 @@ package pl.org.seva.events.comm
 
 import android.os.Bundle
 import android.view.*
+import android.widget.TextView
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fr_comm_edit.*
+import com.google.android.material.textfield.TextInputEditText
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.*
 
@@ -33,10 +34,10 @@ class CommEditFragment : Fragment(R.layout.fr_comm_edit) {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
-        delete_comm_fab { nav(R.id.action_commEditFragment_to_commDeleteFragment) }
-        name set vm.comm.name
+        (requireActivity().findViewById<View>(R.id.delete_comm_fab)) { nav(R.id.action_commEditFragment_to_commDeleteFragment) }
+        requireActivity().findViewById<TextView>(R.id.name) set vm.comm.name
         (vm.name + this) { if (it == Comm.DUMMY_NAME) back() }
-        desc backWith (vm.desc + this)
+        requireActivity().findViewById<TextInputEditText>(R.id.desc) backWith (vm.desc + this)
         onBack { onBackOrHomePressed() }
     }
 

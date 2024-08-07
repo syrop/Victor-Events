@@ -25,7 +25,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import kotlinx.android.synthetic.main.fr_log_out_conf.*
 import kotlinx.coroutines.launch
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.Comms
@@ -37,10 +36,15 @@ class LogOutConfirmationFragment : Fragment(R.layout.fr_log_out_conf) {
 
     private val comms by instance<Comms>()
 
+    private val logOut by lazy { requireActivity().findViewById<View>(R.id.log_out) }
+    private val cancel by lazy { requireActivity().findViewById<View>(R.id.cancel) }
+    private val prompt by lazy { requireActivity().findViewById<View>(R.id.prompt) }
+    private val progress by lazy { requireActivity().findViewById<View>(R.id.progress) }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        log_out {
+        logOut {
             val intent = Intent(activity, LoginActivity::class.java)
                     .putExtra(LoginActivity.ACTION, LoginActivity.LOGOUT)
             startActivityForResult(intent, LOG_OUT_REQUEST)
@@ -54,7 +58,7 @@ class LogOutConfirmationFragment : Fragment(R.layout.fr_log_out_conf) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == LOG_OUT_REQUEST && resultCode == Activity.RESULT_OK) {
             prompt.visibility = View.GONE
-            log_out.visibility = View.GONE
+            logOut.visibility = View.GONE
             cancel.visibility = View.GONE
             progress.visibility = View.VISIBLE
             lifecycleScope.launch {

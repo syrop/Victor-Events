@@ -27,6 +27,7 @@ import androidx.fragment.app.viewModels
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.sendBlocking
+import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.selects.select
 
 class Permissions {
@@ -43,10 +44,10 @@ class Permissions {
         val denied = vm.denied
 
         infix fun String.onGranted(requestCode: Int) =
-                granted.sendBlocking(PermissionResult(requestCode, this))
+                granted.trySendBlocking(PermissionResult(requestCode, this))
 
         infix fun String.onDenied(requestCode: Int) =
-                denied.sendBlocking(PermissionResult(requestCode, this))
+                denied.trySendBlocking(PermissionResult(requestCode, this))
 
         if (grantResults.isEmpty()) {
             permissions.forEach { it onDenied requestCode }

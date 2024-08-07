@@ -23,24 +23,28 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.TextView
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fr_location_picker.*
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.*
 
 class LocationPickerFragment : Fragment(R.layout.fr_location_picker) {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+
+        val deleteLocactionFab = requireActivity().findViewById<FloatingActionButton>(R.id.delete_location_fab)
+
         fun onLocationChanged(l: EventLocation?) {
-            address set (l?.address ?: "")
-            if (l != null) delete_location_fab.show() else delete_location_fab.hide()
+            requireActivity().findViewById<TextView>(R.id.address) set (l?.address ?: "")
+            if (l != null) deleteLocactionFab.show() else deleteLocactionFab.hide()
         }
 
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
 
         val viewModel = eventCreateViewModel.value
-        delete_location_fab { viewModel.location.value = null }
+        deleteLocactionFab { viewModel.location.value = null }
         (viewModel.location + this) { onLocationChanged(it) }
 
         createInteractiveMapHolder(R.id.map) {

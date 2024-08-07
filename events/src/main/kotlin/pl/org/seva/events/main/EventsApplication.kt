@@ -20,7 +20,8 @@
 package pl.org.seva.events.main
 
 import android.app.Application
-import android.content.Context
+import com.google.firebase.FirebaseApp
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import pl.org.seva.events.main.init.Bootstrap
@@ -30,13 +31,10 @@ import pl.org.seva.events.main.init.instance
 @Suppress("unused")
 class EventsApplication : Application() {
 
-    init { createKodein(this) }
-
-    private val bootstrap by instance<Context, Bootstrap>(arg = this)
-
     override fun onCreate() {
         super.onCreate()
-
-        GlobalScope.launch { bootstrap.boot() }
+        FirebaseApp.initializeApp(this)
+        createKodein(this)
+        GlobalScope.launch(Dispatchers.Main.immediate) { Bootstrap(this@EventsApplication).boot() }
     }
 }

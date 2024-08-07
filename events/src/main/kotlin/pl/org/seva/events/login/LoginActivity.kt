@@ -31,7 +31,6 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import kotlinx.android.synthetic.main.ac_login.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.log
 import pl.org.seva.events.main.extension.toast
@@ -48,6 +47,8 @@ class LoginActivity : AppCompatActivity() {
     private var logoutWhenReady: Boolean = false
 
     private var commToCreate: String? = null
+
+    private val progress by lazy { findViewById<View>(R.id.progress) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         fun String.setResult() {

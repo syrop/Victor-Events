@@ -23,7 +23,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.row_event.view.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.inflate
 import pl.org.seva.events.main.extension.onClick
@@ -50,7 +49,7 @@ class EventAdapter(private val onClick: (Int) -> Unit) :
 
         init { view onClick { onClick(adapterPosition) } }
 
-        val name: TextView = view.name
-        val time: TextView = view.time
+        val name: TextView = view.findViewById(R.id.name)
+        val time: TextView = view.findViewById(R.id.time)
     }
 }

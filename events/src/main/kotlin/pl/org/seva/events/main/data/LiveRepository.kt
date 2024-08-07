@@ -26,6 +26,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.sendBlocking
+import kotlinx.coroutines.channels.trySendBlocking
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
@@ -34,7 +35,7 @@ abstract class LiveRepository {
     private val broadcastChannel = BroadcastChannel<Unit>(Channel.CONFLATED)
 
     protected fun notifyDataSetChanged() {
-        broadcastChannel.sendBlocking(Unit)
+        broadcastChannel.trySendBlocking(Unit)
     }
 
     fun updatedLiveData(scope: CoroutineScope) = updatedLiveData(scope.coroutineContext)

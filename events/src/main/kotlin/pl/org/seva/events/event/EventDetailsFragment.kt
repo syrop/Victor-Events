@@ -22,7 +22,7 @@ package pl.org.seva.events.event
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fr_event_details.*
+import com.google.android.material.textfield.TextInputEditText
 import pl.org.seva.events.R
 import pl.org.seva.events.main.data.Permissions
 import pl.org.seva.events.main.extension.*
@@ -31,6 +31,16 @@ import pl.org.seva.events.main.init.instance
 class EventDetailsFragment : Fragment(R.layout.fr_event_details) {
 
     private val permissions by instance<Permissions>()
+
+    private val address by lazy { requireActivity().findViewById<TextInputEditText>(R.id.address) }
+    private val date by lazy { requireActivity().findViewById<TextInputEditText>(R.id.date) }
+    private val time by lazy { requireActivity().findViewById<TextInputEditText>(R.id.time) }
+    private val name by lazy { requireActivity().findViewById<TextInputEditText>(R.id.name) }
+    private val desc by lazy { requireActivity().findViewById<TextInputEditText>(R.id.desc) }
+    private val comm by lazy { requireActivity().findViewById<TextInputEditText>(R.id.comm) }
+    private val mapContainer by lazy { requireActivity().findViewById<View>(R.id.map_container) }
+    private val addressLayout by lazy { requireActivity().findViewById<View>(R.id.address_layout) }
+    private val descLayout by lazy { requireActivity().findViewById<View>(R.id.desc_layout) }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -41,15 +51,15 @@ class EventDetailsFragment : Fragment(R.layout.fr_event_details) {
         time set event.time.toLocalTime().toString()
         date set event.time.toLocalDate().toString()
         with(event.desc) {
-            if (isNullOrEmpty()) desc_layout.visibility = View.GONE
+            if (isNullOrEmpty()) descLayout.visibility = View.GONE
             else desc set this
         }
         with (event.address) {
-            if (isNullOrEmpty()) address_layout.visibility = View.GONE
+            if (isNullOrEmpty()) addressLayout.visibility = View.GONE
             else address set this
         }
         if (event.location != null) {
-            map_container.visibility = View.VISIBLE
+            mapContainer.visibility = View.VISIBLE
             createMapHolder(R.id.map) {
                 requestLocationPermission = this@EventDetailsFragment::requestLocationPermission
             }.also { holder ->

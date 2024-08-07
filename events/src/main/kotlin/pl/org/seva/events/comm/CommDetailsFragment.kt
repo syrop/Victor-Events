@@ -23,8 +23,10 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
+import android.widget.TextView
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fr_comm_details.*
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.*
 
@@ -36,11 +38,11 @@ class CommDetailsFragment : Fragment(R.layout.fr_comm_details) {
         super.onActivityCreated(savedInstanceState)
         val comm = vm.comm
         title = comm.name
-        edit_comm_fab { nav(R.id.action_commDetailsFragment_to_commEditFragment) }
-        name set comm.name
+        (requireActivity().findViewById<View>(R.id.edit_comm_fab)) { nav(R.id.action_commDetailsFragment_to_commEditFragment) }
+        requireActivity().findViewById<TextView>(R.id.name) set comm.name
         (vm.name + this) { if (it == Comm.DUMMY_NAME) back() }
-        (vm.desc + this) { desc set it }
-        (vm.isAdmin + this) { if (it == true) edit_comm_fab.show() else edit_comm_fab.hide() }
+        (vm.desc + this) { requireActivity().findViewById<TextView>(R.id.desc) set it }
+        (vm.isAdmin + this) { if (it == true) requireActivity().findViewById<FloatingActionButton>(R.id.edit_comm_fab).show() else requireActivity().findViewById<FloatingActionButton>(R.id.edit_comm_fab).hide() }
         setHasOptionsMenu(true)
     }
 

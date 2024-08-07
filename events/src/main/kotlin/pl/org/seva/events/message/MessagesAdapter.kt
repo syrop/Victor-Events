@@ -22,8 +22,8 @@ package pl.org.seva.events.message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.row_message.view.*
 import pl.org.seva.events.R
 import pl.org.seva.events.main.init.instance
 
@@ -47,7 +47,7 @@ class MessagesAdapter : RecyclerView.Adapter<MessagesAdapter.ViewHolder>() {
     }
 
     class ViewHolder internal constructor(view: View) : RecyclerView.ViewHolder(view) {
-        val time = checkNotNull(view.time)
-        val content = checkNotNull(view.content)
+        val time = checkNotNull(view.findViewById<TextView>(R.id.time))
+        val content = checkNotNull(view.findViewById<TextView>(R.id.content))
     }
 }

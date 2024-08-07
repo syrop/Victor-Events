@@ -25,7 +25,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import kotlinx.android.synthetic.main.fr_login_conf.*
 import kotlinx.coroutines.launch
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.Comms
@@ -35,6 +34,12 @@ import pl.org.seva.events.main.init.instance
 class LoginConfirmationFragment : Fragment(R.layout.fr_login_conf) {
 
     private val comms by instance<Comms>()
+
+    private val ok = requireActivity().findViewById<View>(R.id.ok)
+    private val cancel = requireActivity().findViewById<View>(R.id.cancel)
+    private val privacyPolicy = requireActivity().findViewById<View>(R.id.privacy_policy)
+    private val progress = requireActivity().findViewById<View>(R.id.progress)
+    private val prompt = requireActivity().findViewById<View>(R.id.prompt)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -47,7 +52,7 @@ class LoginConfirmationFragment : Fragment(R.layout.fr_login_conf) {
         cancel {
             back()
         }
-        privacy_policy {
+        privacyPolicy {
             inBrowser(getString(R.string.login_confirmation_privacy_uri))
         }
     }
@@ -57,7 +62,7 @@ class LoginConfirmationFragment : Fragment(R.layout.fr_login_conf) {
         if (requestCode == LOGIN_REQUEST && resultCode == Activity.RESULT_OK) {
             prompt.visibility = View.GONE
             ok.visibility = View.GONE
-            privacy_policy.visibility = View.GONE
+            privacyPolicy.visibility = View.GONE
             cancel.visibility = View.GONE
             progress.visibility = View.VISIBLE
             lifecycleScope.launch {

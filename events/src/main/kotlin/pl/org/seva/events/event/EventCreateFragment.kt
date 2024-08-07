@@ -25,7 +25,7 @@ import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import kotlinx.android.synthetic.main.fr_event_create.*
+import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.Comms
@@ -41,6 +41,14 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
     private val events by instance<Events>()
     private val comms by instance<Comms>()
     private val permissions by instance<Permissions>()
+
+    private val address by lazy { requireActivity().findViewById<TextInputEditText>(R.id.address) }
+    private val date by lazy { requireActivity().findViewById<TextInputEditText>(R.id.date) }
+    private val time by lazy { requireActivity().findViewById<TextInputEditText>(R.id.time) }
+    private val name by lazy { requireActivity().findViewById<TextInputEditText>(R.id.name) }
+    private val desc by lazy { requireActivity().findViewById<TextInputEditText>(R.id.desc) }
+    private val comm by lazy { requireActivity().findViewById<TextInputEditText>(R.id.comm) }
+    private val mapContainer by lazy { requireActivity().findViewById<View>(R.id.map_container) }
 
     private val vm by eventCreateViewModel
 
@@ -69,10 +77,10 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
         fun onLocationChanged(l: EventLocation?) {
             address set l?.address
             if (l != null) {
-                map_container.visibility = View.VISIBLE
+                mapContainer.visibility = View.VISIBLE
                 mapHolder
             }
-            else { map_container.visibility = View.GONE }
+            else { mapContainer.visibility = View.GONE }
         }
 
         name backWith (vm.name + this)
@@ -89,7 +97,7 @@ class EventCreateFragment : Fragment(R.layout.fr_event_create) {
             if (isEmpty()) { back() }
             vm.comm.value = get(0)
             if (size > 1) {
-                comm_layout.visibility = View.VISIBLE
+                requireActivity().findViewById<View>(R.id.comm_layout).visibility = View.VISIBLE
                 comm set get(0)
                 comm backWith (vm.comm + this@EventCreateFragment)
                 comm {

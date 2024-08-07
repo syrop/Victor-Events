@@ -24,7 +24,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fr_messages.*
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.onSwipe
@@ -39,22 +39,25 @@ class MessagesFragment : Fragment(R.layout.fr_messages) {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        messages_view.setHasFixedSize(true)
-        messages_view.layoutManager = LinearLayoutManager(context)
-        messages_view.adapter = MessagesAdapter()
-        messages_view.verticalDivider()
-        messages_view.onSwipe { position ->
+        val messagesView = requireActivity().findViewById<RecyclerView>(R.id.messages_view)
+        val prompt = requireActivity().findViewById<View>(R.id.prompt)
+
+        messagesView.setHasFixedSize(true)
+        messagesView.layoutManager = LinearLayoutManager(context)
+        messagesView.adapter = MessagesAdapter()
+        messagesView.verticalDivider()
+        messagesView.onSwipe { position ->
                 lifecycleScope.launch { messages[position].delete() }
         }
 
         (messages.updatedLiveData() + this) {
             if (messages.isEmpty()) {
-                messages_view.visibility = View.GONE
+                messagesView.visibility = View.GONE
                 prompt.visibility = View.VISIBLE
             }
             else {
-                messages_view.visibility = View.VISIBLE
-                checkNotNull(messages_view.adapter).notifyDataSetChanged()
+                messagesView.visibility = View.VISIBLE
+                checkNotNull(messagesView.adapter).notifyDataSetChanged()
                 prompt.visibility = View.GONE
             }
         }
