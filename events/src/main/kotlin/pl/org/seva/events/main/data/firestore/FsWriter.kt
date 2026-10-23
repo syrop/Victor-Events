@@ -33,7 +33,7 @@ open class FsWriter : FsBase() {
 
     private val login by instance<Login>()
 
-    infix fun create(comm: Comm) {
+    open infix fun create(comm: Comm) {
         comm.writeEvent(Event.creationEvent.copy(comm = comm.name))
         comm.writeName()
     }
@@ -42,11 +42,11 @@ open class FsWriter : FsBase() {
 
     open fun addAll(vararg events: Event) = events.forEach { add(it) }
 
-    infix fun update(comm: Comm) = with(comm) {
+    open infix fun update(comm: Comm) = with(comm) {
         lcName.comm.set(mapOf(COMM_NAME to name, COMM_DESC to desc), SetOptions.merge())
     }
 
-    suspend infix fun delete(comm: Comm) = coroutineScope {
+    open suspend infix fun delete(comm: Comm) = coroutineScope {
         launch {
             comm.lcName.events.read().map { event ->
                 launch { event.reference.delete() }
@@ -63,9 +63,9 @@ open class FsWriter : FsBase() {
         }
     }
 
-    infix fun grantAdmin(comm: Comm) = grantAdmin(comm, login.email)
+    open infix fun grantAdmin(comm: Comm) = grantAdmin(comm, login.email)
 
-    fun grantAdmin(comm: Comm, email: String) =
+    open fun grantAdmin(comm: Comm, email: String) =
         comm.lcName.admins.document(email).set(mapOf(ADMIN_GRANTED to true))
 
     private infix fun Comm.writeEvent(event: Event) = lcName writeEvent  event

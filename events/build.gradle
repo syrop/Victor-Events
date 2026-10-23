@@ -41,6 +41,12 @@ android {
         targetCompatibility = JavaVersion.VERSION_26
     }
 
+    testOptions {
+        unitTests.all {
+            jvmArgs '-Dnet.bytebuddy.experimental=true', '-XX:+EnableDynamicAgentLoading'
+        }
+    }
+
     // https://androidstudio.googleblog.com/2018/04/android-studio-32-canary-11-now.html
     lint {
         checkOnly += 'Interoperability'
@@ -101,7 +107,8 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test:rules:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    testImplementation 'org.mockito:mockito-core:3.2.4'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.mockito:mockito-core:5.24.0'
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.11.0'
     testImplementation 'androidx.arch.core:core-testing:2.2.0'
 }

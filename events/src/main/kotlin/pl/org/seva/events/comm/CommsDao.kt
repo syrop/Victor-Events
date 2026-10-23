@@ -25,10 +25,10 @@ import pl.org.seva.events.main.data.db.EventsDb
 @Dao
 abstract class CommsDao {
 
-    suspend infix fun delete(comm: Comm) = delete(Comm.Entity(comm))
+    open suspend infix fun delete(comm: Comm) = delete(Comm.Entity(comm))
     open suspend infix fun add(comm: Comm) = insert(Comm.Entity(comm))
-    suspend fun getAllValues() = getAll().map { it.value() }
-    suspend infix fun add(comms: Collection<Comm>) = insert(comms.map { Comm.Entity(it) })
+    open suspend fun getAllValues() = getAll().map { it.value() }
+    open suspend infix fun add(comms: Collection<Comm>) = insert(comms.map { Comm.Entity(it) })
 
     @Query("select * from ${EventsDb.COMM_TABLE}")
     abstract suspend fun getAll(): List<Comm.Entity>

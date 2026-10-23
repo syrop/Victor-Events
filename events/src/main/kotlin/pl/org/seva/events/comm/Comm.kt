@@ -23,9 +23,10 @@ import android.graphics.Color
 import androidx.room.PrimaryKey
 import pl.org.seva.events.main.data.db.EventsDb
 import pl.org.seva.events.main.init.instance
+import pl.org.seva.events.main.init.value
 import java.util.*
 
-private val defaultComms by instance<Comms>()
+private val defaultComms get() = instance<Comms>().value
 
 data class Comm(
         val name: String,

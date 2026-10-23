@@ -21,64 +21,164 @@ package pl.org.seva.events
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import kotlinx.coroutines.*
+import com.google.android.gms.maps.model.LatLng
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
+import pl.org.seva.events.comm.Comm
+import pl.org.seva.events.comm.Comms
+import pl.org.seva.events.comm.CommsDao
 import pl.org.seva.events.event.Event
 import pl.org.seva.events.event.Events
 import pl.org.seva.events.event.EventsDao
 import pl.org.seva.events.main.data.firestore.FsReader
 import pl.org.seva.events.main.data.firestore.FsWriter
+import pl.org.seva.events.main.ui.ColorFactory
+import java.time.LocalDateTime
 
-@OptIn(DelicateCoroutinesApi::class, ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class EventsTest {
 
     private lateinit var fsReader: FsReader
     private lateinit var fsWriter: FsWriter
     private lateinit var eventsDao: EventsDao
-
-    private val mainThreadSurrogate = newSingleThreadContext("UI thread")
+    private lateinit var events: Events
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Before
     fun setUp() {
-        Dispatchers.setMain(mainThreadSurrogate)
+        Dispatchers.setMain(UnconfinedTestDispatcher())
+        fsReader = mock(FsReader::class.java)
+        fsWriter = mock(FsWriter::class.java)
+        eventsDao = mock(EventsDao::class.java)
+        events = Events(fsReader, fsWriter, eventsDao)
     }
 
     @After
     fun tearDown() {
         Dispatchers.resetMain()
-        mainThreadSurrogate.close()
-    }
-
-    @Before
-    fun mockDependencies() {
-        fsReader = mock(FsReader::class.java)
-        fsWriter = mock(FsWriter::class.java)
-        eventsDao = mock(EventsDao::class.java)
     }
 
     @Test
     fun testAdd() = runTest {
-        val events = Events(fsReader, fsWriter, eventsDao)
-        val event = Event.creationEvent
+        val event = Event(comm = "Alpha", name = "Meetup")
         val job = Job()
         @Suppress("UNCHECKED_CAST")
         val observer = mock(Observer::class.java) as Observer<Unit>
         events.updatedLiveData(job).observeForever(observer)
+
+        assertTrue(events.isEmpty)
         events.add(event)
+        assertFalse(events.isEmpty)
+        assertEquals(1, events.size)
+        assertEquals(event, events[0])
         verify(fsWriter).addAll(event)
         verify(eventsDao) addAll listOf(event)
         verify(observer).onChanged(Unit)
         job.cancel()
+    }
+
+    @Test
+    fun testAddFrom() = runTest {
+        val comms = Comms(fsReader, fsWriter, mock(CommsDao::class.java), events, mock(ColorFactory::class.java))
+        val comm = Comm(name = "KotlinUG", comms = comms)
+        val remoteEvent = Event(comm = "KotlinUG", name = "Hackathon")
+        `when`(fsReader readEventsFrom "kotlinug").thenReturn(listOf(remoteEvent))
+
+        events addFrom comm
+        assertEquals(1, events.size)
+        assertEquals(remoteEvent, events[0])
+        verify(fsWriter).addAll(remoteEvent)
+        verify(eventsDao) addAll listOf(remoteEvent)
+    }
+
+    @Test
+    fun testDeleteLocallyFrom() = runTest {
+        val comms = Comms(fsReader, fsWriter, mock(CommsDao::class.java), events, mock(ColorFactory::class.java))
+        val commAlpha = Comm(name = "Alpha", comms = comms)
+        val eventAlpha = Event(comm = "Alpha", name = "Alpha Event")
+        val eventBeta = Event(comm = "Beta", name = "Beta Event")
+        events.add(eventAlpha, eventBeta)
+
+        val job = Job()
+        @Suppress("UNCHECKED_CAST")
+        val observer = mock(Observer::class.java) as Observer<Unit>
+        events.updatedLiveData(job).observeForever(observer)
+
+        events deleteLocallyFrom commAlpha
+        assertEquals(1, events.size)
+        assertEquals(eventBeta, events[0])
+        verify(eventsDao) delete eventAlpha
+        verify(eventsDao, never()) delete eventBeta
+        verify(observer).onChanged(Unit)
+        job.cancel()
+    }
+
+    @Test
+    fun testLoadFromDbSortsByTime() = runTest {
+        val later = Event(comm = "Alpha", name = "Later", time = LocalDateTime.of(2026, 5, 20, 18, 0))
+        val earlier = Event(comm = "Alpha", name = "Earlier", time = LocalDateTime.of(2026, 5, 10, 12, 0))
+        `when`(eventsDao.getAll()).thenReturn(listOf(Event.Entity(later), Event.Entity(earlier)))
+
+        val job = Job()
+        @Suppress("UNCHECKED_CAST")
+        val observer = mock(Observer::class.java) as Observer<Unit>
+        events.updatedLiveData(job).observeForever(observer)
+
+        events.loadFromDb()
+        assertEquals(2, events.size)
+        assertEquals(earlier, events[0])
+        assertEquals(later, events[1])
+        verify(observer).onChanged(Unit)
+        job.cancel()
+    }
+
+    @Test
+    fun testFromComms() = runTest {
+        val comms = Comms(fsReader, fsWriter, mock(CommsDao::class.java), mock(Events::class.java), mock(ColorFactory::class.java))
+        val comm = Comm(name = "Alpha", comms = comms)
+        comms join comm
+
+        val event = Event(comm = "Alpha", name = "Conference")
+        `when`(fsReader readEventsFrom "alpha").thenReturn(listOf(event))
+
+        val loaded = events fromComms comms
+        assertEquals(listOf(event), loaded)
+        assertEquals(1, events.size)
+        assertEquals(event, events[0])
+        verify(eventsDao).clear()
+        verify(eventsDao) add event
+    }
+
+    @Test
+    fun testEventEntityConversion() {
+        val time = LocalDateTime.of(2026, 6, 15, 19, 30)
+        val event = Event(
+                comm = "Alpha",
+                name = "Workshop",
+                time = time,
+                location = LatLng(51.1079, 17.0385),
+                address = "Wrocław",
+                desc = "Kotlin Workshop",
+        )
+        val restored = Event.Entity(event).value()
+        assertEquals(event, restored)
     }
 }

@@ -19,27 +19,41 @@
 
 package pl.org.seva.events
 
+import android.graphics.Color
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
+import org.junit.Assert.assertArrayEquals
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito
+import org.kodein.di.DI
+import org.kodein.di.bind
+import org.kodein.di.instance
+import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.never
+import org.mockito.Mockito.verify
 import pl.org.seva.events.comm.Comm
 import pl.org.seva.events.comm.Comms
 import pl.org.seva.events.comm.CommsDao
 import pl.org.seva.events.event.Events
 import pl.org.seva.events.main.data.firestore.FsReader
 import pl.org.seva.events.main.data.firestore.FsWriter
+import pl.org.seva.events.main.init.kodein
 import pl.org.seva.events.main.ui.ColorFactory
 
-@OptIn(DelicateCoroutinesApi::class, ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class CommsTest {
 
     private lateinit var fsReader: FsReader
@@ -47,44 +61,176 @@ class CommsTest {
     private lateinit var commsDao: CommsDao
     private lateinit var events: Events
     private lateinit var colorFactory: ColorFactory
-
-    private val mainThreadSurrogate = newSingleThreadContext("UI thread")
+    private lateinit var comms: Comms
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Before
     fun setUp() {
-        Dispatchers.setMain(mainThreadSurrogate)
-    }
-
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
-        mainThreadSurrogate.close()
-    }
-
-    @Before
-    fun mockDependencies() {
+        Dispatchers.setMain(UnconfinedTestDispatcher())
         fsReader = mock(FsReader::class.java)
         fsWriter = mock(FsWriter::class.java)
         commsDao = mock(CommsDao::class.java)
         events = mock(Events::class.java)
         colorFactory = mock(ColorFactory::class.java)
+        comms = Comms(fsReader, fsWriter, commsDao, events, colorFactory)
+        kodein = DI {
+            bind<Comms>() with instance(comms)
+        }
+    }
+
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
     }
 
     @Test
     fun testJoin() = runTest {
-        val comms = Comms(fsReader, fsWriter, commsDao, events, colorFactory)
-        val comm = Comm("", "", comms = comms)
+        val comm = Comm("Alpha", "Alpha community", comms = comms)
         val job = Job()
         @Suppress("UNCHECKED_CAST")
         val observer = mock(Observer::class.java) as Observer<Unit>
         comms.updatedLiveData(job).observeForever(observer)
-        comms join comm
-        Mockito.verify(events) addFrom comm
-        Mockito.verify(commsDao) add comm
-        Mockito.verify(observer).onChanged(Unit)
+
+        assertTrue(comms.isEmpty)
+        assertTrue(comms join comm)
+        assertFalse(comms.isEmpty)
+        assertEquals(1, comms.size)
+        assertTrue(comm in comms)
+        assertEquals(comm, comms[0])
+        assertEquals(comm, comms["Alpha"])
+        assertEquals(Comm.DUMMY, comms["NonExistent"])
+        verify(events) addFrom comm
+        verify(commsDao) add comm
+        verify(observer).onChanged(Unit)
+
+        assertFalse(comms join comm)
+        assertEquals(1, comms.size)
         job.cancel()
+    }
+
+    @Test
+    fun testLeave() = runTest {
+        val comm = Comm("Alpha", "Alpha community", comms = comms)
+        comms join comm
+        val job = Job()
+        @Suppress("UNCHECKED_CAST")
+        val observer = mock(Observer::class.java) as Observer<Unit>
+        comms.updatedLiveData(job).observeForever(observer)
+
+        assertTrue(comms leave comm)
+        assertTrue(comms.isEmpty)
+        assertFalse(comm in comms)
+        verify(commsDao) delete comm
+        verify(events) deleteLocallyFrom comm
+        verify(observer).onChanged(Unit)
+
+        assertFalse(comms leave comm)
+        job.cancel()
+    }
+
+    @Test
+    fun testDelete() = runTest {
+        val joined = Comm("Joined", comms = comms)
+        val notJoined = Comm("NotJoined", comms = comms)
+        comms join joined
+
+        comms delete joined
+        verify(fsWriter) delete joined
+        assertFalse(joined in comms)
+
+        comms delete notJoined
+        verify(fsWriter, never()) delete notJoined
+    }
+
+    @Test
+    fun testUpdate() = runTest {
+        val initial = Comm("Community", desc = "Old description", comms = comms)
+        val updated = Comm("Community", desc = "New description", comms = comms)
+        comms join initial
+        val job = Job()
+        @Suppress("UNCHECKED_CAST")
+        val observer = mock(Observer::class.java) as Observer<Unit>
+        comms.updatedLiveData(job).observeForever(observer)
+
+        comms update updated
+        assertEquals("New description", comms["Community"].desc)
+        verify(fsWriter) update updated
+        verify(observer).onChanged(Unit)
+        job.cancel()
+    }
+
+    @Test
+    fun testFromDbSortsByLowercaseName() = runTest {
+        val commB = Comm("Beta", comms = comms)
+        val commA = Comm("alpha", comms = comms)
+        `when`(commsDao.getAllValues()).thenReturn(listOf(commB, commA))
+
+        val job = Job()
+        @Suppress("UNCHECKED_CAST")
+        val observer = mock(Observer::class.java) as Observer<Unit>
+        comms.updatedLiveData(job).observeForever(observer)
+
+        comms.fromDb()
+        assertEquals(2, comms.size)
+        assertEquals(commA, comms[0])
+        assertEquals(commB, comms[1])
+        verify(observer).onChanged(Unit)
+        job.cancel()
+    }
+
+    @Test
+    fun testAdminProperties() = runTest {
+        val regularComm = Comm("Regular", isAdmin = false, comms = comms)
+        val adminComm = Comm("AdminComm", isAdmin = true, comms = comms)
+
+        assertFalse(comms.isAdminOfAny)
+        comms join regularComm
+        assertFalse(comms.isAdminOfAny)
+
+        comms join adminComm
+        assertTrue(comms.isAdminOfAny)
+        assertArrayEquals(arrayOf("AdminComm"), comms.namesIsAdminOf)
+    }
+
+    @Test
+    fun testJoinNewCommunity() = runTest {
+        `when`(colorFactory.nextColor).thenReturn(Color.BLUE)
+
+        val created = comms joinNewCommunity "NewComm"
+        assertEquals("NewComm", created.name)
+        assertEquals(Color.BLUE, created.color)
+        assertTrue(created.isAdmin)
+        assertTrue(created in comms)
+        verify(fsWriter) create created
+        verify(fsWriter) grantAdmin created
+        verify(commsDao) add created
+    }
+
+    @Test
+    fun testRefreshAndRefreshAdminStatuses() = runTest {
+        val comm = Comm("MyComm", desc = "Old", color = Color.RED, isAdmin = false, comms = comms)
+        comms join comm
+
+        `when`(fsReader.isAdmin("mycomm")).thenReturn(true)
+        comms.refreshAdminStatuses()
+        testScheduler.advanceUntilIdle()
+        assertTrue(comms["MyComm"].isAdmin)
+        verify(commsDao).clear()
+
+        val refreshedFromFs = Comm("MyComm", desc = "Updated", color = Color.GRAY, isAdmin = true, comms = comms)
+        `when`(fsReader.findCommunity("MyComm")).thenReturn(refreshedFromFs)
+        comms.refresh()
+        testScheduler.advanceUntilIdle()
+        assertEquals("Updated", comms["MyComm"].desc)
+        assertEquals(Color.RED, comms["MyComm"].color)
+    }
+
+    @Test
+    fun testCommEntityConversion() {
+        val comm = Comm(name = "TestComm", desc = "Test Desc", color = Color.GREEN, isAdmin = true, comms = comms)
+        val restored = Comm.Entity(comm).value()
+        assertEquals(comm, restored)
     }
 }

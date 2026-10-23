@@ -32,7 +32,7 @@ open class ColorFactory(private val appContext: Context) {
         }
     }
 
-    val nextColor get() = with(colors) {
+    open val nextColor get() = with(colors) {
         val index = (Math.random() * length()).toInt()
         getColor(index, Color.GRAY)
     }

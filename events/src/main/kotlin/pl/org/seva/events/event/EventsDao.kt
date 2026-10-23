@@ -30,7 +30,7 @@ abstract class EventsDao {
 
     open suspend infix fun add(event: Event) = insert(Event.Entity(event))
     open suspend infix fun addAll(events: Collection<Event>) = insertAll(events.map { Event.Entity(it) })
-    suspend infix fun delete(event: Event) = delete(Event.Entity(event))
+    open suspend infix fun delete(event: Event) = delete(Event.Entity(event))
     suspend inline fun getAllValues() = getAll().map { it.value() }
 
     @Query("select * from ${EventsDb.EVENT_TABLE}")

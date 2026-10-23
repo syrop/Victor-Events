@@ -36,16 +36,16 @@ open class FsReader(private val colorFactory: ColorFactory) : FsBase() {
 
     private val login by instance<Login>()
 
-    suspend infix fun readEventsFrom(community: String) =
+    open suspend infix fun readEventsFrom(community: String) =
             community.events
                     .whereGreaterThan(Event.Fs.TIMESTAMP, earliestEventTime)
                     .read()
                     .map { it.toEvent() }
 
-    suspend infix fun isAdmin(name: String): Boolean = login.isLoggedIn &&
+    open suspend infix fun isAdmin(name: String): Boolean = login.isLoggedIn &&
             name.admins.document(login.email).doesExist()
 
-    suspend fun findCommunity(name: String) = coroutineScope {
+    open suspend fun findCommunity(name: String) = coroutineScope {
         val lcName = name.lowercase(Locale.getDefault())
         val deferredComm = async {
             communities.document(lcName).read().toCommunity()
