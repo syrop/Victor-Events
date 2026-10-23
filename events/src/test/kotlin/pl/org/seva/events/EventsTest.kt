@@ -23,7 +23,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
@@ -37,8 +37,7 @@ import pl.org.seva.events.event.EventsDao
 import pl.org.seva.events.main.data.firestore.FsReader
 import pl.org.seva.events.main.data.firestore.FsWriter
 
-@ExperimentalCoroutinesApi
-@ObsoleteCoroutinesApi
+@OptIn(DelicateCoroutinesApi::class, ExperimentalCoroutinesApi::class)
 class EventsTest {
 
     private lateinit var fsReader: FsReader
@@ -69,7 +68,7 @@ class EventsTest {
     }
 
     @Test
-    fun testAdd() = runBlockingTest {
+    fun testAdd() = runTest {
         val events = Events(fsReader, fsWriter, eventsDao)
         val event = Event.creationEvent
         val job = Job()
@@ -77,8 +76,8 @@ class EventsTest {
         val observer = mock(Observer::class.java) as Observer<Unit>
         events.updatedLiveData(job).observeForever(observer)
         events.add(event)
-        verify(fsWriter) add event
-        verify(eventsDao) add event
+        verify(fsWriter).addAll(event)
+        verify(eventsDao) addAll listOf(event)
         verify(observer).onChanged(Unit)
         job.cancel()
     }

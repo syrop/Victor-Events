@@ -17,18 +17,13 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-@file:Suppress("EXPERIMENTAL_API_USAGE")
-
 package pl.org.seva.events.main.data
 
 import android.content.pm.PackageManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.BroadcastChannel
-import kotlinx.coroutines.channels.sendBlocking
-import kotlinx.coroutines.channels.trySendBlocking
-import kotlinx.coroutines.selects.select
+import kotlinx.coroutines.flow.MutableSharedFlow
 
 class Permissions {
 
@@ -44,10 +39,10 @@ class Permissions {
         val denied = vm.denied
 
         infix fun String.onGranted(requestCode: Int) =
-                granted.trySendBlocking(PermissionResult(requestCode, this))
+                granted.tryEmit(PermissionResult(requestCode, this))
 
         infix fun String.onDenied(requestCode: Int) =
-                denied.trySendBlocking(PermissionResult(requestCode, this))
+                denied.tryEmit(PermissionResult(requestCode, this))
 
         if (grantResults.isEmpty()) {
             permissions.forEach { it onDenied requestCode }
@@ -61,34 +56,26 @@ class Permissions {
     }
 
     class ViewModel : androidx.lifecycle.ViewModel() {
-        val granted by lazy { BroadcastChannel<PermissionResult>(DEFAULT_CAPACITY) }
-        val denied by lazy { BroadcastChannel<PermissionResult>(DEFAULT_CAPACITY) }
+        val granted by lazy { MutableSharedFlow<PermissionResult>(extraBufferCapacity = DEFAULT_CAPACITY) }
+        val denied by lazy { MutableSharedFlow<PermissionResult>(extraBufferCapacity = DEFAULT_CAPACITY) }
 
         private fun CoroutineScope.watch(code: Int, request: PermissionRequest) = launch (Dispatchers.IO) {
             suspend fun PermissionResult.ifMatching(block: () -> Unit) {
-                if (requestCode == code && permission == request.permission) {
+                if ((requestCode == code) && (permission == request.permission)) {
                     withContext(Dispatchers.Main) {
                         block()
                     }
                 }
             }
-            val grantedSubscription = granted.openSubscription()
-            val deniedSubscription = denied.openSubscription()
-
-            try {
-                while (true) {
-                    select<Unit> {
-                        grantedSubscription.onReceive {
-                            it.ifMatching { request.onGranted() }
-                        }
-                        deniedSubscription.onReceive {
-                            it.ifMatching { request.onDenied() }
-                        }
-                    }
+            launch {
+                granted.collect {
+                    it.ifMatching { request.onGranted() }
                 }
-            } finally {
-                grantedSubscription.cancel()
-                deniedSubscription.cancel()
+            }
+            launch {
+                denied.collect {
+                    it.ifMatching { request.onDenied() }
+                }
             }
         }
 

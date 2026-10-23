@@ -38,7 +38,7 @@ open class FsWriter : FsBase() {
         comm.writeName()
     }
 
-    open infix fun add(event: Event) = event.comm.toLowerCase(Locale.getDefault()).writeEvent(event)
+    open infix fun add(event: Event) = event.comm.lowercase(Locale.getDefault()).writeEvent(event)
 
     open fun addAll(vararg events: Event) = events.forEach { add(it) }
 

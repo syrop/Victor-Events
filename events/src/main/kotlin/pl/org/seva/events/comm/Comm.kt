@@ -40,7 +40,7 @@ data class Comm(
     var originalName get() = if (isDummy) checkNotNull(attributes[ORIG_NAME]) else name
     set(value)  { if (isDummy) attributes[ORIG_NAME] = value }
 
-    val lcName: String get() = name.toLowerCase(Locale.getDefault())
+    val lcName: String get() = name.lowercase(Locale.getDefault())
 
     val isDummy get() = name == DUMMY_NAME
 

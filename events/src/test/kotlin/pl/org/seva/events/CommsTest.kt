@@ -23,7 +23,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
@@ -39,8 +39,7 @@ import pl.org.seva.events.main.data.firestore.FsReader
 import pl.org.seva.events.main.data.firestore.FsWriter
 import pl.org.seva.events.main.ui.ColorFactory
 
-@ExperimentalCoroutinesApi
-@ObsoleteCoroutinesApi
+@OptIn(DelicateCoroutinesApi::class, ExperimentalCoroutinesApi::class)
 class CommsTest {
 
     private lateinit var fsReader: FsReader
@@ -75,7 +74,7 @@ class CommsTest {
     }
 
     @Test
-    fun testJoin() = runBlockingTest {
+    fun testJoin() = runTest {
         val comms = Comms(fsReader, fsWriter, commsDao, events, colorFactory)
         val comm = Comm("", "", comms = comms)
         val job = Job()

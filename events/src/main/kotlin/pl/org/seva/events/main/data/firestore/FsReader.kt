@@ -46,7 +46,7 @@ open class FsReader(private val colorFactory: ColorFactory) : FsBase() {
             name.admins.document(login.email).doesExist()
 
     suspend fun findCommunity(name: String) = coroutineScope {
-        val lcName = name.toLowerCase(Locale.getDefault())
+        val lcName = name.lowercase(Locale.getDefault())
         val deferredComm = async {
             communities.document(lcName).read().toCommunity()
         }
@@ -69,10 +69,15 @@ open class FsReader(private val colorFactory: ColorFactory) : FsBase() {
     }
 
     private fun DocumentSnapshot.toCommunity() =
-            if (exists()) Comm(
+            if (exists()) {
+                Comm(
                     name = checkNotNull(getString(COMM_NAME)),
                     color = colorFactory.nextColor,
-                    desc = getString(COMM_DESC) ?: "") else Comm.DUMMY
+                    desc = getString(COMM_DESC) ?: "",
+                )
+            } else {
+                Comm.DUMMY
+            }
 
     companion object {
         val earliestEventTime get() = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)

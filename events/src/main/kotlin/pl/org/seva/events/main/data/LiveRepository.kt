@@ -17,39 +17,31 @@
  * If you like this program, consider donating bitcoin: bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp
  */
 
-@file:Suppress("EXPERIMENTAL_API_USAGE")
-
 package pl.org.seva.events.main.data
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.channels.BroadcastChannel
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.sendBlocking
-import kotlinx.coroutines.channels.trySendBlocking
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
 abstract class LiveRepository {
 
-    private val broadcastChannel = BroadcastChannel<Unit>(Channel.CONFLATED)
+    private val updates = MutableSharedFlow<Unit>(
+        extraBufferCapacity = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST,
+    )
 
     protected fun notifyDataSetChanged() {
-        broadcastChannel.trySendBlocking(Unit)
+        updates.tryEmit(Unit)
     }
 
     fun updatedLiveData(scope: CoroutineScope) = updatedLiveData(scope.coroutineContext)
 
     fun updatedLiveData(context: CoroutineContext = EmptyCoroutineContext) = liveData(context) {
-        with (broadcastChannel.openSubscription()) {
-            try {
-                while (true) {
-                    emit(receive())
-                }
-            }
-            finally {
-                cancel()
-            }
+        updates.collect {
+            emit(it)
         }
     }
 }

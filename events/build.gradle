@@ -1,80 +1,70 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.devtools.ksp'
 apply plugin: 'com.google.firebase.crashlytics'
 
 android {
-    compileSdk 34
+    namespace = 'pl.org.seva.events'
+    compileSdk = 34
 
     defaultConfig {
-        applicationId 'pl.org.seva.events'
-        minSdkVersion 26
-        targetSdkVersion 30
-        versionCode 6
-        versionName '1.0.5'
-        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
-            }
-        }
-    }
-
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-        test.java.srcDirs += 'src/test/kotlin'
-        androidTest.java.srcDirs += 'src/androidTest/kotlin'
-        debug.java.srcDirs += 'src/debug/kotlin'
-        release.java.srcDirs += 'src/release/kotlin'
+        applicationId = 'pl.org.seva.events'
+        minSdk = 26
+        targetSdk = 30
+        versionCode = 6
+        versionName = '1.0.5'
+        testInstrumentationRunner = 'androidx.test.runner.AndroidJUnitRunner'
     }
 
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            crunchPngs true
+            minifyEnabled = false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            crunchPngs = true
         }
     }
 
-    packagingOptions {
-        exclude 'META-INF/main.kotlin_module'
-        exclude 'META-INF/atomicfu.kotlin_module'
+    buildFeatures {
+        buildConfig = true
+    }
+
+    packaging {
+        resources {
+            excludes += ['META-INF/main.kotlin_module', 'META-INF/atomicfu.kotlin_module']
+        }
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
+        sourceCompatibility = JavaVersion.VERSION_26
+        targetCompatibility = JavaVersion.VERSION_26
     }
 
     // https://androidstudio.googleblog.com/2018/04/android-studio-32-canary-11-now.html
-    lintOptions {
-        check 'Interoperability'
+    lint {
+        checkOnly += 'Interoperability'
     }
     dynamicFeatures = []
-
-
 }
 
-kapt {
-    // https://blog.jetbrains.com/kotlin/2018/01/kotlin-1-2-20-is-out/
-    useBuildCache = true
-    // https://blog.jetbrains.com/kotlin/2018/03/kotlin-1-2-30-is-out/
-    mapDiagnosticLocations = true
+kotlin {
+    jvmToolchain(26)
+    compilerOptions {
+        languageVersion = KotlinVersion.KOTLIN_2_4
+        jvmTarget = JvmTarget.JVM_26
+    }
+}
+
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas".toString())
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestImplementation('androidx.test.espresso:espresso-core:3.2.0', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
 
     // Kotlin, Kodein
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0'
     implementation 'org.kodein.di:kodein-di:7.3.0'
 
     // Jetpack, AndroidX
@@ -83,9 +73,9 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:2.2.0'
-    kapt 'androidx.room:room-compiler:2.6.1'
-    implementation 'androidx.room:room-runtime:2.6.1'
-    implementation 'androidx.room:room-ktx:2.6.1'
+    ksp 'androidx.room:room-compiler:2.8.5'
+    implementation 'androidx.room:room-runtime:2.8.5'
+    implementation 'androidx.room:room-ktx:2.8.5'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.4.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0'
@@ -112,8 +102,8 @@ dependencies {
     androidTestImplementation 'androidx.test:rules:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     testImplementation 'org.mockito:mockito-core:3.2.4'
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.2'
-    testImplementation 'android.arch.core:core-testing:1.1.1'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.11.0'
+    testImplementation 'androidx.arch.core:core-testing:2.2.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

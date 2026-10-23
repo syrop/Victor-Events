@@ -29,7 +29,7 @@ import pl.org.seva.events.main.data.db.EventsDb
 abstract class EventsDao {
 
     open suspend infix fun add(event: Event) = insert(Event.Entity(event))
-    suspend infix fun addAll(events: Collection<Event>) = insertAll(events.map { Event.Entity(it) })
+    open suspend infix fun addAll(events: Collection<Event>) = insertAll(events.map { Event.Entity(it) })
     suspend infix fun delete(event: Event) = delete(Event.Entity(event))
     suspend inline fun getAllValues() = getAll().map { it.value() }
 
