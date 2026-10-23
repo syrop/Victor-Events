@@ -19,35 +19,52 @@
 
 package pl.org.seva.events.message
 
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import pl.org.seva.events.R
-import pl.org.seva.events.main.init.instance
+import pl.org.seva.events.main.ui.EventsTheme
 
-class MessagesAdapter : RecyclerView.Adapter<MessagesAdapter.ViewHolder>() {
-
-    private val messages by instance<Messages>()
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-            ViewHolder(parent.inflate())
-
-    private fun ViewGroup.inflate() =
-            LayoutInflater.from(context).inflate(R.layout.row_message, this, false)
-
-    override fun getItemCount() = messages.size
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        with(messages[position]) {
-            holder.time.text = time.toString()
-            holder.content.text = content
-        }
+/**
+ * Jetpack Compose list row replacing `res/layout/row_message.xml`.
+ */
+@Composable
+fun MessageRow(
+        time: String,
+        content: String,
+) {
+    Column(
+            modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 16.dp),
+    ) {
+        Text(
+                text = time,
+                fontSize = 24.sp,
+                modifier = Modifier.fillMaxWidth(),
+        )
+        Text(
+                text = content,
+                fontSize = 20.sp,
+                modifier = Modifier.fillMaxWidth(),
+        )
     }
+}
 
-    class ViewHolder internal constructor(view: View) : RecyclerView.ViewHolder(view) {
-        val time = checkNotNull(view.findViewById<TextView>(R.id.time))
-        val content = checkNotNull(view.findViewById<TextView>(R.id.content))
+@Preview(showBackground = true)
+@Composable
+fun MessageRowPreview() {
+    EventsTheme {
+        MessageRow(
+                time = "12:00",
+                content = stringResource(id = R.string.system_message_comm_deleted),
+        )
     }
 }

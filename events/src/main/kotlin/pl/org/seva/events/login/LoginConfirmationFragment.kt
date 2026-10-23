@@ -22,49 +22,69 @@ package pl.org.seva.events.login
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.Comms
-import pl.org.seva.events.main.extension.*
+import pl.org.seva.events.main.extension.back
+import pl.org.seva.events.main.extension.inBrowser
 import pl.org.seva.events.main.init.instance
+import pl.org.seva.events.main.ui.EventsTheme
+import pl.org.seva.events.main.ui.composeContent
 
-class LoginConfirmationFragment : Fragment(R.layout.fr_login_conf) {
+class LoginConfirmationFragment : Fragment() {
 
     private val comms by instance<Comms>()
+    private var inProgress by mutableStateOf(false)
 
-    private val ok = requireActivity().findViewById<View>(R.id.ok)
-    private val cancel = requireActivity().findViewById<View>(R.id.cancel)
-    private val privacyPolicy = requireActivity().findViewById<View>(R.id.privacy_policy)
-    private val progress = requireActivity().findViewById<View>(R.id.progress)
-    private val prompt = requireActivity().findViewById<View>(R.id.prompt)
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        ok {
-            val intent = Intent(activity, LoginActivity::class.java)
-                    .putExtra(LoginActivity.ACTION, LoginActivity.LOGIN)
-            startActivityForResult(intent, LOGIN_REQUEST)
-        }
-        cancel {
-            back()
-        }
-        privacyPolicy {
-            inBrowser(getString(R.string.login_confirmation_privacy_uri))
-        }
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?,
+    ) = composeContent {
+        LoginConfirmationScreen(
+                inProgress = inProgress,
+                onPrivacyPolicyClick = { inBrowser(getString(R.string.login_confirmation_privacy_uri)) },
+                onCancelClick = { back() },
+                onOkClick = {
+                    val intent = Intent(activity, LoginActivity::class.java)
+                            .putExtra(LoginActivity.ACTION, LoginActivity.LOGIN)
+                    @Suppress("DEPRECATION")
+                    startActivityForResult(intent, LOGIN_REQUEST)
+                },
+        )
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        @Suppress("DEPRECATION")
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == LOGIN_REQUEST && resultCode == Activity.RESULT_OK) {
-            prompt.visibility = View.GONE
-            ok.visibility = View.GONE
-            privacyPolicy.visibility = View.GONE
-            cancel.visibility = View.GONE
-            progress.visibility = View.VISIBLE
+        if ((requestCode == LOGIN_REQUEST) && (resultCode == Activity.RESULT_OK)) {
+            inProgress = true
             lifecycleScope.launch {
                 comms.refreshAdminStatuses()
                 back()
@@ -74,5 +94,65 @@ class LoginConfirmationFragment : Fragment(R.layout.fr_login_conf) {
 
     companion object {
         const val LOGIN_REQUEST = 0
+    }
+}
+
+/**
+ * Jetpack Compose screen replacing `res/layout/fr_login_conf.xml`.
+ */
+@Composable
+fun LoginConfirmationScreen(
+        inProgress: Boolean,
+        onPrivacyPolicyClick: () -> Unit,
+        onCancelClick: () -> Unit,
+        onOkClick: () -> Unit,
+) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        if (inProgress) {
+            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+        } else {
+            Column(
+                    modifier = Modifier
+                            .align(Alignment.Center)
+                            .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(
+                        text = stringResource(id = R.string.login_confirmation_prompt),
+                        fontSize = 20.sp,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(bottom = 16.dp),
+                )
+                TextButton(onClick = onPrivacyPolicyClick) {
+                    Text(text = stringResource(id = R.string.login_confirmation_privacy_policy))
+                }
+            }
+            Row(
+                    modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .padding(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                TextButton(onClick = onCancelClick) {
+                    Text(text = stringResource(id = android.R.string.cancel))
+                }
+                Button(onClick = onOkClick) {
+                    Text(text = stringResource(id = R.string.login_confirmation_button))
+                }
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LoginConfirmationScreenPreview() {
+    EventsTheme {
+        LoginConfirmationScreen(
+                inProgress = false,
+                onPrivacyPolicyClick = {},
+                onCancelClick = {},
+                onOkClick = {},
+        )
     }
 }

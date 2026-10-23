@@ -34,16 +34,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.*
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.SupportMapFragment
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.suspendCancellableCoroutine
+import pl.org.seva.events.main.data.Permissions
 import pl.org.seva.events.main.ui.InteractiveMapHolder
 import pl.org.seva.events.main.ui.MapHolder
-import pl.org.seva.events.main.data.Permissions
-import kotlin.coroutines.resume
 
 fun Fragment.nav(@IdRes resId: Int): Boolean {
     findNavController().navigate(resId)
@@ -55,22 +54,11 @@ fun Fragment.back(): Boolean {
     return true
 }
 
-fun Fragment.createMapHolder(@IdRes map: Int, block: MapHolder.() -> Unit = {}) =
-        MapHolder().apply(block).also {
-            withMapHolder(it to map)
-        }
+fun createMapHolder(block: MapHolder.() -> Unit = {}) =
+        MapHolder().apply(block)
 
-fun Fragment.createInteractiveMapHolder(@IdRes map: Int, block: InteractiveMapHolder.() -> Unit = {}) =
-        InteractiveMapHolder().apply(block).also {
-            withMapHolder(it to map)
-        }
-
-private fun Fragment.withMapHolder(pair: Pair<MapHolder, Int>) {
-    val (holder, id) = pair
-    lifecycleScope.launch {
-        holder withMap googleMap(id)
-    }
-}
+fun createInteractiveMapHolder(block: InteractiveMapHolder.() -> Unit = {}) =
+        InteractiveMapHolder().apply(block)
 
 fun Fragment.check(permission: String) =
         ContextCompat.checkSelfPermission(requireContext(), permission) == PackageManager.PERMISSION_GRANTED
@@ -87,6 +75,7 @@ fun Fragment.inBrowser(uri: String) {
     startActivity(i)
 }
 
+@Suppress("DEPRECATION")
 fun Fragment.request(requestCode: Int, requests: Array<Permissions.PermissionRequest>) {
     watchPermissions(requestCode, requests)
     requestPermissions(requests.map { it.permission }.toTypedArray(), requestCode)
@@ -99,35 +88,29 @@ private fun Fragment.watchPermissions(requestCode: Int, requests: Array<Permissi
 fun Fragment.prefs(name: String): SharedPreferences =
         requireContext().getSharedPreferences(name, Context.MODE_PRIVATE)
 
-suspend fun Fragment.googleMap(@IdRes id: Int) =
-        suspendCancellableCoroutine<GoogleMap> { continuation ->
-            val mapFragment =
-                    childFragmentManager.findFragmentById(id) as SupportMapFragment
-            mapFragment.getMapAsync { map -> continuation.resume(map) }
-        }
-
 fun Fragment.requestLocationPermission(onGranted: () -> Unit) {
     if (check(Manifest.permission.ACCESS_COARSE_LOCATION)) onGranted()
     else request(
             Permissions.DEFAULT_PERMISSION_REQUEST_ID,
-            arrayOf(Permissions.PermissionRequest(
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    onGranted = onGranted)))
+            arrayOf(
+                    Permissions.PermissionRequest(
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                            onGranted = onGranted,
+                    ),
+            ),
+    )
 }
 
+@SuppressLint("MissingPermission")
 fun Fragment.enableMyLocationOnResume(map: GoogleMap) {
-    lifecycle.addObserver(object : LifecycleEventObserver {
-        @SuppressLint("MissingPermission")
-        override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-            if (event == Lifecycle.Event.ON_RESUME && check(Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                map.isMyLocationEnabled = true
-            }
+    lifecycle.addObserver(LifecycleEventObserver { _, event ->
+        if ((event == Lifecycle.Event.ON_RESUME) && check(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            map.isMyLocationEnabled = true
         }
     })
 }
 
 fun Fragment.onBack(block: () -> Unit) {
-
     val callback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() = block()
     }

@@ -23,6 +23,10 @@ import android.graphics.Typeface
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.StyleSpan
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 
 fun String.bold(placeholder: String, replacement: String): CharSequence {
     val idName = indexOf(placeholder)
@@ -32,3 +36,17 @@ fun String.bold(placeholder: String, replacement: String): CharSequence {
         setSpan(boldSpan, idName, idEndName, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
     }
 }
+
+fun String.boldAnnotated(placeholder: String, replacement: String): AnnotatedString =
+        buildAnnotatedString {
+            val idName = indexOf(placeholder)
+            val replaced = replace(placeholder, replacement)
+            append(replaced)
+            if (idName >= 0) {
+                addStyle(
+                        style = SpanStyle(fontWeight = FontWeight.Bold),
+                        start = idName,
+                        end = idName + replacement.length,
+                )
+            }
+        }

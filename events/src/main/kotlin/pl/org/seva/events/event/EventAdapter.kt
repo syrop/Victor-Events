@@ -19,37 +19,54 @@
 
 package pl.org.seva.events.event
 
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
-import pl.org.seva.events.R
-import pl.org.seva.events.main.extension.inflate
-import pl.org.seva.events.main.extension.onClick
-import pl.org.seva.events.main.init.instance
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import pl.org.seva.events.main.ui.EventsTheme
 
-class EventAdapter(private val onClick: (Int) -> Unit) :
-        RecyclerView.Adapter<EventAdapter.ViewHolder>() {
-
-    private val events by instance<Events>()
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-            ViewHolder(parent.inflate(R.layout.row_event), onClick)
-
-    override fun getItemCount() = events.size
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        events[position].apply {
-            holder.name.text = name
-            holder.time.text = time.toString()
-        }
+/**
+ * Jetpack Compose list row replacing `res/layout/row_event.xml`.
+ */
+@Composable
+fun EventRow(
+        name: String,
+        time: String,
+        onClick: () -> Unit,
+) {
+    Column(
+            modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable(onClick = onClick)
+                    .padding(horizontal = 16.dp, vertical = 16.dp),
+    ) {
+        Text(
+                text = name,
+                fontSize = 16.sp,
+                modifier = Modifier.fillMaxWidth(),
+        )
+        Text(
+                text = time,
+                fontSize = 16.sp,
+                modifier = Modifier.fillMaxWidth(),
+        )
     }
+}
 
-    class ViewHolder(view: View, onClick: (Int) -> Unit) : RecyclerView.ViewHolder(view) {
-
-        init { view onClick { onClick(adapterPosition) } }
-
-        val name: TextView = view.findViewById(R.id.name)
-        val time: TextView = view.findViewById(R.id.time)
+@Preview(showBackground = true)
+@Composable
+fun EventRowPreview() {
+    EventsTheme {
+        EventRow(
+                name = "Event",
+                time = "12:00",
+                onClick = {},
+        )
     }
 }

@@ -19,11 +19,20 @@
 
 package pl.org.seva.events.login
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -35,7 +44,9 @@ import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.log
 import pl.org.seva.events.main.extension.toast
 import pl.org.seva.events.main.init.instance
+import pl.org.seva.events.main.ui.EventsTheme
 
+@Suppress("DEPRECATION")
 class LoginActivity : AppCompatActivity() {
 
     private val login by instance<Login>()
@@ -48,17 +59,17 @@ class LoginActivity : AppCompatActivity() {
 
     private var commToCreate: String? = null
 
-    private val progress by lazy { findViewById<View>(R.id.progress) }
+    private var inProgress by mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         fun String.setResult() {
-            setResult(Activity.RESULT_OK, Intent().putExtra(COMMUNITY_NAME, this))
+            setResult(RESULT_OK, Intent().putExtra(COMMUNITY_NAME, this))
         }
 
         fun onUserLoggedIn(user: FirebaseUser) {
             login.setCurrentUser(user)
             if (finishWhenReady) {
-                commToCreate?.setResult() ?: setResult(Activity.RESULT_OK)
+                commToCreate?.setResult() ?: setResult(RESULT_OK)
                 finish()
             }
         }
@@ -85,12 +96,16 @@ class LoginActivity : AppCompatActivity() {
             logoutWhenReady = true
             auth.signOut()
             login.setCurrentUser(null)
-            setResult(Activity.RESULT_OK)
+            setResult(RESULT_OK)
             finish()
         }
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.ac_login)
+        setContent {
+            EventsTheme {
+                LoginScreen(inProgress = inProgress)
+            }
+        }
         commToCreate = intent.getStringExtra(COMMUNITY_NAME)
         auth = FirebaseAuth.getInstance()
         authStateListener = {
@@ -121,15 +136,17 @@ class LoginActivity : AppCompatActivity() {
 
     public override fun onStop() {
         super.onStop()
-        progress.visibility = View.GONE
+        inProgress = false
         auth.removeAuthStateListener(authStateListener)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         moveTaskToBack(true)
         finish()
     }
 
+    @Deprecated("Deprecated in Java")
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         fun signInFailed() {
             toast(R.string.login_authentication_failed)
@@ -138,17 +155,14 @@ class LoginActivity : AppCompatActivity() {
 
         fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
             log.info("firebaseAuthWithGoogle:" + checkNotNull(acct.id))
-            progress.visibility = View.VISIBLE
+            inProgress = true
 
             val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
             auth.signInWithCredential(credential)
                     .addOnCompleteListener(this) {
                         log.info("signInWithCredential:onComplete:" + it.isSuccessful)
-                        progress.visibility = View.GONE
+                        inProgress = false
 
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
                         if (!it.isSuccessful) {
                             signInFailed()
                         }
@@ -157,15 +171,15 @@ class LoginActivity : AppCompatActivity() {
 
         super.onActivityResult(requestCode, resultCode, data)
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...)
         if (requestCode == SIGN_IN_REQUEST_ID) {
             finishWhenReady = true
             try {
-                val account = checkNotNull(GoogleSignIn.getSignedInAccountFromIntent(data)
-                        .getResult(ApiException::class.java))
+                val account = checkNotNull(
+                        GoogleSignIn.getSignedInAccountFromIntent(data)
+                                .getResult(ApiException::class.java),
+                )
                 firebaseAuthWithGoogle(account)
-            }
-            catch (e: ApiException) {
+            } catch (_: ApiException) {
                 signInFailed()
             }
         }
@@ -182,5 +196,25 @@ class LoginActivity : AppCompatActivity() {
         const val COMMUNITY_NAME = "community_name"
 
         private const val SIGN_IN_REQUEST_ID = 9001
+    }
+}
+
+/**
+ * Jetpack Compose screen replacing `res/layout/ac_login.xml`.
+ */
+@Composable
+fun LoginScreen(inProgress: Boolean) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        if (inProgress) {
+            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LoginScreenPreview() {
+    EventsTheme {
+        LoginScreen(inProgress = true)
     }
 }

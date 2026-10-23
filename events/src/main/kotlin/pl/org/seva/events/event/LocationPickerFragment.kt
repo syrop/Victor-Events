@@ -20,55 +20,152 @@
 package pl.org.seva.events.event
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.widget.TextView
+import android.view.View
+import android.view.ViewGroup
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.lifecycle.Lifecycle
+import com.google.android.gms.maps.GoogleMap
 import pl.org.seva.events.R
-import pl.org.seva.events.main.extension.*
+import pl.org.seva.events.main.extension.back
+import pl.org.seva.events.main.extension.createInteractiveMapHolder
+import pl.org.seva.events.main.extension.enableMyLocationOnResume
+import pl.org.seva.events.main.extension.plus
+import pl.org.seva.events.main.extension.prefs
+import pl.org.seva.events.main.ui.EventsTheme
+import pl.org.seva.events.main.ui.GoogleMapView
+import pl.org.seva.events.main.ui.composeContent
 
-class LocationPickerFragment : Fragment(R.layout.fr_location_picker) {
+class LocationPickerFragment : Fragment() {
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-
-        val deleteLocactionFab = requireActivity().findViewById<FloatingActionButton>(R.id.delete_location_fab)
-
-        fun onLocationChanged(l: EventLocation?) {
-            requireActivity().findViewById<TextView>(R.id.address) set (l?.address ?: "")
-            if (l != null) deleteLocactionFab.show() else deleteLocactionFab.hide()
+    private val mapHolder by lazy {
+        createInteractiveMapHolder {
+            prefs = prefs(SHARED_PREFERENCES_TAG)
+            onLocationSet = { eventCreateViewModel.value.location.value = it }
         }
+    }
 
-        super.onActivityCreated(savedInstanceState)
-        setHasOptionsMenu(true)
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?,
+    ) = composeContent {
+        val viewModel = eventCreateViewModel.value
+        val location by viewModel.location.observeAsState()
+
+        LocationPickerScreen(
+                address = location?.address.orEmpty(),
+                hasLocation = location != null,
+                onDeleteLocationClick = { viewModel.location.value = null },
+                onMapReady = { map -> mapHolder withMap map },
+        )
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.location_picker, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem) = when (menuItem.itemId) {
+                R.id.action_ok -> back()
+                else -> false
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
         val viewModel = eventCreateViewModel.value
-        deleteLocactionFab { viewModel.location.value = null }
-        (viewModel.location + this) { onLocationChanged(it) }
-
-        createInteractiveMapHolder(R.id.map) {
-            prefs = prefs(SHARED_PREFERENCES_TAG)
-            onLocationSet = { viewModel.location.value = it }
-        }.also { holder ->
-            (holder.liveMap + this) { map ->
-                enableMyLocationOnResume(map)
-                (viewModel.location + this@LocationPickerFragment) { holder.markPosition(it?.location) }
+        (mapHolder.liveMap + this) { map ->
+            enableMyLocationOnResume(map)
+            (viewModel.location + this@LocationPickerFragment) {
+                mapHolder.markPosition(it?.location)
             }
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.action_ok -> back()
-        else -> super.onOptionsItemSelected(item)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.location_picker, menu)
-    }
-
     companion object {
         private const val SHARED_PREFERENCES_TAG = "fragment_location_picker_preferences"
+    }
+}
+
+/**
+ * Jetpack Compose screen replacing `res/layout/fr_location_picker.xml`.
+ */
+@Composable
+fun LocationPickerScreen(
+        address: String,
+        hasLocation: Boolean,
+        onDeleteLocationClick: () -> Unit,
+        onMapReady: (GoogleMap) -> Unit,
+) {
+    Scaffold(
+            floatingActionButton = {
+                if (hasLocation) {
+                    FloatingActionButton(onClick = onDeleteLocationClick) {
+                        Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = stringResource(id = R.string.pick_location_label),
+                        )
+                    }
+                }
+            },
+    ) { innerPadding ->
+        Column(
+                modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding),
+        ) {
+            OutlinedTextField(
+                    value = address,
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text(text = stringResource(id = R.string.pick_location_select_location)) },
+                    modifier = Modifier.fillMaxWidth(),
+            )
+            if (!LocalInspectionMode.current) {
+                GoogleMapView(
+                        modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f),
+                        onMapReady = onMapReady,
+                )
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LocationPickerScreenPreview() {
+    EventsTheme {
+        LocationPickerScreen(
+                address = "Main Street 1",
+                hasLocation = true,
+                onDeleteLocationClick = {},
+                onMapReady = {},
+        )
     }
 }

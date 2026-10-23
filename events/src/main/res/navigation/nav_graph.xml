@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/nav_graph"
             app:startDestination="@+id/eventsFragment">
 
     <fragment
         android:id="@+id/eventsFragment"
         android:name="pl.org.seva.events.event.EventListFragment"
-        android:label="@string/app_name"
-        tools:layout="@layout/fr_event_list">
+        android:label="@string/app_name">
         <action
             android:id="@+id/action_eventsFragment_to_createEventFragment"
             app:destination="@id/event_create_graph"/>
@@ -36,32 +34,27 @@
     <fragment
         android:id="@+id/eventDetailsFragment"
         android:name="pl.org.seva.events.event.EventDetailsFragment"
-        android:label="@string/event_details_label"
-        tools:layout="@layout/fr_event_details"/>
+        android:label="@string/event_details_label"/>
 
     <fragment
         android:id="@+id/loginConfirmationFragment"
         android:name="pl.org.seva.events.login.LoginConfirmationFragment"
-        android:label="@string/login_confirmation_label"
-        tools:layout="@layout/fr_login_conf"/>
+        android:label="@string/login_confirmation_label"/>
 
     <fragment
         android:id="@+id/logOutConfirmationFragment"
         android:name="pl.org.seva.events.login.LogOutConfirmationFragment"
-        android:label="@string/log_out_confirmation_label"
-        tools:layout="@layout/fr_log_out_conf"/>
+        android:label="@string/log_out_confirmation_label"/>
 
     <fragment
         android:id="@+id/systemMessagesFragment"
         android:name="pl.org.seva.events.message.MessagesFragment"
-        android:label="@string/system_messages_label"
-        tools:layout="@layout/fr_messages"/>
+        android:label="@string/system_messages_label"/>
 
     <fragment
         android:id="@+id/aboutFragment"
         android:name="pl.org.seva.events.about.AboutFragment"
-        android:label="@string/about_label"
-        tools:layout="@layout/fr_about"/>
+        android:label="@string/about_label"/>
 
     <navigation
         android:id="@+id/event_create_graph"
@@ -69,8 +62,7 @@
         <fragment
             android:id="@+id/eventCreateFragment"
             android:name="pl.org.seva.events.event.EventCreateFragment"
-            android:label="@string/app_name"
-            tools:layout="@layout/fr_event_create">
+            android:label="@string/app_name">
             <action
                 android:id="@+id/action_createEventFragment_to_locationPickerFragment"
                 app:destination="@id/locationPickerFragment"/>
@@ -84,8 +76,7 @@
         <fragment
             android:id="@+id/locationPickerFragment"
             android:name="pl.org.seva.events.event.LocationPickerFragment"
-            android:label="@string/pick_location_label"
-            tools:layout="@layout/fr_location_picker"/>
+            android:label="@string/pick_location_label"/>
         <dialog
             android:id="@+id/timePicker"
             android:name="pl.org.seva.events.event.TimePickerFragment"/>
@@ -99,8 +90,7 @@
         <fragment
             android:id="@+id/commEditFragment"
             android:name="pl.org.seva.events.comm.CommEditFragment"
-            android:label="@string/comm_edit_label"
-            tools:layout="@layout/fr_comm_edit">
+            android:label="@string/comm_edit_label">
             <action
                 android:id="@+id/action_commEditFragment_to_commDeleteFragment"
                 app:destination="@id/commDeleteFragment"/>
@@ -108,18 +98,15 @@
         <fragment
             android:id="@+id/addCommFragment"
             android:name="pl.org.seva.events.comm.CommAddFragment"
-            android:label="@string/add_comm_label"
-            tools:layout="@layout/fr_comm_add"/>
+            android:label="@string/add_comm_label"/>
         <fragment
             android:id="@+id/adminAddFragment"
             android:name="pl.org.seva.events.comm.AdminAddFragment"
-            android:label="@string/admin_add_label"
-            tools:layout="@layout/fr_admin_add"/>
+            android:label="@string/admin_add_label"/>
         <fragment
             android:id="@+id/commListFragment"
             android:name="pl.org.seva.events.comm.CommListFragment"
-            android:label="@string/comm_list_label"
-            tools:layout="@layout/fr_comm_list">
+            android:label="@string/comm_list_label">
             <action
                 android:id="@+id/action_commListFragment_to_addCommFragment"
                 app:destination="@id/addCommFragment"/>
@@ -130,8 +117,7 @@
         <fragment
             android:id="@+id/commDetailsFragment"
             android:name="pl.org.seva.events.comm.CommDetailsFragment"
-            android:label="@string/comm_details_label"
-            tools:layout="@layout/fr_comm_edit">
+            android:label="@string/comm_details_label">
             <action
                 android:id="@+id/action_commDetailsFragment_to_commEditFragment"
                 app:destination="@id/commEditFragment"/>
@@ -142,8 +128,7 @@
         <fragment
             android:id="@+id/commDeleteFragment"
             android:name="pl.org.seva.events.comm.CommDeleteFragment"
-            android:label="@string/comm_delete_label"
-            tools:layout="@layout/fr_comm_delete"/>
+            android:label="@string/comm_delete_label"/>
     </navigation>
 
 </navigation>

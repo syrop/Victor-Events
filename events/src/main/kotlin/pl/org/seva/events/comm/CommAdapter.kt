@@ -19,43 +19,79 @@
 
 package pl.org.seva.events.comm
 
-import androidx.recyclerview.widget.RecyclerView
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import pl.org.seva.events.R
-import pl.org.seva.events.main.extension.inflate
-import pl.org.seva.events.main.extension.onClick
-import pl.org.seva.events.main.init.instance
+import pl.org.seva.events.main.ui.EventsTheme
 
-open class CommAdapter(private val onClick: (Int) -> Unit) :
-        RecyclerView.Adapter<CommAdapter.ViewHolder>() {
-
-    private val comms by instance<Comms>()
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-            ViewHolder(parent.inflate(R.layout.row_comm), onClick)
-
-    override fun getItemCount() = comms.size
-
-    protected open fun getItem(position: Int): Comm = comms[position]
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        getItem(position).apply {
-            holder.communityName.text = name
-            holder.iconText.text = name.substring(0, 1)
-            holder.iconProfile.setImageResource(R.drawable.bg_circle)
-            holder.iconProfile.setColorFilter(color)
+/**
+ * Reusable Jetpack Compose row component replacing `res/layout/row_comm.xml`.
+ */
+@Composable
+fun CommRow(
+        name: String,
+        color: Int,
+        onClick: () -> Unit,
+        modifier: Modifier = Modifier,
+) {
+    Row(
+            modifier = modifier
+                    .fillMaxWidth()
+                    .clickable(onClick = onClick)
+                    .padding(horizontal = 16.dp, vertical = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Box(
+                modifier = Modifier
+                        .size(40.dp)
+                        .background(color = Color(color), shape = CircleShape),
+                contentAlignment = Alignment.Center,
+        ) {
+            Text(
+                    text = name.take(1),
+                    color = Color.White,
+                    fontSize = 22.sp,
+            )
         }
+        Text(
+                text = name,
+                color = colorResource(id = R.color.comm),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                        .padding(start = 32.dp, end = 16.dp)
+                        .weight(1f),
+        )
     }
+}
 
-    class ViewHolder(view: View, onClick: (Int) -> Unit) : RecyclerView.ViewHolder(view) {
-
-        init { view onClick { onClick(adapterPosition) } }
-
-        val communityName: TextView = view.findViewById(R.id.comm)
-        val iconProfile: ImageView = view.findViewById(R.id.icon_profile)
-        val iconText: TextView = view.findViewById(R.id.icon_text)
+@Preview(showBackground = true)
+@Composable
+fun CommRowPreview() {
+    EventsTheme {
+        CommRow(
+                name = "Community",
+                color = android.graphics.Color.BLUE,
+                onClick = {},
+        )
     }
 }

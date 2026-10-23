@@ -20,60 +20,166 @@
 package pl.org.seva.events.event
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.Fragment
-import com.google.android.material.textfield.TextInputEditText
+import com.google.android.gms.maps.GoogleMap
 import pl.org.seva.events.R
 import pl.org.seva.events.main.data.Permissions
-import pl.org.seva.events.main.extension.*
+import pl.org.seva.events.main.extension.createMapHolder
+import pl.org.seva.events.main.extension.enableMyLocationOnResume
+import pl.org.seva.events.main.extension.plus
+import pl.org.seva.events.main.extension.requestLocationPermission
+import pl.org.seva.events.main.extension.title
 import pl.org.seva.events.main.init.instance
+import pl.org.seva.events.main.ui.EventsTheme
+import pl.org.seva.events.main.ui.GoogleMapView
+import pl.org.seva.events.main.ui.composeContent
 
-class EventDetailsFragment : Fragment(R.layout.fr_event_details) {
+class EventDetailsFragment : Fragment() {
 
     private val permissions by instance<Permissions>()
 
-    private val address by lazy { requireActivity().findViewById<TextInputEditText>(R.id.address) }
-    private val date by lazy { requireActivity().findViewById<TextInputEditText>(R.id.date) }
-    private val time by lazy { requireActivity().findViewById<TextInputEditText>(R.id.time) }
-    private val name by lazy { requireActivity().findViewById<TextInputEditText>(R.id.name) }
-    private val desc by lazy { requireActivity().findViewById<TextInputEditText>(R.id.desc) }
-    private val comm by lazy { requireActivity().findViewById<TextInputEditText>(R.id.comm) }
-    private val mapContainer by lazy { requireActivity().findViewById<View>(R.id.map_container) }
-    private val addressLayout by lazy { requireActivity().findViewById<View>(R.id.address_layout) }
-    private val descLayout by lazy { requireActivity().findViewById<View>(R.id.desc_layout) }
+    private val mapHolder by lazy {
+        createMapHolder {
+            requestLocationPermission = this@EventDetailsFragment::requestLocationPermission
+        }
+    }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?,
+    ) = composeContent {
+        val event = eventViewModel.value.event
+        EventDetailsScreen(
+                comm = event.comm,
+                name = event.name,
+                time = event.time.toLocalTime().toString(),
+                date = event.time.toLocalDate().toString(),
+                desc = event.desc,
+                address = event.address,
+                hasLocation = event.location != null,
+                onMapReady = { map -> mapHolder withMap map },
+        )
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val event = eventViewModel.value.event
         title = event.name
-        comm set event.comm
-        name set event.name
-        time set event.time.toLocalTime().toString()
-        date set event.time.toLocalDate().toString()
-        with(event.desc) {
-            if (isNullOrEmpty()) descLayout.visibility = View.GONE
-            else desc set this
-        }
-        with (event.address) {
-            if (isNullOrEmpty()) addressLayout.visibility = View.GONE
-            else address set this
-        }
         if (event.location != null) {
-            mapContainer.visibility = View.VISIBLE
-            createMapHolder(R.id.map) {
-                requestLocationPermission = this@EventDetailsFragment::requestLocationPermission
-            }.also { holder ->
-                (holder.liveMap + this) {
-                    holder.markPosition(event.location)
-                    enableMyLocationOnResume(it)
-                }
+            (mapHolder.liveMap + this) { map ->
+                mapHolder.markPosition(event.location)
+                enableMyLocationOnResume(map)
             }
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(
             requestCode: Int,
             requests: Array<String>,
-            grantResults: IntArray) =
-            permissions.onRequestPermissionsResult(this, requestCode, requests, grantResults)
+            grantResults: IntArray,
+    ) = permissions.onRequestPermissionsResult(this, requestCode, requests, grantResults)
+}
+
+/**
+ * Jetpack Compose screen replacing `res/layout/fr_event_details.xml`.
+ */
+@Composable
+fun EventDetailsScreen(
+        comm: String,
+        name: String,
+        time: String,
+        date: String,
+        desc: String?,
+        address: String?,
+        hasLocation: Boolean,
+        onMapReady: (GoogleMap) -> Unit,
+) {
+    Column(modifier = Modifier.fillMaxSize()) {
+        OutlinedTextField(
+                value = comm,
+                onValueChange = {},
+                readOnly = true,
+                label = { Text(text = stringResource(id = R.string.event_details_comm)) },
+                modifier = Modifier.fillMaxWidth(),
+        )
+        OutlinedTextField(
+                value = name,
+                onValueChange = {},
+                readOnly = true,
+                label = { Text(text = stringResource(id = R.string.event_details_name)) },
+                modifier = Modifier.fillMaxWidth(),
+        )
+        OutlinedTextField(
+                value = time,
+                onValueChange = {},
+                readOnly = true,
+                label = { Text(text = stringResource(id = R.string.event_details_time)) },
+                modifier = Modifier.fillMaxWidth(),
+        )
+        OutlinedTextField(
+                value = date,
+                onValueChange = {},
+                readOnly = true,
+                label = { Text(text = stringResource(id = R.string.event_details_date)) },
+                modifier = Modifier.fillMaxWidth(),
+        )
+        if (!desc.isNullOrEmpty()) {
+            OutlinedTextField(
+                    value = desc,
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text(text = stringResource(id = R.string.event_details_desc)) },
+                    modifier = Modifier.fillMaxWidth(),
+            )
+        }
+        if (!address.isNullOrEmpty()) {
+            OutlinedTextField(
+                    value = address,
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text(text = stringResource(id = R.string.event_details_location)) },
+                    modifier = Modifier.fillMaxWidth(),
+            )
+        }
+        if (hasLocation && !LocalInspectionMode.current) {
+            GoogleMapView(
+                    modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
+                    onMapReady = onMapReady,
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun EventDetailsScreenPreview() {
+    EventsTheme {
+        EventDetailsScreen(
+                comm = "Sample Community",
+                name = "Sample Event",
+                time = "18:00",
+                date = "2026-10-24",
+                desc = "Sample description",
+                address = "Main Street 1",
+                hasLocation = false,
+                onMapReady = {},
+        )
+    }
 }
