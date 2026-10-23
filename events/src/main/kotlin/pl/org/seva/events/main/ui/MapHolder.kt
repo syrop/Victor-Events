@@ -43,7 +43,8 @@ open class MapHolder {
         val cameraUpdate = prefs?.let { prefs ->
             val latLng = LatLng(
                     prefs.getFloat(LAT_PROPERTY, DEFAULT_LAT.toFloat()).toDouble(),
-                    prefs.getFloat(LON_PROPERTY, DEFAULT_LON.toFloat()).toDouble())
+                    prefs.getFloat(LON_PROPERTY, DEFAULT_LON.toFloat()).toDouble(),
+            )
             val zoom = prefs.getFloat(ZOOM_PROPERTY, DEFAULT_ZOOM)
             CameraUpdateFactory.newLatLngZoom(latLng, zoom)
         } ?: CameraUpdateFactory.newLatLngZoom(LatLng(DEFAULT_LAT, DEFAULT_LON), DEFAULT_ZOOM)
@@ -67,7 +68,7 @@ open class MapHolder {
             clear()
             latLng ?: return
             addMarker(MarkerOptions().position(latLng))
-                    .setIcon(BitmapDescriptorFactory.defaultMarker(0f))
+                    ?.setIcon(BitmapDescriptorFactory.defaultMarker(0f))
             animateCamera(CameraUpdateFactory.newLatLng(latLng))
         }
     }

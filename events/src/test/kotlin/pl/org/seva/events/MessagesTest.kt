@@ -36,8 +36,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.instance
+import org.kodein.di.bindInstance
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 import pl.org.seva.events.main.init.kodein
@@ -77,7 +76,7 @@ class MessagesTest {
         }
         messages = Messages(messagesDao)
         kodein = DI {
-            bind<Messages>() with instance(messages)
+            bindInstance { messages }
         }
     }
 

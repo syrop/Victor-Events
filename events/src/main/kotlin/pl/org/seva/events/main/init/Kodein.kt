@@ -25,9 +25,7 @@ import android.os.Build
 import org.kodein.di.*
 import pl.org.seva.events.BuildConfig
 import pl.org.seva.events.comm.Comms
-import pl.org.seva.events.comm.CommsDao
 import pl.org.seva.events.event.Events
-import pl.org.seva.events.event.EventsDao
 import pl.org.seva.events.login.Login
 import pl.org.seva.events.main.data.Permissions
 import pl.org.seva.events.main.data.firestore.FsReader
@@ -35,7 +33,6 @@ import pl.org.seva.events.main.data.firestore.FsWriter
 import pl.org.seva.events.main.data.db.EventsDb
 import pl.org.seva.events.main.ui.ColorFactory
 import pl.org.seva.events.message.Messages
-import pl.org.seva.events.message.MessagesDao
 import java.util.*
 import java.util.logging.Logger
 
@@ -44,36 +41,35 @@ inline fun <reified R : Any> instance(tag: Any? = null) = kodein.instance<R>(tag
 inline fun <reified A : Any, reified T : Any> instance(tag: Any? = null, arg: A) =
         kodein.instance<A, T>(tag, arg = arg)
 
-inline val <T> DIProperty<T>.value get() = provideDelegate(null, Build::ID).value
+inline val <T> LazyDelegate<T>.value get() = provideDelegate(null, Build::ID).value
 
 lateinit var kodein: DI
 
 fun createKodein(ctx: Context) {
     kodein = DI {
-        bind<Bootstrap>() with factory { ctx: Context -> Bootstrap(ctx) }
+        bindFactory { ctx: Context -> Bootstrap(ctx) }
 
-        bind<Events>() with singleton { Events(instance(), instance(), instance()) }
-        bind<Comms>() with singleton {
+        bindSingleton { Events(instance(), instance(), instance()) }
+        bindSingleton {
             Comms(instance(), instance(), instance(), instance(), instance())
         }
-        bind<Messages>() with singleton { Messages(instance()) }
-        bind<EventsDao>() with singleton { instance<EventsDb>().eventsDao }
-        bind<CommsDao>() with singleton { instance<EventsDb>().commsDao }
-        bind<MessagesDao>() with singleton { instance<EventsDb>().messagesDao }
-        bind<EventsDb>() with singleton { EventsDb(ctx) }
-        bind<FsReader>() with singleton { FsReader(instance()) }
-        bind<FsWriter>() with singleton { FsWriter() }
-        bind<Login>() with singleton { Login() }
-        bind<ColorFactory>() with singleton { ColorFactory(ctx) }
-        bind<Logger>() with multiton { tag: String ->
+        bindSingleton { Messages(instance()) }
+        bindSingleton { instance<EventsDb>().eventsDao }
+        bindSingleton { instance<EventsDb>().commsDao }
+        bindSingleton { instance<EventsDb>().messagesDao }
+        bindSingleton { EventsDb(ctx) }
+        bindSingleton { FsReader(instance()) }
+        bindSingleton { FsWriter() }
+        bindSingleton { Login() }
+        bindSingleton { ColorFactory(ctx) }
+        bindMultiton { tag: String ->
             checkNotNull(Logger.getLogger(tag)).apply {
                 if (!BuildConfig.DEBUG) {
-                    @Suppress("UsePropertyAccessSyntax")
                     setFilter { false }
                 }
             }
         }
-        bind<Permissions>() with singleton { Permissions() }
-        bind<Geocoder>() with singleton { Geocoder(ctx, Locale.getDefault()) }
+        bindSingleton { Permissions() }
+        bindSingleton { Geocoder(ctx, Locale.getDefault()) }
     }
 }

@@ -30,15 +30,16 @@ fun Context.question(message: String, yes: () -> Unit = {}, no: () -> Unit = {})
 
     AlertDialog.Builder(this@question)
             .setMessage(message)
-            .setPositiveButton(android.R.string.yes, listener)
-            .setNegativeButton(android.R.string.no, listener).show()
+            .setPositiveButton(android.R.string.ok, listener)
+            .setNegativeButton(android.R.string.cancel, listener).show()
 }
 
-val Context.versionName: String get() = packageManager.getPackageInfo(packageName, 0).versionName
+val Context.versionName: String get() = checkNotNull(packageManager.getPackageInfo(packageName, 0).versionName)
 
 private class YesNoListener(
         private val yes: () -> Unit = {},
-        private val no: () -> Unit = {}): DialogInterface.OnClickListener {
+        private val no: () -> Unit = {},
+) : DialogInterface.OnClickListener {
     override fun onClick(dialog: DialogInterface, which: Int) = when (which) {
         DialogInterface.BUTTON_POSITIVE -> {
             dialog.dismiss()

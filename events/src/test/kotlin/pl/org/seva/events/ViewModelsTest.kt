@@ -37,8 +37,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.instance
+import org.kodein.di.bindInstance
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import pl.org.seva.events.comm.Comm
@@ -80,8 +79,8 @@ class ViewModelsTest {
         events = Events(fsReader, fsWriter, eventsDao)
         comms = Comms(fsReader, fsWriter, commsDao, events, colorFactory)
         kodein = DI {
-            bind<Comms>() with instance(comms)
-            bind<Events>() with instance(events)
+            bindInstance { comms }
+            bindInstance { events }
         }
     }
 

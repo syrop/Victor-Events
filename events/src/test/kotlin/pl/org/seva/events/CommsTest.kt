@@ -38,8 +38,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.instance
+import org.kodein.di.bindInstance
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.never
@@ -76,7 +75,7 @@ class CommsTest {
         colorFactory = mock(ColorFactory::class.java)
         comms = Comms(fsReader, fsWriter, commsDao, events, colorFactory)
         kodein = DI {
-            bind<Comms>() with instance(comms)
+            bindInstance { comms }
         }
     }
 
