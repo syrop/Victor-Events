@@ -88,6 +88,7 @@ class LoginActivity : ComponentActivity() {
         }
 
         fun signInFailed() {
+            Thread.dumpStack()
             toast(R.string.login_authentication_failed)
             finish()
         }
@@ -131,7 +132,8 @@ class LoginActivity : ComponentActivity() {
                     } else {
                         signInFailed()
                     }
-                } catch (_: GetCredentialException) {
+                } catch (e: GetCredentialException) {
+                    println("wiktor e: $e")
                     signInFailed()
                 }
             }

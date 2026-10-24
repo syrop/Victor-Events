@@ -9,6 +9,7 @@
     <string name="events_list_action_log_out">Log out</string>
     <string name="events_list_action_comms">Communities</string>
     <string name="events_list_action_system_messages">System Messages</string>
+    <string name="events_list_action_privacy_policy">Privacy Policy</string>
     <string name="events_list_action_about">About</string>
     <string name="events_list_no_events">There are currently no events.</string>
 

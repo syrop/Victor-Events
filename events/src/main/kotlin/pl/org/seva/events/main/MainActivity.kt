@@ -74,6 +74,7 @@ import pl.org.seva.events.login.Login
 import pl.org.seva.events.login.LoginConfirmationRoute
 import pl.org.seva.events.main.data.firestore.FsWriter
 import pl.org.seva.events.main.extension.bold
+import pl.org.seva.events.main.extension.inBrowser
 import pl.org.seva.events.main.extension.question
 import pl.org.seva.events.main.extension.toast
 import pl.org.seva.events.main.init.instance
@@ -300,6 +301,13 @@ fun EventsApp(commAddViewModel: CommAddViewModel) {
                                                 onClick = {
                                                     overflowExpanded = false
                                                     navController.navigate(Routes.SYSTEM_MESSAGES)
+                                                },
+                                        )
+                                        DropdownMenuItem(
+                                                text = { Text(text = stringResource(id = R.string.events_list_action_privacy_policy)) },
+                                                onClick = {
+                                                    overflowExpanded = false
+                                                    context.inBrowser(context.getString(R.string.login_confirmation_privacy_uri))
                                                 },
                                         )
                                         DropdownMenuItem(
