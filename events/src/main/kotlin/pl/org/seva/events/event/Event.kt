@@ -19,6 +19,7 @@
 
 package pl.org.seva.events.event
 
+import androidx.annotation.Keep
 import androidx.room.PrimaryKey
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.GeoPoint
@@ -45,6 +46,7 @@ data class Event(
             timestamp = time.toEpochSecond(ZoneOffset.UTC),
     )
 
+    @Keep
     @Suppress("MemberVisibilityCanBePrivate")
     data class Fs(
             val comm: String,
