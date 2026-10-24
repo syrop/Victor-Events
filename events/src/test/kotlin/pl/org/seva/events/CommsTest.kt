@@ -79,7 +79,7 @@ class CommsTest {
     }
 
     @Test
-    fun testJoin() = runTest {
+    fun testJoin() = runTest(UnconfinedTestDispatcher()) {
         val comm = Comm("Alpha", "Alpha community", comms = comms)
         var updateCount = 0
         val job = launch { comms.updates.collect { updateCount++ } }
@@ -102,7 +102,7 @@ class CommsTest {
     }
 
     @Test
-    fun testLeave() = runTest {
+    fun testLeave() = runTest(UnconfinedTestDispatcher()) {
         val comm = Comm("Alpha", "Alpha community", comms = comms)
         comms join comm
         var updateCount = 0
@@ -120,7 +120,7 @@ class CommsTest {
     }
 
     @Test
-    fun testDelete() = runTest {
+    fun testDelete() = runTest(UnconfinedTestDispatcher()) {
         val joined = Comm("Joined", comms = comms)
         val notJoined = Comm("NotJoined", comms = comms)
         comms join joined
@@ -134,7 +134,7 @@ class CommsTest {
     }
 
     @Test
-    fun testUpdate() = runTest {
+    fun testUpdate() = runTest(UnconfinedTestDispatcher()) {
         val initial = Comm("Community", desc = "Old description", comms = comms)
         val updated = Comm("Community", desc = "New description", comms = comms)
         comms join initial
@@ -149,7 +149,7 @@ class CommsTest {
     }
 
     @Test
-    fun testFromDbSortsByLowercaseName() = runTest {
+    fun testFromDbSortsByLowercaseName() = runTest(UnconfinedTestDispatcher()) {
         val commB = Comm("Beta", comms = comms)
         val commA = Comm("alpha", comms = comms)
         `when`(commsDao.getAllValues()).thenReturn(listOf(commB, commA))

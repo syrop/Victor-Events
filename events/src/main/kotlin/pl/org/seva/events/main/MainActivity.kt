@@ -3,9 +3,9 @@ package pl.org.seva.events.main
 import android.app.SearchManager
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -81,7 +81,7 @@ import pl.org.seva.events.main.ui.EventsTheme
 import pl.org.seva.events.message.MessagesRoute
 import java.time.LocalDateTime
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
 
     private val commAddViewModel by viewModels<CommAddViewModel>()
 

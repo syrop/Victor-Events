@@ -71,7 +71,7 @@ class EventsTest {
     }
 
     @Test
-    fun testAdd() = runTest {
+    fun testAdd() = runTest(UnconfinedTestDispatcher()) {
         val event = Event(comm = "Alpha", name = "Meetup")
         var updateCount = 0
         val job = launch { events.updates.collect { updateCount++ } }
@@ -88,7 +88,7 @@ class EventsTest {
     }
 
     @Test
-    fun testAddFrom() = runTest {
+    fun testAddFrom() = runTest(UnconfinedTestDispatcher()) {
         val comms = Comms(fsReader, fsWriter, mock(CommsDao::class.java), events, mock(ColorFactory::class.java))
         val comm = Comm(name = "KotlinUG", comms = comms)
         val remoteEvent = Event(comm = "KotlinUG", name = "Hackathon")
@@ -102,7 +102,7 @@ class EventsTest {
     }
 
     @Test
-    fun testDeleteLocallyFrom() = runTest {
+    fun testDeleteLocallyFrom() = runTest(UnconfinedTestDispatcher()) {
         val comms = Comms(fsReader, fsWriter, mock(CommsDao::class.java), events, mock(ColorFactory::class.java))
         val commAlpha = Comm(name = "Alpha", comms = comms)
         val eventAlpha = Event(comm = "Alpha", name = "Alpha Event")
@@ -122,7 +122,7 @@ class EventsTest {
     }
 
     @Test
-    fun testLoadFromDbSortsByTime() = runTest {
+    fun testLoadFromDbSortsByTime() = runTest(UnconfinedTestDispatcher()) {
         val later = Event(comm = "Alpha", name = "Later", time = LocalDateTime.of(2026, 5, 20, 18, 0))
         val earlier = Event(comm = "Alpha", name = "Earlier", time = LocalDateTime.of(2026, 5, 10, 12, 0))
         `when`(eventsDao.getAll()).thenReturn(listOf(Event.Entity(later), Event.Entity(earlier)))

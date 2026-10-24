@@ -21,9 +21,9 @@ package pl.org.seva.events.login
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
@@ -52,7 +52,7 @@ import pl.org.seva.events.main.extension.toast
 import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.main.ui.EventsTheme
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : ComponentActivity() {
 
     private val login by instance<Login>()
 

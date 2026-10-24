@@ -78,7 +78,7 @@ class MessagesTest {
     }
 
     @Test
-    fun testAddAllAndGet() = runTest {
+    fun testAddAllAndGet() = runTest(UnconfinedTestDispatcher()) {
         val msg1 = Message(LocalDateTime.of(2026, 4, 1, 10, 0), "First message")
         val msg2 = Message(LocalDateTime.of(2026, 4, 2, 12, 0), "Second message")
         var updateCount = 0
@@ -96,7 +96,7 @@ class MessagesTest {
     }
 
     @Test
-    fun testReadFromDb() = runTest {
+    fun testReadFromDb() = runTest(UnconfinedTestDispatcher()) {
         val msg = Message(LocalDateTime.of(2026, 4, 3, 15, 30), "Persisted message")
         storedEntities.add(Message.Entity(msg))
 
@@ -111,7 +111,7 @@ class MessagesTest {
     }
 
     @Test
-    fun testDelete() = runTest {
+    fun testDelete() = runTest(UnconfinedTestDispatcher()) {
         val msg1 = Message(LocalDateTime.of(2026, 4, 1, 10, 0), "Keep me")
         val msg2 = Message(LocalDateTime.of(2026, 4, 2, 12, 0), "Delete me")
         messages addAll listOf(msg1, msg2)

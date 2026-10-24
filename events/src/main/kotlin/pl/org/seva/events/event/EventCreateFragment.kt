@@ -21,11 +21,11 @@ package pl.org.seva.events.event
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlertDialog as PlatformAlertDialog
 import android.content.pm.PackageManager
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
@@ -235,7 +235,7 @@ fun EventCreateRoute(
             comm = comm.orEmpty(),
             commError = commError,
             onCommClick = {
-                AlertDialog.Builder(context)
+                PlatformAlertDialog.Builder(context)
                         .setItems(adminComms) { dialog, which ->
                             vm.comm.value = adminComms[which]
                             onClearCommError()

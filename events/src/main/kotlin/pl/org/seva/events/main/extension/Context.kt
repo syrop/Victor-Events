@@ -19,13 +19,13 @@
 
 package pl.org.seva.events.main.extension
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
 import androidx.annotation.StringRes
-import androidx.appcompat.app.AlertDialog
 
 fun Context.question(message: String, yes: () -> Unit = {}, no: () -> Unit = {}) {
     val listener = YesNoListener(yes, no)
