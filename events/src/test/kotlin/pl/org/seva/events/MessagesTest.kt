@@ -19,11 +19,9 @@
 
 package pl.org.seva.events
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Observer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -33,12 +31,9 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.kodein.di.DI
 import org.kodein.di.bindInstance
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.verify
 import pl.org.seva.events.main.init.kodein
 import pl.org.seva.events.message.Message
 import pl.org.seva.events.message.Messages
@@ -51,9 +46,6 @@ class MessagesTest {
     private lateinit var storedEntities: MutableList<Message.Entity>
     private lateinit var messagesDao: MessagesDao
     private lateinit var messages: Messages
-
-    @get:Rule
-    val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Before
     fun setUp() {
@@ -89,10 +81,8 @@ class MessagesTest {
     fun testAddAllAndGet() = runTest {
         val msg1 = Message(LocalDateTime.of(2026, 4, 1, 10, 0), "First message")
         val msg2 = Message(LocalDateTime.of(2026, 4, 2, 12, 0), "Second message")
-        val job = Job()
-        @Suppress("UNCHECKED_CAST")
-        val observer = mock(Observer::class.java) as Observer<Unit>
-        messages.updatedLiveData(job).observeForever(observer)
+        var updateCount = 0
+        val job = launch { messages.updates.collect { updateCount++ } }
 
         assertTrue(messages.isEmpty())
         messages addAll listOf(msg1, msg2)
@@ -101,7 +91,7 @@ class MessagesTest {
         assertEquals(msg1, messages[0])
         assertEquals(msg2, messages[1])
         assertEquals(listOf(msg1, msg2), storedEntities.map { it.value() })
-        verify(observer).onChanged(Unit)
+        assertEquals(1, updateCount)
         job.cancel()
     }
 
@@ -110,15 +100,13 @@ class MessagesTest {
         val msg = Message(LocalDateTime.of(2026, 4, 3, 15, 30), "Persisted message")
         storedEntities.add(Message.Entity(msg))
 
-        val job = Job()
-        @Suppress("UNCHECKED_CAST")
-        val observer = mock(Observer::class.java) as Observer<Unit>
-        messages.updatedLiveData(job).observeForever(observer)
+        var updateCount = 0
+        val job = launch { messages.updates.collect { updateCount++ } }
 
         messages.readFromDb()
         assertEquals(1, messages.size)
         assertEquals(msg, messages[0])
-        verify(observer).onChanged(Unit)
+        assertEquals(1, updateCount)
         job.cancel()
     }
 
@@ -128,16 +116,14 @@ class MessagesTest {
         val msg2 = Message(LocalDateTime.of(2026, 4, 2, 12, 0), "Delete me")
         messages addAll listOf(msg1, msg2)
 
-        val job = Job()
-        @Suppress("UNCHECKED_CAST")
-        val observer = mock(Observer::class.java) as Observer<Unit>
-        messages.updatedLiveData(job).observeForever(observer)
+        var updateCount = 0
+        val job = launch { messages.updates.collect { updateCount++ } }
 
         msg2.delete()
         assertEquals(1, messages.size)
         assertEquals(msg1, messages[0])
         assertEquals(listOf(msg1), storedEntities.map { it.value() })
-        verify(observer).onChanged(Unit)
+        assertEquals(1, updateCount)
         job.cancel()
     }
 

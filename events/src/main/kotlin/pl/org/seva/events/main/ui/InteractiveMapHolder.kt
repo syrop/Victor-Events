@@ -20,11 +20,13 @@
 package pl.org.seva.events.main.ui
 
 import android.location.Geocoder
+import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import pl.org.seva.events.event.EventLocation
 import pl.org.seva.events.main.init.instance
-import java.lang.Exception
 
 class InteractiveMapHolder : MapHolder() {
 
@@ -33,18 +35,47 @@ class InteractiveMapHolder : MapHolder() {
 
     override fun withMap(map: GoogleMap) {
         fun onMapLongClick(latLng: LatLng) {
-            val address = try {
-                with(
-                    requireNotNull( geocoder.getFromLocation(
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                geocoder.getFromLocation(
                         latLng.latitude,
                         latLng.longitude,
-                        1))[0]) {
+                        1,
+                        object : Geocoder.GeocodeListener {
+                            override fun onGeocode(addresses: MutableList<android.location.Address>) {
+                                val address = addresses.firstOrNull()?.run {
+                                    getAddressLine(maxAddressLineIndex)
+                                } ?: DEFAULT_ADDRESS
+                                Handler(Looper.getMainLooper()).post {
+                                    onLocationSet(EventLocation(latLng, address))
+                                }
+                            }
+
+                            override fun onError(errorMessage: String?) {
+                                Handler(Looper.getMainLooper()).post {
+                                    onLocationSet(EventLocation(latLng, DEFAULT_ADDRESS))
+                                }
+                            }
+                        },
+                )
+            } else {
+                val address = try {
+                    @Suppress("DEPRECATION")
+                    with(
+                            requireNotNull(
+                                    geocoder.getFromLocation(
+                                            latLng.latitude,
+                                            latLng.longitude,
+                                            1,
+                                    ),
+                            )[0],
+                    ) {
                         getAddressLine(maxAddressLineIndex)
+                    }
+                } catch (_: Exception) {
+                    DEFAULT_ADDRESS
                 }
-            } catch (e: Exception) {
-                DEFAULT_ADDRESS
+                onLocationSet(EventLocation(latLng, address))
             }
-            onLocationSet(EventLocation(latLng, address))
         }
 
         super.withMap(map)

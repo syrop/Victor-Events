@@ -20,16 +20,10 @@
 package pl.org.seva.events.comm
 
 import android.app.Activity
-import android.app.SearchManager
-import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.ViewGroup
-import androidx.appcompat.widget.SearchView
+import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -45,205 +39,164 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
 import pl.org.seva.events.R
 import pl.org.seva.events.login.Login
 import pl.org.seva.events.login.LoginActivity
-import pl.org.seva.events.main.extension.back
 import pl.org.seva.events.main.extension.bold
 import pl.org.seva.events.main.extension.boldAnnotated
 import pl.org.seva.events.main.extension.longToast
-import pl.org.seva.events.main.extension.onBack
-import pl.org.seva.events.main.extension.plus
 import pl.org.seva.events.main.extension.toast
 import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.main.ui.EventsTheme
-import pl.org.seva.events.main.ui.composeContent
 
-@Suppress("DEPRECATION")
-class CommAddFragment : Fragment() {
+private const val NAME_PLACEHOLDER = "[name]"
 
-    private val comms by instance<Comms>()
-    private val login by instance<Login>()
+@Composable
+fun CommAddRoute(
+        commAddViewModel: CommAddViewModel,
+        onBack: () -> Unit,
+) {
+    val context = LocalContext.current
+    val comms by instance<Comms>()
+    val login by instance<Login>()
+    val scope = rememberCoroutineScope()
 
-    private val commAddViewModel by activityViewModels<CommAddViewModel>()
+    val queryState by commAddViewModel.queryState.collectAsStateWithLifecycle()
+    val commToCreate by commAddViewModel.commToCreate.collectAsStateWithLifecycle()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val defaultPrompt = stringResource(
+            id = if (comms.isEmpty) R.string.add_comm_please_search_empty else R.string.add_comm_please_search,
+    )
 
-    private val searchManager by lazy {
-        requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
+    fun resetAndBack() {
+        commAddViewModel.resetQuery()
+        onBack()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-        onBack { resetAndBack() }
-    }
-
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?,
-    ) = composeContent {
-        val queryState by commAddViewModel.queryState.observeAsState(CommAddViewModel.QueryState.None)
-        val snackbarHostState = remember { SnackbarHostState() }
-        val defaultPrompt = stringResource(
-                id = if (comms.isEmpty) R.string.add_comm_please_search_empty else R.string.add_comm_please_search,
-        )
-
-        LaunchedEffect(queryState) {
-            snackbarHostState.currentSnackbarData?.dismiss()
-            when (val result = queryState) {
-                is CommAddViewModel.QueryState.Completed -> {
-                    val comm = result.comm
-                    if (comm.isDummy) {
-                        val name = comm.originalName
-                        if (login.isLoggedIn) {
-                            val snackResult = snackbarHostState.showSnackbar(
-                                    message = getString(R.string.add_comm_can_create),
-                                    actionLabel = getString(R.string.add_comm_create),
-                                    duration = SnackbarDuration.Indefinite,
-                            )
-                            if (snackResult == SnackbarResult.ActionPerformed) {
-                                name.createJoinAndFinish()
-                            }
-                        } else {
-                            val snackResult = snackbarHostState.showSnackbar(
-                                    message = getString(R.string.add_comm_login_to_create),
-                                    actionLabel = getString(R.string.add_comm_login),
-                                    duration = SnackbarDuration.Indefinite,
-                            )
-                            if (snackResult == SnackbarResult.ActionPerformed) {
-                                val intent = Intent(activity, LoginActivity::class.java)
-                                        .putExtra(LoginActivity.COMMUNITY_NAME, name)
-                                        .putExtra(LoginActivity.ACTION, LoginActivity.LOGIN)
-                                startActivityForResult(intent, LOGIN_CREATE_COMM_REQUEST)
-                            }
-                        }
-                    }
-                }
-                is CommAddViewModel.QueryState.Error -> {
-                    longToast(result.errorMessage)
-                }
-                else -> Unit
-            }
-        }
-
-        val foundComm = (queryState as? CommAddViewModel.QueryState.Completed)?.comm?.takeIf { !it.isDummy }
-        val promptText = when (val result = queryState) {
-            is CommAddViewModel.QueryState.Completed -> {
-                if (result.comm.isDummy) {
-                    stringResource(id = R.string.add_comm_not_found)
-                            .boldAnnotated(NAME_PLACEHOLDER, result.comm.originalName)
-                } else {
-                    AnnotatedString("")
-                }
-            }
-            else -> AnnotatedString(defaultPrompt)
-        }
-
-        CommAddScreen(
-                inProgress = queryState is CommAddViewModel.QueryState.InProgress,
-                foundCommName = foundComm?.name,
-                foundCommColor = foundComm?.color ?: 0,
-                promptText = promptText,
-                snackbarHostState = snackbarHostState,
-                onFoundCommClick = {
-                    foundComm?.apply {
-                        if (isMemberOf) {
-                            toast(R.string.add_comm_already_a_member)
-                        } else {
-                            joinAndFinish()
-                        }
-                    }
-                },
-        )
-    }
-
-    override fun onViewCreated(view: android.view.View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        (commAddViewModel.commToCreate + this) { name ->
-            if (!name.isNullOrEmpty()) {
-                commAddViewModel.commToCreate.value = ""
-                name.createJoinAndFinish()
-            }
-        }
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
-        fun MenuItem.prepareSearchView() = with(actionView as SearchView) {
-            setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
-        }
-
-        menuInflater.inflate(R.menu.comm_add, menu)
-        val searchMenuItem = menu.findItem(R.id.action_search)
-        searchMenuItem.collapseActionView()
-        searchMenuItem.prepareSearchView()
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        android.R.id.home -> resetAndBack()
-        else -> super.onOptionsItemSelected(item)
-    }
-
-    private fun String.createJoinAndFinish() {
-        this@CommAddFragment.lifecycleScope.launch {
+    fun String.createJoinAndFinish() {
+        scope.launch {
             comms joinNewCommunity this@createJoinAndFinish
-            toast(
-                    getString(R.string.add_comm_created)
+            context.toast(
+                    context.getString(R.string.add_comm_created)
                             .bold(NAME_PLACEHOLDER, this@createJoinAndFinish),
             )
             resetAndBack()
         }
     }
 
-    private fun Comm.joinAndFinish() {
-        lifecycleScope.launch {
+    fun Comm.joinAndFinish() {
+        scope.launch {
             join()
-            toast(
-                    getString(R.string.add_comm_joined)
+            context.toast(
+                    context.getString(R.string.add_comm_joined)
                             .bold(NAME_PLACEHOLDER, name),
             )
             resetAndBack()
         }
     }
 
-    private fun resetAndBack(): Boolean {
-        commAddViewModel.resetQuery()
-        back()
-        return true
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if ((requestCode == LOGIN_CREATE_COMM_REQUEST) && (resultCode == Activity.RESULT_OK)) {
-            checkNotNull(data).getStringExtra(LoginActivity.COMMUNITY_NAME)?.createJoinAndFinish()
+    val loginCreateLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.StartActivityForResult(),
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.getStringExtra(LoginActivity.COMMUNITY_NAME)?.createJoinAndFinish()
         }
     }
 
-    companion object {
-        const val NAME_PLACEHOLDER = "[name]"
-        const val LOGIN_CREATE_COMM_REQUEST = 0
+    BackHandler {
+        resetAndBack()
     }
+
+    LaunchedEffect(commToCreate) {
+        val name = commToCreate
+        if (!name.isNullOrEmpty()) {
+            commAddViewModel.commToCreate.value = ""
+            name.createJoinAndFinish()
+        }
+    }
+
+    LaunchedEffect(queryState) {
+        snackbarHostState.currentSnackbarData?.dismiss()
+        when (val result = queryState) {
+            is CommAddViewModel.QueryState.Completed -> {
+                val comm = result.comm
+                if (comm.isDummy) {
+                    val name = comm.originalName
+                    if (login.isLoggedIn) {
+                        val snackResult = snackbarHostState.showSnackbar(
+                                message = context.getString(R.string.add_comm_can_create),
+                                actionLabel = context.getString(R.string.add_comm_create),
+                                duration = SnackbarDuration.Indefinite,
+                        )
+                        if (snackResult == SnackbarResult.ActionPerformed) {
+                            name.createJoinAndFinish()
+                        }
+                    } else {
+                        val snackResult = snackbarHostState.showSnackbar(
+                                message = context.getString(R.string.add_comm_login_to_create),
+                                actionLabel = context.getString(R.string.add_comm_login),
+                                duration = SnackbarDuration.Indefinite,
+                        )
+                        if (snackResult == SnackbarResult.ActionPerformed) {
+                            val intent = Intent(context, LoginActivity::class.java)
+                                    .putExtra(LoginActivity.COMMUNITY_NAME, name)
+                                    .putExtra(LoginActivity.ACTION, LoginActivity.LOGIN)
+                            loginCreateLauncher.launch(intent)
+                        }
+                    }
+                }
+            }
+            is CommAddViewModel.QueryState.Error -> {
+                context.longToast(result.errorMessage)
+            }
+            else -> Unit
+        }
+    }
+
+    val foundComm = (queryState as? CommAddViewModel.QueryState.Completed)?.comm?.takeIf { !it.isDummy }
+    val promptText = when (val result = queryState) {
+        is CommAddViewModel.QueryState.Completed -> {
+            if (result.comm.isDummy) {
+                stringResource(id = R.string.add_comm_not_found)
+                        .boldAnnotated(NAME_PLACEHOLDER, result.comm.originalName)
+            } else {
+                AnnotatedString("")
+            }
+        }
+        else -> AnnotatedString(defaultPrompt)
+    }
+
+    CommAddScreen(
+            inProgress = queryState is CommAddViewModel.QueryState.InProgress,
+            foundCommName = foundComm?.name,
+            foundCommColor = foundComm?.color ?: 0,
+            promptText = promptText,
+            snackbarHostState = snackbarHostState,
+            onFoundCommClick = {
+                foundComm?.apply {
+                    if (isMemberOf) {
+                        context.toast(R.string.add_comm_already_a_member)
+                    } else {
+                        joinAndFinish()
+                    }
+                }
+            },
+    )
 }
 
-/**
- * Jetpack Compose screen replacing `res/layout/fr_comm_add.xml`.
- */
 @Composable
 fun CommAddScreen(
         inProgress: Boolean,

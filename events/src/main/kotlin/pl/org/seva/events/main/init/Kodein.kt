@@ -22,18 +22,22 @@ package pl.org.seva.events.main.init
 import android.content.Context
 import android.location.Geocoder
 import android.os.Build
-import org.kodein.di.*
+import org.kodein.di.DI
+import org.kodein.di.LazyDelegate
+import org.kodein.di.bindFactory
+import org.kodein.di.bindMultiton
+import org.kodein.di.bindSingleton
+import org.kodein.di.instance
 import pl.org.seva.events.BuildConfig
 import pl.org.seva.events.comm.Comms
 import pl.org.seva.events.event.Events
 import pl.org.seva.events.login.Login
-import pl.org.seva.events.main.data.Permissions
+import pl.org.seva.events.main.data.db.EventsDb
 import pl.org.seva.events.main.data.firestore.FsReader
 import pl.org.seva.events.main.data.firestore.FsWriter
-import pl.org.seva.events.main.data.db.EventsDb
 import pl.org.seva.events.main.ui.ColorFactory
 import pl.org.seva.events.message.Messages
-import java.util.*
+import java.util.Locale
 import java.util.logging.Logger
 
 inline fun <reified R : Any> instance(tag: Any? = null) = kodein.instance<R>(tag)
@@ -69,7 +73,6 @@ fun createKodein(ctx: Context) {
                 }
             }
         }
-        bindSingleton { Permissions() }
         bindSingleton { Geocoder(ctx, Locale.getDefault()) }
     }
 }

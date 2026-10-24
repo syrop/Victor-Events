@@ -19,31 +19,31 @@
 
 package pl.org.seva.events.comm
 
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.*
-import androidx.navigation.navGraphViewModels
-import pl.org.seva.events.R
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import pl.org.seva.events.main.init.instance
 
-val Fragment.commViewModel get() =
-    navGraphViewModels<CommViewModel>(R.id.comms_graph)
-
-class CommViewModel(private val state: SavedStateHandle) : ViewModel() {
+class CommViewModel(private val state: SavedStateHandle = SavedStateHandle()) : ViewModel() {
 
     private val comms by instance<Comms>()
 
     var comm = Comm.DUMMY
-    private set(value) {
-        field = value
-        reset()
-    }
+        private set(value) {
+            field = value
+            reset()
+        }
 
-    val name by lazy { MutableLiveData<String?>() }
-    val desc by lazy { MutableLiveData<String?>() }
-    val isAdmin by lazy { MutableLiveData<Boolean?>() }
+    val name = MutableStateFlow<String?>(null)
+    val desc = MutableStateFlow<String?>(null)
+    val isAdmin = MutableStateFlow<Boolean?>(null)
 
     init {
-        comms.updatedLiveData(viewModelScope).observeForever { update() }
+        viewModelScope.launch {
+            comms.updates.collect { update() }
+        }
         val position = state.get<Int>(COMM_POSITION) ?: -1
         if (position >= 0) {
             comm = comms[position]

@@ -22,41 +22,24 @@ package pl.org.seva.events.main.ui
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.platform.ViewCompositionStrategy
-import androidx.compose.ui.res.colorResource
-import androidx.fragment.app.Fragment
-import pl.org.seva.events.R
+import androidx.compose.ui.graphics.Color
 
-/**
- * Material 3 Compose theme mapped from the XML `AppTheme` in `res/values/styles.xml`
- * and color resources in `res/values/colors.xml`.
- */
+private val EventsColorScheme = lightColorScheme(
+        primary = Color(0xFF607D8B),
+        onPrimary = Color.White,
+        primaryContainer = Color(0xFF455A64),
+        onPrimaryContainer = Color.White,
+        secondary = Color(0xFFFFAB40),
+        onSecondary = Color(0xFFEEEEEE),
+        secondaryContainer = Color(0xFFFFAB40),
+        onSecondaryContainer = Color(0xFFEEEEEE),
+        onSurface = Color.Black,
+)
+
 @Composable
 fun EventsTheme(content: @Composable () -> Unit) {
-    val colorScheme = lightColorScheme(
-            primary = colorResource(id = R.color.colorPrimary),
-            primaryContainer = colorResource(id = R.color.colorPrimaryDark),
-            secondary = colorResource(id = R.color.colorAccent),
-            onSecondary = colorResource(id = R.color.colorOnFab),
-            onSurface = colorResource(id = R.color.snackbar),
-    )
     MaterialTheme(
-            colorScheme = colorScheme,
+            colorScheme = EventsColorScheme,
             content = content,
     )
 }
-
-/**
- * Creates a [ComposeView] configured with [ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed]
- * and wrapped in [EventsTheme] for hosting Compose UI inside a [Fragment].
- */
-fun Fragment.composeContent(content: @Composable () -> Unit): ComposeView =
-        ComposeView(requireContext()).apply {
-            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            setContent {
-                EventsTheme {
-                    content()
-                }
-            }
-        }

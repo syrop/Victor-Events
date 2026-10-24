@@ -20,11 +20,9 @@
 package pl.org.seva.events
 
 import android.graphics.Color
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Observer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -35,7 +33,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.kodein.di.DI
 import org.kodein.di.bindInstance
@@ -62,9 +59,6 @@ class CommsTest {
     private lateinit var colorFactory: ColorFactory
     private lateinit var comms: Comms
 
-    @get:Rule
-    val instantTaskExecutorRule = InstantTaskExecutorRule()
-
     @Before
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
@@ -87,10 +81,8 @@ class CommsTest {
     @Test
     fun testJoin() = runTest {
         val comm = Comm("Alpha", "Alpha community", comms = comms)
-        val job = Job()
-        @Suppress("UNCHECKED_CAST")
-        val observer = mock(Observer::class.java) as Observer<Unit>
-        comms.updatedLiveData(job).observeForever(observer)
+        var updateCount = 0
+        val job = launch { comms.updates.collect { updateCount++ } }
 
         assertTrue(comms.isEmpty)
         assertTrue(comms join comm)
@@ -102,7 +94,7 @@ class CommsTest {
         assertEquals(Comm.DUMMY, comms["NonExistent"])
         verify(events) addFrom comm
         verify(commsDao) add comm
-        verify(observer).onChanged(Unit)
+        assertEquals(1, updateCount)
 
         assertFalse(comms join comm)
         assertEquals(1, comms.size)
@@ -113,17 +105,15 @@ class CommsTest {
     fun testLeave() = runTest {
         val comm = Comm("Alpha", "Alpha community", comms = comms)
         comms join comm
-        val job = Job()
-        @Suppress("UNCHECKED_CAST")
-        val observer = mock(Observer::class.java) as Observer<Unit>
-        comms.updatedLiveData(job).observeForever(observer)
+        var updateCount = 0
+        val job = launch { comms.updates.collect { updateCount++ } }
 
         assertTrue(comms leave comm)
         assertTrue(comms.isEmpty)
         assertFalse(comm in comms)
         verify(commsDao) delete comm
         verify(events) deleteLocallyFrom comm
-        verify(observer).onChanged(Unit)
+        assertEquals(1, updateCount)
 
         assertFalse(comms leave comm)
         job.cancel()
@@ -148,15 +138,13 @@ class CommsTest {
         val initial = Comm("Community", desc = "Old description", comms = comms)
         val updated = Comm("Community", desc = "New description", comms = comms)
         comms join initial
-        val job = Job()
-        @Suppress("UNCHECKED_CAST")
-        val observer = mock(Observer::class.java) as Observer<Unit>
-        comms.updatedLiveData(job).observeForever(observer)
+        var updateCount = 0
+        val job = launch { comms.updates.collect { updateCount++ } }
 
         comms update updated
         assertEquals("New description", comms["Community"].desc)
         verify(fsWriter) update updated
-        verify(observer).onChanged(Unit)
+        assertEquals(1, updateCount)
         job.cancel()
     }
 
@@ -166,16 +154,14 @@ class CommsTest {
         val commA = Comm("alpha", comms = comms)
         `when`(commsDao.getAllValues()).thenReturn(listOf(commB, commA))
 
-        val job = Job()
-        @Suppress("UNCHECKED_CAST")
-        val observer = mock(Observer::class.java) as Observer<Unit>
-        comms.updatedLiveData(job).observeForever(observer)
+        var updateCount = 0
+        val job = launch { comms.updates.collect { updateCount++ } }
 
         comms.fromDb()
         assertEquals(2, comms.size)
         assertEquals(commA, comms[0])
         assertEquals(commB, comms[1])
-        verify(observer).onChanged(Unit)
+        assertEquals(1, updateCount)
         job.cancel()
     }
 

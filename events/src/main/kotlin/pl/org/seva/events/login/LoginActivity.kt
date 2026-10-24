@@ -21,6 +21,7 @@ package pl.org.seva.events.login
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Box
@@ -33,26 +34,31 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
+import androidx.credentials.ClearCredentialStateRequest
+import androidx.credentials.CredentialManager
+import androidx.credentials.CustomCredential
+import androidx.credentials.GetCredentialRequest
+import androidx.credentials.exceptions.GetCredentialException
+import androidx.lifecycle.lifecycleScope
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import kotlinx.coroutines.launch
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.log
 import pl.org.seva.events.main.extension.toast
 import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.main.ui.EventsTheme
 
-@Suppress("DEPRECATION")
 class LoginActivity : AppCompatActivity() {
 
     private val login by instance<Login>()
 
     private lateinit var auth: FirebaseAuth
     private lateinit var authStateListener: (firebaseAuth: FirebaseAuth) -> Unit
+    private val credentialManager by lazy { CredentialManager.create(this) }
 
     private var finishWhenReady: Boolean = false
     private var logoutWhenReady: Boolean = false
@@ -81,26 +87,82 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
+        fun signInFailed() {
+            toast(R.string.login_authentication_failed)
+            finish()
+        }
+
+        fun firebaseAuthWithGoogle(idToken: String) {
+            inProgress = true
+            val credential = GoogleAuthProvider.getCredential(idToken, null)
+            auth.signInWithCredential(credential)
+                    .addOnCompleteListener(this) {
+                        log.info("signInWithCredential:onComplete:" + it.isSuccessful)
+                        inProgress = false
+
+                        if (!it.isSuccessful) {
+                            signInFailed()
+                        }
+                    }
+        }
+
         fun login() {
-            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestIdToken(DEFAULT_WEB_CLIENT_ID)
-                    .requestEmail()
+            val googleIdOption = GetGoogleIdOption.Builder()
+                    .setFilterByAuthorizedAccounts(false)
+                    .setServerClientId(DEFAULT_WEB_CLIENT_ID)
                     .build()
-            val client = GoogleSignIn.getClient(this, gso)
-            val signInIntent = client.signInIntent
-            startActivityForResult(signInIntent, SIGN_IN_REQUEST_ID)
+            val request = GetCredentialRequest.Builder()
+                    .addCredentialOption(googleIdOption)
+                    .build()
+
+            lifecycleScope.launch {
+                try {
+                    val result = credentialManager.getCredential(
+                            request = request,
+                            context = this@LoginActivity,
+                    )
+                    finishWhenReady = true
+                    val credential = result.credential
+                    if ((credential is CustomCredential) &&
+                            (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL)
+                    ) {
+                        val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
+                        firebaseAuthWithGoogle(googleIdTokenCredential.idToken)
+                    } else {
+                        signInFailed()
+                    }
+                } catch (_: GetCredentialException) {
+                    signInFailed()
+                }
+            }
         }
 
         fun logout() {
             finishWhenReady = true
             logoutWhenReady = true
-            auth.signOut()
-            login.setCurrentUser(null)
-            setResult(RESULT_OK)
-            finish()
+            lifecycleScope.launch {
+                try {
+                    credentialManager.clearCredentialState(ClearCredentialStateRequest())
+                } catch (_: Exception) {
+                    // Ignore credential clearing errors on sign-out
+                }
+                auth.signOut()
+                login.setCurrentUser(null)
+                setResult(RESULT_OK)
+                finish()
+            }
         }
 
         super.onCreate(savedInstanceState)
+        onBackPressedDispatcher.addCallback(
+                this,
+                object : OnBackPressedCallback(true) {
+                    override fun handleOnBackPressed() {
+                        moveTaskToBack(true)
+                        finish()
+                    }
+                },
+        )
         setContent {
             EventsTheme {
                 LoginScreen(inProgress = inProgress)
@@ -140,51 +202,6 @@ class LoginActivity : AppCompatActivity() {
         auth.removeAuthStateListener(authStateListener)
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        moveTaskToBack(true)
-        finish()
-    }
-
-    @Deprecated("Deprecated in Java")
-    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        fun signInFailed() {
-            toast(R.string.login_authentication_failed)
-            finish()
-        }
-
-        fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-            log.info("firebaseAuthWithGoogle:" + checkNotNull(acct.id))
-            inProgress = true
-
-            val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
-            auth.signInWithCredential(credential)
-                    .addOnCompleteListener(this) {
-                        log.info("signInWithCredential:onComplete:" + it.isSuccessful)
-                        inProgress = false
-
-                        if (!it.isSuccessful) {
-                            signInFailed()
-                        }
-                    }
-        }
-
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == SIGN_IN_REQUEST_ID) {
-            finishWhenReady = true
-            try {
-                val account = checkNotNull(
-                        GoogleSignIn.getSignedInAccountFromIntent(data)
-                                .getResult(ApiException::class.java),
-                )
-                firebaseAuthWithGoogle(account)
-            } catch (_: ApiException) {
-                signInFailed()
-            }
-        }
-    }
-
     companion object {
 
         const val DEFAULT_WEB_CLIENT_ID = "1052062614577-5hr7d9u1avkhcp615irenn79i13diskm.apps.googleusercontent.com"
@@ -194,8 +211,6 @@ class LoginActivity : AppCompatActivity() {
         const val LOGOUT = "log_out"
 
         const val COMMUNITY_NAME = "community_name"
-
-        private const val SIGN_IN_REQUEST_ID = 9001
     }
 }
 

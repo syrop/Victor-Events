@@ -21,21 +21,22 @@ package pl.org.seva.events.main.ui
 
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import androidx.core.content.edit
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 open class MapHolder {
     private var map: GoogleMap? = null
     var requestLocationPermission: ((onGranted: () -> Unit) -> Unit)? = null
     var prefs: SharedPreferences? = null
-    private val mutableMap = MutableLiveData<GoogleMap>()
-    val liveMap: LiveData<GoogleMap> = mutableMap
+    private val _liveMap = MutableStateFlow<GoogleMap?>(null)
+    val liveMap: StateFlow<GoogleMap?> = _liveMap.asStateFlow()
 
     @SuppressLint("MissingPermission")
     open infix fun withMap(map: GoogleMap) {
@@ -57,14 +58,15 @@ open class MapHolder {
                 putFloat(LON_PROPERTY, position.target.longitude.toFloat())
             }
         }
-        mutableMap.value = map
+        _liveMap.value = map
         requestLocationPermission?.invoke {
             map.isMyLocationEnabled = true
         }
     }
 
     fun markPosition(latLng: LatLng?) {
-        with (checkNotNull(map)) {
+        val currentMap = map ?: return
+        with(currentMap) {
             clear()
             latLng ?: return
             addMarker(MarkerOptions().position(latLng))

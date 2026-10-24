@@ -19,85 +19,98 @@
 
 package pl.org.seva.events.event
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.fragment.app.Fragment
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.maps.GoogleMap
 import pl.org.seva.events.R
-import pl.org.seva.events.main.data.Permissions
-import pl.org.seva.events.main.extension.createMapHolder
-import pl.org.seva.events.main.extension.enableMyLocationOnResume
-import pl.org.seva.events.main.extension.plus
-import pl.org.seva.events.main.extension.requestLocationPermission
-import pl.org.seva.events.main.extension.title
-import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.main.ui.EventsTheme
 import pl.org.seva.events.main.ui.GoogleMapView
-import pl.org.seva.events.main.ui.composeContent
+import pl.org.seva.events.main.ui.MapHolder
 
-class EventDetailsFragment : Fragment() {
+@SuppressLint("MissingPermission")
+@Composable
+fun EventDetailsRoute(
+        eventViewModel: EventViewModel,
+) {
+    val context = LocalContext.current
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+    val event = eventViewModel.event
 
-    private val permissions by instance<Permissions>()
+    val mapHolder = remember { MapHolder() }
+    val liveMap by mapHolder.liveMap.collectAsStateWithLifecycle()
 
-    private val mapHolder by lazy {
-        createMapHolder {
-            requestLocationPermission = this@EventDetailsFragment::requestLocationPermission
+    val permissionLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.RequestPermission(),
+    ) { granted ->
+        if (granted) {
+            liveMap?.isMyLocationEnabled = true
         }
     }
 
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?,
-    ) = composeContent {
-        val event = eventViewModel.value.event
-        EventDetailsScreen(
-                comm = event.comm,
-                name = event.name,
-                time = event.time.toLocalTime().toString(),
-                date = event.time.toLocalDate().toString(),
-                desc = event.desc,
-                address = event.address,
-                hasLocation = event.location != null,
-                onMapReady = { map -> mapHolder withMap map },
-        )
+    LaunchedEffect(liveMap, event.location) {
+        val map = liveMap ?: return@LaunchedEffect
+        mapHolder.markPosition(event.location)
+        if (ContextCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            map.isMyLocationEnabled = true
+        } else {
+            permissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+        }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val event = eventViewModel.value.event
-        title = event.name
-        if (event.location != null) {
-            (mapHolder.liveMap + this) { map ->
-                mapHolder.markPosition(event.location)
-                enableMyLocationOnResume(map)
+    DisposableEffect(lifecycle, liveMap) {
+        val observer = LifecycleEventObserver { _, lifecycleEvent ->
+            if ((lifecycleEvent == Lifecycle.Event.ON_RESUME) &&
+                    (ContextCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                    ) == PackageManager.PERMISSION_GRANTED)
+            ) {
+                liveMap?.isMyLocationEnabled = true
             }
         }
+        lifecycle.addObserver(observer)
+        onDispose { lifecycle.removeObserver(observer) }
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onRequestPermissionsResult(
-            requestCode: Int,
-            requests: Array<String>,
-            grantResults: IntArray,
-    ) = permissions.onRequestPermissionsResult(this, requestCode, requests, grantResults)
+    EventDetailsScreen(
+            comm = event.comm,
+            name = event.name,
+            time = event.time.toLocalTime().toString(),
+            date = event.time.toLocalDate().toString(),
+            desc = event.desc,
+            address = event.address,
+            hasLocation = event.location != null,
+            onMapReady = { map -> mapHolder withMap map },
+    )
 }
 
-/**
- * Jetpack Compose screen replacing `res/layout/fr_event_details.xml`.
- */
 @Composable
 fun EventDetailsScreen(
         comm: String,

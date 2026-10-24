@@ -21,11 +21,11 @@ package pl.org.seva.events.comm
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import pl.org.seva.events.R
 import pl.org.seva.events.main.data.firestore.FsReader
@@ -35,8 +35,8 @@ class CommAddViewModel(val app: Application) : AndroidViewModel(app) {
 
     private val fsReader by instance<FsReader>()
 
-    val queryState by lazy { MutableLiveData<QueryState>(QueryState.None) }
-    val commToCreate by lazy { MutableLiveData<String?>() }
+    val queryState = MutableStateFlow<QueryState>(QueryState.None)
+    val commToCreate = MutableStateFlow<String?>(null)
     private var queryJob: Job? = null
 
     fun query(name: String) {
@@ -44,10 +44,10 @@ class CommAddViewModel(val app: Application) : AndroidViewModel(app) {
         queryJob = viewModelScope.launch(Dispatchers.IO) {
             try {
                 fsReader.findCommunity(name).let {
-                    queryState.postValue(QueryState.Completed(it))
+                    queryState.value = QueryState.Completed(it)
                 }
-            } catch (e: FirebaseFirestoreException) {
-                queryState.postValue(QueryState.Error(app.getString(R.string.add_comm_connection_problem)))
+            } catch (_: FirebaseFirestoreException) {
+                queryState.value = QueryState.Error(app.getString(R.string.add_comm_connection_problem))
             }
         }
     }
@@ -64,4 +64,3 @@ class CommAddViewModel(val app: Application) : AndroidViewModel(app) {
         data class Error(val errorMessage: String) : QueryState()
     }
 }
-

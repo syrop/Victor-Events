@@ -19,12 +19,6 @@
 
 package pl.org.seva.events.comm
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.ViewGroup
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -39,77 +33,37 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import pl.org.seva.events.R
-import pl.org.seva.events.main.extension.back
-import pl.org.seva.events.main.extension.nav
-import pl.org.seva.events.main.extension.plus
-import pl.org.seva.events.main.extension.title
 import pl.org.seva.events.main.ui.EventsTheme
-import pl.org.seva.events.main.ui.composeContent
 
-@Suppress("DEPRECATION")
-class CommDetailsFragment : Fragment() {
+@Composable
+fun CommDetailsRoute(
+        commViewModel: CommViewModel,
+        onNavigateToEdit: () -> Unit,
+        onBack: () -> Unit,
+) {
+    val name by commViewModel.name.collectAsStateWithLifecycle()
+    val desc by commViewModel.desc.collectAsStateWithLifecycle()
+    val isAdmin by commViewModel.isAdmin.collectAsStateWithLifecycle()
 
-    private val vm by commViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?,
-    ) = composeContent {
-        val comm = vm.comm
-        title = comm.name
-        val name by vm.name.observeAsState(comm.name)
-        val desc by vm.desc.observeAsState(comm.desc)
-        val isAdmin by vm.isAdmin.observeAsState(comm.isAdmin)
-
-        LaunchedEffect(name) {
-            if (name == Comm.DUMMY_NAME) {
-                back()
-            }
-        }
-
-        CommDetailsScreen(
-                name = name ?: "",
-                desc = desc ?: "",
-                isAdmin = isAdmin == true,
-                onEditClick = { nav(R.id.action_commDetailsFragment_to_commEditFragment) },
-        )
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        fun addAdmin(): Boolean {
-            nav(R.id.action_commDetailsFragment_to_adminAddFragment)
-            return true
-        }
-
-        return when (item.itemId) {
-            R.id.action_add_admin -> addAdmin()
-            else -> super.onOptionsItemSelected(item)
+    LaunchedEffect(name) {
+        if (name == Comm.DUMMY_NAME) {
+            onBack()
         }
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.comm_details, menu)
-        (vm.isAdmin + this) { menu.findItem(R.id.action_add_admin)?.isVisible = it == true }
-    }
+    CommDetailsScreen(
+            name = name.orEmpty(),
+            desc = desc.orEmpty(),
+            isAdmin = isAdmin == true,
+            onEditClick = onNavigateToEdit,
+    )
 }
 
-/**
- * Jetpack Compose screen replacing `res/layout/fr_comm_details.xml`.
- */
 @Composable
 fun CommDetailsScreen(
         name: String,

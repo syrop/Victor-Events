@@ -19,9 +19,6 @@
 
 package pl.org.seva.events.comm
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -50,77 +47,62 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import androidx.fragment.app.Fragment
 import kotlinx.coroutines.launch
 import pl.org.seva.events.R
-import pl.org.seva.events.main.extension.nav
-import pl.org.seva.events.main.extension.plus
 import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.main.ui.EventsTheme
-import pl.org.seva.events.main.ui.composeContent
 
-class CommListFragment : Fragment() {
+private const val NAME_PLACEHOLDER = "[name]"
 
-    private val comms by instance<Comms>()
-    private var commItems by mutableStateOf(emptyList<Comm>())
-
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?,
-    ) = composeContent {
-        val snackbarHostState = remember { SnackbarHostState() }
-        val scope = rememberCoroutineScope()
-
-        CommListScreen(
-                comms = commItems,
-                snackbarHostState = snackbarHostState,
-                onCommClick = { position ->
-                    commViewModel.value.withPosition(position)
-                    nav(R.id.action_commListFragment_to_commDetailsFragment)
-                },
-                onCommSwipe = { comm ->
-                    scope.launch {
-                        comm.leave()
-                        val result = snackbarHostState.showSnackbar(
-                                message = getString(R.string.comm_list_leave).replace(NAME_PLACEHOLDER, comm.name),
-                                actionLabel = getString(R.string.comm_list_undo),
-                                duration = SnackbarDuration.Long,
-                        )
-                        if (result == SnackbarResult.ActionPerformed) {
-                            comm.join()
-                        }
-                    }
-                },
-                onAddCommClick = {
-                    nav(R.id.action_commListFragment_to_addCommFragment)
-                },
-        )
+@Composable
+fun CommListRoute(
+        commViewModel: CommViewModel,
+        onNavigateToCommDetails: () -> Unit,
+        onNavigateToAddComm: () -> Unit,
+) {
+    val context = LocalContext.current
+    val comms by instance<Comms>()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+    var commItems by remember {
+        mutableStateOf((0 until comms.size).map { comms[it] })
     }
 
-    override fun onViewCreated(view: android.view.View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        refreshList()
-        (comms.updatedLiveData() + this) {
-            refreshList()
+    LaunchedEffect(comms) {
+        comms.updates.collect {
+            commItems = (0 until comms.size).map { comms[it] }
         }
     }
 
-    private fun refreshList() {
-        commItems = (0 until comms.size).map { comms[it] }
-    }
-
-    companion object {
-        const val NAME_PLACEHOLDER = "[name]"
-    }
+    CommListScreen(
+            comms = commItems,
+            snackbarHostState = snackbarHostState,
+            onCommClick = { position ->
+                commViewModel.withPosition(position)
+                onNavigateToCommDetails()
+            },
+            onCommSwipe = { comm ->
+                scope.launch {
+                    comm.leave()
+                    val result = snackbarHostState.showSnackbar(
+                            message = context.getString(R.string.comm_list_leave)
+                                    .replace(NAME_PLACEHOLDER, comm.name),
+                            actionLabel = context.getString(R.string.comm_list_undo),
+                            duration = SnackbarDuration.Long,
+                    )
+                    if (result == SnackbarResult.ActionPerformed) {
+                        comm.join()
+                    }
+                }
+            },
+            onAddCommClick = onNavigateToAddComm,
+    )
 }
 
-/**
- * Jetpack Compose screen replacing `res/layout/fr_comm_list.xml`.
- */
 @Composable
 fun CommListScreen(
         comms: List<Comm>,

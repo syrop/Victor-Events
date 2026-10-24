@@ -19,29 +19,21 @@
 
 package pl.org.seva.events.main.data
 
-import androidx.lifecycle.*
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 
 abstract class LiveRepository {
 
-    private val updates = MutableSharedFlow<Unit>(
-        extraBufferCapacity = 1,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST,
+    private val _updates = MutableSharedFlow<Unit>(
+            extraBufferCapacity = 1,
+            onBufferOverflow = BufferOverflow.DROP_OLDEST,
     )
 
+    val updates: SharedFlow<Unit> = _updates.asSharedFlow()
+
     protected fun notifyDataSetChanged() {
-        updates.tryEmit(Unit)
-    }
-
-    fun updatedLiveData(scope: CoroutineScope) = updatedLiveData(scope.coroutineContext)
-
-    fun updatedLiveData(context: CoroutineContext = EmptyCoroutineContext) = liveData(context) {
-        updates.collect {
-            emit(it)
-        }
+        _updates.tryEmit(Unit)
     }
 }

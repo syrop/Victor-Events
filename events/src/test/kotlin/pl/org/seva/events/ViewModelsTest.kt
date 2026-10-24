@@ -19,7 +19,6 @@
 
 package pl.org.seva.events
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.Dispatchers
@@ -34,7 +33,6 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.kodein.di.DI
 import org.kodein.di.bindInstance
@@ -64,9 +62,6 @@ class ViewModelsTest {
     private lateinit var fsReader: FsReader
     private lateinit var comms: Comms
     private lateinit var events: Events
-
-    @get:Rule
-    val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Before
     fun setUp() {

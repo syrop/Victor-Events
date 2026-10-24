@@ -20,8 +20,12 @@
 package pl.org.seva.events.main.init
 
 import android.content.Context
-import androidx.work.*
-import com.google.firebase.FirebaseApp
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.ListenableWorker
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.joinAll
@@ -44,31 +48,38 @@ class Bootstrap(private val ctx: Context) {
     private inline fun <reified W : ListenableWorker> scheduleSync(
             tag: String,
             frequency: Duration,
-            policy: ExistingPeriodicWorkPolicy) {
+            policy: ExistingPeriodicWorkPolicy,
+    ) {
         WorkManager.getInstance(ctx).enqueueUniquePeriodicWork(
                 tag,
                 policy,
                 PeriodicWorkRequestBuilder<W>(frequency)
-                        .setConstraints(Constraints.Builder()
-                                .setRequiresBatteryNotLow(true)
-                                .setRequiredNetworkType(NetworkType.CONNECTED).build())
-                        .build())
+                        .setConstraints(
+                                Constraints.Builder()
+                                        .setRequiresBatteryNotLow(true)
+                                        .setRequiredNetworkType(NetworkType.CONNECTED)
+                                        .build(),
+                        )
+                        .build(),
+        )
     }
 
     suspend fun boot() = coroutineScope {
         login.setCurrentUser(FirebaseAuth.getInstance().currentUser)
         listOf(
-            launch { comms.fromDb() },
-            launch { messages.readFromDb() },
-            launch { events.loadFromDb() })
-                .joinAll()
+                launch { comms.fromDb() },
+                launch { messages.readFromDb() },
+                launch { events.loadFromDb() },
+        ).joinAll()
         scheduleSync<CommSyncWorker>(
                 tag = CommSyncWorker.TAG,
                 policy = CommSyncWorker.POLICY,
-                frequency = CommSyncWorker.FREQUENCY)
+                frequency = CommSyncWorker.FREQUENCY,
+        )
         scheduleSync<EventSyncWorker>(
                 tag = EventSyncWorker.TAG,
                 policy = EventSyncWorker.POLICY,
-                frequency = EventSyncWorker.FREQUENCY)
+                frequency = EventSyncWorker.FREQUENCY,
+        )
     }
 }

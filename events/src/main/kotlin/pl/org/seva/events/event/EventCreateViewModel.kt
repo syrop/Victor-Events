@@ -19,37 +19,32 @@
 
 package pl.org.seva.events.event
 
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.navigation.navGraphViewModels
-import pl.org.seva.events.R
+import kotlinx.coroutines.flow.MutableStateFlow
 import java.time.LocalDate
 import java.time.LocalTime
 
-val Fragment.eventCreateViewModel get() =
-    navGraphViewModels<EventCreateViewModel>(R.id.event_create_graph)
-
 class EventCreateViewModel : ViewModel() {
 
-    val comm by lazy { MutableLiveData<String?>() }
-
-    val name by lazy { MutableLiveData<String?>() }
-
-    val time by lazy { MutableLiveData<LocalTime?>() }
-
-    val date by lazy { MutableLiveData<LocalDate?>() }
-
-    val location by lazy { MutableLiveData<EventLocation?>() }
-
-    val desc by lazy { MutableLiveData<String?>() }
+    val comm = MutableStateFlow<String?>(null)
+    val name = MutableStateFlow<String?>(null)
+    val time = MutableStateFlow<LocalTime?>(null)
+    val date = MutableStateFlow<LocalDate?>(null)
+    val location = MutableStateFlow<EventLocation?>(null)
+    val desc = MutableStateFlow<String?>(null)
 
     val isFilledIn
         get() = eventData.any { !it.value?.toString().isNullOrEmpty() }
 
-    fun clear() = eventData.onEach { it.setValue(null) }
+    fun clear() {
+        name.value = null
+        time.value = null
+        date.value = null
+        location.value = null
+        desc.value = null
+    }
 
-    private val eventData by lazy {
+    private val eventData: List<MutableStateFlow<out Any?>> by lazy {
         listOf(name, time, date, location, desc)
     }
 }

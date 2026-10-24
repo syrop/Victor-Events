@@ -21,9 +21,8 @@ package pl.org.seva.events.login
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,69 +36,58 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.Comms
-import pl.org.seva.events.main.extension.back
 import pl.org.seva.events.main.extension.inBrowser
 import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.main.ui.EventsTheme
-import pl.org.seva.events.main.ui.composeContent
 
-class LoginConfirmationFragment : Fragment() {
+@Composable
+fun LoginConfirmationRoute(
+        onBack: () -> Unit,
+) {
+    val context = LocalContext.current
+    val comms by instance<Comms>()
+    val scope = rememberCoroutineScope()
+    var inProgress by remember { mutableStateOf(false) }
+    val privacyUri = stringResource(id = R.string.login_confirmation_privacy_uri)
 
-    private val comms by instance<Comms>()
-    private var inProgress by mutableStateOf(false)
-
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?,
-    ) = composeContent {
-        LoginConfirmationScreen(
-                inProgress = inProgress,
-                onPrivacyPolicyClick = { inBrowser(getString(R.string.login_confirmation_privacy_uri)) },
-                onCancelClick = { back() },
-                onOkClick = {
-                    val intent = Intent(activity, LoginActivity::class.java)
-                            .putExtra(LoginActivity.ACTION, LoginActivity.LOGIN)
-                    @Suppress("DEPRECATION")
-                    startActivityForResult(intent, LOGIN_REQUEST)
-                },
-        )
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        @Suppress("DEPRECATION")
-        super.onActivityResult(requestCode, resultCode, data)
-        if ((requestCode == LOGIN_REQUEST) && (resultCode == Activity.RESULT_OK)) {
+    val loginLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.StartActivityForResult(),
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
             inProgress = true
-            lifecycleScope.launch {
+            scope.launch {
                 comms.refreshAdminStatuses()
-                back()
+                onBack()
             }
         }
     }
 
-    companion object {
-        const val LOGIN_REQUEST = 0
-    }
+    LoginConfirmationScreen(
+            inProgress = inProgress,
+            onPrivacyPolicyClick = { context.inBrowser(privacyUri) },
+            onCancelClick = onBack,
+            onOkClick = {
+                val intent = Intent(context, LoginActivity::class.java)
+                        .putExtra(LoginActivity.ACTION, LoginActivity.LOGIN)
+                loginLauncher.launch(intent)
+            },
+    )
 }
 
-/**
- * Jetpack Compose screen replacing `res/layout/fr_login_conf.xml`.
- */
 @Composable
 fun LoginConfirmationScreen(
         inProgress: Boolean,

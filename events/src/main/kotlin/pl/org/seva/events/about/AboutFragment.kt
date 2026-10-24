@@ -22,9 +22,6 @@ package pl.org.seva.events.about
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,43 +31,33 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.fragment.app.Fragment
 import pl.org.seva.events.R
 import pl.org.seva.events.main.extension.inBrowser
 import pl.org.seva.events.main.extension.versionName
 import pl.org.seva.events.main.ui.EventsTheme
-import pl.org.seva.events.main.ui.composeContent
 
-class AboutFragment : Fragment() {
+private const val VERSION_PLACEHOLDER = "[ver]"
 
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?,
-    ) = composeContent {
-        AboutScreen(
-                version = versionName,
-                onGithubClick = { inBrowser(getString(R.string.about_github_url)) },
-                onDonateClick = {
-                    val clipboard = requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    clipboard.setPrimaryClip(ClipData.newPlainText("", getString(R.string.about_btc_address)))
-                },
-        )
-    }
-
-    companion object {
-        const val VERSION_PLACEHOLDER = "[ver]"
-    }
+@Composable
+fun AboutRoute() {
+    val context = LocalContext.current
+    val githubUrl = stringResource(id = R.string.about_github_url)
+    val btcAddress = stringResource(id = R.string.about_btc_address)
+    AboutScreen(
+            version = context.versionName,
+            onGithubClick = { context.inBrowser(githubUrl) },
+            onDonateClick = {
+                val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                clipboard.setPrimaryClip(ClipData.newPlainText("", btcAddress))
+            },
+    )
 }
 
-/**
- * Jetpack Compose screen replacing `res/layout/fr_about.xml`.
- * Maps the packed vertical ConstraintLayout chain to a centered [Column].
- */
 @Composable
 fun AboutScreen(
         version: String,
@@ -89,7 +76,7 @@ fun AboutScreen(
         )
         Text(
                 text = stringResource(id = R.string.about_version)
-                        .replace(AboutFragment.VERSION_PLACEHOLDER, version),
+                        .replace(VERSION_PLACEHOLDER, version),
                 modifier = Modifier.padding(bottom = 8.dp),
         )
         Text(

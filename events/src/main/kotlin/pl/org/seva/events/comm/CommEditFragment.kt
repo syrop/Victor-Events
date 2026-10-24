@@ -19,12 +19,7 @@
 
 package pl.org.seva.events.comm
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.ViewGroup
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -39,94 +34,43 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import pl.org.seva.events.R
-import pl.org.seva.events.main.extension.back
-import pl.org.seva.events.main.extension.bold
-import pl.org.seva.events.main.extension.nav
-import pl.org.seva.events.main.extension.onBack
-import pl.org.seva.events.main.extension.toast
 import pl.org.seva.events.main.ui.EventsTheme
-import pl.org.seva.events.main.ui.composeContent
 
-@Suppress("DEPRECATION")
-class CommEditFragment : Fragment() {
+const val COMM_EDIT_NAME_PLACEHOLDER = "[name]"
 
-    private val vm by commViewModel
+@Composable
+fun CommEditRoute(
+        commViewModel: CommViewModel,
+        onNavigateToDelete: () -> Unit,
+        onBack: () -> Unit,
+) {
+    val name by commViewModel.name.collectAsStateWithLifecycle()
+    val desc by commViewModel.desc.collectAsStateWithLifecycle()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-        onBack { onBackOrHomePressed() }
+    BackHandler {
+        commViewModel.reset()
+        onBack()
     }
 
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?,
-    ) = composeContent {
-        val name by vm.name.observeAsState(vm.comm.name)
-        val desc by vm.desc.observeAsState(vm.comm.desc)
-
-        LaunchedEffect(name) {
-            if (name == Comm.DUMMY_NAME) {
-                back()
-            }
-        }
-
-        CommEditScreen(
-                name = name ?: "",
-                desc = desc ?: "",
-                onDescChange = { vm.desc.value = it },
-                onDeleteClick = { nav(R.id.action_commEditFragment_to_commDeleteFragment) },
-        )
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        fun updateAndFinish(): Boolean {
-            with(vm.comm.copy(desc = vm.desc.value ?: "")) {
-                update()
-                vm.update()
-                toast(
-                        getString(R.string.comm_edit_updated)
-                                .bold(NAME_PLACEHOLDER, name),
-                )
-                back()
-            }
-            return true
-        }
-
-        return when (item.itemId) {
-            R.id.action_ok -> updateAndFinish()
-            android.R.id.home -> onBackOrHomePressed()
-            else -> super.onOptionsItemSelected(item)
+    LaunchedEffect(name) {
+        if (name == Comm.DUMMY_NAME) {
+            onBack()
         }
     }
 
-    private fun onBackOrHomePressed(): Boolean {
-        vm.reset()
-        back()
-        return true
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.comm_edit, menu)
-    }
-
-    companion object {
-        const val NAME_PLACEHOLDER = "[name]"
-    }
+    CommEditScreen(
+            name = name.orEmpty(),
+            desc = desc.orEmpty(),
+            onDescChange = { commViewModel.desc.value = it },
+            onDeleteClick = onNavigateToDelete,
+    )
 }
 
-/**
- * Jetpack Compose screen replacing `res/layout/fr_comm_edit.xml`.
- */
 @Composable
 fun CommEditScreen(
         name: String,

@@ -19,11 +19,13 @@
 
 package pl.org.seva.events.main.extension
 
-import androidx.appcompat.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 
 fun Context.question(message: String, yes: () -> Unit = {}, no: () -> Unit = {}) {
     val listener = YesNoListener(yes, no)
@@ -31,10 +33,20 @@ fun Context.question(message: String, yes: () -> Unit = {}, no: () -> Unit = {})
     AlertDialog.Builder(this@question)
             .setMessage(message)
             .setPositiveButton(android.R.string.ok, listener)
-            .setNegativeButton(android.R.string.cancel, listener).show()
+            .setNegativeButton(android.R.string.cancel, listener)
+            .show()
 }
 
-val Context.versionName: String get() = checkNotNull(packageManager.getPackageInfo(packageName, 0).versionName)
+val Context.versionName: String
+    get() = checkNotNull(packageManager.getPackageInfo(packageName, 0).versionName)
+
+fun Context.inBrowser(uri: String) {
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+    startActivity(intent)
+}
+
+fun Context.prefs(name: String) =
+        getSharedPreferences(name, Context.MODE_PRIVATE)
 
 private class YesNoListener(
         private val yes: () -> Unit = {},
@@ -52,6 +64,9 @@ private class YesNoListener(
         else -> Unit
     }
 }
+
+fun Context.longToast(message: CharSequence) =
+        toast(message, Toast.LENGTH_LONG)
 
 fun Context.toast(@StringRes id: Int, duration: Int = Toast.LENGTH_SHORT) =
         toast(getString(id), duration)

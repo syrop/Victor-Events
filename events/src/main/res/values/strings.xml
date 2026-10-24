@@ -8,7 +8,6 @@
     <string name="events_list_action_login">Log in</string>
     <string name="events_list_action_log_out">Log out</string>
     <string name="events_list_action_comms">Communities</string>
-    <string name="events_list_action_add_comm">Add a community</string>
     <string name="events_list_action_system_messages">System Messages</string>
     <string name="events_list_action_about">About</string>
     <string name="events_list_no_events">There are currently no events.</string>
@@ -115,5 +114,4 @@
     <string name="about_github_url" translatable="false">https://github.com/syrop/Victor-Events</string>
     <string name="about_donate_btc">Donate BTC:</string>
     <string name="about_btc_address" translatable="false">bc1qncxh5xs6erq6w4qz3a7xl7f50agrgn3w58dsfp</string>
-    <string name="title_instant">Module Title</string>
 </resources>

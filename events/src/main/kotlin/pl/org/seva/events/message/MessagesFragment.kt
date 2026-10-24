@@ -19,10 +19,6 @@
 
 package pl.org.seva.events.message
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -37,6 +33,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,49 +43,33 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import pl.org.seva.events.R
-import pl.org.seva.events.main.extension.plus
 import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.main.ui.EventsTheme
-import pl.org.seva.events.main.ui.composeContent
 
-class MessagesFragment : Fragment() {
-
-    private val messages by instance<Messages>()
-    private var messageItems by mutableStateOf(emptyList<Message>())
-
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?,
-    ) = composeContent {
-        MessagesScreen(
-                messages = messageItems,
-                onMessageSwipe = { message ->
-                    lifecycleScope.launch { message.delete() }
-                },
-        )
+@Composable
+fun MessagesRoute() {
+    val messages by instance<Messages>()
+    val scope = rememberCoroutineScope()
+    var messageItems by remember {
+        mutableStateOf((0 until messages.size).map { messages[it] })
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        refreshList()
-        (messages.updatedLiveData() + this) {
-            refreshList()
+    LaunchedEffect(messages) {
+        messages.updates.collect {
+            messageItems = (0 until messages.size).map { messages[it] }
         }
     }
 
-    private fun refreshList() {
-        messageItems = (0 until messages.size).map { messages[it] }
-    }
+    MessagesScreen(
+            messages = messageItems,
+            onMessageSwipe = { message ->
+                scope.launch { message.delete() }
+            },
+    )
 }
 
-/**
- * Jetpack Compose screen replacing `res/layout/fr_messages.xml`.
- */
 @Composable
 fun MessagesScreen(
         messages: List<Message>,

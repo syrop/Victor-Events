@@ -19,13 +19,9 @@
 
 package pl.org.seva.events.event
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,82 +34,75 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.view.MenuProvider
-import androidx.fragment.app.Fragment
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.maps.GoogleMap
 import pl.org.seva.events.R
-import pl.org.seva.events.main.extension.back
-import pl.org.seva.events.main.extension.createInteractiveMapHolder
-import pl.org.seva.events.main.extension.enableMyLocationOnResume
-import pl.org.seva.events.main.extension.plus
 import pl.org.seva.events.main.extension.prefs
 import pl.org.seva.events.main.ui.EventsTheme
 import pl.org.seva.events.main.ui.GoogleMapView
-import pl.org.seva.events.main.ui.composeContent
+import pl.org.seva.events.main.ui.InteractiveMapHolder
 
-class LocationPickerFragment : Fragment() {
+private const val SHARED_PREFERENCES_TAG = "fragment_location_picker_preferences"
 
-    private val mapHolder by lazy {
-        createInteractiveMapHolder {
-            prefs = prefs(SHARED_PREFERENCES_TAG)
-            onLocationSet = { eventCreateViewModel.value.location.value = it }
+@SuppressLint("MissingPermission")
+@Composable
+fun LocationPickerRoute(
+        eventCreateViewModel: EventCreateViewModel,
+) {
+    val context = LocalContext.current
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+    val location by eventCreateViewModel.location.collectAsStateWithLifecycle()
+
+    val mapHolder = remember {
+        InteractiveMapHolder().apply {
+            prefs = context.prefs(SHARED_PREFERENCES_TAG)
+            onLocationSet = { eventCreateViewModel.location.value = it }
+        }
+    }
+    val liveMap by mapHolder.liveMap.collectAsStateWithLifecycle()
+
+    LaunchedEffect(liveMap, location) {
+        if (liveMap != null) {
+            mapHolder.markPosition(location?.location)
         }
     }
 
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?,
-    ) = composeContent {
-        val viewModel = eventCreateViewModel.value
-        val location by viewModel.location.observeAsState()
-
-        LocationPickerScreen(
-                address = location?.address.orEmpty(),
-                hasLocation = location != null,
-                onDeleteLocationClick = { viewModel.location.value = null },
-                onMapReady = { map -> mapHolder withMap map },
-        )
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.location_picker, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem) = when (menuItem.itemId) {
-                R.id.action_ok -> back()
-                else -> false
-            }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-
-        val viewModel = eventCreateViewModel.value
-        (mapHolder.liveMap + this) { map ->
-            enableMyLocationOnResume(map)
-            (viewModel.location + this@LocationPickerFragment) {
-                mapHolder.markPosition(it?.location)
+    DisposableEffect(lifecycle, liveMap) {
+        val observer = LifecycleEventObserver { _, lifecycleEvent ->
+            if ((lifecycleEvent == Lifecycle.Event.ON_RESUME) &&
+                    (ContextCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                    ) == PackageManager.PERMISSION_GRANTED)
+            ) {
+                liveMap?.isMyLocationEnabled = true
             }
         }
+        lifecycle.addObserver(observer)
+        onDispose { lifecycle.removeObserver(observer) }
     }
 
-    companion object {
-        private const val SHARED_PREFERENCES_TAG = "fragment_location_picker_preferences"
-    }
+    LocationPickerScreen(
+            address = location?.address.orEmpty(),
+            hasLocation = location != null,
+            onDeleteLocationClick = { eventCreateViewModel.location.value = null },
+            onMapReady = { map -> mapHolder withMap map },
+    )
 }
 
-/**
- * Jetpack Compose screen replacing `res/layout/fr_location_picker.xml`.
- */
 @Composable
 fun LocationPickerScreen(
         address: String,

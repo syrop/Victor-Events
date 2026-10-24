@@ -19,12 +19,10 @@
 
 package pl.org.seva.events
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Observer
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -34,7 +32,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
@@ -59,9 +56,6 @@ class EventsTest {
     private lateinit var eventsDao: EventsDao
     private lateinit var events: Events
 
-    @get:Rule
-    val instantTaskExecutorRule = InstantTaskExecutorRule()
-
     @Before
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
@@ -79,10 +73,8 @@ class EventsTest {
     @Test
     fun testAdd() = runTest {
         val event = Event(comm = "Alpha", name = "Meetup")
-        val job = Job()
-        @Suppress("UNCHECKED_CAST")
-        val observer = mock(Observer::class.java) as Observer<Unit>
-        events.updatedLiveData(job).observeForever(observer)
+        var updateCount = 0
+        val job = launch { events.updates.collect { updateCount++ } }
 
         assertTrue(events.isEmpty)
         events.add(event)
@@ -91,7 +83,7 @@ class EventsTest {
         assertEquals(event, events[0])
         verify(fsWriter).addAll(event)
         verify(eventsDao) addAll listOf(event)
-        verify(observer).onChanged(Unit)
+        assertEquals(1, updateCount)
         job.cancel()
     }
 
@@ -117,17 +109,15 @@ class EventsTest {
         val eventBeta = Event(comm = "Beta", name = "Beta Event")
         events.add(eventAlpha, eventBeta)
 
-        val job = Job()
-        @Suppress("UNCHECKED_CAST")
-        val observer = mock(Observer::class.java) as Observer<Unit>
-        events.updatedLiveData(job).observeForever(observer)
+        var updateCount = 0
+        val job = launch { events.updates.collect { updateCount++ } }
 
         events deleteLocallyFrom commAlpha
         assertEquals(1, events.size)
         assertEquals(eventBeta, events[0])
         verify(eventsDao) delete eventAlpha
         verify(eventsDao, never()) delete eventBeta
-        verify(observer).onChanged(Unit)
+        assertEquals(1, updateCount)
         job.cancel()
     }
 
@@ -137,16 +127,14 @@ class EventsTest {
         val earlier = Event(comm = "Alpha", name = "Earlier", time = LocalDateTime.of(2026, 5, 10, 12, 0))
         `when`(eventsDao.getAll()).thenReturn(listOf(Event.Entity(later), Event.Entity(earlier)))
 
-        val job = Job()
-        @Suppress("UNCHECKED_CAST")
-        val observer = mock(Observer::class.java) as Observer<Unit>
-        events.updatedLiveData(job).observeForever(observer)
+        var updateCount = 0
+        val job = launch { events.updates.collect { updateCount++ } }
 
         events.loadFromDb()
         assertEquals(2, events.size)
         assertEquals(earlier, events[0])
         assertEquals(later, events[1])
-        verify(observer).onChanged(Unit)
+        assertEquals(1, updateCount)
         job.cancel()
     }
 
