@@ -5,7 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,6 +19,7 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,6 +28,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
@@ -44,11 +48,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.ui.NavDisplay
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 import pl.org.seva.events.R
 import pl.org.seva.events.about.AboutRoute
 import pl.org.seva.events.comm.AdminAddScreen
@@ -75,7 +79,6 @@ import pl.org.seva.events.login.LoginConfirmationRoute
 import pl.org.seva.events.main.data.firestore.FsWriter
 import pl.org.seva.events.main.extension.bold
 import pl.org.seva.events.main.extension.inBrowser
-import pl.org.seva.events.main.extension.question
 import pl.org.seva.events.main.extension.toast
 import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.main.ui.EventsTheme
@@ -87,6 +90,7 @@ class MainActivity : ComponentActivity() {
     private val commAddViewModel by viewModels<CommAddViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
             EventsTheme {
@@ -105,30 +109,31 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-private object Routes {
-    const val EVENTS = "events"
-    const val EVENT_DETAILS = "event_details"
-    const val EVENT_CREATE = "event_create"
-    const val LOCATION_PICKER = "location_picker"
-    const val LOGIN_CONFIRMATION = "login_confirmation"
-    const val LOG_OUT_CONFIRMATION = "log_out_confirmation"
-    const val SYSTEM_MESSAGES = "system_messages"
-    const val ABOUT = "about"
-    const val COMM_LIST = "comm_list"
-    const val ADD_COMM = "add_comm"
-    const val COMM_DETAILS = "comm_details"
-    const val COMM_EDIT = "comm_edit"
-    const val COMM_DELETE = "comm_delete"
-    const val ADMIN_ADD = "admin_add"
-}
+@Serializable data object EventsNavKey : NavKey
+@Serializable data object EventDetailsNavKey : NavKey
+@Serializable data object EventCreateNavKey : NavKey
+@Serializable data object LocationPickerNavKey : NavKey
+@Serializable data object LoginConfirmationNavKey : NavKey
+@Serializable data object LogOutConfirmationNavKey : NavKey
+@Serializable data object SystemMessagesNavKey : NavKey
+@Serializable data object AboutNavKey : NavKey
+@Serializable data object CommListNavKey : NavKey
+@Serializable data object AddCommNavKey : NavKey
+@Serializable data object CommDetailsNavKey : NavKey
+@Serializable data object CommEditNavKey : NavKey
+@Serializable data object CommDeleteNavKey : NavKey
+@Serializable data object AdminAddNavKey : NavKey
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventsApp(commAddViewModel: CommAddViewModel) {
     val context = LocalContext.current
-    val navController = rememberNavController()
-    val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = backStackEntry?.destination?.route ?: Routes.EVENTS
+    val navigationState = rememberNavigationState(
+            startRoute = EventsNavKey,
+            topLevelRoutes = setOf(EventsNavKey),
+    )
+    val navigator = remember { Navigator(navigationState) }
+    val currentRoute = navigationState.backStacks[navigationState.topLevelRoute]?.lastOrNull() ?: EventsNavKey
 
     val events by instance<Events>()
     val login by instance<Login>()
@@ -139,6 +144,7 @@ fun EventsApp(commAddViewModel: CommAddViewModel) {
     val eventCreateViewModel: EventCreateViewModel = viewModel()
     val commViewModel: CommViewModel = viewModel()
 
+    val isLoggedIn by login.isLoggedInFlow.collectAsStateWithLifecycle()
     val commName by commViewModel.name.collectAsStateWithLifecycle()
     val isCommAdmin by commViewModel.isAdmin.collectAsStateWithLifecycle()
 
@@ -151,59 +157,159 @@ fun EventsApp(commAddViewModel: CommAddViewModel) {
     var nameError by remember { mutableStateOf(false) }
     var timeError by remember { mutableStateOf(false) }
     var dateError by remember { mutableStateOf(false) }
+    var showDismissEventDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(currentRoute) {
-        if (currentRoute != Routes.ADD_COMM) {
+        if (currentRoute != AddCommNavKey) {
             searchExpanded = false
             searchQuery = ""
         }
-        if (currentRoute != Routes.ADMIN_ADD) {
+        if (currentRoute != AdminAddNavKey) {
             adminAddress = ""
         }
     }
 
     val titleText = when (currentRoute) {
-        Routes.EVENTS, Routes.EVENT_CREATE -> stringResource(id = R.string.app_name)
-        Routes.EVENT_DETAILS -> eventViewModel.event.name
-        Routes.LOCATION_PICKER -> stringResource(id = R.string.pick_location_label)
-        Routes.LOGIN_CONFIRMATION -> stringResource(id = R.string.login_confirmation_label)
-        Routes.LOG_OUT_CONFIRMATION -> stringResource(id = R.string.log_out_confirmation_label)
-        Routes.SYSTEM_MESSAGES -> stringResource(id = R.string.system_messages_label)
-        Routes.ABOUT -> stringResource(id = R.string.about_label)
-        Routes.COMM_LIST -> stringResource(id = R.string.comm_list_label)
-        Routes.ADD_COMM -> stringResource(id = R.string.add_comm_label)
-        Routes.COMM_DETAILS -> commName ?: commViewModel.comm.name
-        Routes.COMM_EDIT -> stringResource(id = R.string.comm_edit_label)
-        Routes.COMM_DELETE -> stringResource(id = R.string.comm_delete_title)
+        EventsNavKey, EventCreateNavKey -> stringResource(id = R.string.app_name)
+        EventDetailsNavKey -> eventViewModel.event.name
+        LocationPickerNavKey -> stringResource(id = R.string.pick_location_label)
+        LoginConfirmationNavKey -> stringResource(id = R.string.login_confirmation_label)
+        LogOutConfirmationNavKey -> stringResource(id = R.string.log_out_confirmation_label)
+        SystemMessagesNavKey -> stringResource(id = R.string.system_messages_label)
+        AboutNavKey -> stringResource(id = R.string.about_label)
+        CommListNavKey -> stringResource(id = R.string.comm_list_label)
+        AddCommNavKey -> stringResource(id = R.string.add_comm_label)
+        CommDetailsNavKey -> commName ?: commViewModel.comm.name
+        CommEditNavKey -> stringResource(id = R.string.comm_edit_label)
+        CommDeleteNavKey -> stringResource(id = R.string.comm_delete_title)
                 .replace(COMM_DELETE_NAME_PLACEHOLDER, commViewModel.comm.name)
-        Routes.ADMIN_ADD -> stringResource(id = R.string.admin_add_label)
+        AdminAddNavKey -> stringResource(id = R.string.admin_add_label)
         else -> stringResource(id = R.string.app_name)
     }
 
     fun navigateUp() {
         when (currentRoute) {
-            Routes.ADD_COMM -> {
+            AddCommNavKey -> {
                 commAddViewModel.resetQuery()
-                navController.popBackStack()
+                navigator.goBack()
             }
-            Routes.COMM_EDIT -> {
+            CommEditNavKey -> {
                 commViewModel.reset()
-                navController.popBackStack()
+                navigator.goBack()
             }
-            Routes.EVENT_CREATE -> {
+            EventCreateNavKey -> {
                 if (eventCreateViewModel.isFilledIn) {
-                    context.question(
-                            message = context.getString(R.string.main_activity_dismiss_event),
-                            yes = {
-                                eventCreateViewModel.clear()
-                                navController.popBackStack()
-                            },
-                    )
+                    showDismissEventDialog = true
                 } else {
-                    navController.popBackStack()
+                    navigator.goBack()
                 }
             }
-            else -> navController.popBackStack()
+            else -> navigator.goBack()
+        }
+    }
+
+    if (showDismissEventDialog) {
+        AlertDialog(
+                onDismissRequest = { showDismissEventDialog = false },
+                text = { Text(text = stringResource(id = R.string.main_activity_dismiss_event)) },
+                confirmButton = {
+                    TextButton(
+                            onClick = {
+                                showDismissEventDialog = false
+                                eventCreateViewModel.clear()
+                                navigator.goBack()
+                            },
+                    ) {
+                        Text(text = stringResource(id = android.R.string.ok))
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showDismissEventDialog = false }) {
+                        Text(text = stringResource(id = android.R.string.cancel))
+                    }
+                },
+        )
+    }
+
+    val entryProvider = entryProvider {
+        entry<EventsNavKey> {
+            EventListRoute(
+                    eventViewModel = eventViewModel,
+                    onNavigateToEventDetails = { navigator.navigate(EventDetailsNavKey) },
+                    onNavigateToCreateEvent = { navigator.navigate(EventCreateNavKey) },
+            )
+        }
+        entry<EventDetailsNavKey> {
+            EventDetailsRoute(eventViewModel = eventViewModel)
+        }
+        entry<EventCreateNavKey> {
+            EventCreateRoute(
+                    vm = eventCreateViewModel,
+                    commError = commError,
+                    nameError = nameError,
+                    timeError = timeError,
+                    dateError = dateError,
+                    onClearCommError = { commError = false },
+                    onClearNameError = { nameError = false },
+                    onClearTimeError = { timeError = false },
+                    onClearDateError = { dateError = false },
+                    onNavigateToLocationPicker = { navigator.navigate(LocationPickerNavKey) },
+                    onBack = { navigator.goBack() },
+            )
+        }
+        entry<LocationPickerNavKey> {
+            LocationPickerRoute(eventCreateViewModel = eventCreateViewModel)
+        }
+        entry<LoginConfirmationNavKey> {
+            LoginConfirmationRoute(onBack = { navigator.goBack() })
+        }
+        entry<LogOutConfirmationNavKey> {
+            LogOutConfirmationRoute(onBack = { navigator.goBack() })
+        }
+        entry<SystemMessagesNavKey> {
+            MessagesRoute()
+        }
+        entry<AboutNavKey> {
+            AboutRoute()
+        }
+        entry<CommListNavKey> {
+            CommListRoute(
+                    commViewModel = commViewModel,
+                    onNavigateToCommDetails = { navigator.navigate(CommDetailsNavKey) },
+                    onNavigateToAddComm = { navigator.navigate(AddCommNavKey) },
+            )
+        }
+        entry<AddCommNavKey> {
+            CommAddRoute(
+                    commAddViewModel = commAddViewModel,
+                    onBack = { navigator.goBack() },
+            )
+        }
+        entry<CommDetailsNavKey> {
+            CommDetailsRoute(
+                    commViewModel = commViewModel,
+                    onNavigateToEdit = { navigator.navigate(CommEditNavKey) },
+                    onBack = { navigator.goBack() },
+            )
+        }
+        entry<CommEditNavKey> {
+            CommEditRoute(
+                    commViewModel = commViewModel,
+                    onNavigateToDelete = { navigator.navigate(CommDeleteNavKey) },
+                    onBack = { navigator.goBack() },
+            )
+        }
+        entry<CommDeleteNavKey> {
+            CommDeleteRoute(
+                    commViewModel = commViewModel,
+                    onBack = { navigator.goBack() },
+            )
+        }
+        entry<AdminAddNavKey> {
+            AdminAddScreen(
+                    address = adminAddress,
+                    onAddressChange = { adminAddress = it },
+            )
         }
     }
 
@@ -217,7 +323,7 @@ fun EventsApp(commAddViewModel: CommAddViewModel) {
                                 actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
                         ),
                         title = {
-                            if ((currentRoute == Routes.ADD_COMM) && searchExpanded) {
+                            if ((currentRoute == AddCommNavKey) && searchExpanded) {
                                 TextField(
                                         value = searchQuery,
                                         onValueChange = { searchQuery = it },
@@ -250,7 +356,7 @@ fun EventsApp(commAddViewModel: CommAddViewModel) {
                             }
                         },
                         navigationIcon = {
-                            if (currentRoute != Routes.EVENTS) {
+                            if (currentRoute != EventsNavKey) {
                                 IconButton(onClick = { navigateUp() }) {
                                     Icon(
                                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -261,7 +367,7 @@ fun EventsApp(commAddViewModel: CommAddViewModel) {
                         },
                         actions = {
                             when (currentRoute) {
-                                Routes.EVENTS -> {
+                                EventsNavKey -> {
                                     IconButton(onClick = { overflowExpanded = true }) {
                                         Icon(
                                                 imageVector = Icons.Default.MoreVert,
@@ -272,12 +378,12 @@ fun EventsApp(commAddViewModel: CommAddViewModel) {
                                             expanded = overflowExpanded,
                                             onDismissRequest = { overflowExpanded = false },
                                     ) {
-                                        if (!login.isLoggedIn) {
+                                        if (!isLoggedIn) {
                                             DropdownMenuItem(
                                                     text = { Text(text = stringResource(id = R.string.events_list_action_login)) },
                                                     onClick = {
                                                         overflowExpanded = false
-                                                        navController.navigate(Routes.LOGIN_CONFIRMATION)
+                                                        navigator.navigate(LoginConfirmationNavKey)
                                                     },
                                             )
                                         } else {
@@ -285,7 +391,7 @@ fun EventsApp(commAddViewModel: CommAddViewModel) {
                                                     text = { Text(text = stringResource(id = R.string.events_list_action_log_out)) },
                                                     onClick = {
                                                         overflowExpanded = false
-                                                        navController.navigate(Routes.LOG_OUT_CONFIRMATION)
+                                                        navigator.navigate(LogOutConfirmationNavKey)
                                                     },
                                             )
                                         }
@@ -293,14 +399,14 @@ fun EventsApp(commAddViewModel: CommAddViewModel) {
                                                 text = { Text(text = stringResource(id = R.string.events_list_action_comms)) },
                                                 onClick = {
                                                     overflowExpanded = false
-                                                    navController.navigate(Routes.COMM_LIST)
+                                                    navigator.navigate(CommListNavKey)
                                                 },
                                         )
                                         DropdownMenuItem(
                                                 text = { Text(text = stringResource(id = R.string.events_list_action_system_messages)) },
                                                 onClick = {
                                                     overflowExpanded = false
-                                                    navController.navigate(Routes.SYSTEM_MESSAGES)
+                                                    navigator.navigate(SystemMessagesNavKey)
                                                 },
                                         )
                                         DropdownMenuItem(
@@ -314,12 +420,12 @@ fun EventsApp(commAddViewModel: CommAddViewModel) {
                                                 text = { Text(text = stringResource(id = R.string.events_list_action_about)) },
                                                 onClick = {
                                                     overflowExpanded = false
-                                                    navController.navigate(Routes.ABOUT)
+                                                    navigator.navigate(AboutNavKey)
                                                 },
                                         )
                                     }
                                 }
-                                Routes.ADD_COMM -> {
+                                AddCommNavKey -> {
                                     if (searchExpanded) {
                                         IconButton(
                                                 onClick = {
@@ -353,7 +459,7 @@ fun EventsApp(commAddViewModel: CommAddViewModel) {
                                         }
                                     }
                                 }
-                                Routes.COMM_DETAILS -> {
+                                CommDetailsNavKey -> {
                                     if (isCommAdmin == true) {
                                         IconButton(onClick = { overflowExpanded = true }) {
                                             Icon(
@@ -369,13 +475,13 @@ fun EventsApp(commAddViewModel: CommAddViewModel) {
                                                     text = { Text(text = stringResource(id = R.string.comm_details_add_admin)) },
                                                     onClick = {
                                                         overflowExpanded = false
-                                                        navController.navigate(Routes.ADMIN_ADD)
+                                                        navigator.navigate(AdminAddNavKey)
                                                     },
                                             )
                                         }
                                     }
                                 }
-                                Routes.COMM_EDIT -> {
+                                CommEditNavKey -> {
                                     IconButton(
                                             onClick = {
                                                 with(commViewModel.comm.copy(desc = commViewModel.desc.value.orEmpty())) {
@@ -385,7 +491,7 @@ fun EventsApp(commAddViewModel: CommAddViewModel) {
                                                             context.getString(R.string.comm_edit_updated)
                                                                     .bold(COMM_EDIT_NAME_PLACEHOLDER, name),
                                                     )
-                                                    navController.popBackStack()
+                                                    navigator.goBack()
                                                 }
                                             },
                                     ) {
@@ -395,12 +501,12 @@ fun EventsApp(commAddViewModel: CommAddViewModel) {
                                         )
                                     }
                                 }
-                                Routes.ADMIN_ADD -> {
+                                AdminAddNavKey -> {
                                     IconButton(
                                             onClick = {
                                                 fsWriter.grantAdmin(commViewModel.comm, adminAddress)
                                                 context.toast(R.string.admin_add_toast)
-                                                navController.popBackStack()
+                                                navigator.goBack()
                                             },
                                     ) {
                                         Icon(
@@ -409,7 +515,7 @@ fun EventsApp(commAddViewModel: CommAddViewModel) {
                                         )
                                     }
                                 }
-                                Routes.EVENT_CREATE -> {
+                                EventCreateNavKey -> {
                                     IconButton(
                                             onClick = {
                                                 commError = eventCreateViewModel.comm.value.isNullOrEmpty()
@@ -433,7 +539,7 @@ fun EventsApp(commAddViewModel: CommAddViewModel) {
                                                                 ),
                                                         )
                                                         eventCreateViewModel.clear()
-                                                        navController.popBackStack()
+                                                        navigator.goBack()
                                                     }
                                                 }
                                             },
@@ -444,8 +550,8 @@ fun EventsApp(commAddViewModel: CommAddViewModel) {
                                         )
                                     }
                                 }
-                                Routes.LOCATION_PICKER -> {
-                                    IconButton(onClick = { navController.popBackStack() }) {
+                                LocationPickerNavKey -> {
+                                    IconButton(onClick = { navigator.goBack() }) {
                                         Icon(
                                                 imageVector = Icons.Default.Check,
                                                 contentDescription = stringResource(id = android.R.string.ok),
@@ -457,92 +563,13 @@ fun EventsApp(commAddViewModel: CommAddViewModel) {
                 )
             },
     ) { innerPadding ->
-        NavHost(
-                navController = navController,
-                startDestination = Routes.EVENTS,
+        NavDisplay(
+                entries = navigationState.toEntries(entryProvider),
+                onBack = { navigateUp() },
                 modifier = Modifier
                         .fillMaxSize()
-                        .padding(innerPadding),
-        ) {
-            composable(Routes.EVENTS) {
-                EventListRoute(
-                        eventViewModel = eventViewModel,
-                        onNavigateToEventDetails = { navController.navigate(Routes.EVENT_DETAILS) },
-                        onNavigateToCreateEvent = { navController.navigate(Routes.EVENT_CREATE) },
-                )
-            }
-            composable(Routes.EVENT_DETAILS) {
-                EventDetailsRoute(eventViewModel = eventViewModel)
-            }
-            composable(Routes.EVENT_CREATE) {
-                EventCreateRoute(
-                        vm = eventCreateViewModel,
-                        commError = commError,
-                        nameError = nameError,
-                        timeError = timeError,
-                        dateError = dateError,
-                        onClearCommError = { commError = false },
-                        onClearNameError = { nameError = false },
-                        onClearTimeError = { timeError = false },
-                        onClearDateError = { dateError = false },
-                        onNavigateToLocationPicker = { navController.navigate(Routes.LOCATION_PICKER) },
-                        onBack = { navController.popBackStack() },
-                )
-            }
-            composable(Routes.LOCATION_PICKER) {
-                LocationPickerRoute(eventCreateViewModel = eventCreateViewModel)
-            }
-            composable(Routes.LOGIN_CONFIRMATION) {
-                LoginConfirmationRoute(onBack = { navController.popBackStack() })
-            }
-            composable(Routes.LOG_OUT_CONFIRMATION) {
-                LogOutConfirmationRoute(onBack = { navController.popBackStack() })
-            }
-            composable(Routes.SYSTEM_MESSAGES) {
-                MessagesRoute()
-            }
-            composable(Routes.ABOUT) {
-                AboutRoute()
-            }
-            composable(Routes.COMM_LIST) {
-                CommListRoute(
-                        commViewModel = commViewModel,
-                        onNavigateToCommDetails = { navController.navigate(Routes.COMM_DETAILS) },
-                        onNavigateToAddComm = { navController.navigate(Routes.ADD_COMM) },
-                )
-            }
-            composable(Routes.ADD_COMM) {
-                CommAddRoute(
-                        commAddViewModel = commAddViewModel,
-                        onBack = { navController.popBackStack() },
-                )
-            }
-            composable(Routes.COMM_DETAILS) {
-                CommDetailsRoute(
-                        commViewModel = commViewModel,
-                        onNavigateToEdit = { navController.navigate(Routes.COMM_EDIT) },
-                        onBack = { navController.popBackStack() },
-                )
-            }
-            composable(Routes.COMM_EDIT) {
-                CommEditRoute(
-                        commViewModel = commViewModel,
-                        onNavigateToDelete = { navController.navigate(Routes.COMM_DELETE) },
-                        onBack = { navController.popBackStack() },
-                )
-            }
-            composable(Routes.COMM_DELETE) {
-                CommDeleteRoute(
-                        commViewModel = commViewModel,
-                        onBack = { navController.popBackStack() },
-                )
-            }
-            composable(Routes.ADMIN_ADD) {
-                AdminAddScreen(
-                        address = adminAddress,
-                        onAddressChange = { adminAddress = it },
-                )
-            }
-        }
+                        .padding(innerPadding)
+                        .consumeWindowInsets(innerPadding),
+        )
     }
 }

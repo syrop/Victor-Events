@@ -31,20 +31,24 @@ open class Events(
         private val fsReader: FsReader,
         private val fsWriter: FsWriter,
         private val eventsDao: EventsDao,
-) : LiveRepository() {
+) : LiveRepository<Event>() {
 
     private val eventsCache = mutableListOf<Event>()
 
     val size get() = eventsCache.size
 
+    private fun notifyUpdated() {
+        notifyDataSetChanged(eventsCache.toList())
+    }
+
     suspend fun add(vararg events: Event) = withContext(NonCancellable) {
         eventsCache.addAll(events)
         launch { eventsDao addAll events.toList() }
         fsWriter.addAll(*events)
-        notifyDataSetChanged()
+        notifyUpdated()
     }
 
-    val isEmpty get() = eventsCache.size == 0
+    val isEmpty get() = eventsCache.isEmpty()
 
     open suspend infix fun addFrom(comm: Comm) {
         val events = fsReader readEventsFrom comm.lcName
@@ -57,27 +61,26 @@ open class Events(
             eventsCache.remove(event)
             launch { eventsDao delete event }
         }
-        notifyDataSetChanged()
+        notifyUpdated()
     }
 
     suspend fun loadFromDb() {
         eventsCache.addAll(eventsDao.getAllValues().sortedBy { it.time })
-        notifyDataSetChanged()
+        notifyUpdated()
     }
 
     suspend infix fun fromComms(comms: Comms): List<Event> = coroutineScope {
+        val scope = this
         mutableListOf<Event>().apply {
-            comms.map {
-                async { fsReader readEventsFrom it.lcName }
-            }.map {
-                it.await()
-            }.onEach {
+            comms.map { comm ->
+                scope.async { fsReader readEventsFrom comm.lcName }
+            }.awaitAll().forEach {
                 addAll(it)
             }
         }.apply {
             eventsCache.clear()
             eventsCache.addAll(this)
-            notifyDataSetChanged()
+            notifyUpdated()
             eventsDao.clear()
             launchEach { eventsDao.add(it) }
         }

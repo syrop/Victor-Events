@@ -19,23 +19,12 @@
 
 package pl.org.seva.events.main.extension
 
-import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.widget.Toast
 import androidx.annotation.StringRes
-
-fun Context.question(message: String, yes: () -> Unit = {}, no: () -> Unit = {}) {
-    val listener = YesNoListener(yes, no)
-
-    AlertDialog.Builder(this@question)
-            .setMessage(message)
-            .setPositiveButton(android.R.string.ok, listener)
-            .setNegativeButton(android.R.string.cancel, listener)
-            .show()
-}
 
 val Context.versionName: String
     get() = checkNotNull(packageManager.getPackageInfo(packageName, 0).versionName)
@@ -45,25 +34,8 @@ fun Context.inBrowser(uri: String) {
     startActivity(intent)
 }
 
-fun Context.prefs(name: String) =
+fun Context.prefs(name: String): SharedPreferences =
         getSharedPreferences(name, Context.MODE_PRIVATE)
-
-private class YesNoListener(
-        private val yes: () -> Unit = {},
-        private val no: () -> Unit = {},
-) : DialogInterface.OnClickListener {
-    override fun onClick(dialog: DialogInterface, which: Int) = when (which) {
-        DialogInterface.BUTTON_POSITIVE -> {
-            dialog.dismiss()
-            yes()
-        }
-        DialogInterface.BUTTON_NEGATIVE -> {
-            dialog.dismiss()
-            no()
-        }
-        else -> Unit
-    }
-}
 
 fun Context.longToast(message: CharSequence) =
         toast(message, Toast.LENGTH_LONG)

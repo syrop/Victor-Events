@@ -19,11 +19,7 @@
 
 package pl.org.seva.events.comm
 
-import android.app.Activity
-import android.content.Intent
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -54,7 +50,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
 import pl.org.seva.events.R
 import pl.org.seva.events.login.Login
-import pl.org.seva.events.login.LoginActivity
 import pl.org.seva.events.main.extension.bold
 import pl.org.seva.events.main.extension.boldAnnotated
 import pl.org.seva.events.main.extension.longToast
@@ -108,14 +103,6 @@ fun CommAddRoute(
         }
     }
 
-    val loginCreateLauncher = rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.StartActivityForResult(),
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            result.data?.getStringExtra(LoginActivity.COMMUNITY_NAME)?.createJoinAndFinish()
-        }
-    }
-
     BackHandler {
         resetAndBack()
     }
@@ -151,10 +138,9 @@ fun CommAddRoute(
                                 duration = SnackbarDuration.Indefinite,
                         )
                         if (snackResult == SnackbarResult.ActionPerformed) {
-                            val intent = Intent(context, LoginActivity::class.java)
-                                    .putExtra(LoginActivity.COMMUNITY_NAME, name)
-                                    .putExtra(LoginActivity.ACTION, LoginActivity.LOGIN)
-                            loginCreateLauncher.launch(intent)
+                            if (login.signInWithGoogle(context)) {
+                                name.createJoinAndFinish()
+                            }
                         }
                     }
                 }

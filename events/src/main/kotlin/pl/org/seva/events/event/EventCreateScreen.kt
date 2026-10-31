@@ -21,17 +21,19 @@ package pl.org.seva.events.event
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.AlertDialog as PlatformAlertDialog
 import android.content.pm.PackageManager
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
@@ -56,6 +58,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -64,7 +67,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.maps.GoogleMap
 import pl.org.seva.events.R
 import pl.org.seva.events.comm.Comms
-import pl.org.seva.events.main.extension.question
 import pl.org.seva.events.main.init.instance
 import pl.org.seva.events.main.ui.EventsTheme
 import pl.org.seva.events.main.ui.GoogleMapView
@@ -102,6 +104,8 @@ fun EventCreateRoute(
 
     var showTimePicker by remember { mutableStateOf(false) }
     var showDatePicker by remember { mutableStateOf(false) }
+    var showCommPicker by remember { mutableStateOf(false) }
+    var showDismissDialog by remember { mutableStateOf(false) }
 
     val adminComms = remember { comms.namesIsAdminOf }
 
@@ -155,16 +159,57 @@ fun EventCreateRoute(
 
     BackHandler {
         if (vm.isFilledIn) {
-            context.question(
-                    message = context.getString(R.string.main_activity_dismiss_event),
-                    yes = {
-                        vm.clear()
-                        onBack()
-                    },
-            )
+            showDismissDialog = true
         } else {
             onBack()
         }
+    }
+
+    if (showDismissDialog) {
+        AlertDialog(
+                onDismissRequest = { showDismissDialog = false },
+                text = { Text(text = stringResource(id = R.string.main_activity_dismiss_event)) },
+                confirmButton = {
+                    TextButton(
+                            onClick = {
+                                showDismissDialog = false
+                                vm.clear()
+                                onBack()
+                            },
+                    ) {
+                        Text(text = stringResource(id = android.R.string.ok))
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showDismissDialog = false }) {
+                        Text(text = stringResource(id = android.R.string.cancel))
+                    }
+                },
+        )
+    }
+
+    if (showCommPicker) {
+        AlertDialog(
+                onDismissRequest = { showCommPicker = false },
+                confirmButton = {},
+                text = {
+                    Column {
+                        adminComms.forEach { commOption ->
+                            Text(
+                                    text = commOption,
+                                    modifier = Modifier
+                                            .fillMaxWidth()
+                                            .clickable {
+                                                vm.comm.value = commOption
+                                                onClearCommError()
+                                                showCommPicker = false
+                                            }
+                                            .padding(vertical = 12.dp, horizontal = 8.dp),
+                            )
+                        }
+                    }
+                },
+        )
     }
 
     if (showDatePicker) {
@@ -234,15 +279,7 @@ fun EventCreateRoute(
             showCommSelector = adminComms.size > 1,
             comm = comm.orEmpty(),
             commError = commError,
-            onCommClick = {
-                PlatformAlertDialog.Builder(context)
-                        .setItems(adminComms) { dialog, which ->
-                            vm.comm.value = adminComms[which]
-                            onClearCommError()
-                            dialog.dismiss()
-                        }
-                        .show()
-            },
+            onCommClick = { showCommPicker = true },
             name = name.orEmpty(),
             nameError = nameError,
             onNameChange = {
@@ -305,7 +342,11 @@ fun EventCreateScreen(
 ) {
     val emptyErrorText = stringResource(id = R.string.create_event_cant_be_empty)
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(
+            modifier = Modifier
+                    .fillMaxSize()
+                    .imePadding(),
+    ) {
         if (showCommSelector) {
             OutlinedTextField(
                     value = comm,

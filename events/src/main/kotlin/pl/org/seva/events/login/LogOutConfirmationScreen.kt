@@ -19,10 +19,6 @@
 
 package pl.org.seva.events.login
 
-import android.app.Activity
-import android.content.Intent
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -58,28 +54,20 @@ fun LogOutConfirmationRoute(
 ) {
     val context = LocalContext.current
     val comms by instance<Comms>()
+    val login by instance<Login>()
     val scope = rememberCoroutineScope()
     var inProgress by remember { mutableStateOf(false) }
-
-    val logoutLauncher = rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.StartActivityForResult(),
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            inProgress = true
-            scope.launch {
-                comms.refreshAdminStatuses()
-                onBack()
-            }
-        }
-    }
 
     LogOutConfirmationScreen(
             inProgress = inProgress,
             onCancelClick = onBack,
             onLogOutClick = {
-                val intent = Intent(context, LoginActivity::class.java)
-                        .putExtra(LoginActivity.ACTION, LoginActivity.LOGOUT)
-                logoutLauncher.launch(intent)
+                scope.launch {
+                    inProgress = true
+                    login.signOut(context)
+                    comms.refreshAdminStatuses()
+                    onBack()
+                }
             },
     )
 }

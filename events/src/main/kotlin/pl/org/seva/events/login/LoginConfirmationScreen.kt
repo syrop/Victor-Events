@@ -19,10 +19,6 @@
 
 package pl.org.seva.events.login
 
-import android.app.Activity
-import android.content.Intent
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -60,30 +56,25 @@ fun LoginConfirmationRoute(
 ) {
     val context = LocalContext.current
     val comms by instance<Comms>()
+    val login by instance<Login>()
     val scope = rememberCoroutineScope()
     var inProgress by remember { mutableStateOf(false) }
     val privacyUri = stringResource(id = R.string.login_confirmation_privacy_uri)
-
-    val loginLauncher = rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.StartActivityForResult(),
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            inProgress = true
-            scope.launch {
-                comms.refreshAdminStatuses()
-                onBack()
-            }
-        }
-    }
 
     LoginConfirmationScreen(
             inProgress = inProgress,
             onPrivacyPolicyClick = { context.inBrowser(privacyUri) },
             onCancelClick = onBack,
             onOkClick = {
-                val intent = Intent(context, LoginActivity::class.java)
-                        .putExtra(LoginActivity.ACTION, LoginActivity.LOGIN)
-                loginLauncher.launch(intent)
+                scope.launch {
+                    inProgress = true
+                    if (login.signInWithGoogle(context)) {
+                        comms.refreshAdminStatuses()
+                        onBack()
+                    } else {
+                        inProgress = false
+                    }
+                }
             },
     )
 }

@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pl.org.seva.events.main.data.LiveRepository
 
-class Messages(private val messagesDao: MessagesDao) : LiveRepository() {
+class Messages(private val messagesDao: MessagesDao) : LiveRepository<Message>() {
 
     private val messageCache = mutableListOf<Message>()
 
@@ -34,20 +34,24 @@ class Messages(private val messagesDao: MessagesDao) : LiveRepository() {
 
     operator fun get(position: Int) = messageCache[position]
 
+    private fun notifyUpdated() {
+        notifyDataSetChanged(messageCache.toList())
+    }
+
     suspend fun readFromDb() = withContext(NonCancellable) {
         messageCache.addAll(messagesDao.getAllValues())
-        notifyDataSetChanged()
+        notifyUpdated()
     }
 
     suspend infix fun addAll(messages: Collection<Message>) = withContext(NonCancellable) {
         messageCache.addAll(messages)
         launch { messagesDao addAll messages }
-        notifyDataSetChanged()
+        notifyUpdated()
     }
 
     suspend infix fun delete(message: Message) = withContext(NonCancellable) {
         messageCache.remove(message)
         launch { messagesDao delete message }
-        notifyDataSetChanged()
+        notifyUpdated()
     }
 }

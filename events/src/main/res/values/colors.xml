@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#607d8b</color>
-    <color name="colorPrimaryDark">#455a64</color>
-    <color name="colorAccent">#ffab40</color>
-    <color name="colorOnFab">#EEEEEE</color>
-    <color name="snackbar">#000000</color>
-
     <array name="mdcolor_400">
         <item name="red_400" type="color">#e84e40</item>
         <item name="pink_400" type="color">#ec407a</item>

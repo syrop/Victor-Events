@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -41,7 +42,11 @@ fun AdminAddScreen(
         address: String,
         onAddressChange: (String) -> Unit,
 ) {
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(
+            modifier = Modifier
+                    .fillMaxSize()
+                    .imePadding(),
+    ) {
         TextField(
                 value = address,
                 onValueChange = onAddressChange,

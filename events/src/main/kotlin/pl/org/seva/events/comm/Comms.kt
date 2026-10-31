@@ -20,6 +20,9 @@
 package pl.org.seva.events.comm
 
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import pl.org.seva.events.event.Events
 import pl.org.seva.events.main.data.LiveRepository
 import pl.org.seva.events.main.data.firestore.FsReader
@@ -33,9 +36,12 @@ open class Comms(
         private val commsDao: CommsDao,
         private val events: Events,
         private val colorFactory: ColorFactory,
-) : LiveRepository() {
+) : LiveRepository<Comm>() {
 
     private val commsCache = mutableListOf<Comm>()
+
+    private val _isAdminOfAnyFlow = MutableStateFlow(value = false)
+    val isAdminOfAnyFlow: StateFlow<Boolean> = _isAdminOfAnyFlow.asStateFlow()
 
     val size get() = commsCache.size
 
@@ -47,6 +53,11 @@ open class Comms(
 
     val namesIsAdminOf get() = isAdminOf.map { it.name }.toTypedArray()
 
+    private fun notifyUpdated() {
+        _isAdminOfAnyFlow.value = isAdminOfAny
+        notifyDataSetChanged(commsCache.toList())
+    }
+
     operator fun get(index: Int) = commsCache[index]
 
     operator fun get(name: String) = commsCache.firstOrNull { it.name == name } ?: Comm.DUMMY
@@ -56,14 +67,14 @@ open class Comms(
     infix fun update(comm: Comm) {
         commsCache.remove(get(comm.name))
         commsCache.add(comm)
-        notifyDataSetChanged()
+        notifyUpdated()
         fsWriter update comm
     }
 
     suspend infix fun leave(comm: Comm): Boolean = withContext(NonCancellable) {
         val updated = commsCache.remove(comm)
         if (updated) {
-            notifyDataSetChanged()
+            notifyUpdated()
             launch { commsDao delete comm }
             launch { events deleteLocallyFrom comm }
         }
@@ -77,18 +88,18 @@ open class Comms(
     }
 
     suspend infix fun join(comm: Comm): Boolean = withContext(NonCancellable) {
-        val updated = comm !in commsCache && commsCache.add(comm)
+        val updated = (comm !in commsCache) && commsCache.add(comm)
         if (updated) {
             launch { events addFrom comm }
             launch { commsDao add comm }
-            notifyDataSetChanged()
+            notifyUpdated()
         }
         updated
     }
 
     suspend fun fromDb() {
         commsCache.addAll(commsDao.getAllValues().sortedBy { it.lcName })
-        notifyDataSetChanged()
+        notifyUpdated()
     }
 
     suspend fun <R> map(block: suspend (Comm) -> R) = commsCache.toList().map { block(it) }
@@ -107,15 +118,12 @@ open class Comms(
                         .awaitAll()
             }
 
-    private suspend fun List<Comm>.commit() = coroutineScope {
-        launch(NonCancellable) {
-            commsCache.clear()
-            commsCache.addAll(filter { !it.isDummy })
-            commsDao.clear()
-            commsDao add commsCache
-            notifyDataSetChanged()
-        }
-
+    private suspend fun List<Comm>.commit() = withContext(NonCancellable) {
+        commsCache.clear()
+        commsCache.addAll(filter { !it.isDummy })
+        commsDao.clear()
+        commsDao add commsCache
+        notifyUpdated()
         this@commit
     }
 

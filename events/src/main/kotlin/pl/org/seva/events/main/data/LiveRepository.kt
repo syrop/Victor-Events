@@ -21,10 +21,16 @@ package pl.org.seva.events.main.data
 
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 
-abstract class LiveRepository {
+abstract class LiveRepository<T> {
+
+    private val _items = MutableStateFlow<List<T>>(emptyList())
+    val items: StateFlow<List<T>> = _items.asStateFlow()
 
     private val _updates = MutableSharedFlow<Unit>(
             extraBufferCapacity = 1,
@@ -33,7 +39,8 @@ abstract class LiveRepository {
 
     val updates: SharedFlow<Unit> = _updates.asSharedFlow()
 
-    protected fun notifyDataSetChanged() {
+    protected open fun notifyDataSetChanged(snapshot: List<T>) {
+        _items.value = snapshot
         _updates.tryEmit(Unit)
     }
 }

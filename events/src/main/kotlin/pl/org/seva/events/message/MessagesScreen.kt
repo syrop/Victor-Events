@@ -32,10 +32,7 @@ import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -43,6 +40,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
 import pl.org.seva.events.R
 import pl.org.seva.events.main.init.instance
@@ -52,15 +50,7 @@ import pl.org.seva.events.main.ui.EventsTheme
 fun MessagesRoute() {
     val messages by instance<Messages>()
     val scope = rememberCoroutineScope()
-    var messageItems by remember {
-        mutableStateOf((0 until messages.size).map { messages[it] })
-    }
-
-    LaunchedEffect(messages) {
-        messages.updates.collect {
-            messageItems = (0 until messages.size).map { messages[it] }
-        }
-    }
+    val messageItems by messages.items.collectAsStateWithLifecycle()
 
     MessagesScreen(
             messages = messageItems,
